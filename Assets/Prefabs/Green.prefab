@@ -134,3 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swipeAngle: 0
+  column: 0
+  row: 0
+  targetX: 0
+  targetY: 0

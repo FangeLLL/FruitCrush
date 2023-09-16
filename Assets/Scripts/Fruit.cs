@@ -12,8 +12,8 @@ public class Fruit : MonoBehaviour
 
     public int column;
     public int row;
-    public int targetX;
-    public int targetY;
+    public float targetX;
+    public float targetY;
 
     private GameObject otherFruit;
 
@@ -22,16 +22,17 @@ public class Fruit : MonoBehaviour
     void Start()
     {
         board = FindObjectOfType<Board>();
-        targetX = (int)transform.position.x;
-        targetY = (int)transform.position.y;
-        row = targetY;
-        column = targetX;
+        targetX = transform.position.x;
+        targetY = transform.position.y;
+        row = (int)(targetY+ board.yOffset);
+        column = (int)(targetX + board.xOffset);
     }
 
     void Update()
     {
-        targetX = column;
-        targetY = row;
+        targetX = column - board.xOffset;
+        targetY = row - board.yOffset;
+        // For Moving Left or Right Sides
         if (Mathf.Abs(targetX - transform.position.x) > .1)
         {
             // MOVE TOWARDS THE TARGET
@@ -45,6 +46,23 @@ public class Fruit : MonoBehaviour
             transform.position = tempPosition;
             board.allFruits[column, row] = this.gameObject;
         }
+
+
+        //  For Moving Up or Down Sides
+        if (Mathf.Abs(targetY - transform.position.y) > .1)
+        {
+            // MOVE TOWARDS THE TARGET
+            tempPosition = new Vector2(transform.position.x,targetY);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, .4f);
+        }
+        else
+        {
+            // DIRECTLY SET THE POSITION
+            tempPosition = new Vector2(transform.position.x, targetY);
+            transform.position = tempPosition;
+            board.allFruits[column, row] = this.gameObject;
+        }
+        //
     }
 
     private void OnMouseDown()
@@ -62,7 +80,11 @@ public class Fruit : MonoBehaviour
     {
         float angleInRadians = Mathf.Atan2(lastTouchPosition.y - firstTouchPosition.y, lastTouchPosition.x - firstTouchPosition.x);
         swipeAngle = angleInRadians * Mathf.Rad2Deg;
-        MoveFruits();
+ 
+        if(Vector2.Distance(firstTouchPosition, lastTouchPosition) > 0.5f)
+        {
+            MoveFruits();
+        }
     }
 
     private void MoveFruits()

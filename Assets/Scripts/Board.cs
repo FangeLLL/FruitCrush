@@ -10,6 +10,9 @@ public class Board : MonoBehaviour
 
     private BackgroundTile[,] allTiles;
 
+    public float xOffset;
+    public float yOffset;
+
     [SerializeField]
     public GameObject[] fruits;
 
@@ -24,8 +27,8 @@ public class Board : MonoBehaviour
 
     private void SetUp()
     {
-        float xOffset = width * 0.5f - 1.5f;
-        float yOffset = height * 0.5f - 1.5f;
+         xOffset = width * 0.5f - 0.5f;
+         yOffset = height * 0.5f - 0.5f;
 
         for (int i = 0; i < width; i++)
         {

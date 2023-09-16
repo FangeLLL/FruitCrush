@@ -201,7 +201,7 @@ Transform:
   m_GameObject: {fileID: 58578419}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 5.3, z: 0}
+  m_LocalPosition: {x: 0, y: 4, z: 0}
   m_LocalScale: {x: 0.1221, y: 0.1221, z: 0.1221}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -251,9 +251,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db07405eccaa1ed499618fe5a8960844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 3
-  height: 3
+  width: 4
+  height: 6
   tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
+  xOffset: 0
+  yOffset: 0
   fruits:
   - {fileID: 3637881114680410917, guid: e37abed7a6851a94db97f5ecb7700117, type: 3}
   - {fileID: 2121161292595108092, guid: c5177e49e17609c44952ba23813465fc, type: 3}
@@ -349,7 +351,7 @@ Transform:
   m_GameObject: {fileID: 1513182770}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

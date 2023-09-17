@@ -19,6 +19,8 @@ public class Fruit : MonoBehaviour
 
     private Board board;
 
+    public bool isClicked;
+
     void Start()
     {
         board = FindObjectOfType<Board>();
@@ -58,12 +60,23 @@ public class Fruit : MonoBehaviour
             transform.position = tempPosition;
             board.allFruits[column, row] = this.gameObject;
         }
+
+        if(isClicked)
+        {
+            lastTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            if (Vector2.Distance(firstTouchPosition, lastTouchPosition) > 0.5f)
+            {
+                CalculateAngle();
+                isClicked = false;
+            }
+        }
         //
     }
 
     private void OnMouseDown()
     {
         firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        isClicked = true;
     }
 
     /*
@@ -83,7 +96,7 @@ public class Fruit : MonoBehaviour
     */
 
 
-    private void OnMouseUp()
+    /*private void OnMouseUp()
     {
         
         lastTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -92,7 +105,7 @@ public class Fruit : MonoBehaviour
             CalculateAngle();
         }
         
-    }
+    }*/
     
 
 
@@ -101,7 +114,7 @@ public class Fruit : MonoBehaviour
         float angleInRadians = Mathf.Atan2(lastTouchPosition.y - firstTouchPosition.y, lastTouchPosition.x - firstTouchPosition.x);
         swipeAngle = angleInRadians * Mathf.Rad2Deg;
 
-      board.MoveFruits(swipeAngle,column,row);
+        board.MoveFruits(swipeAngle,column,row);        
     }
 
 

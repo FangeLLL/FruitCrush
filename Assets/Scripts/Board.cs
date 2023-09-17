@@ -98,10 +98,13 @@ public class Board : MonoBehaviour
             fruitScript.row--;
             fruitScript.targetV = otherFruitLoc;
         }
+        StartCoroutine(CheckAndDestroyMatches());
     }
 
-    public void CheckAndDestroyMatches()
+    public IEnumerator CheckAndDestroyMatches()
     {
+        yield return null;
+
         // Check for matches in columns
         for (int i = 0; i < width; i++)
         {
@@ -115,18 +118,9 @@ public class Board : MonoBehaviour
                 if (fruit1.GetComponent<Fruit>().fruitType == fruit2.GetComponent<Fruit>().fruitType &&
                     fruit1.GetComponent<Fruit>().fruitType == fruit3.GetComponent<Fruit>().fruitType)
                 {
-                    // Destroy the matching fruits
-                    Destroy(fruit1);
-                    Destroy(fruit2);
-                    Destroy(fruit3);
-
-                    // Optionally, you can spawn new fruits to replace the destroyed ones
-                    // Implement spawning logic here
-
-                    // Update the allFruits array to reflect the destroyed fruits
-                    allFruits[i, j] = null;
-                    allFruits[i, j + 1] = null;
-                    allFruits[i, j + 2] = null;
+                    allFruits[i, j].GetComponent<Renderer>().enabled = false;
+                    allFruits[i, j + 1].GetComponent<Renderer>().enabled = false;
+                    allFruits[i, j + 2].GetComponent<Renderer>().enabled = false;
                 }
             }
         }
@@ -144,18 +138,33 @@ public class Board : MonoBehaviour
                 if (fruit1.GetComponent<Fruit>().fruitType == fruit2.GetComponent<Fruit>().fruitType &&
                     fruit1.GetComponent<Fruit>().fruitType == fruit3.GetComponent<Fruit>().fruitType)
                 {
-                    Destroy(fruit1);
-                    Destroy(fruit2);
-                    Destroy(fruit3);
-
-                    // Optionally, spawn new fruits to replace the destroyed ones
-
-                    allFruits[i, j] = null;
-                    allFruits[i + 1, j] = null;
-                    allFruits[i + 2, j] = null;
+                    allFruits[i, j].GetComponent<Renderer>().enabled = false;
+                    allFruits[i, j + 1].GetComponent<Renderer>().enabled = false;
+                    allFruits[i, j + 2].GetComponent<Renderer>().enabled = false;
                 }
             }
         }
 
+    }
+
+    public void ReplaceDestroyedFruit(int column, int row)
+    {
+
+        Vector2 tempPosition = new Vector2(column - xOffset, row - yOffset);
+
+        // Instantiate a new fruit at the position of the destroyed fruit
+        int fruitToUse = Random.Range(0, fruits.Length);
+        GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
+
+        // Set the parent and name of the new fruit
+        fruit.transform.parent = this.transform;
+        fruit.name = "( " + column + ", " + row + " )";
+
+        // Set the column and row of the new fruit
+        fruit.GetComponent<Fruit>().column = column;
+        fruit.GetComponent<Fruit>().row = row;
+
+        // Add the new fruit to the allFruits array
+        allFruits[column, row] = fruit;
     }
 }

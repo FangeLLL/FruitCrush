@@ -8,10 +8,9 @@ public class Board : MonoBehaviour
     public int height;
     public GameObject tilePrefab;
 
-    private BackgroundTile[,] allTiles;
-
     public float xOffset;
     public float yOffset;
+
 
     [SerializeField]
     public GameObject[] fruits;
@@ -20,7 +19,6 @@ public class Board : MonoBehaviour
 
     void Start()
     {
-        allTiles = new BackgroundTile[width, height];
         allFruits = new GameObject[width, height];
         SetUp();
     }
@@ -43,8 +41,63 @@ public class Board : MonoBehaviour
                 GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
                 fruit.transform.parent = this.transform;
                 fruit.name = "( " + i + ", " + j + " )";
+                fruit.GetComponent<Fruit>().column = i;
+                fruit.GetComponent<Fruit>().row = j;
                 allFruits[i, j] = fruit;
             }
         }
     }
+   
+    
+
+    public void MoveFruits(float swipeAngle,int column,int row)
+    {
+        GameObject otherFruit;
+        GameObject fruit = allFruits[column, row];
+        Fruit fruitScript = fruit.GetComponent<Fruit>();
+        Vector2 currentFruitLoc= fruit.transform.position;
+        Vector2 otherFruitLoc;
+        if (swipeAngle > -45 && swipeAngle <= 45 && column < width)
+        {
+            // RIGHT SWIPE
+            otherFruit = allFruits[column + 1, row];
+            otherFruitLoc= otherFruit.transform.position;
+            otherFruit.GetComponent<Fruit>().column -= 1;
+            otherFruit.GetComponent<Fruit>().targetV = currentFruitLoc;
+            fruitScript.column++;
+            fruitScript.targetV = otherFruitLoc;
+        }
+        else if (swipeAngle > 45 && swipeAngle <= 135 && row < height)
+        {
+            // UP SWIPE
+            otherFruit = allFruits[column, row + 1];
+            otherFruitLoc = otherFruit.transform.position;
+            otherFruit.GetComponent<Fruit>().row -= 1;
+            otherFruit.GetComponent<Fruit>().targetV = currentFruitLoc;
+            fruitScript.row++;
+            fruitScript.targetV = otherFruitLoc;
+        }
+        else if ((swipeAngle > 135 || swipeAngle <= -135) && column > 0)
+        {
+            // LEFT SWIPE
+            otherFruit = allFruits[column - 1, row];
+            otherFruitLoc = otherFruit.transform.position;
+            otherFruit.GetComponent<Fruit>().column += 1;
+            otherFruit.GetComponent<Fruit>().targetV = currentFruitLoc;
+            fruitScript.column--;
+            fruitScript.targetV = otherFruitLoc;
+        }
+        else if (swipeAngle < -45 && swipeAngle >= -135 && row > 0)
+        {
+            // DOWN SWIPE
+            otherFruit = allFruits[column, row - 1];
+            otherFruitLoc = otherFruit.transform.position;
+            otherFruit.GetComponent<Fruit>().row += 1;
+            otherFruit.GetComponent<Fruit>().targetV = currentFruitLoc;
+            fruitScript.row--;
+            fruitScript.targetV = otherFruitLoc;
+        }
+    }
+
+
 }

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8475584322682957539}
   - component: {fileID: 8344021717250801105}
-  - component: {fileID: 4987871261484109569}
   m_Layer: 0
   m_Name: BackgroundTile
   m_TagString: Untagged
@@ -85,24 +84,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4987871261484109569
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7810862353112231653}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3c8a071d17ad8d4ab956d21242140ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fruits:
-  - {fileID: 3637881114680410917, guid: e37abed7a6851a94db97f5ecb7700117, type: 3}
-  - {fileID: 2121161292595108092, guid: c5177e49e17609c44952ba23813465fc, type: 3}
-  - {fileID: 4156303752583045298, guid: e4db96bcfaace334d8b8c3d3010545e7, type: 3}
-  - {fileID: 7899755824255176207, guid: d4e3f2ea688c0204bab051454cfe88b6, type: 3}
-  - {fileID: 2623001810365057233, guid: 7ab35d1c500bb374d899c85ea786ee0a, type: 3}
-  - {fileID: 8347807461409821184, guid: 52832286c412c0343a3894586e4efe2a, type: 3}
-  - {fileID: 2561307819243056860, guid: 344c9a12ef2b118438b78ac96bea9b10, type: 3}
-  - {fileID: 1594701409205146621, guid: eaf0a99d8637c294e8e70957846b0849, type: 3}

@@ -72,7 +72,21 @@ public class Fruit : MonoBehaviour
 
             }
         }
-        //
+
+        if(Input.GetMouseButtonDown(1)) 
+        {
+            // Convert the mouse position to world coordinates
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            // Check if the mouse position is within the bounds of this fruit
+            if (GetComponent<Collider2D>().OverlapPoint(mousePos))
+            {
+                // If so, destroy this fruit
+                DestroyFruit();
+            }
+        }
+
+        
     }
 
     private void OnMouseDown()
@@ -80,6 +94,16 @@ public class Fruit : MonoBehaviour
         firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         isClicked = true;
     }
+
+    void DestroyFruit()
+    {
+        // Destroy the current fruit
+        Destroy(gameObject);
+
+        // Call the method in the Board script to replace the destroyed fruit
+        board.ReplaceDestroyedFruit(column, row);
+    }
+
 
     /*
     private void OnMouseDrag()
@@ -108,7 +132,7 @@ public class Fruit : MonoBehaviour
         }
         
     }*/
-    
+
 
 
     private void CalculateAngle()
@@ -118,7 +142,7 @@ public class Fruit : MonoBehaviour
 
         board.MoveFruits(swipeAngle,column,row);
 
-        board.CheckAndDestroyMatches();
+        //board.CheckAndDestroyMatches();
     }
 
 

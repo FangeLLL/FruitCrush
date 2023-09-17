@@ -5,6 +5,7 @@ using UnityEngine;
 public class Fruit : MonoBehaviour
 {
 
+    public int fruitType;
     private Vector2 tempPosition;
 
     public int column;
@@ -64,10 +65,11 @@ public class Fruit : MonoBehaviour
         if(isClicked)
         {
             lastTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            if (Vector2.Distance(firstTouchPosition, lastTouchPosition) > 0.5f)
+            if (Vector2.Distance(transform.position, lastTouchPosition) > 0.6f)
             {
                 CalculateAngle();
                 isClicked = false;
+
             }
         }
         //
@@ -114,7 +116,9 @@ public class Fruit : MonoBehaviour
         float angleInRadians = Mathf.Atan2(lastTouchPosition.y - firstTouchPosition.y, lastTouchPosition.x - firstTouchPosition.x);
         swipeAngle = angleInRadians * Mathf.Rad2Deg;
 
-        board.MoveFruits(swipeAngle,column,row);        
+        board.MoveFruits(swipeAngle,column,row);
+
+        board.CheckAndDestroyMatches();
     }
 
 

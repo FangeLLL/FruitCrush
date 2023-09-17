@@ -43,6 +43,7 @@ public class Board : MonoBehaviour
                 fruit.name = "( " + i + ", " + j + " )";
                 fruit.GetComponent<Fruit>().column = i;
                 fruit.GetComponent<Fruit>().row = j;
+                fruit.GetComponent<Fruit>().fruitType = fruitToUse;
                 allFruits[i, j] = fruit;
             }
         }
@@ -99,5 +100,62 @@ public class Board : MonoBehaviour
         }
     }
 
+    public void CheckAndDestroyMatches()
+    {
+        // Check for matches in columns
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height - 2; j++)
+            {
+                GameObject fruit1 = allFruits[i, j];
+                GameObject fruit2 = allFruits[i, j + 1];
+                GameObject fruit3 = allFruits[i, j + 2];
 
+                // Check if the fruits have the same type (you can implement this check in your Fruit script)
+                if (fruit1.GetComponent<Fruit>().fruitType == fruit2.GetComponent<Fruit>().fruitType &&
+                    fruit1.GetComponent<Fruit>().fruitType == fruit3.GetComponent<Fruit>().fruitType)
+                {
+                    // Destroy the matching fruits
+                    Destroy(fruit1);
+                    Destroy(fruit2);
+                    Destroy(fruit3);
+
+                    // Optionally, you can spawn new fruits to replace the destroyed ones
+                    // Implement spawning logic here
+
+                    // Update the allFruits array to reflect the destroyed fruits
+                    allFruits[i, j] = null;
+                    allFruits[i, j + 1] = null;
+                    allFruits[i, j + 2] = null;
+                }
+            }
+        }
+
+        // Check for matches in rows (similar logic as columns)
+        for (int j = 0; j < height; j++)
+        {
+            for (int i = 0; i < width - 2; i++)
+            {
+                GameObject fruit1 = allFruits[i, j];
+                GameObject fruit2 = allFruits[i + 1, j];
+                GameObject fruit3 = allFruits[i + 2, j];
+
+                // Check if the fruits have the same type
+                if (fruit1.GetComponent<Fruit>().fruitType == fruit2.GetComponent<Fruit>().fruitType &&
+                    fruit1.GetComponent<Fruit>().fruitType == fruit3.GetComponent<Fruit>().fruitType)
+                {
+                    Destroy(fruit1);
+                    Destroy(fruit2);
+                    Destroy(fruit3);
+
+                    // Optionally, spawn new fruits to replace the destroyed ones
+
+                    allFruits[i, j] = null;
+                    allFruits[i + 1, j] = null;
+                    allFruits[i + 2, j] = null;
+                }
+            }
+        }
+
+    }
 }

@@ -127,6 +127,8 @@ public class Board : MonoBehaviour
                     allFruits[i, j] = null;
                     allFruits[i, j + 1] = null;
                     allFruits[i, j + 2] = null;
+
+                    return;
                 }
             }
         }
@@ -153,6 +155,8 @@ public class Board : MonoBehaviour
                     allFruits[i, j] = null;
                     allFruits[i + 1, j] = null;
                     allFruits[i + 2, j] = null;
+
+                    return;
                 }
             }
         }

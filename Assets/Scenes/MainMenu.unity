@@ -1330,13 +1330,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e279ae6a3e9b3c4e94db46846c7242a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  achivementManager: {fileID: 1772865871}
-  congratText: {fileID: 1508811113}
-  failedText: {fileID: 1644939807}
-  finishBackground: {fileID: 2113328224}
-  wait1: 1.5
-  wait2: 2.5
-  wait3: 1
 --- !u!114 &1772865871
 MonoBehaviour:
   m_ObjectHideFlags: 0

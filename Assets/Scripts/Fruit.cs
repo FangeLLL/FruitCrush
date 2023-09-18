@@ -22,7 +22,7 @@ public class Fruit : MonoBehaviour
 
     public bool isClicked;
 
-    void Start()
+    void Awake()
     {
         board = FindObjectOfType<Board>();
         targetV.x = transform.position.x;
@@ -101,7 +101,7 @@ public class Fruit : MonoBehaviour
         Destroy(gameObject);
 
         // Call the method in the Board script to replace the destroyed fruit
-        board.ReplaceDestroyedFruit(column, row);
+     //  board.ReplaceDestroyedFruit(column, row);
     }
 
 

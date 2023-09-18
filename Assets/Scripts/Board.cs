@@ -25,6 +25,7 @@ public class Board : MonoBehaviour
         allFruits = new GameObject[width, height];
         allTiles = new GameObject[width, height];
         SetUp();
+        StartCoroutine(CheckAndDestroyMatches());
     }
 
     private void SetUp()
@@ -63,7 +64,7 @@ public class Board : MonoBehaviour
         Fruit fruitScript = fruit.GetComponent<Fruit>();
         Vector2 currentFruitLoc = fruit.transform.position;
         Vector2 otherFruitLoc;
-        if (swipeAngle > -45 && swipeAngle <= 45 && column < width)
+        if (swipeAngle > -45 && swipeAngle <= 45 && column + 1 < width)
         {
             // RIGHT SWIPE
             otherFruit = allFruits[column + 1, row];
@@ -73,7 +74,7 @@ public class Board : MonoBehaviour
             fruitScript.column++;
             fruitScript.targetV = otherFruitLoc;
         }
-        else if (swipeAngle > 45 && swipeAngle <= 135 && row < height)
+        else if (swipeAngle > 45 && swipeAngle <= 135 && row + 1 < height)
         {
             // UP SWIPE
             otherFruit = allFruits[column, row + 1];
@@ -108,7 +109,7 @@ public class Board : MonoBehaviour
     public IEnumerator CheckAndDestroyMatches()
     {
         yield return null;
-
+        
         // Check for matches in columns
         for (int i = 0; i < width; i++)
         {
@@ -146,7 +147,7 @@ public class Board : MonoBehaviour
 
             }
         }
-
+        
 
         // Check for matches in rows (similar logic as columns)
         for (int j = 0; j < height; j++)
@@ -207,11 +208,72 @@ public class Board : MonoBehaviour
         // Ensure the object is completely transparent
 
         fruit.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 0f);
-        ReplaceDestroyedFruit(fruit.GetComponent<Fruit>().column, fruit.GetComponent<Fruit>().row);
+        Destroy(allFruits[fruit.GetComponent<Fruit>().column, fruit.GetComponent<Fruit>().row]);
+        yield return null;
+        FillTheGaps();
+        // ReplaceDestroyedFruit(fruit.GetComponent<Fruit>().column, fruit.GetComponent<Fruit>().row);
 
     }
 
-    public void ReplaceDestroyedFruit(int column, int row)
+    private void FillTheGaps()
+    {
+
+        for (int i = 0; i < width; i++)
+        {
+            Queue<int> emptyPlaces = new Queue<int>();
+
+
+            for (int j = 0; j < height; j++)
+            {
+                if (!allFruits[i, j])
+                {
+                    emptyPlaces.Enqueue(j);
+                }
+                else if (emptyPlaces.Count > 0)
+                {
+                    int emptyRowIndex = emptyPlaces.Dequeue();
+                    GameObject fruit = allFruits[i, j];
+                    allFruits[i, emptyRowIndex] = fruit;
+                    allFruits[i, j] = null;
+                    Fruit fruitScript = fruit.GetComponent<Fruit>();
+
+                    fruitScript.row = emptyRowIndex;
+                    fruitScript.column = i;
+                    fruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
+                    emptyPlaces.Enqueue(j);
+                }
+            }
+
+            while (emptyPlaces.Count > 0)
+            {
+                
+                int emptyRowIndex = emptyPlaces.Dequeue();
+                Vector2 tempPosition = new Vector2(i - xOffset, height-1 - yOffset);
+
+                // Instantiate a new fruit at the position of the destroyed fruit
+                int fruitToUse = Random.Range(0, fruits.Length);
+                GameObject newFruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
+                Fruit newFruitScript = newFruit.GetComponent<Fruit>();
+
+                // Set the parent and name of the new fruit
+                newFruit.transform.parent = this.transform;
+                newFruit.name = "( " + i + ", " + emptyRowIndex + " )";
+
+                // Set the column and row of the new fruit
+                newFruitScript.column = i;
+                newFruitScript.row = emptyRowIndex;
+                newFruitScript.fruitType = fruitToUse;
+                newFruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
+
+
+                // Add the new fruit to the allFruits array
+                allFruits[i, emptyRowIndex] = newFruit;
+            }
+        }
+        StartCoroutine(CheckAndDestroyMatches());
+    }
+
+    private void ReplaceDestroyedFruit(int column, int row)
     {
 
         Vector2 tempPosition = new Vector2(column - xOffset, row - yOffset);

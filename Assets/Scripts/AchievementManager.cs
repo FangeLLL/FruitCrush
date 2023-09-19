@@ -18,6 +18,8 @@ public class AchievementManager : MonoBehaviour
     public Achievement[] achievements;
 
     public GameObject achivementDisplay;
+    public GameObject star;
+    public GameObject star2;
     public TextMeshProUGUI achievementNameText;
     public TextMeshProUGUI achievementProgressText;
 
@@ -87,10 +89,17 @@ public class AchievementManager : MonoBehaviour
         achivementDisplay.SetActive(true);
         yield return null;
         achivementDisplay.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter");
-        yield return new WaitForSeconds(3);
+        star.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter");
+        yield return new WaitForSeconds(0.35f);
+        star2.SetActive(true);
+        yield return null;
+        star2.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter");
+        yield return new WaitForSeconds(2.35f);
+        star.GetComponent<Animator>().SetTrigger("AchivementDisplayExit");
+        yield return new WaitForSeconds(0.3f);
         achivementDisplay.GetComponent<Animator>().SetTrigger("AchivementDisplayExit");
         yield return new WaitForSeconds(1);
-        achivementDisplay.SetActive(false);
+        //achivementDisplay.SetActive(false);
         isDisplayingAchievement = false; // Set to false to allow the next achievement to display.
     }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -9,6 +10,8 @@ public class UIManager : MonoBehaviour
     public GameObject congratText;
     public GameObject failedText;
     public GameObject finishBackground;
+
+    public TextMeshProUGUI moveCountText;
 
     string gameFinishTrigger = "GameFinishTrigger";
     string gameFinishTriggerReverse = "GameFinishTriggerReverse";
@@ -33,6 +36,11 @@ public class UIManager : MonoBehaviour
         {
             achivementManager.AchievementProgress("Fruits Destroyed", 3);
         }
+
+        else if (Input.GetKeyDown(KeyCode.Y))
+        {
+            achivementManager.AchievementProgress("Oranges Destroyed", 3);
+        }
     }
 
     //FUNCTION TO CALL WHEN PLAYER FAILES OR SUCCESS LEVEL
@@ -45,6 +53,8 @@ public class UIManager : MonoBehaviour
 
     IEnumerator GameFinishUI(bool status)
     {
+        achivementManager.SaveAchievementData();
+
         finishBackground.SetActive(true);
         yield return null;
         finishBackground.GetComponent<Animator>().SetTrigger(gameFinishTrigger);

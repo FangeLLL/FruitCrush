@@ -31,6 +31,8 @@ public class Fruit : MonoBehaviour
 
     void Update()
     {
+        
+
         // For Moving Left or Right Sides
         if (Mathf.Abs(targetV.x - transform.position.x) > .1)
         {
@@ -61,6 +63,8 @@ public class Fruit : MonoBehaviour
             transform.position = tempPosition;
             board.allFruits[column, row] = this.gameObject;
         }
+
+        
 
         if(isClicked)
         {
@@ -101,38 +105,8 @@ public class Fruit : MonoBehaviour
         Destroy(gameObject);
 
         // Call the method in the Board script to replace the destroyed fruit
-     //  board.ReplaceDestroyedFruit(column, row);
+        board.ReplaceDestroyedFruit(column, row);
     }
-
-
-    /*
-    private void OnMouseDrag()
-    {
-      
-            lastTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            // Debug.Log(Vector2.Distance(firstTouchPosition, lastTouchPosition));
-            Debug.Log("Dragging " + column + "," + row);
-            if (Vector2.Distance(firstTouchPosition, lastTouchPosition) > 0.5f)
-            {
-                CalculateAngle();
-            }
-        
-       
-    }
-    */
-
-
-    /*private void OnMouseUp()
-    {
-        
-        lastTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (Vector2.Distance(firstTouchPosition, lastTouchPosition) > 0.5f)
-        {
-            CalculateAngle();
-        }
-        
-    }*/
-
 
 
     private void CalculateAngle()
@@ -140,9 +114,7 @@ public class Fruit : MonoBehaviour
         float angleInRadians = Mathf.Atan2(lastTouchPosition.y - firstTouchPosition.y, lastTouchPosition.x - firstTouchPosition.x);
         swipeAngle = angleInRadians * Mathf.Rad2Deg;
 
-        board.MoveFruits(swipeAngle,column,row);
-
-        //board.CheckAndDestroyMatches();
+        board.SwipeFruits(swipeAngle, column, row);
     }
 
 

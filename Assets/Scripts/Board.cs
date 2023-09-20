@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Jobs;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Board : MonoBehaviour
 {
@@ -43,7 +46,7 @@ public class Board : MonoBehaviour
                 backgroundTile.name = "( " + i + ", " + j + " )";
                 allTiles[i, j] = backgroundTile;
 
-                int fruitToUse = Random.Range(0, fruits.Length);
+                int fruitToUse = UnityEngine.Random.Range(0, fruits.Length);
                 GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
                 fruit.transform.parent = this.transform;
                 fruit.name = "( " + i + ", " + j + " )";
@@ -55,61 +58,46 @@ public class Board : MonoBehaviour
         }
     }
 
-
-
-    public void MoveFruits(float swipeAngle, int column, int row)
+    public void SwipeFruits(float swipeAngle, int column, int row)
     {
         GameObject otherFruit;
         GameObject fruit = allFruits[column, row];
-        Fruit fruitScript = fruit.GetComponent<Fruit>();
-        Vector2 currentFruitLoc = fruit.transform.position;
-        Vector2 otherFruitLoc;
         if (swipeAngle > -45 && swipeAngle <= 45 && column + 1 < width)
         {
             // RIGHT SWIPE
             otherFruit = allFruits[column + 1, row];
-            otherFruitLoc = otherFruit.transform.position;
-            otherFruit.GetComponent<Fruit>().column -= 1;
-            otherFruit.GetComponent<Fruit>().targetV = currentFruitLoc;
-            fruitScript.column++;
-            fruitScript.targetV = otherFruitLoc;
+           
         }
         else if (swipeAngle > 45 && swipeAngle <= 135 && row + 1 < height)
         {
             // UP SWIPE
             otherFruit = allFruits[column, row + 1];
-            otherFruitLoc = otherFruit.transform.position;
-            otherFruit.GetComponent<Fruit>().row -= 1;
-            otherFruit.GetComponent<Fruit>().targetV = currentFruitLoc;
-            fruitScript.row++;
-            fruitScript.targetV = otherFruitLoc;
+           
         }
         else if ((swipeAngle > 135 || swipeAngle <= -135) && column > 0)
         {
             // LEFT SWIPE
-            otherFruit = allFruits[column - 1, row];
-            otherFruitLoc = otherFruit.transform.position;
-            otherFruit.GetComponent<Fruit>().column += 1;
-            otherFruit.GetComponent<Fruit>().targetV = currentFruitLoc;
-            fruitScript.column--;
-            fruitScript.targetV = otherFruitLoc;
+            otherFruit = allFruits[column - 1, row];       
+           
         }
         else if (swipeAngle < -45 && swipeAngle >= -135 && row > 0)
         {
             // DOWN SWIPE
             otherFruit = allFruits[column, row - 1];
-            otherFruitLoc = otherFruit.transform.position;
-            otherFruit.GetComponent<Fruit>().row += 1;
-            otherFruit.GetComponent<Fruit>().targetV = currentFruitLoc;
-            fruitScript.row--;
-            fruitScript.targetV = otherFruitLoc;
+            
         }
-        StartCoroutine(CheckAndDestroyMatches());
+        else
+        {
+            return;
+        }
+        ChangeTwoFruit(fruit, otherFruit);
+        StartCoroutine(CheckAndDestroyMatches(fruit,otherFruit));
     }
-    public IEnumerator CheckAndDestroyMatches()
+    private IEnumerator CheckAndDestroyMatches(GameObject fruit=null,GameObject otherFruit = null)
     {
         yield return null;
-        
+        bool pop = false;
+
         // Check for matches in columns
         for (int i = 0; i < width; i++)
         {
@@ -119,20 +107,19 @@ public class Board : MonoBehaviour
                 fruitsCheck = new GameObject[height];
                 bool same = true;
                 int k = 0;
+                // it checking if bottom piece and one above it same. In every cycle it adds the one is currently below checking and if two of them not same
+                // then its out of the  cycle.
                 while (same)
                 {
-                    if (j + k + 1 < height && allFruits[i, j + k].GetComponent<Fruit>().fruitType == allFruits[i, j + k + 1].GetComponent<Fruit>().fruitType)
+                    if (j + k + 1 >= height || allFruits[i, j + k].GetComponent<Fruit>().fruitType != allFruits[i, j + k + 1].GetComponent<Fruit>().fruitType)
                     {
-                        fruitsCheck[k] = allFruits[i, j + k];
-                        k++;
-                    }
-                    else
-                    {
-                        fruitsCheck[k] = allFruits[i, j + k];
-                        k++;
                         same = false;
                     }
+                    fruitsCheck[k] = allFruits[i, j + k];
+                    k++;
                 }
+
+                // If in this cycle there is more than 3 match then its pops up them. 
 
                 if (k >= 3)
                 {
@@ -140,14 +127,15 @@ public class Board : MonoBehaviour
                     {
                         StartCoroutine(FadeOut(fruitsCheck[e]));
                     }
-
+                    pop = true;
+                    // It checked the popped ones so it can check after that index.
                     j += k;
                 }
 
 
             }
         }
-        
+     
 
         // Check for matches in rows (similar logic as columns)
         for (int j = 0; j < height; j++)
@@ -160,17 +148,12 @@ public class Board : MonoBehaviour
                 int k = 0;
                 while (same)
                 {
-                    if (i + k + 1 < width && allFruits[i + k, j].GetComponent<Fruit>().fruitType == allFruits[i + k + 1, j].GetComponent<Fruit>().fruitType)
+                    if (i + k + 1 >= width || allFruits[i + k, j].GetComponent<Fruit>().fruitType != allFruits[i + k + 1, j].GetComponent<Fruit>().fruitType)
                     {
-                        fruitsCheck[k] = allFruits[i + k, j];
-                        k++;
-                    }
-                    else
-                    {
-                        fruitsCheck[k] = allFruits[i + k, j];
-                        k++;
                         same = false;
                     }
+                    fruitsCheck[k] = allFruits[i + k, j];
+                    k++;
                 }
 
                 if (k >= 3)
@@ -179,11 +162,44 @@ public class Board : MonoBehaviour
                     {
                         StartCoroutine(FadeOut(fruitsCheck[e]));
                     }
-
+                    pop = true;
                     i += k;
                 }
             }
         }
+        if (pop)
+        {
+            yield return new WaitForSeconds(0.7f);
+            StartCoroutine(FillTheGaps());
+        }
+        else if(fruit)
+        {
+            // Reverting move by changing two fruit position and info. A little wait for swipe anim and then change back. 
+            yield return new WaitForSeconds(0.4f);
+            ChangeTwoFruit(fruit,otherFruit);
+
+        }
+        
+
+    }
+
+    private void ChangeTwoFruit(GameObject fruit,GameObject otherFruit)
+    {
+        // Changing two fruit loc and info.
+
+        Fruit fruitScript = fruit.GetComponent<Fruit>();
+        int tempRow=fruitScript.row, tempCol=fruitScript.column;
+        Fruit otherFruitScript = otherFruit.GetComponent<Fruit>();
+
+        fruitScript.row = otherFruitScript.row;
+        fruitScript.column = otherFruitScript.column;
+
+        otherFruitScript.row = tempRow;
+        otherFruitScript.column=tempCol;
+
+        Vector2 fruitLoc = fruit.transform.position;
+        fruitScript.targetV=otherFruit.transform.position;
+        otherFruitScript.targetV = fruitLoc;
 
     }
 
@@ -209,17 +225,19 @@ public class Board : MonoBehaviour
 
         fruit.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 0f);
         Destroy(allFruits[fruit.GetComponent<Fruit>().column, fruit.GetComponent<Fruit>().row]);
-        yield return null;
-        FillTheGaps();
-        // ReplaceDestroyedFruit(fruit.GetComponent<Fruit>().column, fruit.GetComponent<Fruit>().row);
-
+        
     }
 
-    private void FillTheGaps()
+    private IEnumerator FillTheGaps()
     {
+
+        yield return null;
 
         for (int i = 0; i < width; i++)
         {
+            // Starting from (0,0) location and its checks every column. It starts from botton to up and takes every empty place index and put it to queue
+            // variable (emptyPlaces). 
+
             Queue<int> emptyPlaces = new Queue<int>();
 
 
@@ -227,10 +245,13 @@ public class Board : MonoBehaviour
             {
                 if (!allFruits[i, j])
                 {
+                    // Putting empty place index to variable
                     emptyPlaces.Enqueue(j);
                 }
                 else if (emptyPlaces.Count > 0)
                 {
+                    // if there is a piece then piece new location will be first empty place in queue.
+
                     int emptyRowIndex = emptyPlaces.Dequeue();
                     GameObject fruit = allFruits[i, j];
                     allFruits[i, emptyRowIndex] = fruit;
@@ -251,7 +272,7 @@ public class Board : MonoBehaviour
                 Vector2 tempPosition = new Vector2(i - xOffset, height-1 - yOffset);
 
                 // Instantiate a new fruit at the position of the destroyed fruit
-                int fruitToUse = Random.Range(0, fruits.Length);
+                int fruitToUse = UnityEngine.Random.Range(0, fruits.Length);
                 GameObject newFruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
                 Fruit newFruitScript = newFruit.GetComponent<Fruit>();
 
@@ -270,16 +291,17 @@ public class Board : MonoBehaviour
                 allFruits[i, emptyRowIndex] = newFruit;
             }
         }
+        yield return new WaitForSeconds(0.7f);
         StartCoroutine(CheckAndDestroyMatches());
     }
 
-    private void ReplaceDestroyedFruit(int column, int row)
+    public void ReplaceDestroyedFruit(int column, int row)
     {
 
         Vector2 tempPosition = new Vector2(column - xOffset, row - yOffset);
 
         // Instantiate a new fruit at the position of the destroyed fruit
-        int fruitToUse = Random.Range(0, fruits.Length);
+        int fruitToUse = UnityEngine.Random.Range(0, fruits.Length);
         GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
 
         // Set the parent and name of the new fruit

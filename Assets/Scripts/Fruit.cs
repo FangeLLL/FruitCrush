@@ -38,7 +38,7 @@ public class Fruit : MonoBehaviour
         {
             // MOVE TOWARDS THE TARGET
             tempPosition = new Vector2(targetV.x, transform.position.y);
-            transform.position = Vector2.Lerp(transform.position, tempPosition, .4f);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, 0.04f);
         }
         else
         {
@@ -54,7 +54,7 @@ public class Fruit : MonoBehaviour
         {
             // MOVE TOWARDS THE TARGET
             tempPosition = new Vector2(transform.position.x, targetV.y);
-            transform.position = Vector2.Lerp(transform.position, tempPosition, .4f);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, 0.04f);
         }
         else
         {

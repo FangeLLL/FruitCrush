@@ -1080,7 +1080,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1508811114
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1328,7 +1328,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1644939808
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1784,14 +1784,47 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   achievements:
   - name: Fruits Destroyed
+    index: 8
     steps: 190000003200000064000000c8000000f4010000e8030000d0070000
     level: 0
     progress: 0
-  - name: Oranges Destroyed
-    steps: 190000003200000064000000c8000000f4010000e8030000d0070000
+  - name: Fruit 1 Achievement
+    index: 0
+    steps: 190000003200000064000000c8000000f4010000e8030000
     level: 0
     progress: 0
-  - name: Oranges Destroyed
+  - name: Fruit 2 Achievement
+    index: 1
+    steps: 190000003200000064000000c8000000f4010000e8030000
+    level: 0
+    progress: 0
+  - name: Fruit 3 Achievement
+    index: 2
+    steps: 190000003200000064000000c8000000f4010000e8030000
+    level: 0
+    progress: 0
+  - name: Fruit 4 Achievement
+    index: 3
+    steps: 190000003200000064000000c8000000f4010000e8030000
+    level: 0
+    progress: 0
+  - name: Fruit 5 Achievement
+    index: 4
+    steps: 190000003200000064000000c8000000f4010000e8030000
+    level: 0
+    progress: 0
+  - name: Fruit 6 Achievement
+    index: 5
+    steps: 190000003200000064000000c8000000f4010000e8030000
+    level: 0
+    progress: 0
+  - name: Fruit 7 Achievement
+    index: 6
+    steps: 190000003200000064000000c8000000f4010000e8030000
+    level: 0
+    progress: 0
+  - name: Fruit 8 Achievement
+    index: 7
     steps: 190000003200000064000000c8000000f4010000e8030000
     level: 0
     progress: 0
@@ -1976,7 +2009,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2096175157
 RectTransform:
   m_ObjectHideFlags: 0

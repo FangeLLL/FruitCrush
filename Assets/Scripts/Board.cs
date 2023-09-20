@@ -16,6 +16,11 @@ public class Board : MonoBehaviour
     public float xOffset;
     public float yOffset;
 
+    [SerializeField]
+    public AchievementManager achievementManager;
+
+    bool checkingMatch = false;
+    bool swiping;
 
     [SerializeField]
     public GameObject[] fruits;
@@ -91,14 +96,19 @@ public class Board : MonoBehaviour
             return;
         }
         ChangeTwoFruit(fruit, otherFruit);
-        StartCoroutine(CheckAndDestroyMatches(fruit,otherFruit));
+        if (!checkingMatch)
+        {
+            StartCoroutine(CheckAndDestroyMatches(fruit, otherFruit));
+        }
     }
 
     private IEnumerator CheckAndDestroyMatches(GameObject fruit = null, GameObject otherFruit = null)
     {
+        checkingMatch = true;
         yield return null;
 
         List<GameObject> willPop = new List<GameObject>();
+        int[] typeFruits = new int[fruits.Length];
 
         // Check for matches in columns
         for (int i = 0; i < width; i++)
@@ -110,33 +120,37 @@ public class Board : MonoBehaviour
                 bool same = true;
                 int k = 0;
                 // it checking if bottom piece and one above it same. In every cycle it adds the one is currently below checking and if two of them not same
-                // then its out of the  cycle.
-                while (same)
+                // then its out of the  cycle. Checking if the space is null or exist.
+                if (allFruits[i, j])
                 {
-                    if (j + k + 1 >= height || allFruits[i, j + k].GetComponent<Fruit>().fruitType != allFruits[i, j + k + 1].GetComponent<Fruit>().fruitType)
+                    while (same)
                     {
-                        same = false;
-                    }
-                    fruitsCheck[k] = allFruits[i, j + k];
-                    k++;
-                }
-
-                // If in this cycle there is more than 3 match then its pops up them. 
-
-                if (k >= 3)
-                {
-                    for (int e = 0; e < k; e++)
-                    {
-                        if (!willPop.Contains(fruitsCheck[e]))
+                        if (j + k + 1 >= height || !allFruits[i, j + k + 1] || allFruits[i, j + k].GetComponent<Fruit>().fruitType != allFruits[i, j + k + 1].GetComponent<Fruit>().fruitType)
                         {
-                            willPop.Add(fruitsCheck[e]);
+                            same = false;
                         }
+                        fruitsCheck[k] = allFruits[i, j + k];
+                        k++;
                     }
-                    // It checked the popped ones so it can check after that index.
-                    j += k;
-                }
 
+                    // If in this cycle there is more than 3 match then its pops up them. 
 
+                    if (k >= 3)
+                    {
+                        for (int e = 0; e < k; e++)
+                        {
+                            if (!willPop.Contains(fruitsCheck[e]))
+                            {
+                                willPop.Add(fruitsCheck[e]);
+                                // Increasing the number that represent how many fruits popped of that type.
+                                typeFruits[fruitsCheck[e].GetComponent<Fruit>().fruitType]++;
+                            }
+                        }
+                        // It checked the popped ones so it can check after that index.
+                        j += k;
+                    }
+
+                }              
             }
         }
 
@@ -150,27 +164,34 @@ public class Board : MonoBehaviour
                 fruitsCheck = new GameObject[width];
                 bool same = true;
                 int k = 0;
-                while (same)
+                if (allFruits[i, j])
                 {
-                    if (i + k + 1 >= width || allFruits[i + k, j].GetComponent<Fruit>().fruitType != allFruits[i + k + 1, j].GetComponent<Fruit>().fruitType)
+                    while (same)
                     {
-                        same = false;
-                    }
-                    fruitsCheck[k] = allFruits[i + k, j];
-                    k++;
-                }
-
-                if (k >= 3)
-                {
-                    for (int e = 0; e < k; e++)
-                    {
-                        if (!willPop.Contains(fruitsCheck[e]))
+                        if (i + k + 1 >= width || !allFruits[i + k + 1, j] || allFruits[i + k, j].GetComponent<Fruit>().fruitType != allFruits[i + k + 1, j].GetComponent<Fruit>().fruitType)
                         {
-                            willPop.Add(fruitsCheck[e]);
+                            same = false;
                         }
+                        fruitsCheck[k] = allFruits[i + k, j];
+                        k++;
                     }
-                    i += k;
-                }
+
+                    if (k >= 3)
+                    {
+                        for (int e = 0; e < k; e++)
+                        {
+                            if (!willPop.Contains(fruitsCheck[e]))
+                            {
+                                willPop.Add(fruitsCheck[e]);
+                                typeFruits[fruitsCheck[e].GetComponent<Fruit>().fruitType]++;
+
+                            }
+                        }
+                        i += k;
+                    }
+
+                }                
+             
             }
         }
 
@@ -184,48 +205,72 @@ public class Board : MonoBehaviour
 
                 // it checking if bottom piece and one above it same. In every cycle it adds the one is currently below checking and if two of them not same
                 // then its out of the  cycle.
-                if (j + 1 < height && type == allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
-                {
-                    if (i + 1 < width && allFruits[i + 1, j].GetComponent<Fruit>().fruitType == allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType && type == allFruits[i + 1, j].GetComponent<Fruit>().fruitType)
+               
+                    if (j + 1 < height && allFruits[i, j] && allFruits[i, j + 1] && type == allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
                     {
-                        fruitsCheck.Add(allFruits[i, j]);
-                        fruitsCheck.Add(allFruits[i,j + 1]);
-                        fruitsCheck.Add(allFruits[i + 1, j]);
-                        fruitsCheck.Add(allFruits[i + 1, j + 1]);
-
-                        j += 2;
-
-                        for (int e = 0; e < 4; e++)
+                        if (i + 1 < width && allFruits[i + 1, j] && allFruits[i + 1, j + 1] && allFruits[i + 1, j].GetComponent<Fruit>().fruitType 
+                        == allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType && type == allFruits[i + 1, j].GetComponent<Fruit>().fruitType)
                         {
-                            if (!willPop.Contains(fruitsCheck[e]))
-                            {
-                                willPop.Add(fruitsCheck[e]);
-                            }
-                        }
+                            fruitsCheck.Add(allFruits[i, j]);
+                            fruitsCheck.Add(allFruits[i, j + 1]);
+                            fruitsCheck.Add(allFruits[i + 1, j]);
+                            fruitsCheck.Add(allFruits[i + 1, j + 1]);
 
+                            j += 2;
+
+                            for (int e = 0; e < 4; e++)
+                            {
+                                if (!willPop.Contains(fruitsCheck[e]))
+                                {
+                                    willPop.Add(fruitsCheck[e]);
+                                    typeFruits[fruitsCheck[e].GetComponent<Fruit>().fruitType]++;
+
+                                }
+                            }
+
+                        }
                     }
-                }
+                       
             }
         }
 
+        
         if (willPop.Count>1)
         {
+            /*
+            if (fruit&&!(willPop.Contains(fruit)||willPop.Contains(otherFruit)))
+            {
+                Debug.Log("asd");
+                StartCoroutine(RevertSwipe(fruit, otherFruit));
+            }
+            */
             for(int i = 0; i < willPop.Count; i++)
             {
                 StartCoroutine(FadeOut(willPop[i]));
             }
-            yield return new WaitForSeconds(0.7f);
+            achievementManager.AchievementProgress("Fruits Destroyed",willPop.Count);
+            yield return new WaitForSeconds(0.5f);
             StartCoroutine(FillTheGaps());
         }
         else if (fruit)
         {
             // Reverting move by changing two fruit position and info. A little wait for swipe anim and then change back. 
-            yield return new WaitForSeconds(0.4f);
-            ChangeTwoFruit(fruit, otherFruit);
-
+            StartCoroutine(RevertSwipe(fruit,otherFruit));
+            checkingMatch = false;
+        }
+        else
+        {
+            checkingMatch = false;
         }
 
 
+    }
+
+    private IEnumerator RevertSwipe(GameObject fruit,GameObject otherFruit)
+    {
+        yield return new WaitForSeconds(0.4f);
+        ChangeTwoFruit(fruit, otherFruit);
+       
     }
 
     private void ChangeTwoFruit(GameObject fruit,GameObject otherFruit)
@@ -251,7 +296,7 @@ public class Board : MonoBehaviour
     private IEnumerator FadeOut(GameObject fruit)
     {
         float elapsedTime = 0f;
-        float fadeDuration = 0.5f;
+        float fadeDuration = 0.3f;
         Color color = fruit.GetComponent<SpriteRenderer>().color;
 
         while (elapsedTime < fadeDuration)
@@ -314,7 +359,7 @@ public class Board : MonoBehaviour
             {
                 
                 int emptyRowIndex = emptyPlaces.Dequeue();
-                Vector2 tempPosition = new Vector2(i - xOffset, height-1 - yOffset);
+                Vector2 tempPosition = new Vector2(i - xOffset, height - yOffset);
 
                 // Instantiate a new fruit at the position of the destroyed fruit
                 int fruitToUse = UnityEngine.Random.Range(0, fruits.Length);
@@ -334,6 +379,7 @@ public class Board : MonoBehaviour
 
                 // Add the new fruit to the allFruits array
                 allFruits[i, emptyRowIndex] = newFruit;
+                yield return new WaitForSeconds(0.1f);
             }
         }
         yield return new WaitForSeconds(0.7f);

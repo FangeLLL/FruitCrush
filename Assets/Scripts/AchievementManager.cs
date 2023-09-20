@@ -20,6 +20,8 @@ public class AchievementManager : MonoBehaviour
     public GameObject achivementDisplay;
     public GameObject star;
     public GameObject star2;
+    public GameObject progressBarBackFade;
+    public GameObject progressBarFill;
     public TextMeshProUGUI achievementNameText;
     public TextMeshProUGUI achievementProgressText;
 
@@ -86,20 +88,50 @@ public class AchievementManager : MonoBehaviour
 
     IEnumerator DisplayTiming()
     {
+        yield return null;
+
         achivementDisplay.SetActive(true);
+
         yield return null;
-        achivementDisplay.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter");
-        star.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter");
-        yield return new WaitForSeconds(0.35f);
+
+        achivementDisplay.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); // 0.5 sec
+
+        yield return new WaitForSeconds(0.1f);
+
+        star.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); //0.5 sec + 0.083 sec
+
+        yield return new WaitForSeconds(0.5f);
+
         star2.SetActive(true);
+
         yield return null;
-        star2.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter");
-        yield return new WaitForSeconds(2.35f);
-        star.GetComponent<Animator>().SetTrigger("AchivementDisplayExit");
-        yield return new WaitForSeconds(0.3f);
-        achivementDisplay.GetComponent<Animator>().SetTrigger("AchivementDisplayExit");
-        yield return new WaitForSeconds(1);
-        //achivementDisplay.SetActive(false);
+
+        star2.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); //0.25 sec
+
+        yield return new WaitForSeconds(0.25f);
+        yield return null;
+
+        star2.SetActive(false);
+        progressBarFill.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); // 1 sec + 0.083 sec
+
+        yield return new WaitForSeconds(1f);
+
+        progressBarBackFade.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); // 0.25 sec
+
+        yield return new WaitForSeconds(1f);
+
+        star.GetComponent<Animator>().SetTrigger("AchivementDisplayExit"); //0.5 sec
+
+        yield return new WaitForSeconds(0.25f);
+
+        achivementDisplay.GetComponent<Animator>().SetTrigger("AchivementDisplayExit"); //0.25 sec
+
+        yield return new WaitForSeconds(0.25f);
+        yield return null;
+
+        progressBarFill.GetComponent<Image>().fillAmount = 0;
+        achivementDisplay.SetActive(false);
+
         isDisplayingAchievement = false; // Set to false to allow the next achievement to display.
     }
 

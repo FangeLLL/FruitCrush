@@ -93,10 +93,12 @@ public class Board : MonoBehaviour
         ChangeTwoFruit(fruit, otherFruit);
         StartCoroutine(CheckAndDestroyMatches(fruit,otherFruit));
     }
-    private IEnumerator CheckAndDestroyMatches(GameObject fruit=null,GameObject otherFruit = null)
+
+    private IEnumerator CheckAndDestroyMatches(GameObject fruit = null, GameObject otherFruit = null)
     {
         yield return null;
-        bool pop = false;
+
+        List<GameObject> willPop = new List<GameObject>();
 
         // Check for matches in columns
         for (int i = 0; i < width; i++)
@@ -125,9 +127,11 @@ public class Board : MonoBehaviour
                 {
                     for (int e = 0; e < k; e++)
                     {
-                        StartCoroutine(FadeOut(fruitsCheck[e]));
+                        if (!willPop.Contains(fruitsCheck[e]))
+                        {
+                            willPop.Add(fruitsCheck[e]);
+                        }
                     }
-                    pop = true;
                     // It checked the popped ones so it can check after that index.
                     j += k;
                 }
@@ -135,7 +139,7 @@ public class Board : MonoBehaviour
 
             }
         }
-     
+
 
         // Check for matches in rows (similar logic as columns)
         for (int j = 0; j < height; j++)
@@ -160,26 +164,67 @@ public class Board : MonoBehaviour
                 {
                     for (int e = 0; e < k; e++)
                     {
-                        StartCoroutine(FadeOut(fruitsCheck[e]));
+                        if (!willPop.Contains(fruitsCheck[e]))
+                        {
+                            willPop.Add(fruitsCheck[e]);
+                        }
                     }
-                    pop = true;
                     i += k;
                 }
             }
         }
-        if (pop)
+
+        // Check for matches in quaternary. (!!! It can be more optimized !!!)
+        for (int i = 0; i < width; i++)
         {
+            for (int j = 0; j < height - 2; j++)
+            {
+                List<GameObject> fruitsCheck = new List<GameObject>();
+                int type = allFruits[i, j].GetComponent<Fruit>().fruitType;
+
+                // it checking if bottom piece and one above it same. In every cycle it adds the one is currently below checking and if two of them not same
+                // then its out of the  cycle.
+                if (j + 1 < height && type == allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
+                {
+                    if (i + 1 < width && allFruits[i + 1, j].GetComponent<Fruit>().fruitType == allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType && type == allFruits[i + 1, j].GetComponent<Fruit>().fruitType)
+                    {
+                        fruitsCheck.Add(allFruits[i, j]);
+                        fruitsCheck.Add(allFruits[i,j + 1]);
+                        fruitsCheck.Add(allFruits[i + 1, j]);
+                        fruitsCheck.Add(allFruits[i + 1, j + 1]);
+
+                        j += 2;
+
+                        for (int e = 0; e < 4; e++)
+                        {
+                            if (!willPop.Contains(fruitsCheck[e]))
+                            {
+                                willPop.Add(fruitsCheck[e]);
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        if (willPop.Count>1)
+        {
+            for(int i = 0; i < willPop.Count; i++)
+            {
+                StartCoroutine(FadeOut(willPop[i]));
+            }
             yield return new WaitForSeconds(0.7f);
             StartCoroutine(FillTheGaps());
         }
-        else if(fruit)
+        else if (fruit)
         {
             // Reverting move by changing two fruit position and info. A little wait for swipe anim and then change back. 
             yield return new WaitForSeconds(0.4f);
-            ChangeTwoFruit(fruit,otherFruit);
+            ChangeTwoFruit(fruit, otherFruit);
 
         }
-        
+
 
     }
 

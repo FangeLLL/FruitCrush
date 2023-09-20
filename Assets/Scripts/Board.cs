@@ -291,7 +291,7 @@ public class Board : MonoBehaviour
             {
                 StartCoroutine(FadeOut(willPop[i]));
             }
-           // achievementManager.AchievementProgress(typeFruits);
+            achievementManager.AchievementProgress(typeFruits);
             yield return new WaitForSeconds(0.5f);
             StartCoroutine(FillTheGaps());
         }

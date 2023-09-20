@@ -251,12 +251,12 @@ public class Board : MonoBehaviour
             for (int j = 0; j < height - 1; j++)
             {
                 List<GameObject> fruitsCheck = new List<GameObject>();
-                int type = allFruits[i, j].GetComponent<Fruit>().fruitType;
+                int type;
 
                 // it checking if bottom piece and one above it same. In every cycle it adds the one is currently below checking and if two of them not same
                 // then its out of the  cycle.
                
-                    if (j + 1 < height && allFruits[i, j] && allFruits[i, j + 1] && type == allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
+                    if (j + 1 < height && allFruits[i, j] && allFruits[i, j + 1] && (type=allFruits[i, j].GetComponent<Fruit>().fruitType) == allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
                     {
                         if (i + 1 < width && allFruits[i + 1, j] && allFruits[i + 1, j + 1] && allFruits[i + 1, j].GetComponent<Fruit>().fruitType 
                         == allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType && type == allFruits[i + 1, j].GetComponent<Fruit>().fruitType)

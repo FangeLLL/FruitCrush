@@ -34,12 +34,12 @@ public class UIManager : MonoBehaviour
 
         else if (Input.GetKeyDown(KeyCode.T))
         {
-            achivementManager.AchievementProgress("Fruits Destroyed", 3);
+            achivementManager.AchievementProgress(0, 3);
         }
 
         else if (Input.GetKeyDown(KeyCode.Y))
         {
-            achivementManager.AchievementProgress("Oranges Destroyed", 3);
+            achivementManager.AchievementProgress(1, 3);
         }
     }
 

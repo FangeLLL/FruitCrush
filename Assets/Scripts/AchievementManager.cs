@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class Achievement
 {
     public string name;
+    public int index;
     public int[] steps;
     public int level = 0;
     public int progress = 0;
@@ -42,13 +43,15 @@ public class AchievementManager : MonoBehaviour
         }
     }
 
-    public void AchievementProgress(string achievementName, int progress)
+    public void AchievementProgress(int achievementIndex, int progress)
     {
-        Achievement achievement = FindAchievementByName(achievementName);
+        Achievement achievement = FindAchievementByIndex(achievementIndex);
+        Achievement totalAchievement = FindAchievementByIndex(8);
 
         if (achievement != null)
         {
             achievement.progress += progress;
+            totalAchievement.progress += progress;
 
             for (int i = achievement.level; i < achievement.steps.Length; i++)
             {
@@ -69,10 +72,30 @@ public class AchievementManager : MonoBehaviour
                     break;
                 }
             }
+
+            for (int i = totalAchievement.level; i < totalAchievement.steps.Length; i++)
+            {
+                if (totalAchievement.progress >= achievement.steps[i])
+                {
+                    totalAchievement.level = i + 1;
+
+                    if (!achievementQueue.Contains(totalAchievement))
+                    {
+                        achievementQueue.Enqueue(totalAchievement);
+                    }
+
+                    SaveAchievementData();
+                }
+                else
+                {
+                    break;
+                }
+            }
         }
+
         else
         {
-            Debug.LogWarning("Achievement not found: " + achievementName);
+            Debug.LogWarning("Achievement not found: " + achievement.name);
         }
     }
 
@@ -153,11 +176,11 @@ public class AchievementManager : MonoBehaviour
         }
     }
 
-    private Achievement FindAchievementByName(string name)
+    private Achievement FindAchievementByIndex(int index)
     {
         foreach (Achievement achievement in achievements)
         {
-            if (achievement.name == name)
+            if (achievement.index == index)
             {
                 return achievement;
             }

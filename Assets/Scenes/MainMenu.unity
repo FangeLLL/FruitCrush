@@ -1788,13 +1788,43 @@ MonoBehaviour:
     steps: 190000003200000064000000c8000000f4010000e8030000d0070000
     level: 0
     progress: 0
-  - name: Oranges Destroyed
+  - name: Fruit 1 Achievement
     index: 0
     steps: 190000003200000064000000c8000000f4010000e8030000
     level: 0
     progress: 0
-  - name: Grapes Destroyed
+  - name: Fruit 2 Achievement
     index: 1
+    steps: 190000003200000064000000c8000000f4010000e8030000
+    level: 0
+    progress: 0
+  - name: Fruit 3 Achievement
+    index: 2
+    steps: 190000003200000064000000c8000000f4010000e8030000
+    level: 0
+    progress: 0
+  - name: Fruit 4 Achievement
+    index: 3
+    steps: 190000003200000064000000c8000000f4010000e8030000
+    level: 0
+    progress: 0
+  - name: Fruit 5 Achievement
+    index: 4
+    steps: 190000003200000064000000c8000000f4010000e8030000
+    level: 0
+    progress: 0
+  - name: Fruit 6 Achievement
+    index: 5
+    steps: 190000003200000064000000c8000000f4010000e8030000
+    level: 0
+    progress: 0
+  - name: Fruit 7 Achievement
+    index: 6
+    steps: 190000003200000064000000c8000000f4010000e8030000
+    level: 0
+    progress: 0
+  - name: Fruit 8 Achievement
+    index: 7
     steps: 190000003200000064000000c8000000f4010000e8030000
     level: 0
     progress: 0

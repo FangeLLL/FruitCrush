@@ -16,6 +16,10 @@ public class UIManager : MonoBehaviour
     string gameFinishTrigger = "GameFinishTrigger";
     string gameFinishTriggerReverse = "GameFinishTriggerReverse";
 
+    int[] anan1 = { 3, 0 };
+    int[] anan2 = { 0, 3 };
+    int[] anan3 = { 10, 10 };
+
     public float wait1;
     public float wait2;
     public float wait3;
@@ -34,12 +38,17 @@ public class UIManager : MonoBehaviour
 
         else if (Input.GetKeyDown(KeyCode.T))
         {
-            achivementManager.AchievementProgress(0, 3);
+            achivementManager.AchievementProgress(anan1);
         }
 
         else if (Input.GetKeyDown(KeyCode.Y))
         {
-            achivementManager.AchievementProgress(1, 3);
+            achivementManager.AchievementProgress(anan2);
+        }
+
+        else if (Input.GetKeyDown(KeyCode.U))
+        {
+            achivementManager.AchievementProgress(anan3);
         }
     }
 

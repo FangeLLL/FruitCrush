@@ -10,7 +10,7 @@ public class Achievement
     public string name;
     public int index;
     public int[] steps;
-    public int level = 0;
+    public int level = 1;
     public int progress = 0;
 }
 
@@ -43,61 +43,69 @@ public class AchievementManager : MonoBehaviour
         }
     }
 
-    public void AchievementProgress(int achievementIndex, int progress)
+    public void AchievementProgress(int[] progressArray)
     {
-        Achievement achievement = FindAchievementByIndex(achievementIndex);
         Achievement totalAchievement = FindAchievementByIndex(8);
 
-        if (achievement != null)
+        for (int i = 0; i < progressArray.Length; i++)
         {
-            achievement.progress += progress;
-            totalAchievement.progress += progress;
+            Achievement individualAchievement = FindAchievementByIndex(i);
 
-            for (int i = achievement.level; i < achievement.steps.Length; i++)
+            if (individualAchievement != null)
             {
-                if (achievement.progress >= achievement.steps[i])
-                {
-                    achievement.level = i + 1;
+                int progress = progressArray[i];
+                individualAchievement.progress += progress;
+                totalAchievement.progress += progress;
 
-                    // Check if the achievement is not already in the queue.
-                    if (!achievementQueue.Contains(achievement))
+                for (int j = individualAchievement.level; j < individualAchievement.steps.Length; j++)
+                {
+                    if (individualAchievement.progress >= individualAchievement.steps[j])
                     {
-                        achievementQueue.Enqueue(achievement); // Add to the queue for display.
+                        individualAchievement.level = j + 1;
+
+                        // Check if the achievement is not already in the queue.
+                        if (!achievementQueue.Contains(individualAchievement))
+                        {
+                            achievementQueue.Enqueue(individualAchievement); // Add to the queue for display.
+                        }
+
+                        SaveAchievementData();
                     }
-
-                    SaveAchievementData();
+                    else
+                    {
+                        break;
+                    }
                 }
-                else
+
+                for (int j = totalAchievement.level; j < totalAchievement.steps.Length; j++)
                 {
-                    break;
-                }
-            }
+                    if (totalAchievement.progress >= totalAchievement.steps[j])
+                    {
+                        totalAchievement.level = j + 1;
 
-            for (int i = totalAchievement.level; i < totalAchievement.steps.Length; i++)
+                        // Check if the achievement is not already in the queue.
+                        if (!achievementQueue.Contains(totalAchievement))
+                        {
+                            achievementQueue.Enqueue(totalAchievement); // Add to the queue for display.
+                        }
+
+                        SaveAchievementData();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+            }
+            else
             {
-                if (totalAchievement.progress >= achievement.steps[i])
-                {
-                    totalAchievement.level = i + 1;
-
-                    if (!achievementQueue.Contains(totalAchievement))
-                    {
-                        achievementQueue.Enqueue(totalAchievement);
-                    }
-
-                    SaveAchievementData();
-                }
-                else
-                {
-                    break;
-                }
+                Debug.LogWarning("Achievement not found with index: " + i);
             }
-        }
-
-        else
-        {
-            Debug.LogWarning("Achievement not found: " + achievement.name);
         }
     }
+
+
 
 
     private void DisplayAchievement(Achievement achievement)
@@ -121,7 +129,7 @@ public class AchievementManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        star.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); //0.5 sec + 0.083 sec
+        star.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); //0.5 sec
 
         yield return new WaitForSeconds(0.5f);
 
@@ -135,7 +143,7 @@ public class AchievementManager : MonoBehaviour
         yield return null;
 
         star2.SetActive(false);
-        progressBarFill.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); // 1 sec + 0.083 sec
+        progressBarFill.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); // 1 sec
 
         yield return new WaitForSeconds(1f);
 

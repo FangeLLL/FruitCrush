@@ -18,13 +18,17 @@ public class AchievementManager : MonoBehaviour
 {
     public Achievement[] achievements;
 
+    public Sprite[] achievementBanners;
+
     public GameObject achivementDisplay;
     public GameObject star;
     public GameObject star2;
     public GameObject progressBarBackFade;
     public GameObject progressBarFill;
+    public GameObject transitionFade;
     public TextMeshProUGUI achievementNameText;
-    public TextMeshProUGUI achievementProgressText;
+    public TextMeshProUGUI achievementProgressText1;
+    public TextMeshProUGUI achievementProgressText2;
 
     private Queue<Achievement> achievementQueue = new Queue<Achievement>();
     private bool isDisplayingAchievement = false;
@@ -105,31 +109,61 @@ public class AchievementManager : MonoBehaviour
         }
     }
 
-
-
-
     private void DisplayAchievement(Achievement achievement)
     {
+        int ach1;
+        int ach2;
+        int achLevel;
         isDisplayingAchievement = true;
         Debug.Log("Achievement Unlocked: " + achievement.steps[achievement.level - 1] + " " + achievement.name);
         achievementNameText.text = achievement.name;
-        achievementProgressText.text = achievement.steps[achievement.level - 1].ToString();
-        StartCoroutine(DisplayTiming());
+        if (achievement.level == 1)
+        {
+            ach1 = 0;
+            achLevel = 0;
+        }
+        else
+        {
+            ach1 = achievement.steps[achievement.level - 2];
+        }
+        ach2 = achievement.steps[achievement.level - 1];
+        achLevel = achievement.level;
+        achievementProgressText1.text = ach1.ToString();
+        achievementProgressText2.text = ach2.ToString();
+        StartCoroutine(DisplayTiming(ach1, ach2, achLevel));
     }
 
-    IEnumerator DisplayTiming()
+    IEnumerator DisplayTiming(int ach1, int ach2, int achLevel)
     {
         yield return null;
 
+        achivementDisplay.GetComponent<Image>().sprite = achievementBanners[achLevel - 1];
         achivementDisplay.SetActive(true);
 
         yield return null;
 
         achivementDisplay.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); // 0.5 sec
 
+        yield return new WaitForSeconds(0.6f);
+
+        progressBarFill.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); // 1 sec
+        StartCoroutine(CountToNextMilestone(ach1, ach2));
+
+        yield return new WaitForSeconds(1f);
+
+        progressBarBackFade.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); // 0.25 sec
+
         yield return new WaitForSeconds(0.1f);
 
-        star.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); //0.5 sec
+        transitionFade.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter");
+
+        yield return new WaitForSeconds(0.5f);
+
+        achivementDisplay.GetComponent<Image>().sprite = achievementBanners[achLevel]; ///////////will be changed
+
+        yield return new WaitForSeconds(0.1f);
+
+        star.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); // 0.5 sec
 
         yield return new WaitForSeconds(0.5f);
 
@@ -137,33 +171,44 @@ public class AchievementManager : MonoBehaviour
 
         yield return null;
 
-        star2.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); //0.25 sec
+        star2.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); // 0.25 sec
 
         yield return new WaitForSeconds(0.25f);
-        yield return null;
 
         star2.SetActive(false);
-        progressBarFill.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); // 1 sec
-
-        yield return new WaitForSeconds(1f);
-
-        progressBarBackFade.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); // 0.25 sec
-
-        yield return new WaitForSeconds(1f);
-
-        star.GetComponent<Animator>().SetTrigger("AchivementDisplayExit"); //0.5 sec
 
         yield return new WaitForSeconds(0.25f);
 
-        achivementDisplay.GetComponent<Animator>().SetTrigger("AchivementDisplayExit"); //0.25 sec
+        star.GetComponent<Animator>().SetTrigger("AchivementDisplayExit"); // 0.5 sec
 
         yield return new WaitForSeconds(0.25f);
-        yield return null;
+
+        achivementDisplay.GetComponent<Animator>().SetTrigger("AchivementDisplayExit"); // 0.25 sec
+
+        yield return new WaitForSeconds(0.25f);
 
         progressBarFill.GetComponent<Image>().fillAmount = 0;
         achivementDisplay.SetActive(false);
 
-        isDisplayingAchievement = false; // Set to false to allow the next achievement to display.
+        yield return null;
+
+        isDisplayingAchievement = false;
+    }
+
+    private IEnumerator CountToNextMilestone(int start, int end)
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < 1)
+        {
+            float t = elapsedTime / 1;
+            int newValue = Mathf.RoundToInt(Mathf.Lerp(start, end, t));
+            achievementProgressText1.text = newValue.ToString();
+            yield return null;
+            elapsedTime += Time.deltaTime;
+        }
+
+        achievementProgressText1.text = end.ToString(); // Ensure the final value is set.
     }
 
     public void SaveAchievementData()

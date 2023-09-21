@@ -157,6 +157,7 @@ public class Board : MonoBehaviour
         List<GameObject> willPop = new List<GameObject>();
         checkingMatch = true;
         yield return null;
+        List<int> fillColumns = new List<int>();
    
         int[] typeFruits = new int[fruits.Length];
 
@@ -196,8 +197,14 @@ public class Board : MonoBehaviour
                                 typeFruits[fruitsCheck[e].GetComponent<Fruit>().fruitType]++;
                             }
                         }
+                        // Putting the column index to fillColumn list because in FillGaps function system just going to fill these columns
+                        if (!fillColumns.Contains(i))
+                        {
+                            fillColumns.Add(i);
+                        }
                         // It checked the popped ones so it can check after that index.
                         j += k;
+                        
                     }
 
                 }              
@@ -234,7 +241,10 @@ public class Board : MonoBehaviour
                             {
                                 willPop.Add(fruitsCheck[e]);
                                 typeFruits[fruitsCheck[e].GetComponent<Fruit>().fruitType]++;
-
+                                if (!fillColumns.Contains(i+e))
+                                {
+                                    fillColumns.Add(i+e);
+                                }
                             }
                         }
                         i += k;
@@ -266,7 +276,19 @@ public class Board : MonoBehaviour
                             fruitsCheck.Add(allFruits[i + 1, j]);
                             fruitsCheck.Add(allFruits[i + 1, j + 1]);
 
-                            j += 2;
+                        if (!fillColumns.Contains(i))
+                        {
+                            fillColumns.Add(i);
+                        }
+
+                        if (!fillColumns.Contains(i+1))
+                        {
+                            fillColumns.Add(i+1);
+                        }
+
+
+
+                        j += 2;
 
                             for (int e = 0; e < 4; e++)
                             {
@@ -291,9 +313,9 @@ public class Board : MonoBehaviour
             {
                 StartCoroutine(FadeOut(willPop[i]));
             }
-            achievementManager.AchievementProgress(typeFruits);
+          ///  achievementManager.AchievementProgress(typeFruits);
             yield return new WaitForSeconds(0.5f);
-            StartCoroutine(FillTheGaps());
+            StartCoroutine(FillTheGaps(fillColumns));
         }
         else if (fruit)
         {
@@ -361,16 +383,14 @@ public class Board : MonoBehaviour
         
     }
 
-    private IEnumerator FillTheGaps()
+    private IEnumerator FillTheGaps(List<int> columns)
     {
 
-        yield return null;
-
-        for (int i = 0; i < width; i++)
+        for (int i = 0; i < columns.Count; i++)
         {
             // Starting from (0,0) location and its checks every column. It starts from botton to up and takes every empty place index and put it to queue
             // variable (emptyPlaces). 
-            StartCoroutine(FillTheColumn(i));
+            StartCoroutine(FillTheColumn(columns[i]));
 
         }
         yield return new WaitForSeconds(0.7f);

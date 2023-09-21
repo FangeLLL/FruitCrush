@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Fruit : MonoBehaviour
@@ -11,7 +12,7 @@ public class Fruit : MonoBehaviour
     public int column;
     public int row;
 
-    public float swipeAngle = 0;
+    private float swipeAngle = 0;
 
     private Vector2 lastTouchPosition;
     public Vector2 firstTouchPosition;
@@ -20,7 +21,9 @@ public class Fruit : MonoBehaviour
 
     private Board board;
 
-    public bool isClicked;
+    public float speed = 0.04f;
+
+    public bool isClicked,isSwiped=false;
 
     void Awake()
     {
@@ -38,7 +41,7 @@ public class Fruit : MonoBehaviour
         {
             // MOVE TOWARDS THE TARGET
             tempPosition = new Vector2(targetV.x, transform.position.y);
-            transform.position = Vector2.Lerp(transform.position, tempPosition, 0.04f);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, speed);
         }
         else
         {
@@ -54,7 +57,7 @@ public class Fruit : MonoBehaviour
         {
             // MOVE TOWARDS THE TARGET
             tempPosition = new Vector2(transform.position.x, targetV.y);
-            transform.position = Vector2.Lerp(transform.position, tempPosition, 0.04f);
+            transform.position = Vector2.Lerp(transform.position, tempPosition, speed);
         }
         else
         {

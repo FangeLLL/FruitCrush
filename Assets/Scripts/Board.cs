@@ -21,6 +21,7 @@ public class Board : MonoBehaviour
 
     bool checkingMatch = false;
 
+    AudioManager audioManager;
 
     [SerializeField]
     public GameObject[] fruits;
@@ -30,6 +31,7 @@ public class Board : MonoBehaviour
 
     void Start()
     {
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         allFruits = new GameObject[width, height];
         allTiles = new GameObject[width, height];
         SetUp();
@@ -80,12 +82,14 @@ public class Board : MonoBehaviour
                 if (Vector2.Distance(otherFruit.GetComponent<Fruit>().targetV, otherFruit.transform.position) > .1f)
                 {
                     Debug.Log("You cant swipe right!!!");
+                    audioManager.SwipeResistBorder();
                     return;
                 }
             }
             else
             {
                 Debug.Log("You cant swipe right!!!");
+                audioManager.SwipeResistBorder();
                 return;
             }
 
@@ -98,12 +102,14 @@ public class Board : MonoBehaviour
                 if (Vector2.Distance(otherFruit.GetComponent<Fruit>().targetV, otherFruit.transform.position) > .1f)
                 {
                     Debug.Log("You cant swipe up!!!");
+                    audioManager.SwipeResistBorder();
                     return;
                 }
             }
             else
             {
                 Debug.Log("You cant swipe up!!!");
+                audioManager.SwipeResistBorder();
                 return;
             } 
            
@@ -116,12 +122,14 @@ public class Board : MonoBehaviour
                 if (Vector2.Distance(otherFruit.GetComponent<Fruit>().targetV, otherFruit.transform.position) > .1f)
                 {
                     Debug.Log("You cant swipe left!!!");
+                    audioManager.SwipeResistBorder();
                     return;
                 }
             }
             else
             {
                 Debug.Log("You cant swipe left!!!");
+                audioManager.SwipeResistBorder();
                 return;
             }
                           
@@ -134,17 +142,20 @@ public class Board : MonoBehaviour
                 if (Vector2.Distance(otherFruit.GetComponent<Fruit>().targetV, otherFruit.transform.position) > .1f)
                 {
                     Debug.Log("You cant swipe down!!!");
+                    audioManager.SwipeResistBorder();
                     return;
                 }
             }
             else
             {
                 Debug.Log("You cant swipe down!!!");
+                audioManager.SwipeResistBorder();
                 return;
             }          
         }
         else
         {
+            audioManager.SwipeResistBorder();
             return;
         }
 
@@ -154,6 +165,7 @@ public class Board : MonoBehaviour
         }
         fruit.GetComponent<Fruit>().isSwiped = true;
         otherFruit.GetComponent<Fruit>().isSwiped = true;
+        audioManager.Swipe();
         StartCoroutine(CheckMove(fruit, otherFruit));
         if (!checkingMatch)
         {
@@ -212,6 +224,7 @@ public class Board : MonoBehaviour
                         {
                             fillColumns.Add(i);
                         }
+                        audioManager.FruitCrush();
                         // It checked the popped ones so it can check after that index.
                         j += k;
                         
@@ -257,6 +270,7 @@ public class Board : MonoBehaviour
                                 }
                             }
                         }
+                        audioManager.FruitCrush();
                         i += k;
                     }
 
@@ -307,9 +321,11 @@ public class Board : MonoBehaviour
 
                                 }
                             }
+                        audioManager.FruitCrush();
 
-                        }
-                    }                       
+
+                    }
+                }                       
             }
         }
     
@@ -361,7 +377,9 @@ public class Board : MonoBehaviour
             if (fruit && otherFruit)
             {
                 Debug.Log("Revert");
+                audioManager.SwipeResist();
                 ChangeTwoFruit(fruit, otherFruit);
+                yield return new WaitForSeconds(0.3f);
                 fruit.GetComponent<Fruit>().isSwiped = false;
                 otherFruit.GetComponent<Fruit>().isSwiped = false;
             }

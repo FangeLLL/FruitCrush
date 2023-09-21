@@ -65,8 +65,13 @@ public class Board : MonoBehaviour
 
     public void SwipeFruits(float swipeAngle, int column, int row)
     {
+
         GameObject otherFruit;
         GameObject fruit = allFruits[column, row];
+        if (fruit.GetComponent<Fruit>().isSwiped)
+        {
+            return;
+        }
         if (swipeAngle > -45 && swipeAngle <= 45 && column + 1 < width)
         {
             // RIGHT SWIPE
@@ -83,7 +88,7 @@ public class Board : MonoBehaviour
                 Debug.Log("You cant swipe right!!!");
                 return;
             }
-                      
+
         }
         else if (swipeAngle > 45 && swipeAngle <= 135 && row + 1 < height)
         {
@@ -119,8 +124,7 @@ public class Board : MonoBehaviour
                 Debug.Log("You cant swipe left!!!");
                 return;
             }
-                   
-           
+                          
         }
         else if (swipeAngle < -45 && swipeAngle >= -135 && row > 0)
         {
@@ -137,22 +141,28 @@ public class Board : MonoBehaviour
             {
                 Debug.Log("You cant swipe down!!!");
                 return;
-            }
-            
+            }          
         }
         else
         {
             return;
         }
-        ChangeTwoFruit(fruit, otherFruit);
+
+        if (otherFruit.GetComponent<Fruit>().isSwiped)
+        {
+            return;
+        }
+        fruit.GetComponent<Fruit>().isSwiped = true;
+        otherFruit.GetComponent<Fruit>().isSwiped = true;
+        StartCoroutine(CheckMove(fruit, otherFruit));
         if (!checkingMatch)
         {
-            StartCoroutine(CheckAndDestroyMatches(fruit, otherFruit));
+            StartCoroutine(CheckAndDestroyMatches());
         }
 
     }
 
-    private IEnumerator CheckAndDestroyMatches(GameObject fruit = null, GameObject otherFruit = null)
+    private IEnumerator CheckAndDestroyMatches()
     {
         List<GameObject> willPop = new List<GameObject>();
         checkingMatch = true;
@@ -286,8 +296,6 @@ public class Board : MonoBehaviour
                             fillColumns.Add(i+1);
                         }
 
-
-
                         j += 2;
 
                             for (int e = 0; e < 4; e++)
@@ -301,27 +309,19 @@ public class Board : MonoBehaviour
                             }
 
                         }
-                    }
-                       
+                    }                       
             }
         }
-
-        
+    
         if (willPop.Count>1)
         {
             for(int i = 0; i < willPop.Count; i++)
             {
                 StartCoroutine(FadeOut(willPop[i]));
             }
-          ///  achievementManager.AchievementProgress(typeFruits);
+            //achievementManager.AchievementProgress(typeFruits);
             yield return new WaitForSeconds(0.5f);
             StartCoroutine(FillTheGaps(fillColumns));
-        }
-        else if (fruit)
-        {
-            // Reverting move by changing two fruit position and info. A little wait for swipe anim and then change back. 
-            StartCoroutine(RevertSwipe(fruit,otherFruit));
-            checkingMatch = false;
         }
         else
         {
@@ -331,15 +331,46 @@ public class Board : MonoBehaviour
 
     }
 
-    private IEnumerator RevertSwipe(GameObject fruit,GameObject otherFruit)
+    private IEnumerator CheckMove(GameObject fruit, GameObject otherFruit)
     {
-        yield return new WaitForSeconds(0.4f);
+        Fruit fruitScript = fruit.GetComponent<Fruit>();
+        Fruit otherFruitScript = otherFruit.GetComponent<Fruit>();
+
         ChangeTwoFruit(fruit, otherFruit);
-       
+        yield return new WaitForSeconds(0.3f);
+
+
+        // Checking if this is right move
+
+        if (CheckMatchSides(fruitScript.row, fruitScript.column) || CheckMatchSides(otherFruitScript.row, otherFruitScript.column))
+        {
+            // If any of object has a match then function can just finish.
+            if (fruit)
+            {
+                fruitScript.isSwiped = false;
+
+            }
+            if (otherFruit)
+            {
+                otherFruitScript.isSwiped = false;
+
+            }
+        }
+        else
+        {
+            if (fruit && otherFruit)
+            {
+                Debug.Log("Revert");
+                ChangeTwoFruit(fruit, otherFruit);
+                fruit.GetComponent<Fruit>().isSwiped = false;
+                otherFruit.GetComponent<Fruit>().isSwiped = false;
+            }
+        }
     }
 
     private void ChangeTwoFruit(GameObject fruit,GameObject otherFruit)
     {
+
         // Changing two fruit loc and info.
 
         Fruit fruitScript = fruit.GetComponent<Fruit>();
@@ -348,13 +379,86 @@ public class Board : MonoBehaviour
 
         fruitScript.row = otherFruitScript.row;
         fruitScript.column = otherFruitScript.column;
+      //  fruitScript.speed = 0.08f;
 
         otherFruitScript.row = tempRow;
         otherFruitScript.column=tempCol;
+     //   otherFruitScript.speed = 0.08f;
 
         Vector2 fruitLoc = fruit.transform.position;
         fruitScript.targetV=otherFruit.transform.position;
         otherFruitScript.targetV = fruitLoc;
+        /*
+        yield return new WaitForSeconds(0.2f);
+
+        if (fruit)
+        {
+            fruitScript.speed = 0.04f;
+
+        }
+        if (otherFruit)
+        {
+            otherFruitScript.speed = 0.04f;
+
+        }
+        */
+    }
+
+    private bool CheckMatchSides(int row,int column)
+    {
+        /* Checking row of the object by starting 2 left from object. Function works like this;
+         1. First if index of check exist
+         2. The objects that going to work with exist
+         3. If two object type same then it incrase the "match" number else "match" number will be zero.
+         4.  If match number 2 then it means there is a match function return true.
+        */
+
+
+        int match =0;
+
+        for (int k=-2; k<2;k++)
+        {
+            if (column+k>0 && column+k+1<width && allFruits[column + k, row] && allFruits[column + k + 1, row])
+            {
+                if (allFruits[column + k, row].GetComponent<Fruit>().fruitType == allFruits[column + k + 1, row].GetComponent<Fruit>().fruitType)
+                {
+                    match++;
+                    if (match == 2)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    match = 0;
+                }
+            }
+           
+        }
+
+        // There is no match so match should be zero and the function works same as row function.
+
+        match = 0;
+
+        for (int k = -2; k < 2; k++)
+        {
+            if (row + k > 0 && row + k + 1 < height && allFruits[column, row + k] && allFruits[column, row + k + 1])
+            {
+                if (allFruits[column, row + k].GetComponent<Fruit>().fruitType == allFruits[column, row + k + 1].GetComponent<Fruit>().fruitType)
+                {
+                    match++;
+                    if (match == 2)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    match = 0;
+                }
+            }  
+        }
+        return false;
 
     }
 

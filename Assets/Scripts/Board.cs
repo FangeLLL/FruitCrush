@@ -46,7 +46,7 @@ public class Board : MonoBehaviour
 
         arrangeTiles[0, 0] = 1;
         arrangeTiles[4, 5] = 1;
-        //arrangeTiles[3, 5] = 1;
+        arrangeTiles[3, 5] = 1;
 
         SetUpWithArray(arrangeFruits,arrangeTiles);
         StartCoroutine(CheckAndDestroyMatches());
@@ -233,7 +233,6 @@ public class Board : MonoBehaviour
         List<GameObject> willPop = new List<GameObject>();
         checkingMatch = true;
         yield return null;
-        List<int> fillColumns = new List<int>();
    
         int[] typeFruits = new int[fruits.Length];
 
@@ -272,11 +271,6 @@ public class Board : MonoBehaviour
                                 // Increasing the number that represent how many fruits popped of that type.
                                 typeFruits[fruitsCheck[e].GetComponent<Fruit>().fruitType]++;
                             }
-                        }
-                        // Putting the column index to fillColumn list because in FillGaps function system just going to fill these columns
-                        if (!fillColumns.Contains(i))
-                        {
-                            fillColumns.Add(i);
                         }
                         audioManager.FruitCrush();
                         // It checked the popped ones so it can check after that index.
@@ -317,11 +311,7 @@ public class Board : MonoBehaviour
                             if (!willPop.Contains(fruitsCheck[e]))
                             {
                                 willPop.Add(fruitsCheck[e]);
-                                typeFruits[fruitsCheck[e].GetComponent<Fruit>().fruitType]++;
-                                if (!fillColumns.Contains(i+e))
-                                {
-                                    fillColumns.Add(i+e);
-                                }
+                                typeFruits[fruitsCheck[e].GetComponent<Fruit>().fruitType]++;                            
                             }
                         }
                         audioManager.FruitCrush();
@@ -352,17 +342,7 @@ public class Board : MonoBehaviour
                             fruitsCheck.Add(allFruits[i, j]);
                             fruitsCheck.Add(allFruits[i, j + 1]);
                             fruitsCheck.Add(allFruits[i + 1, j]);
-                            fruitsCheck.Add(allFruits[i + 1, j + 1]);
-
-                        if (!fillColumns.Contains(i))
-                        {
-                            fillColumns.Add(i);
-                        }
-
-                        if (!fillColumns.Contains(i+1))
-                        {
-                            fillColumns.Add(i+1);
-                        }
+                            fruitsCheck.Add(allFruits[i + 1, j + 1]);                     
 
                         j += 2;
 
@@ -389,7 +369,7 @@ public class Board : MonoBehaviour
             }
             achievementManager.AchievementProgress(typeFruits);
             yield return new WaitForSeconds(0.4f);
-            StartCoroutine(FillTheGaps(fillColumns));
+            StartCoroutine(FillTheGaps());
         }
         else
         {
@@ -574,20 +554,20 @@ public class Board : MonoBehaviour
         // Ensure the object is completely transparent
 
         fruit.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 0f);
-        Destroy(allFruits[fruit.GetComponent<Fruit>().column, fruit.GetComponent<Fruit>().row]);
+        Destroy(fruit);
         
     }
 
-    private IEnumerator FillTheGaps(List<int> columns)
+    private IEnumerator FillTheGaps()
     {
         yield return null;
-        for (int i = 0; i < columns.Count; i++)
+        for (int i = 0; i < width; i++)
         {
             // Starting from (0,0) location and its checks every column. It starts from botton to up and takes every empty place index and put it to queue
             // variable (emptyPlaces). 
-            if (!columnsFilling[columns[i]])
+            if (!columnsFilling[i])
             {
-                StartCoroutine(FillTheColumn(columns[i]));
+                StartCoroutine(FillTheColumn(i));
             }
 
         }
@@ -679,7 +659,7 @@ public class Board : MonoBehaviour
             allFruits[column-1, row] = null;
             previousColumn=column - 1;
         }
-        else if(column + 1 > width && allFruits[column + 1, row])
+        else if(column + 1 < width && allFruits[column + 1, row])
         {
             fruit = allFruits[column + 1, row];
             allFruits[column + 1, row] = null;
@@ -693,17 +673,19 @@ public class Board : MonoBehaviour
             fruitScript.column = column;
             fruitScript.targetV= allTiles[column,row-1].transform.position;
             yield return new WaitForSeconds(0.5f);
-
             if (previousColumn != 0 && !columnsFilling[previousColumn])
             {
                 StartCoroutine(FillTheColumn(previousColumn));
             }
+            yield return new WaitForSeconds(0.3f);
             if (!columnsFilling[column])
             {
                 StartCoroutine(FillTheColumn(column));
+            }  
+            if(!checkingMatch)
+            {
+                StartCoroutine(CheckAndDestroyMatches());
             }
-            
-           
         }
         
     }

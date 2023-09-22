@@ -323,14 +323,12 @@ public class Board : MonoBehaviour
                                 }
                             }
                         audioManager.FruitCrush();
-
-
                     }
                 }                       
             }
         }
     
-        if (willPop.Count>1)
+        if (willPop.Count>0)
         {
             for(int i = 0; i < willPop.Count; i++)
             {
@@ -537,7 +535,7 @@ public class Board : MonoBehaviour
             StartCoroutine(FillTheColumn(columns[i]));
 
         }
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.3f);
         StartCoroutine(CheckAndDestroyMatches());
     }
 

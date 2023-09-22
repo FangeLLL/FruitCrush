@@ -134,7 +134,13 @@ public class AudioManager : MonoBehaviour
 
     public void MenuClick()
     {
-        source.clip = sounds[Random.Range(18, 20)];
+        source.clip = sounds[18];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void MenuClickReturn()
+    {
+        source.clip = sounds[19];
         source.PlayOneShot(source.clip);
     }
 

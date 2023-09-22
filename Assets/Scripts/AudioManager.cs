@@ -119,4 +119,34 @@ public class AudioManager : MonoBehaviour
         source.clip = sounds[15];
         source.PlayOneShot(source.clip);
     }
+
+    public void HudEntry()
+    {
+        source.clip = sounds[16];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void HudOut()
+    {
+        source.clip = sounds[17];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void MenuClick()
+    {
+        source.clip = sounds[Random.Range(18, 20)];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void MetalBreak()
+    {
+        source.clip = sounds[20];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void ObjectBreak()
+    {
+        source.clip = sounds[21];
+        source.PlayOneShot(source.clip);
+    }
 }

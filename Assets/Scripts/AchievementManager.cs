@@ -163,23 +163,23 @@ public class AchievementManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        star.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); // 0.5 sec
+        //star.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); // 0.5 sec
 
         yield return new WaitForSeconds(0.5f);
 
-        star2.SetActive(true);
+        //star2.SetActive(true);
 
         yield return null;
 
-        star2.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); // 0.25 sec
+        //star2.GetComponent<Animator>().SetTrigger("AchivementDisplayEnter"); // 0.25 sec
 
         yield return new WaitForSeconds(0.25f);
 
-        star2.SetActive(false);
+        //star2.SetActive(false);
 
         yield return new WaitForSeconds(0.25f);
 
-        star.GetComponent<Animator>().SetTrigger("AchivementDisplayExit"); // 0.5 sec
+        //star.GetComponent<Animator>().SetTrigger("AchivementDisplayExit"); // 0.5 sec
 
         yield return new WaitForSeconds(0.25f);
 

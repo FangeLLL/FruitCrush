@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class UIManager : MonoBehaviour
     public GameObject congratText;
     public GameObject failedText;
     public GameObject finishBackground;
+    public GameObject settingsIcon;
+    public GameObject settingsIconShadow;
 
     public TextMeshProUGUI moveCountText;
 
@@ -19,6 +22,8 @@ public class UIManager : MonoBehaviour
     int[] anan1 = { 3, 0 };
     int[] anan2 = { 0, 3 };
     int[] anan3 = { 10, 10 };
+
+    int settingsButtonCounter = 1;
 
     public float wait1;
     public float wait2;
@@ -99,5 +104,39 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(wait3);
             failedText.SetActive(false);
         }
+    }
+
+    public void SettingsButton()
+    {
+        settingsButtonCounter++;
+
+        if (settingsButtonCounter % 2 == 0)
+        {
+            StartCoroutine(SettingsOn());
+        }
+        else
+        {
+            StartCoroutine(SettingsOff());
+        }
+    }
+
+    IEnumerator SettingsOn()
+    {
+        yield return null;
+        settingsIcon.GetComponent<Button>().interactable = false;
+        settingsIcon.GetComponent<Animator>().SetTrigger("SettingsOn");
+        settingsIconShadow.GetComponent<Animator>().SetTrigger("SettingsOn");
+        yield return new WaitForSeconds(0.5f);
+        settingsIcon.GetComponent<Button>().interactable = true;
+    }
+
+    IEnumerator SettingsOff()
+    {
+        yield return null;
+        settingsIcon.GetComponent<Button>().interactable = false;
+        settingsIcon.GetComponent<Animator>().SetTrigger("SettingsOff");
+        settingsIconShadow.GetComponent<Animator>().SetTrigger("SettingsOff");
+        yield return new WaitForSeconds(0.5f);
+        settingsIcon.GetComponent<Button>().interactable = true;
     }
 }

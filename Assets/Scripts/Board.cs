@@ -11,7 +11,6 @@ public class Board : MonoBehaviour
 {
     public int width;
     public int height;
-    public GameObject tilePrefab;
 
     public float xOffset;
     public float yOffset;
@@ -21,10 +20,15 @@ public class Board : MonoBehaviour
 
     bool checkingMatch = false;
 
+    private bool[] columnsFilling;
+
     AudioManager audioManager;
 
     [SerializeField]
     public GameObject[] fruits;
+    public GameObject strawBalePrefab;
+    public GameObject tilePrefab;
+
 
     public GameObject[,] allFruits;
     public GameObject[,] allTiles;
@@ -34,8 +38,58 @@ public class Board : MonoBehaviour
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         allFruits = new GameObject[width, height];
         allTiles = new GameObject[width, height];
-        SetUp();
+
+        columnsFilling = new bool[width]; 
+        // SetUp();
+        int[,] arrangeFruits = new int[width, height];
+        int[,] arrangeTiles = new int[width, height];
+
+        arrangeTiles[0, 0] = 1;
+        arrangeTiles[4, 5] = 1;
+        //arrangeTiles[3, 5] = 1;
+
+        SetUpWithArray(arrangeFruits,arrangeTiles);
         StartCoroutine(CheckAndDestroyMatches());
+    }
+
+    private void SetUpWithArray(int[,] arrangedFruits, int[,] arrangedTiles)
+    {
+        width = arrangedTiles.GetLength(0);
+        height = arrangedTiles.GetLength(1);
+
+        xOffset = width * 0.5f - 0.5f;
+        yOffset = height * 0.5f - 0.5f;
+
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                Vector2 tempPosition = new Vector2(i - xOffset, j - yOffset);
+                GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
+                backgroundTile.transform.parent = this.transform;
+                backgroundTile.name = "( " + i + ", " + j + " )";
+                allTiles[i, j] = backgroundTile;
+                if (arrangedTiles[i, j] == 1)
+                {
+                    backgroundTile.GetComponent<BackgroundTile>().strawBale = true;
+                 Instantiate(strawBalePrefab, tempPosition, Quaternion.identity);
+                }
+                else
+                {
+                    //  int fruitToUse = arrangedFruits[i,j];
+                    int fruitToUse = UnityEngine.Random.Range(0, fruits.Length);
+                    GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
+                    fruit.transform.parent = this.transform;
+                    fruit.name = "( " + i + ", " + j + " )";
+                    fruit.GetComponent<Fruit>().column = i;
+                    fruit.GetComponent<Fruit>().row = j;
+                    fruit.GetComponent<Fruit>().fruitType = fruitToUse;
+                    allFruits[i, j] = fruit;
+                }
+
+               
+            }
+        }
     }
 
     private void SetUp()
@@ -172,7 +226,6 @@ public class Board : MonoBehaviour
         {
             StartCoroutine(CheckAndDestroyMatches());
         }
-
     }
 
     private IEnumerator CheckAndDestroyMatches()
@@ -234,7 +287,7 @@ public class Board : MonoBehaviour
                 }              
             }
         }
-
+        
 
         // Check for matches in rows (similar logic as columns)
         for (int j = 0; j < height; j++)
@@ -532,7 +585,10 @@ public class Board : MonoBehaviour
         {
             // Starting from (0,0) location and its checks every column. It starts from botton to up and takes every empty place index and put it to queue
             // variable (emptyPlaces). 
-            StartCoroutine(FillTheColumn(columns[i]));
+            if (!columnsFilling[columns[i]])
+            {
+                StartCoroutine(FillTheColumn(columns[i]));
+            }
 
         }
         yield return new WaitForSeconds(0.3f);
@@ -541,30 +597,42 @@ public class Board : MonoBehaviour
 
     private IEnumerator FillTheColumn(int i)
     {
-        Queue<int> emptyPlaces = new Queue<int>();
+        columnsFilling[i] = true;
 
+        Queue<int> emptyPlaces = new Queue<int>();
 
         for (int j = 0; j < height; j++)
         {
-            if (!allFruits[i, j])
+            if (!allTiles[i, j].GetComponent<BackgroundTile>().strawBale)
             {
-                // Putting empty place index to variable
-                emptyPlaces.Enqueue(j);
+                if (!allFruits[i, j])
+                {
+                    // Putting empty place index to variable
+                    emptyPlaces.Enqueue(j);
+                }
+                else if (emptyPlaces.Count > 0)
+                {
+                    // if there is a piece then piece new location will be first empty place in queue.
+
+                    int emptyRowIndex = emptyPlaces.Dequeue();
+                    GameObject fruit = allFruits[i, j];
+                    allFruits[i, emptyRowIndex] = fruit;
+                    allFruits[i, j] = null;
+                    Fruit fruitScript = fruit.GetComponent<Fruit>();
+
+                    fruitScript.row = emptyRowIndex;
+                    fruitScript.column = i;
+                    fruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
+                    emptyPlaces.Enqueue(j);
+                }
             }
-            else if (emptyPlaces.Count > 0)
+            else
             {
-                // if there is a piece then piece new location will be first empty place in queue.
-
-                int emptyRowIndex = emptyPlaces.Dequeue();
-                GameObject fruit = allFruits[i, j];
-                allFruits[i, emptyRowIndex] = fruit;
-                allFruits[i, j] = null;
-                Fruit fruitScript = fruit.GetComponent<Fruit>();
-
-                fruitScript.row = emptyRowIndex;
-                fruitScript.column = i;
-                fruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
-                emptyPlaces.Enqueue(j);
+                if (j - 1 > 0 && !allFruits[i, j - 1])
+                {
+                    StartCoroutine(CrossFall(i, j));
+                    emptyPlaces.Clear();
+                }
             }
         }
 
@@ -594,6 +662,50 @@ public class Board : MonoBehaviour
             allFruits[i, emptyRowIndex] = newFruit;
             yield return new WaitForSeconds(0.1f);
         }
+
+        columnsFilling[i] = false;
+
+    }
+
+    private IEnumerator CrossFall(int column,int row)
+    {
+        GameObject fruit=null;
+        Fruit fruitScript;
+        int previousColumn=0;
+
+        if (column - 1 > 0 && allFruits[column - 1, row])
+        {
+            fruit = allFruits[column - 1, row];
+            allFruits[column-1, row] = null;
+            previousColumn=column - 1;
+        }
+        else if(column + 1 > width && allFruits[column + 1, row])
+        {
+            fruit = allFruits[column + 1, row];
+            allFruits[column + 1, row] = null;
+            previousColumn = column + 1;
+        }
+
+        if (fruit)
+        {
+            fruitScript = fruit.GetComponent<Fruit>();
+            fruitScript.row = row - 1;
+            fruitScript.column = column;
+            fruitScript.targetV= allTiles[column,row-1].transform.position;
+            yield return new WaitForSeconds(0.5f);
+
+            if (previousColumn != 0 && !columnsFilling[previousColumn])
+            {
+                StartCoroutine(FillTheColumn(previousColumn));
+            }
+            if (!columnsFilling[column])
+            {
+                StartCoroutine(FillTheColumn(column));
+            }
+            
+           
+        }
+        
     }
 
     public void ReplaceDestroyedFruit(int column, int row)

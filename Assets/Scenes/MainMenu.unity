@@ -253,7 +253,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 10
   height: 10
-  tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
   xOffset: 0
   yOffset: 0
   achievementManager: {fileID: 1772865870}
@@ -262,6 +261,8 @@ MonoBehaviour:
   - {fileID: 3566861933945487612, guid: db85cb766090462468799094e763dc2a, type: 3}
   - {fileID: 3566861933945487612, guid: 58ce11db28a5fd6488f101077c873ba6, type: 3}
   - {fileID: 3566861933945487612, guid: 039b31e7d60a3244e804cd18d9684c83, type: 3}
+  strawBalePrefab: {fileID: 3330133265949295339, guid: 6e55f47fa5c0a774683277fda450e2a5, type: 3}
+  tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
 --- !u!1 &287704339 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4444058202797085406, guid: 0696da90ec8a65d4da1da2b356ecd14d, type: 3}

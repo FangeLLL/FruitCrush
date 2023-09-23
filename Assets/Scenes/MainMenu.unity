@@ -217,6 +217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 160705527}
   - component: {fileID: 160705528}
+  - component: {fileID: 160705529}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -267,6 +268,19 @@ MonoBehaviour:
   - {fileID: 3566861933945487612, guid: 2da640a0dfd853f49a5c57d689c3b7f3, type: 3}
   strawBalePrefab: {fileID: 3330133265949295339, guid: 6e55f47fa5c0a774683277fda450e2a5, type: 3}
   tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
+--- !u!114 &160705529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 160705526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f35afbd7d6b76854c839f0ba822c6348, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hintThreshold: 1
 --- !u!1 &1167689332 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1335159419832095757, guid: ad13102583a4e19478f48719b2320991, type: 3}
@@ -844,18 +858,6 @@ PrefabInstance:
     - target: {fileID: 1397809022510267145, guid: ad13102583a4e19478f48719b2320991, type: 3}
       propertyPath: m_Name
       value: Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 1608510759669571042, guid: ad13102583a4e19478f48719b2320991, type: 3}
-      propertyPath: m_Colors.m_PressedColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1608510759669571042, guid: ad13102583a4e19478f48719b2320991, type: 3}
-      propertyPath: m_Colors.m_PressedColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1608510759669571042, guid: ad13102583a4e19478f48719b2320991, type: 3}
-      propertyPath: m_Colors.m_PressedColor.r
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1608510759669571042, guid: ad13102583a4e19478f48719b2320991, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

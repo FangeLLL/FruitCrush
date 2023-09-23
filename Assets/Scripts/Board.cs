@@ -49,6 +49,7 @@ public class Board : MonoBehaviour
         int[,] arrangeTiles = new int[width, height];
 
         taskController.SetTask(0, height * 1);
+        taskController.SetMoveCount(10);
 
         for(int i = 0;i < 1; i++)
         {
@@ -402,6 +403,7 @@ public class Board : MonoBehaviour
 
         if (CheckMatchSides(fruitScript.row, fruitScript.column) || CheckMatchSides(otherFruitScript.row, otherFruitScript.column))
         {
+            taskController.MovePlayed();
             // If any of object has a match then function can just finish.
             if (fruit)
             {
@@ -434,6 +436,7 @@ public class Board : MonoBehaviour
             }
             else
             {
+                taskController.MovePlayed();
                 if (fruit)
                 {
                     fruitScript.isSwiped = false;

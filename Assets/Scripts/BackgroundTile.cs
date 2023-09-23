@@ -7,12 +7,14 @@ public class BackgroundTile : MonoBehaviour
 
     public bool strawBale=false;
     private Board board;
+    private TaskController taskController;
     public GameObject strawBaleObj;
 
     // Start is called before the first frame update
     void Start()
     {
         board = FindObjectOfType<Board>();
+        taskController = FindObjectOfType<TaskController>();
 
     }
 
@@ -50,6 +52,7 @@ public class BackgroundTile : MonoBehaviour
         {
             strawBale = false;
             StartCoroutine(board.FadeOut(strawBaleObj,false));
+            taskController.TaskProgress(0);
             
             if (!board.columnsFilling[column])
             {

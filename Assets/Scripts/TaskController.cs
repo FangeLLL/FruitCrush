@@ -5,7 +5,7 @@ using UnityEngine;
 public class TaskController : MonoBehaviour
 {
     //StrawBale Index = 0
-    int[] taskNumber = { 0, 0, 0, 0, 0};
+    public int[] taskNumber = { 0, 0, 0, 0, 0};
 
     bool isLevelCompleted = false;
 

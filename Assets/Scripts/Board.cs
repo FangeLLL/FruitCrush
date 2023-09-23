@@ -17,6 +17,8 @@ public class Board : MonoBehaviour
 
     [SerializeField]
     public AchievementManager achievementManager;
+    public TaskController taskController;
+
 
     bool checkingMatch = false;
 
@@ -46,8 +48,9 @@ public class Board : MonoBehaviour
         int[,] arrangeFruits = new int[width, height];
         int[,] arrangeTiles = new int[width, height];
 
+        taskController.SetTask(0, height * 1);
 
-        for(int i = 0;i < 5; i++)
+        for(int i = 0;i < 1; i++)
         {
             for (int j = 0; j < height; j++)
             {

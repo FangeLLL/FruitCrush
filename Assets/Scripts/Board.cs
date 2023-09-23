@@ -35,6 +35,8 @@ public class Board : MonoBehaviour
 
     void Start()
     {
+        //Time.timeScale = 0.2f;
+
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         allFruits = new GameObject[width, height];
         allTiles = new GameObject[width, height];
@@ -541,7 +543,7 @@ public class Board : MonoBehaviour
     public IEnumerator FadeOut(GameObject obj,bool explosion)
     {
         float elapsedTime = 0f;
-        float fadeDuration = 0.3f;
+        float fadeDuration = 0.2f;
         Color color = obj.GetComponent<SpriteRenderer>().color;
         if (explosion)
         {
@@ -665,14 +667,14 @@ public class Board : MonoBehaviour
         GameObject fruit=null;
         Fruit fruitScript;
         int previousColumn=0;
-        yield return new WaitForSeconds(0.1f);
-        if (column - 1 >= 0 && allFruits[column - 1, row])
+        yield return new WaitForSeconds(0.3f);
+        if (column - 1 >= 0 && allFruits[column - 1, row] && !allFruits[column, row-1])
         {
             fruit = allFruits[column - 1, row];
             allFruits[column-1, row] = null;
             previousColumn=column - 1;
         }
-        else if(column + 1 < width && allFruits[column + 1, row])
+        else if(column + 1 < width && allFruits[column + 1, row] && !allFruits[column, row - 1])
         {
             fruit = allFruits[column + 1, row];
             allFruits[column + 1, row] = null;

@@ -253,16 +253,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 10
   height: 10
-  xOffset: 0
-  yOffset: 0
   achievementManager: {fileID: 1772865870}
   taskController: {fileID: 1772865872}
   columnsFilling: 
   fruits:
   - {fileID: 3566861933945487612, guid: a93f162c14c85804c91de0fb620e5409, type: 3}
   - {fileID: 3566861933945487612, guid: db85cb766090462468799094e763dc2a, type: 3}
+  - {fileID: 3566861933945487612, guid: 05739bb40d03c5040938d6f697a1917d, type: 3}
+  - {fileID: 3566861933945487612, guid: b5852d23aa5fab3469fb3a26cf627ac8, type: 3}
   - {fileID: 3566861933945487612, guid: 58ce11db28a5fd6488f101077c873ba6, type: 3}
   - {fileID: 3566861933945487612, guid: 039b31e7d60a3244e804cd18d9684c83, type: 3}
+  - {fileID: 3566861933945487612, guid: 39249f7716cd5394194090fc2e368229, type: 3}
+  - {fileID: 3566861933945487612, guid: 2da640a0dfd853f49a5c57d689c3b7f3, type: 3}
   strawBalePrefab: {fileID: 3330133265949295339, guid: 6e55f47fa5c0a774683277fda450e2a5, type: 3}
   tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
 --- !u!1 &287704339 stripped

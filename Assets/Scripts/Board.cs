@@ -20,7 +20,7 @@ public class Board : MonoBehaviour
 
     bool checkingMatch = false;
 
-    private bool[] columnsFilling;
+    public bool[] columnsFilling;
 
     AudioManager audioManager;
 
@@ -44,9 +44,14 @@ public class Board : MonoBehaviour
         int[,] arrangeFruits = new int[width, height];
         int[,] arrangeTiles = new int[width, height];
 
-        arrangeTiles[0, 0] = 1;
-        arrangeTiles[4, 5] = 1;
-        arrangeTiles[3, 5] = 1;
+
+        for(int i = 0;i < 5; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                arrangeTiles[i, j] = 1;
+            }
+        }
 
         SetUpWithArray(arrangeFruits,arrangeTiles);
         StartCoroutine(CheckAndDestroyMatches());
@@ -72,7 +77,7 @@ public class Board : MonoBehaviour
                 if (arrangedTiles[i, j] == 1)
                 {
                     backgroundTile.GetComponent<BackgroundTile>().strawBale = true;
-                 Instantiate(strawBalePrefab, tempPosition, Quaternion.identity);
+                    backgroundTile.GetComponent<BackgroundTile>().strawBaleObj = Instantiate(strawBalePrefab, tempPosition, Quaternion.identity);
                 }
                 else
                 {
@@ -365,7 +370,7 @@ public class Board : MonoBehaviour
         {
             for(int i = 0; i < willPop.Count; i++)
             {
-                StartCoroutine(FadeOut(willPop[i]));
+                StartCoroutine(FadeOut(willPop[i],true));
             }
             achievementManager.AchievementProgress(typeFruits);
             yield return new WaitForSeconds(0.4f);
@@ -533,19 +538,26 @@ public class Board : MonoBehaviour
 
     }
 
-    private IEnumerator FadeOut(GameObject fruit)
+    public IEnumerator FadeOut(GameObject obj,bool explosion)
     {
         float elapsedTime = 0f;
         float fadeDuration = 0.3f;
-        Color color = fruit.GetComponent<SpriteRenderer>().color;
+        Color color = obj.GetComponent<SpriteRenderer>().color;
+        if (explosion)
+        {
+            int row = obj.GetComponent<Fruit>().row;
+            int column = obj.GetComponent<Fruit>().column;
 
+            allTiles[column, row].GetComponent<BackgroundTile>().Explosion(column, row);
+        }
+       
         while (elapsedTime < fadeDuration)
         {
             // Calculate the new alpha value
             float alpha = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
 
             // Update the object's color with the new alpha
-            fruit.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, alpha);
+            obj.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, alpha);
 
             elapsedTime += Time.deltaTime;
             yield return null; // Wait for the next frame
@@ -553,8 +565,8 @@ public class Board : MonoBehaviour
 
         // Ensure the object is completely transparent
 
-        fruit.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 0f);
-        Destroy(fruit);
+        obj.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 0f);
+        Destroy(obj);
         
     }
 
@@ -575,7 +587,7 @@ public class Board : MonoBehaviour
         StartCoroutine(CheckAndDestroyMatches());
     }
 
-    private IEnumerator FillTheColumn(int i)
+    public IEnumerator FillTheColumn(int i)
     {
         columnsFilling[i] = true;
 
@@ -608,11 +620,12 @@ public class Board : MonoBehaviour
             }
             else
             {
-                if (j - 1 > 0 && !allFruits[i, j - 1])
+                if (j - 1 > 0 && !allFruits[i, j - 1] && !allTiles[i, j - 1].GetComponent<BackgroundTile>().strawBale)
                 {
                     StartCoroutine(CrossFall(i, j));
-                    emptyPlaces.Clear();
                 }
+                emptyPlaces.Clear();
+
             }
         }
 
@@ -652,8 +665,8 @@ public class Board : MonoBehaviour
         GameObject fruit=null;
         Fruit fruitScript;
         int previousColumn=0;
-
-        if (column - 1 > 0 && allFruits[column - 1, row])
+        yield return new WaitForSeconds(0.1f);
+        if (column - 1 >= 0 && allFruits[column - 1, row])
         {
             fruit = allFruits[column - 1, row];
             allFruits[column-1, row] = null;

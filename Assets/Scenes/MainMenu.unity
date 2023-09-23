@@ -256,7 +256,7 @@ MonoBehaviour:
   xOffset: 0
   yOffset: 0
   achievementManager: {fileID: 1772865870}
-  taskController: {fileID: 0}
+  taskController: {fileID: 1772865872}
   columnsFilling: 
   fruits:
   - {fileID: 3566861933945487612, guid: a93f162c14c85804c91de0fb620e5409, type: 3}
@@ -1239,7 +1239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   taskNumber: 0000000000000000000000000000000000000000
-  moveCount: 0
+  moveCount: 10
   moveText: {fileID: 1821468323}
 --- !u!1 &1821468321
 GameObject:

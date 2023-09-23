@@ -9,7 +9,7 @@ public class TaskController : MonoBehaviour
     public int[] taskNumber = { 0, 0, 0, 0, 0};
     public int moveCount;
     public TextMeshProUGUI moveText;
-    bool isLevelCompleted = false;
+    bool isLevelCompleted;
 
     public void SetMoveCount(int _moveCount)
     {
@@ -42,18 +42,19 @@ public class TaskController : MonoBehaviour
 
     void LevelEndCheck()
     {
-        for (int i = 0; i < taskNumber.Length; i++)
+        isLevelCompleted = true;
+        foreach (int element in taskNumber)
         {
-            if (taskNumber[i] != 0)
+            if (element != 0)
             {
                 isLevelCompleted = false;
                 break;
             }
         }
 
-        if (isLevelCompleted && moveCount >= 0)
+        if (isLevelCompleted)
         {
-            Debug.Log("Level Completed");
+            Debug.Log("Level Completed!");
         }
     }
 }

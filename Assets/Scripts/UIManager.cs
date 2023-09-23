@@ -13,8 +13,15 @@ public class UIManager : MonoBehaviour
     public GameObject finishBackground;
     public GameObject settingsIcon;
     public GameObject settingsIconShadow;
+    public GameObject soundIcon;
+    public GameObject soundDisableIcon;
+    public GameObject musicIcon;
+    public GameObject musicDisableIcon;
 
     public TextMeshProUGUI moveCountText;
+
+    public bool isSoundOn;
+    public bool isMusicOn;
 
     string gameFinishTrigger = "GameFinishTrigger";
     string gameFinishTriggerReverse = "GameFinishTriggerReverse";
@@ -54,6 +61,37 @@ public class UIManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.U))
         {
             achivementManager.AchievementProgress(anan3);
+        }
+    }
+
+    private void Start()
+    {
+        int soundSetting = PlayerPrefs.GetInt("SoundSetting", 1);
+        isSoundOn = soundSetting == 1;
+
+        int musicSetting = PlayerPrefs.GetInt("MusicSetting", 1);
+        isMusicOn = musicSetting == 1;
+
+        if (isSoundOn)
+        {
+            //ACTIVATE SOUND
+            soundDisableIcon.SetActive(false);
+        }
+        else
+        {
+            //DEACTIVATE SOUND
+            soundDisableIcon.SetActive(true);
+        }
+
+        if (isMusicOn)
+        {
+            //ACTIVATE SOUND
+            musicDisableIcon.SetActive(false);
+        }
+        else
+        {
+            //DEACTIVATE SOUND
+            musicDisableIcon.SetActive(true);
         }
     }
 
@@ -123,20 +161,93 @@ public class UIManager : MonoBehaviour
     IEnumerator SettingsOn()
     {
         yield return null;
+
         settingsIcon.GetComponent<Button>().interactable = false;
-        settingsIcon.GetComponent<Animator>().SetTrigger("SettingsOn");
-        settingsIconShadow.GetComponent<Animator>().SetTrigger("SettingsOn");
-        yield return new WaitForSeconds(0.5f);
+        settingsIcon.GetComponent<Animator>().SetTrigger("SettingsOn"); 
+        settingsIconShadow.GetComponent<Animator>().SetTrigger("SettingsOn"); // 0.5 sec
+
+        yield return new WaitForSeconds(0.1f);
+
+        soundIcon.GetComponent<Animator>().SetTrigger("SettingsOn"); // 0.33 sec
+
+        yield return new WaitForSeconds(0.1f);
+
+        musicIcon.GetComponent<Animator>().SetTrigger("SettingsOn"); // 0.33 sec
+
+        yield return new WaitForSeconds(0.3f);
+
         settingsIcon.GetComponent<Button>().interactable = true;
     }
 
     IEnumerator SettingsOff()
     {
         yield return null;
+
         settingsIcon.GetComponent<Button>().interactable = false;
         settingsIcon.GetComponent<Animator>().SetTrigger("SettingsOff");
         settingsIconShadow.GetComponent<Animator>().SetTrigger("SettingsOff");
-        yield return new WaitForSeconds(0.5f);
+
+        yield return new WaitForSeconds(0.1f);
+
+        musicIcon.GetComponent<Animator>().SetTrigger("SettingsOff"); // 0.33 sec
+
+        yield return new WaitForSeconds(0.1f);
+
+        soundIcon.GetComponent<Animator>().SetTrigger("SettingsOff"); // 0.33 sec
+
+        yield return new WaitForSeconds(0.3f);
+
         settingsIcon.GetComponent<Button>().interactable = true;
+    }
+
+    public void ToggleSound()
+    {
+        isSoundOn = !isSoundOn;
+        soundIcon.GetComponent<Animator>().SetTrigger("SettingsToggle");
+
+        if (isSoundOn)
+        {
+            //ACTIVATE SOUND
+            soundDisableIcon.SetActive(false);
+        }
+        else
+        {
+            //DEACTIVATE SOUND
+            soundDisableIcon.SetActive(true);
+        }
+
+        SaveSoundSetting();
+    }
+
+    private void SaveSoundSetting()
+    {
+        PlayerPrefs.SetInt("SoundSetting", isSoundOn ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    public void ToggleMusic()
+    {
+        isMusicOn = !isMusicOn;
+        musicIcon.GetComponent<Animator>().SetTrigger("SettingsToggle");
+
+        if (isMusicOn)
+        {
+            //ACTIVATE SOUND
+            musicDisableIcon.SetActive(false);
+
+        }
+        else
+        {
+            //DEACTIVATE SOUND
+            musicDisableIcon.SetActive(true);
+        }
+
+        SaveMusicSetting();
+    }
+
+    private void SaveMusicSetting()
+    {
+        PlayerPrefs.SetInt("MusicSetting", isMusicOn ? 1 : 0);
+        PlayerPrefs.Save();
     }
 }

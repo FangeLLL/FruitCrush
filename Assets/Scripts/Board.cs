@@ -5,15 +5,13 @@ using System.Linq;
 using Unity.Jobs;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.U2D.IK;
 using static UnityEngine.GraphicsBuffer;
 
 public class Board : MonoBehaviour
 {
     public int width;
     public int height;
-
-    public float xOffset;
-    public float yOffset;
 
     [SerializeField]
     public AchievementManager achievementManager;
@@ -37,7 +35,7 @@ public class Board : MonoBehaviour
 
     void Start()
     {
-        //Time.timeScale = 0.2f;
+       // Time.timeScale = 0.2f;
 
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         allFruits = new GameObject[width, height];
@@ -49,8 +47,9 @@ public class Board : MonoBehaviour
         int[,] arrangeTiles = new int[width, height];
 
         taskController.SetTask(0, height * 1);
+        taskController.SetMoveCount(10);
 
-        for(int i = 0;i < 1; i++)
+        for(int i = 0;i < 3; i++)
         {
             for (int j = 0; j < height; j++)
             {
@@ -67,8 +66,8 @@ public class Board : MonoBehaviour
         width = arrangedTiles.GetLength(0);
         height = arrangedTiles.GetLength(1);
 
-        xOffset = width * 0.5f - 0.5f;
-        yOffset = height * 0.5f - 0.5f;
+        float xOffset = width * 0.5f - 0.5f;
+        float yOffset = height * 0.5f - 0.5f;
 
         for (int i = 0; i < width; i++)
         {
@@ -86,7 +85,7 @@ public class Board : MonoBehaviour
                 }
                 else
                 {
-                    //  int fruitToUse = arrangedFruits[i,j];
+                     // int fruitToUse = arrangedFruits[i,j];
                     int fruitToUse = UnityEngine.Random.Range(0, fruits.Length);
                     GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
                     fruit.transform.parent = this.transform;
@@ -104,8 +103,8 @@ public class Board : MonoBehaviour
 
     private void SetUp()
     {
-        xOffset = width * 0.5f - 0.5f;
-        yOffset = height * 0.5f - 0.5f;
+      float  xOffset = width * 0.5f - 0.5f;
+      float  yOffset = height * 0.5f - 0.5f;
 
         for (int i = 0; i < width; i++)
         {
@@ -240,142 +239,136 @@ public class Board : MonoBehaviour
 
     private IEnumerator CheckAndDestroyMatches()
     {
-        List<GameObject> willPop = new List<GameObject>();
+        List<GameObject> fruitsCheck = new List<GameObject>();
         checkingMatch = true;
         yield return null;
-   
+        bool popped = false;
+
         int[] typeFruits = new int[fruits.Length];
 
         // Check for matches in columns
         for (int i = 0; i < width; i++)
         {
-            for (int j = 0; j < height - 2; j++)
+            for (int j = 0; j < height; j++)
             {
-                GameObject[] fruitsCheck;
-                fruitsCheck = new GameObject[height];
+
+                List<GameObject> fruitsCheckTemp = new List<GameObject>();
                 bool same = true;
                 int k = 0;
+                bool row = false, column = false;
                 // it checking if bottom piece and one above it same. In every cycle it adds the one is currently below checking and if two of them not same
                 // then its out of the  cycle. Checking if the space is null or exist.
                 if (allFruits[i, j])
                 {
+                    // Column
                     while (same)
                     {
                         if (j + k + 1 >= height || !allFruits[i, j + k + 1] || allFruits[i, j + k].GetComponent<Fruit>().fruitType != allFruits[i, j + k + 1].GetComponent<Fruit>().fruitType)
                         {
                             same = false;
                         }
-                        fruitsCheck[k] = allFruits[i, j + k];
+                        fruitsCheckTemp.Add(allFruits[i, j + k]);
                         k++;
                     }
-
-                    // If in this cycle there is more than 3 match then its pops up them. 
-
-                    if (k >= 3)
+                    same = true;
+                    if (k < 3)
                     {
-                        for (int e = 0; e < k; e++)
-                        {
-                            if (!willPop.Contains(fruitsCheck[e]))
-                            {
-                                willPop.Add(fruitsCheck[e]);
-                                // Increasing the number that represent how many fruits popped of that type.
-                                typeFruits[fruitsCheck[e].GetComponent<Fruit>().fruitType]++;
-                            }
-                        }
-                        audioManager.FruitCrush();
-                        // It checked the popped ones so it can check after that index.
-                        j += k;
-                        
+                        fruitsCheckTemp.Clear();
                     }
+                    else
+                    {
+                        column = true;
+                        fruitsCheck.AddRange(fruitsCheckTemp);
+                    }
+                    k = 0;
 
-                }              
-            }
-        }
-        
-
-        // Check for matches in rows (similar logic as columns)
-        for (int j = 0; j < height; j++)
-        {
-            for (int i = 0; i < width - 2; i++)
-            {
-                GameObject[] fruitsCheck;
-                fruitsCheck = new GameObject[width];
-                bool same = true;
-                int k = 0;
-                if (allFruits[i, j])
-                {
+                    //Row
                     while (same)
                     {
-                        if (i + k + 1 >= width || !allFruits[i + k + 1, j] || allFruits[i + k, j].GetComponent<Fruit>().fruitType != allFruits[i + k + 1, j].GetComponent<Fruit>().fruitType)
+                        if (i + k + 1 >= width || !allFruits[i + k + 1, j ] || allFruits[i + k, j ].GetComponent<Fruit>().fruitType != allFruits[i + k + 1, j ].GetComponent<Fruit>().fruitType)
                         {
                             same = false;
                         }
-                        fruitsCheck[k] = allFruits[i + k, j];
+                        fruitsCheckTemp.Add(allFruits[i + k, j]);
                         k++;
                     }
 
-                    if (k >= 3)
+                    if (k < 3)
                     {
-                        for (int e = 0; e < k; e++)
-                        {
-                            if (!willPop.Contains(fruitsCheck[e]))
-                            {
-                                willPop.Add(fruitsCheck[e]);
-                                typeFruits[fruitsCheck[e].GetComponent<Fruit>().fruitType]++;                            
-                            }
-                        }
-                        audioManager.FruitCrush();
-                        i += k;
+                        fruitsCheckTemp.Clear();
+                    }
+                    else
+                    {
+                        row= true;
+                        fruitsCheck.AddRange(fruitsCheckTemp.Except(fruitsCheck).ToList());
                     }
 
-                }                
-             
-            }
-        }
 
-        // Check for matches in quaternary. (!!! It can be more optimized !!!)
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height - 1; j++)
-            {
-                List<GameObject> fruitsCheck = new List<GameObject>();
-                int type;
 
-                // it checking if bottom piece and one above it same. In every cycle it adds the one is currently below checking and if two of them not same
-                // then its out of the  cycle.
-               
-                    if (j + 1 < height && allFruits[i, j] && allFruits[i, j + 1] && (type=allFruits[i, j].GetComponent<Fruit>().fruitType) == allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
+                    int type;
+
+                    if (j + 1 < height && allFruits[i, j] && allFruits[i, j + 1] && (type = allFruits[i, j].GetComponent<Fruit>().fruitType) == allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
                     {
-                        if (i + 1 < width && allFruits[i + 1, j] && allFruits[i + 1, j + 1] && allFruits[i + 1, j].GetComponent<Fruit>().fruitType 
+                        if (i + 1 < width && allFruits[i + 1, j] && allFruits[i + 1, j + 1] && allFruits[i + 1, j].GetComponent<Fruit>().fruitType
                         == allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType && type == allFruits[i + 1, j].GetComponent<Fruit>().fruitType)
                         {
-                            fruitsCheck.Add(allFruits[i, j]);
-                            fruitsCheck.Add(allFruits[i, j + 1]);
-                            fruitsCheck.Add(allFruits[i + 1, j]);
-                            fruitsCheck.Add(allFruits[i + 1, j + 1]);                     
+                            fruitsCheckTemp.Add(allFruits[i, j]);
+                            fruitsCheckTemp.Add(allFruits[i, j + 1]);
+                            fruitsCheckTemp.Add(allFruits[i + 1, j]);
+                            fruitsCheckTemp.Add(allFruits[i + 1, j + 1]);
 
-                        j += 2;
-
-                            for (int e = 0; e < 4; e++)
-                            {
-                                if (!willPop.Contains(fruitsCheck[e]))
-                                {
-                                    willPop.Add(fruitsCheck[e]);
-                                    typeFruits[fruitsCheck[e].GetComponent<Fruit>().fruitType]++;
-
-                                }
-                            }
-                        audioManager.FruitCrush();
+                            audioManager.FruitCrush();
+                        }
                     }
-                }                       
+
+                    if (fruitsCheckTemp.Count < 3)
+                    {
+                        fruitsCheckTemp.Clear();
+                    }
+                    else
+                    {
+                        fruitsCheck.AddRange(fruitsCheckTemp.Except(fruitsCheck).ToList());
+                    }
+
+                    if (fruitsCheck.Count > 0)
+                    {
+                        Debug.Log(fruitsCheck.Count+" popped same time");
+                        if (row && column)
+                        {
+                            Debug.Log("L or + shape happend");
+                        }
+                        audioManager.FruitCrush();
+                        type = allFruits[i, j].GetComponent<Fruit>().fruitType;
+                        typeFruits[type] += fruitsCheck.Count;
+                        for (int e = 0; e < fruitsCheck.Count; e++)
+                        {
+                            StartCoroutine(FadeOut(fruitsCheck[e], true));
+                        }
+                        fruitsCheck.Clear();
+                        popped= true;
+                        achievementManager.AchievementProgress(typeFruits);                     
+                    }
+
+                }
             }
         }
-    
-        if (willPop.Count>0)
+
+        if (popped)
+        {        
+            yield return new WaitForSeconds(0.4f);
+            StartCoroutine(FillTheGaps());
+        }
+        else
         {
-            for(int i = 0; i < willPop.Count; i++)
+            checkingMatch = false;
+        }
+
+        /*
+        if (fruitsCheck.Count > 0)
+        {
+            for (int i = 0; i < fruitsCheck.Count; i++)
             {
-                StartCoroutine(FadeOut(willPop[i],true));
+                StartCoroutine(FadeOut(fruitsCheck[i], true));
             }
             achievementManager.AchievementProgress(typeFruits);
             yield return new WaitForSeconds(0.4f);
@@ -385,7 +378,7 @@ public class Board : MonoBehaviour
         {
             checkingMatch = false;
         }
-
+        */
 
     }
 
@@ -402,6 +395,7 @@ public class Board : MonoBehaviour
 
         if (CheckMatchSides(fruitScript.row, fruitScript.column) || CheckMatchSides(otherFruitScript.row, otherFruitScript.column))
         {
+            taskController.MovePlayed();
             // If any of object has a match then function can just finish.
             if (fruit)
             {
@@ -434,6 +428,7 @@ public class Board : MonoBehaviour
             }
             else
             {
+                taskController.MovePlayed();
                 if (fruit)
                 {
                     fruitScript.isSwiped = false;
@@ -546,7 +541,7 @@ public class Board : MonoBehaviour
     public IEnumerator FadeOut(GameObject obj,bool explosion)
     {
         float elapsedTime = 0f;
-        float fadeDuration = 0.2f;
+        float fadeDuration = 0.3f;
         Color color = obj.GetComponent<SpriteRenderer>().color;
         if (explosion)
         {
@@ -636,7 +631,8 @@ public class Board : MonoBehaviour
 
         while (emptyPlaces.Count > 0)
         {
-
+            float xOffset = width * 0.5f - 0.5f;
+            float yOffset = height * 0.5f - 0.5f;
             int emptyRowIndex = emptyPlaces.Dequeue();
             Vector2 tempPosition = new Vector2(i - xOffset, height - yOffset);
 
@@ -710,7 +706,8 @@ public class Board : MonoBehaviour
 
     public void ReplaceDestroyedFruit(int column, int row)
     {
-
+        float xOffset = width * 0.5f - 0.5f;
+        float yOffset = height * 0.5f - 0.5f;
         Vector2 tempPosition = new Vector2(column - xOffset, row - yOffset);
 
         // Instantiate a new fruit at the position of the destroyed fruit
@@ -731,4 +728,5 @@ public class Board : MonoBehaviour
         Destroy(allFruits[column, row]);
         allFruits[column, row] = fruit;
     }
+
 }

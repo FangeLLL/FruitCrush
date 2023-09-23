@@ -1,91 +1,298 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class SwipeHint : MonoBehaviour
 {
     private Board board;
-    private float idleTime = 3f;
-    private bool isIdle = false;
+    private Fruit fruit;
+    private float hintTimer = 0f;
+    public float hintThreshold = 3f; // Adjust this threshold as needed
 
-    void Awake()
+
+
+    List<Vector2Int> possibleMoves = new List<Vector2Int>();
+
+    private void Start()
     {
         board = FindObjectOfType<Board>();
-        StartCoroutine(CheckForIdle());
+        hintTimer = 0f; // Initialize the hint timer
     }
-    private  IEnumerator CheckForIdle()
-    {
-        while(true)
-        {
-            yield return new WaitForSeconds(1f);
 
-            if (!isIdle)
+    private void Update()
+    {
+       
+        // Update the hint timer
+        hintTimer += Time.deltaTime;
+
+        // Check if the player is idle and the hint timer reached the threshold
+        if (hintTimer >= hintThreshold)
+        {
+            // Player is idle for too long, find and show a hint
+
+            //RowIteration();
+            //ColumnIteration();
+            //ColumnSquareIteration();
+            RowSquareIteration();
+
+            hintTimer = 0f; // Reset the hint timer
+            
+        }
+    }
+
+    #region Iteration
+
+    private void ColumnIteration()
+    {
+        // Loop through the entire board
+
+        for (int i = 0; i < board.width; i++) // COLUMN
+        {
+            for (int j = 0; j < board.height; j++) // ROW
             {
-                idleTime -= 1f;
-                if (idleTime <= 0f)
+
+                // WE CHECK IF THE GRID ABOVE DOES EXIST
+                if (j + 1 < board.height && board.allFruits[i, j] && board.allFruits[i, j + 1])
                 {
-                    // PLAYER IS IDLE FOR TOO LONG, FIND A HINT
-                    isIdle = true;  
-                    FindAndShowHint();
+                    int type = board.allFruits[i, j].GetComponent<Fruit>().fruitType;
+
+                    // WE CHECK THE ONE ABOVE THE OBJECT WE ARE REPEATING
+                    if (type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
+                    {
+                        if (j + 2 < board.height)
+                        {                           
+                            if (i - 1 >= 0 && board.allFruits[i - 1, j + 2] && type == board.allFruits[i - 1, j + 2].GetComponent<Fruit>().fruitType)
+                            {
+                                Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j + 2));
+                            }
+                            else if (i + 1 < board.width && board.allFruits[i + 1, j + 2] && type == board.allFruits[i + 1, j + 2].GetComponent<Fruit>().fruitType)
+                            {
+                                Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j + 2));
+                            }
+                        }
+                        if (j - 1 >= 0)
+                        {
+                            if (i - 1 >= 0 && board.allFruits[i - 1, j - 1] && type == board.allFruits[i - 1, j - 1].GetComponent<Fruit>().fruitType)
+                            {
+                                Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j - 1));
+                            }
+                            else if (i + 1 < board.width && board.allFruits[i + 1, j - 1] && type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType)
+                            {
+                                Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j - 1));
+                            }
+                        }
+                        j++;
+
+                    }
                 }
             }
         }
     }
 
-    private void FindAndShowHint()
+    private void RowIteration()
     {
-        isIdle = true;
-        List<Vector2Int> possibleMoves = new List<Vector2Int>();
-
-        // LOOP THROUGH THE ENTIRE BOARD
-        for (int row = 0; row < board.height; row++)
+        // Loop through the entire board, starting from the top-right corner
+        for (int j = board.height - 1; j >= 0; j--) // ROW (start from the last row)
         {
-            for(int column = 0; column < board.width; column++)
+            for (int i = board.width - 1; i >= 0; i--) // COLUMN (start from the last column)
             {
-                int fruitType = board.allFruits[column, row]?.GetComponent<Fruit>().fruitType ?? -1;
-
-                // SKIP EMPTY CELLS OR IF THE FRUIT IS IN THE LAST ROW OR LAST COLUMN
-                if (fruitType == -1 || (row == board.height - 1 && column == board.width - 1))
-                    continue;
-
-                // CHECK RIGHT (IF NOT IN LAST COLUMN)
-                if (column < board.width - 1)
+                // WE CHECK IF THE GRID TO THE LEFT DOES EXIST
+                if (i - 1 >= 0 && board.allFruits[i, j] && board.allFruits[i - 1, j])
                 {
-                    int rightFruitType = board.allFruits[column + 1, row]?.GetComponent<Fruit>()?.fruitType ?? -1;
-                    if(rightFruitType==fruitType)
+                    int type = board.allFruits[i, j].GetComponent<Fruit>().fruitType;
+
+                    // WE CHECK THE ONE TO THE LEFT OF THE OBJECT WE ARE REPEATING
+                    if (type == board.allFruits[i - 1, j].GetComponent<Fruit>().fruitType)
                     {
-                        possibleMoves.Add(new Vector2Int(column, row));
-                        possibleMoves.Add(new Vector2Int(column + 1, row));
-                        possibleMoves.Add(new Vector2Int(column + 2, row));
-                        possibleMoves.Add(new Vector2Int(column + 3, row));
-                        break;
+                        if (i - 2 >= 0)
+                        {
+                            if (j - 1 >= 0 && board.allFruits[i - 2, j - 1] && type == board.allFruits[i - 2, j - 1].GetComponent<Fruit>().fruitType)
+                            {
+                                Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j - 1));
+                            }
+                            else if (j + 1 < board.height && board.allFruits[i - 2, j + 1] && type == board.allFruits[i - 2, j + 1].GetComponent<Fruit>().fruitType)
+                            {
+                                Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j + 1));
+                            }
+                        }
+                        if (i + 1 < board.width)
+                        {
+                            if (j - 1 >= 0 && board.allFruits[i + 1, j - 1] && type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType)
+                            {
+                                Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j - 1));
+                            }
+                            else if (j + 1 < board.height && board.allFruits[i + 1, j + 1] && type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
+                            {
+                                Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j + 1));
+                            }
+                        }
+                        i--;
+                    }
+                }
+            }
+        }
+    }
+
+    private void ColumnSquareIteration()
+    {
+        for (int i = 0; i < board.width; i++) // COLUMN
+        {
+            for (int j = 0; j < board.height; j++) // ROW
+            {               
+                if (j + 1 < board.height && board.allFruits[i, j] && board.allFruits[i, j + 1])
+                {
+                    int type = board.allFruits[i, j].GetComponent<Fruit>().fruitType;
+
+                    // UPPER BOUNDS
+                    if (type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
+                    {
+                        if (i + 1 < board.width && i - 1 >= 0)
+                        {
+                            if (i - 1 >= 0 && board.allFruits[i - 1, j + 1] && type == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType)
+                            {
+                                if (i - 2 >= 0 && board.allFruits[i - 2, j] && type == board.allFruits[i - 2, j].GetComponent<Fruit>().fruitType)
+                                {
+                                    Debug.Log("Possible Move - Column: " + (i -2) + ", Row: " + (j));
+                                }
+                                if ((i - 1 >= 0) && (j - 1 >= 0) && board.allFruits[i - 1, j - 1] && type == board.allFruits[i - 1, j - 1].GetComponent<Fruit>().fruitType)
+                                {
+                                    Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j - 1));
+                                }
+                            }
+                            if(i + 1 < board.width && board.allFruits[i + 1, j + 1] && type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
+                            {
+                                if (i + 2 < board.width && board.allFruits[i + 2, j] && type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType)
+                                {
+                                    Debug.Log("Possible Move - Column: " + (i + 2) + ", Row: " + (j));
+                                }
+                                if ((i + 1 < board.width) && (j - 1 >= 0) && board.allFruits[i + 1, j - 1] && type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType)
+                                {
+                                    Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j - 1));
+                                }
+                            }
+                        }                       
+                    }                                                      
+                }
+
+                if (j - 1 >= 0 && board.allFruits[i, j] && board.allFruits[i, j - 1])
+                {
+                    int type2 = board.allFruits[i, j].GetComponent<Fruit>().fruitType;
+
+                    if (type2 == board.allFruits[i, j - 1].GetComponent<Fruit>().fruitType)
+                    {
+                        if (i + 1 < board.width && i - 1 >= 0)
+                        {
+                            if (i - 1 >= 0 && board.allFruits[i - 1, j - 1] && type2 == board.allFruits[i - 1, j - 1].GetComponent<Fruit>().fruitType)
+                            {
+                                if (i - 2 >= 0 && board.allFruits[i - 2, j] && type2 == board.allFruits[i - 2, j].GetComponent<Fruit>().fruitType)
+                                {
+                                    Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j));
+                                }
+                                if ((i - 1 >= 0) && (j + 1 < board.height) && board.allFruits[i - 1, j + 1] && type2 == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType)
+                                {
+                                    Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j + 1));
+                                }
+                            }
+                            if (i + 1 < board.width && board.allFruits[i + 1, j - 1] && type2 == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType)
+                            {
+                                if (i + 2 < board.width && board.allFruits[i + 2, j] && type2 == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType)
+                                {
+                                    Debug.Log("Possible Move - Column: " + (i + 2) + ", Row: " + (j));
+                                }
+                                if ((i + 1 < board.width) && (j + 1 < board.height) && board.allFruits[i + 1, j + 1] && type2 == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
+                                {
+                                    Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j + 1));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void RowSquareIteration()
+    {
+        // Loop through the entire board, starting from the bottom-right corner
+        for (int j = board.height - 1; j >= 0; j--) // ROW (start from the last row)
+        {
+            for (int i = board.width - 1; i >= 0; i--) // COLUMN (start from the last column)
+            {
+                if (j + 1 < board.height && board.allFruits[i, j] && board.allFruits[i, j + 1])
+                {
+                    int type = board.allFruits[i, j].GetComponent<Fruit>().fruitType;
+
+                    // UPPER BOUNDS
+                    if (type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
+                    {
+                        if (i + 1 < board.width && i - 1 >= 0)
+                        {
+                            if (i - 1 >= 0 && board.allFruits[i - 1, j + 1] && type == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType)
+                            {
+                                if (i - 2 >= 0 && board.allFruits[i - 2, j] && type == board.allFruits[i - 2, j].GetComponent<Fruit>().fruitType)
+                                {
+                                    Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j));
+                                }
+                                if ((i - 1 >= 0) && (j - 1 >= 0) && board.allFruits[i - 1, j - 1] && type == board.allFruits[i - 1, j - 1].GetComponent<Fruit>().fruitType)
+                                {
+                                    Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j - 1));
+                                }
+                            }
+                            if (i + 1 < board.width && board.allFruits[i + 1, j + 1] && type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
+                            {
+                                if (i + 2 < board.width && board.allFruits[i + 2, j] && type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType)
+                                {
+                                    Debug.Log("Possible Move - Column: " + (i + 2) + ", Row: " + (j));
+                                }
+                                if ((i + 1 < board.width) && (j - 1 >= 0) && board.allFruits[i + 1, j - 1] && type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType)
+                                {
+                                    Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j - 1));
+                                }
+                            }
+                        }
                     }
                 }
 
-                // CHECK UP (IF NOT IN FIRST ROW)
-                if (row > 0)
+                if (j - 1 >= 0 && board.allFruits[i, j] && board.allFruits[i, j - 1])
                 {
-                    int upFruitType = board.allFruits[column, row - 1]?.GetComponent<Fruit>()?.fruitType ?? -1;
-                    if(upFruitType == fruitType)
+                    int type2 = board.allFruits[i, j].GetComponent<Fruit>().fruitType;
+
+                    if (type2 == board.allFruits[i, j - 1].GetComponent<Fruit>().fruitType)
                     {
-                        possibleMoves.Add(new Vector2Int(column, row));
-                        possibleMoves.Add(new Vector2Int(column, row - 1));
-                        possibleMoves.Add(new Vector2Int(column, row - 2));
-                        possibleMoves.Add(new Vector2Int(column, row - 3));
-                        break;
+                        if (i + 1 < board.width && i - 1 >= 0)
+                        {
+                            if (i - 1 >= 0 && board.allFruits[i - 1, j - 1] && type2 == board.allFruits[i - 1, j - 1].GetComponent<Fruit>().fruitType)
+                            {
+                                if (i - 2 >= 0 && board.allFruits[i - 2, j] && type2 == board.allFruits[i - 2, j].GetComponent<Fruit>().fruitType)
+                                {
+                                    Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j));
+                                }
+                                if ((i - 1 >= 0) && (j + 1 < board.height) && board.allFruits[i - 1, j + 1] && type2 == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType)
+                                {
+                                    Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j + 1));
+                                }
+                            }
+                            if (i + 1 < board.width && board.allFruits[i + 1, j - 1] && type2 == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType)
+                            {
+                                if (i + 2 < board.width && board.allFruits[i + 2, j] && type2 == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType)
+                                {
+                                    Debug.Log("Possible Move - Column: " + (i + 2) + ", Row: " + (j));
+                                }
+                                if ((i + 1 < board.width) && (j + 1 < board.height) && board.allFruits[i + 1, j + 1] && type2 == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
+                                {
+                                    Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j + 1));
+                                }
+                            }
+                        }
                     }
                 }
-
-            }
-        }
-
-        // IF POSSIBLE MOVES ARE FOUND, SHOW A HINT (E.G., HIGHLIGHT THE MATCHED FRUITS)
-        if(possibleMoves.Count > 0)
-        {
-            foreach(Vector2Int move in possibleMoves)
-            {
-                Debug.Log("Possible Move - Row: " + move.y + ", Column: " + move.x);
             }
         }
     }
+
+
+
+
+    #endregion
+
 }

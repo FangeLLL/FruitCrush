@@ -1988,6 +1988,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9511e1aa1b47964c84bf773642daa4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiManager: {fileID: 1772865871}
   taskDisplays:
   - taskTypeIndex: 0
     taskImage: {fileID: 2021078081}
@@ -2010,6 +2011,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a7b5c6e4ae16f2f47961b75e0c33b731, type: 3}
   - {fileID: 21300000, guid: a7b5c6e4ae16f2f47961b75e0c33b731, type: 3}
   - {fileID: 21300000, guid: a7b5c6e4ae16f2f47961b75e0c33b731, type: 3}
+  avatarWindow: {fileID: 2049658801}
   moveText: {fileID: 363990715}
 --- !u!1 &1786372232
 GameObject:
@@ -2309,6 +2311,7 @@ GameObject:
   - component: {fileID: 2049658802}
   - component: {fileID: 2049658804}
   - component: {fileID: 2049658803}
+  - component: {fileID: 2049658805}
   m_Layer: 5
   m_Name: AvatarWindow
   m_TagString: Untagged
@@ -2373,6 +2376,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049658801}
   m_CullTransparentMesh: 1
+--- !u!95 &2049658805
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049658801}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 45bf14ae0093c5c47901980998ea9df7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2136423664
 GameObject:
   m_ObjectHideFlags: 0
@@ -3064,14 +3088,14 @@ RectTransform:
   m_Children:
   - {fileID: 4525500414139103436}
   - {fileID: 522320892}
-  - {fileID: 6417912988449598485}
-  - {fileID: 8153277980002775962}
-  - {fileID: 8886166195279324497}
-  - {fileID: 8244171755926056215}
   - {fileID: 2136423665}
   - {fileID: 2046496788811353613}
   - {fileID: 8692635562582871862}
   - {fileID: 3282665806640274181}
+  - {fileID: 6417912988449598485}
+  - {fileID: 8886166195279324497}
+  - {fileID: 8153277980002775962}
+  - {fileID: 8244171755926056215}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3160,12 +3184,12 @@ GameObject:
   - component: {fileID: 5663637886896746671}
   - component: {fileID: 2285241158390131328}
   m_Layer: 5
-  m_Name: FinishBackground
+  m_Name: FinishGray
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2936648423943714577
 RectTransform:
   m_ObjectHideFlags: 0

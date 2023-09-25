@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,8 @@ public class TaskDisplay
 }
 public class TaskController : MonoBehaviour
 {
+    public UIManager uiManager;
+
     //StrawBale Index = 0
     public TaskDisplay[] taskDisplays;
     public Sprite[] taskSprites;
@@ -21,8 +24,10 @@ public class TaskController : MonoBehaviour
     int moveCount;
     int currentObjectiveIndex = 0;
 
+    public GameObject avatarWindow;
     public TextMeshProUGUI moveText;
     bool isLevelCompleted;
+    bool moveCountFlag = true;
 
     public void SetMoveCount(int _moveCount)
     {
@@ -35,10 +40,15 @@ public class TaskController : MonoBehaviour
         moveCount--;
         moveText.text = moveCount.ToString();
         
+        if (moveCount <= 5 && moveCountFlag)
+        {
+            avatarWindow.GetComponent<Animator>().SetTrigger("MoveWarning");
+            moveCountFlag = false;
+        }
+
         if (moveCount <= 0)
         {
-            Debug.Log("Out of Moves");
-            //LevelEndCheck();
+            StartCoroutine(OutofMovesCoroutine());
         }
     }
 
@@ -101,11 +111,6 @@ public class TaskController : MonoBehaviour
         return true;
     }
 
-    private void FinishGame()
-    {
-        isLevelCompleted = true;
-        Debug.Log("Level Complete!");
-    }
 
     void ObjectiveLocationSetter()
     {
@@ -134,5 +139,22 @@ public class TaskController : MonoBehaviour
             taskDisplays[2].taskImage.transform.localPosition = new Vector2(-18, -17.7f);
             taskDisplays[3].taskImage.transform.localPosition = new Vector2(16, -17.7f);
         }
+    }
+
+    //THIS FUNCTION WAITS FOR 3 SECONDS BEFORE ALL MOVEMENT FINISHES ON GRID (TEMP!!!)
+    IEnumerator OutofMovesCoroutine()
+    {
+        yield return new WaitForSeconds(3f);
+
+        if (!isLevelCompleted)
+        {
+            uiManager.GameFinished(false);
+        }
+    }
+
+    private void FinishGame()
+    {
+        isLevelCompleted = true;
+        uiManager.GameFinished(true);
     }
 }

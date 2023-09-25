@@ -345,11 +345,13 @@ public class Board : MonoBehaviour
                         audioManager.FruitCrush();
                         type = allFruits[i, j].GetComponent<Fruit>().fruitType;
                         typeFruits[type] += fruitsCheck.Count;
+                      //   fruitsCheck[UnityEngine.Random.Range(0, fruitsCheck.Count)];
                         for (int e = 0; e < fruitsCheck.Count; e++)
                         {
                             StartCoroutine(FadeOut(fruitsCheck[e], true));
                         }
                         fruitsCheck.Clear();
+
                         popped= true;
                         achievementManager.AchievementProgress(typeFruits);                     
                     }
@@ -630,7 +632,7 @@ public class Board : MonoBehaviour
             }
             else
             {
-                if (j - 1 > 0 && !allFruits[i, j - 1] && !allTiles[i, j - 1].GetComponent<BackgroundTile>().strawBale)
+                if (j - 1 >= 0 && !allFruits[i, j - 1] && !allTiles[i, j - 1].GetComponent<BackgroundTile>().strawBale)
                 {
                     StartCoroutine(CrossFall(i, j));
                 }
@@ -675,7 +677,7 @@ public class Board : MonoBehaviour
     {
         GameObject fruit=null;
         Fruit fruitScript;
-        int previousColumn=0;
+        int previousColumn=-1;
         yield return new WaitForSeconds(0.3f);
         if (column - 1 >= 0 && allFruits[column - 1, row] && !allFruits[column, row-1])
         {
@@ -697,7 +699,7 @@ public class Board : MonoBehaviour
             fruitScript.column = column;
             fruitScript.targetV= allTiles[column,row-1].transform.position;
             yield return new WaitForSeconds(0.5f);
-            if (previousColumn != 0 && !columnsFilling[previousColumn])
+            if (previousColumn != -1 && !columnsFilling[previousColumn])
             {
                 StartCoroutine(FillTheColumn(previousColumn));
             }

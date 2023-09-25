@@ -256,6 +256,9 @@ MonoBehaviour:
   height: 10
   achievementManager: {fileID: 1772865870}
   taskController: {fileID: 1772865872}
+  swipeHint: {fileID: 160705529}
+  checkingMatch: 0
+  isRunning: 0
   columnsFilling: 
   fruits:
   - {fileID: 3566861933945487612, guid: a93f162c14c85804c91de0fb620e5409, type: 3}
@@ -280,7 +283,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35afbd7d6b76854c839f0ba822c6348, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fruit: {fileID: 8183136484916695726, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
   hintThreshold: 1
+  isHintSearching: 0
+  continueIteration: 1
 --- !u!1 &302858840
 GameObject:
   m_ObjectHideFlags: 0

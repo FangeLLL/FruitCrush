@@ -10,7 +10,7 @@ public class TaskDisplay
     public int taskTypeIndex;
     public Image taskImage;
     public TextMeshProUGUI taskText;
-
+    public bool isCompleted;
 }
 public class TaskController : MonoBehaviour
 {
@@ -62,7 +62,7 @@ public class TaskController : MonoBehaviour
     {
         foreach (TaskDisplay taskDisplay in taskDisplays)
         {
-            if (taskDisplay.taskTypeIndex == taskTypeIndex)
+            if (taskDisplay.taskTypeIndex == taskTypeIndex && taskDisplay.taskImage.gameObject.activeSelf)
             {
                 int currentTaskNumber = int.Parse(taskDisplay.taskText.text);
                 currentTaskNumber--;
@@ -70,36 +70,42 @@ public class TaskController : MonoBehaviour
                 if (currentTaskNumber <= 0)
                 {
                     // Optionally, you can do something when the objective is completed, like hiding the UI element.
-                    taskDisplay.taskImage.gameObject.SetActive(false);
+                    //taskDisplay.taskImage.gameObject.SetActive(false);
                     taskDisplay.taskText.gameObject.SetActive(false);
+                    taskDisplay.isCompleted = true;
                 }
                 else
                 {
                     taskDisplay.taskText.text = currentTaskNumber.ToString();
                 }
-
-                break; // Exit the loop once we've updated the relevant objective.
             }
+        }
+
+        if (AreAllObjectivesComplete() && !isLevelCompleted)
+        {
+            FinishGame();
         }
     }
 
-    /*void LevelEndCheck()
+    private bool AreAllObjectivesComplete()
     {
-        isLevelCompleted = true;
-        foreach (int element in taskNumber)
+        for (int i = 0; i < currentObjectiveIndex; i++)
         {
-            if (element != 0)
+            if (!taskDisplays[i].isCompleted)
             {
-                isLevelCompleted = false;
-                break;
+                return false;
             }
         }
 
-        if (isLevelCompleted)
-        {
-            Debug.Log("Level Completed!");
-        }
-    }*/
+        // All objectives are complete.
+        return true;
+    }
+
+    private void FinishGame()
+    {
+        isLevelCompleted = true;
+        Debug.Log("Level Complete!");
+    }
 
     void ObjectiveLocationSetter()
     {

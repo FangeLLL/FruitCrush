@@ -25,6 +25,13 @@ public class Fruit : MonoBehaviour
 
     public bool isClicked,isSwiped=false;
 
+    public Animator animator;
+
+    public int swipeRight = Animator.StringToHash("isSwipeRight");
+    public int swipeLeft = Animator.StringToHash("isSwipeLeft");
+    public int swipeUp = Animator.StringToHash("isSwipeUp");
+    public int swipeDown = Animator.StringToHash("isSwipeDown");
+
     void Awake()
     {
         board = FindObjectOfType<Board>();

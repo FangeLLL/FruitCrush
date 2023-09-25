@@ -16,13 +16,16 @@ public class Board : MonoBehaviour
     [SerializeField]
     public AchievementManager achievementManager;
     public TaskController taskController;
+    public SwipeHint swipeHint;
 
 
-    bool checkingMatch = false;
+    public bool checkingMatch = false;
+    public bool isRunning = false;
 
     public bool[] columnsFilling;
 
     AudioManager audioManager;
+    Animator animator;
 
     [SerializeField]
     public GameObject[] fruits;
@@ -31,7 +34,7 @@ public class Board : MonoBehaviour
 
 
     public GameObject[,] allFruits;
-    public GameObject[,] allTiles;
+    public GameObject[,] allTiles;   
 
     void Start()
     {
@@ -130,6 +133,8 @@ public class Board : MonoBehaviour
 
     public void SwipeFruits(float swipeAngle, int column, int row)
     {
+        StopCoroutine(GiveHint());
+        swipeHint.isHintSearching = false;
 
         GameObject otherFruit;
         GameObject fruit = allFruits[column, row];
@@ -361,6 +366,11 @@ public class Board : MonoBehaviour
         else
         {
             checkingMatch = false;
+            if (!isRunning)
+            {
+                StartCoroutine(GiveHint());
+            }
+            
         }
 
         /*
@@ -542,7 +552,7 @@ public class Board : MonoBehaviour
     {
         float elapsedTime = 0f;
         float fadeDuration = 0.3f;
-        Color color = obj.GetComponent<SpriteRenderer>().color;
+        Color color = obj.GetComponentInChildren<SpriteRenderer>().color;
         if (explosion)
         {
             int row = obj.GetComponent<Fruit>().row;
@@ -557,7 +567,7 @@ public class Board : MonoBehaviour
             float alpha = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
 
             // Update the object's color with the new alpha
-            obj.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, alpha);
+            obj.GetComponentInChildren<SpriteRenderer>().color = new Color(color.r, color.g, color.b, alpha);
 
             elapsedTime += Time.deltaTime;
             yield return null; // Wait for the next frame
@@ -565,7 +575,7 @@ public class Board : MonoBehaviour
 
         // Ensure the object is completely transparent
 
-        obj.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 0f);
+        obj.GetComponentInChildren<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 0f);
         Destroy(obj);
         
     }
@@ -728,5 +738,17 @@ public class Board : MonoBehaviour
         Destroy(allFruits[column, row]);
         allFruits[column, row] = fruit;
     }
+
+    public IEnumerator GiveHint()
+    {
+        isRunning = true;
+        yield return new WaitForSeconds(3f);
+
+        if (!checkingMatch)
+        {
+            swipeHint.isHintSearching = true;
+            swipeHint.continueIteration = true;
+        }        
+    }   
 
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,10 +11,12 @@ public class TaskDisplay
     public int taskTypeIndex;
     public Image taskImage;
     public TextMeshProUGUI taskText;
-
+    public bool isCompleted;
 }
 public class TaskController : MonoBehaviour
 {
+    public UIManager uiManager;
+
     //StrawBale Index = 0
     public TaskDisplay[] taskDisplays;
     public Sprite[] taskSprites;
@@ -21,8 +24,10 @@ public class TaskController : MonoBehaviour
     int moveCount;
     int currentObjectiveIndex = 0;
 
+    public GameObject avatarWindow;
     public TextMeshProUGUI moveText;
     bool isLevelCompleted;
+    bool moveCountFlag = true;
 
     public void SetMoveCount(int _moveCount)
     {
@@ -35,10 +40,15 @@ public class TaskController : MonoBehaviour
         moveCount--;
         moveText.text = moveCount.ToString();
         
+        if (moveCount <= 5 && moveCountFlag)
+        {
+            avatarWindow.GetComponent<Animator>().SetTrigger("MoveWarning");
+            moveCountFlag = false;
+        }
+
         if (moveCount <= 0)
         {
-            Debug.Log("Out of Moves");
-            //LevelEndCheck();
+            StartCoroutine(OutofMovesCoroutine());
         }
     }
 
@@ -62,7 +72,7 @@ public class TaskController : MonoBehaviour
     {
         foreach (TaskDisplay taskDisplay in taskDisplays)
         {
-            if (taskDisplay.taskTypeIndex == taskTypeIndex)
+            if (taskDisplay.taskTypeIndex == taskTypeIndex && taskDisplay.taskImage.gameObject.activeSelf)
             {
                 int currentTaskNumber = int.Parse(taskDisplay.taskText.text);
                 currentTaskNumber--;
@@ -70,36 +80,37 @@ public class TaskController : MonoBehaviour
                 if (currentTaskNumber <= 0)
                 {
                     // Optionally, you can do something when the objective is completed, like hiding the UI element.
-                    taskDisplay.taskImage.gameObject.SetActive(false);
+                    //taskDisplay.taskImage.gameObject.SetActive(false);
                     taskDisplay.taskText.gameObject.SetActive(false);
+                    taskDisplay.isCompleted = true;
                 }
                 else
                 {
                     taskDisplay.taskText.text = currentTaskNumber.ToString();
                 }
-
-                break; // Exit the loop once we've updated the relevant objective.
             }
+        }
+
+        if (AreAllObjectivesComplete() && !isLevelCompleted)
+        {
+            FinishGame();
         }
     }
 
-    /*void LevelEndCheck()
+    private bool AreAllObjectivesComplete()
     {
-        isLevelCompleted = true;
-        foreach (int element in taskNumber)
+        for (int i = 0; i < currentObjectiveIndex; i++)
         {
-            if (element != 0)
+            if (!taskDisplays[i].isCompleted)
             {
-                isLevelCompleted = false;
-                break;
+                return false;
             }
         }
 
-        if (isLevelCompleted)
-        {
-            Debug.Log("Level Completed!");
-        }
-    }*/
+        // All objectives are complete.
+        return true;
+    }
+
 
     void ObjectiveLocationSetter()
     {
@@ -128,5 +139,22 @@ public class TaskController : MonoBehaviour
             taskDisplays[2].taskImage.transform.localPosition = new Vector2(-18, -17.7f);
             taskDisplays[3].taskImage.transform.localPosition = new Vector2(16, -17.7f);
         }
+    }
+
+    //THIS FUNCTION WAITS FOR 3 SECONDS BEFORE ALL MOVEMENT FINISHES ON GRID (TEMP!!!)
+    IEnumerator OutofMovesCoroutine()
+    {
+        yield return new WaitForSeconds(3f);
+
+        if (!isLevelCompleted)
+        {
+            uiManager.GameFinished(false);
+        }
+    }
+
+    private void FinishGame()
+    {
+        isLevelCompleted = true;
+        uiManager.GameFinished(true);
     }
 }

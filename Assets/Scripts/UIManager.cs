@@ -17,8 +17,7 @@ public class UIManager : MonoBehaviour
     public GameObject soundDisableIcon;
     public GameObject musicIcon;
     public GameObject musicDisableIcon;
-
-    public TextMeshProUGUI moveCountText;
+    public GameObject settingsGray;
 
     public bool isSoundOn;
     public bool isMusicOn;
@@ -163,6 +162,7 @@ public class UIManager : MonoBehaviour
         yield return null;
 
         settingsIcon.GetComponent<Button>().interactable = false;
+        settingsGray.GetComponent<Animator>().SetTrigger("SettingsOn");
         settingsIcon.GetComponent<Animator>().SetTrigger("SettingsOn"); 
         settingsIconShadow.GetComponent<Animator>().SetTrigger("SettingsOn"); // 0.5 sec
 
@@ -184,6 +184,7 @@ public class UIManager : MonoBehaviour
         yield return null;
 
         settingsIcon.GetComponent<Button>().interactable = false;
+        settingsGray.GetComponent<Animator>().SetTrigger("SettingsOff");
         settingsIcon.GetComponent<Animator>().SetTrigger("SettingsOff");
         settingsIconShadow.GetComponent<Animator>().SetTrigger("SettingsOff");
 

@@ -55,7 +55,7 @@ public class SwipeHint : MonoBehaviour
                             {
                                 if (i - 1 >= 0 && board.allFruits[i - 1, j + 1] && type == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType)
                                 {
-                                    if (i - 2 >= 0 && board.allFruits[i - 2, j] && type == board.allFruits[i - 2, j].GetComponent<Fruit>().fruitType)
+                                    if (i - 2 >= 0 && board.allFruits[i - 2, j] && type == board.allFruits[i - 2, j].GetComponent<Fruit>().fruitType && board.allFruits[i - 1, j])
                                     {
                                         Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j));
                                         fruit = board.allFruits[i - 2, j].GetComponent<Fruit>();
@@ -65,7 +65,7 @@ public class SwipeHint : MonoBehaviour
                                         StopCoroutines();
                                         break;
                                     }
-                                    if ((i - 1 >= 0) && (j - 1 >= 0) && board.allFruits[i - 1, j - 1] && type == board.allFruits[i - 1, j - 1].GetComponent<Fruit>().fruitType)
+                                    if ((i - 1 >= 0) && (j - 1 >= 0) && board.allFruits[i - 1, j - 1] && type == board.allFruits[i - 1, j - 1].GetComponent<Fruit>().fruitType && board.allFruits[i - 1, j])
                                     {
                                         Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j - 1));
                                         fruit = board.allFruits[i - 1, j - 1].GetComponent<Fruit>();
@@ -78,7 +78,7 @@ public class SwipeHint : MonoBehaviour
                                 }
                                 if (i + 1 < board.width && board.allFruits[i + 1, j + 1] && type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
                                 {
-                                    if (i + 2 < board.width && board.allFruits[i + 2, j] && type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType)
+                                    if (i + 2 < board.width && board.allFruits[i + 2, j] && type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
                                     {
                                         Debug.Log("Possible Move - Column: " + (i + 2) + ", Row: " + (j));
                                         fruit = board.allFruits[i + 2, j].GetComponent<Fruit>();
@@ -88,7 +88,7 @@ public class SwipeHint : MonoBehaviour
                                         StopCoroutines();
                                         break;
                                     }
-                                    if ((i + 1 < board.width) && (j - 1 >= 0) && board.allFruits[i + 1, j - 1] && type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType)
+                                    if ((i + 1 < board.width) && (j - 1 >= 0) && board.allFruits[i + 1, j - 1] && type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
                                     {
                                         Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j - 1));
                                         fruit = board.allFruits[i + 1, j - 1].GetComponent<Fruit>();
@@ -113,7 +113,7 @@ public class SwipeHint : MonoBehaviour
                             {
                                 if (i - 1 >= 0 && board.allFruits[i - 1, j - 1] && type2 == board.allFruits[i - 1, j - 1].GetComponent<Fruit>().fruitType)
                                 {
-                                    if (i - 2 >= 0 && board.allFruits[i - 2, j] && type2 == board.allFruits[i - 2, j].GetComponent<Fruit>().fruitType)
+                                    if (i - 2 >= 0 && board.allFruits[i - 2, j] && type2 == board.allFruits[i - 2, j].GetComponent<Fruit>().fruitType && board.allFruits[i - 1, j])
                                     {
                                         Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j));
                                         fruit = board.allFruits[i - 2, j].GetComponent<Fruit>();
@@ -123,7 +123,7 @@ public class SwipeHint : MonoBehaviour
                                         StopCoroutines();
                                         break;
                                     }
-                                    if ((i - 1 >= 0) && (j + 1 < board.height) && board.allFruits[i - 1, j + 1] && type2 == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType)
+                                    if ((i - 1 >= 0) && (j + 1 < board.height) && board.allFruits[i - 1, j + 1] && type2 == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType && board.allFruits[i - 1, j])
                                     {
                                         Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j + 1));
                                         fruit = board.allFruits[i - 1, j + 1].GetComponent<Fruit>();
@@ -136,7 +136,7 @@ public class SwipeHint : MonoBehaviour
                                 }
                                 if (i + 1 < board.width && board.allFruits[i + 1, j - 1] && type2 == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType)
                                 {
-                                    if (i + 2 < board.width && board.allFruits[i + 2, j] && type2 == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType)
+                                    if (i + 2 < board.width && board.allFruits[i + 2, j] && type2 == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
                                     {
                                         Debug.Log("Possible Move - Column: " + (i + 2) + ", Row: " + (j));
                                         fruit = board.allFruits[i + 2, j].GetComponent<Fruit>();
@@ -146,7 +146,7 @@ public class SwipeHint : MonoBehaviour
                                         StopCoroutines();
                                         break;
                                     }
-                                    if ((i + 1 < board.width) && (j + 1 < board.height) && board.allFruits[i + 1, j + 1] && type2 == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
+                                    if ((i + 1 < board.width) && (j + 1 < board.height) && board.allFruits[i + 1, j + 1] && type2 == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
                                     {
                                         Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j + 1));
                                         fruit = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
@@ -194,7 +194,7 @@ public class SwipeHint : MonoBehaviour
                             {
                                 if (i - 1 >= 0 && board.allFruits[i - 1, j + 1] && type == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType)
                                 {
-                                    if (i - 2 >= 0 && board.allFruits[i - 2, j] && type == board.allFruits[i - 2, j].GetComponent<Fruit>().fruitType)
+                                    if (i - 2 >= 0 && board.allFruits[i - 2, j] && type == board.allFruits[i - 2, j].GetComponent<Fruit>().fruitType && board.allFruits[i - 1, j])
                                     {
                                         Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j));
                                         fruit = board.allFruits[i - 2, j].GetComponent<Fruit>();
@@ -205,7 +205,7 @@ public class SwipeHint : MonoBehaviour
                                         break;
 
                                     }
-                                    if ((i - 1 >= 0) && (j - 1 >= 0) && board.allFruits[i - 1, j - 1] && type == board.allFruits[i - 1, j - 1].GetComponent<Fruit>().fruitType)
+                                    if ((i - 1 >= 0) && (j - 1 >= 0) && board.allFruits[i - 1, j - 1] && type == board.allFruits[i - 1, j - 1].GetComponent<Fruit>().fruitType && board.allFruits[i - 1, j])
                                     {
                                         Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j - 1));
                                         fruit = board.allFruits[i - 1, j - 1].GetComponent<Fruit>();
@@ -218,7 +218,7 @@ public class SwipeHint : MonoBehaviour
                                 }
                                 if (i + 1 < board.width && board.allFruits[i + 1, j + 1] && type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
                                 {
-                                    if (i + 2 < board.width && board.allFruits[i + 2, j] && type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType)
+                                    if (i + 2 < board.width && board.allFruits[i + 2, j] && type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
                                     {
                                         Debug.Log("Possible Move - Column: " + (i + 2) + ", Row: " + (j));
                                         fruit = board.allFruits[i + 2, j].GetComponent<Fruit>();
@@ -228,7 +228,7 @@ public class SwipeHint : MonoBehaviour
                                         StopCoroutines();
                                         break;
                                     }
-                                    if ((i + 1 < board.width) && (j - 1 >= 0) && board.allFruits[i + 1, j - 1] && type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType)
+                                    if ((i + 1 < board.width) && (j - 1 >= 0) && board.allFruits[i + 1, j - 1] && type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
                                     {
                                         Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j - 1));
                                         fruit = board.allFruits[i + 1, j - 1].GetComponent<Fruit>();
@@ -253,7 +253,7 @@ public class SwipeHint : MonoBehaviour
                             {
                                 if (i - 1 >= 0 && board.allFruits[i - 1, j - 1] && type2 == board.allFruits[i - 1, j - 1].GetComponent<Fruit>().fruitType)
                                 {
-                                    if (i - 2 >= 0 && board.allFruits[i - 2, j] && type2 == board.allFruits[i - 2, j].GetComponent<Fruit>().fruitType)
+                                    if (i - 2 >= 0 && board.allFruits[i - 2, j] && type2 == board.allFruits[i - 2, j].GetComponent<Fruit>().fruitType && board.allFruits[i - 1, j])
                                     {
                                         Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j));
                                         fruit = board.allFruits[i - 2, j].GetComponent<Fruit>();
@@ -263,7 +263,7 @@ public class SwipeHint : MonoBehaviour
                                         StopCoroutines();
                                         break;
                                     }
-                                    if ((i - 1 >= 0) && (j + 1 < board.height) && board.allFruits[i - 1, j + 1] && type2 == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType)
+                                    if ((i - 1 >= 0) && (j + 1 < board.height) && board.allFruits[i - 1, j + 1] && type2 == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType && board.allFruits[i - 1, j])
                                     {
                                         Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j + 1));
                                         fruit = board.allFruits[i - 1, j + 1].GetComponent<Fruit>();
@@ -276,7 +276,7 @@ public class SwipeHint : MonoBehaviour
                                 }
                                 if (i + 1 < board.width && board.allFruits[i + 1, j - 1] && type2 == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType)
                                 {
-                                    if (i + 2 < board.width && board.allFruits[i + 2, j] && type2 == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType)
+                                    if (i + 2 < board.width && board.allFruits[i + 2, j] && type2 == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
                                     {
                                         Debug.Log("Possible Move - Column: " + (i + 2) + ", Row: " + (j));
                                         fruit = board.allFruits[i + 2, j].GetComponent<Fruit>();
@@ -286,7 +286,7 @@ public class SwipeHint : MonoBehaviour
                                         StopCoroutines();
                                         break;
                                     }
-                                    if ((i + 1 < board.width) && (j + 1 < board.height) && board.allFruits[i + 1, j + 1] && type2 == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
+                                    if ((i + 1 < board.width) && (j + 1 < board.height) && board.allFruits[i + 1, j + 1] && type2 == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
                                     {
                                         Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j + 1));
                                         fruit = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
@@ -335,17 +335,17 @@ public class SwipeHint : MonoBehaviour
                         {
                             if (j + 2 < board.height)
                             {
-                                if (i - 1 >= 0 && board.allFruits[i - 1, j + 2] && type == board.allFruits[i - 1, j + 2].GetComponent<Fruit>().fruitType)
+                                if (i - 1 >= 0 && board.allFruits[i - 1, j + 2] && type == board.allFruits[i - 1, j + 2].GetComponent<Fruit>().fruitType && board.allFruits[i, j + 2])
                                 {
                                     Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j + 2));
                                     fruit = board.allFruits[i - 1, j + 2].GetComponent<Fruit>();
                                     fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                     yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;                                   
+                                    continueIteration = false;
                                     StopCoroutines();
                                     break;
                                 }
-                                else if (i + 1 < board.width && board.allFruits[i + 1, j + 2] && type == board.allFruits[i + 1, j + 2].GetComponent<Fruit>().fruitType)
+                                else if (i + 1 < board.width && board.allFruits[i + 1, j + 2] && type == board.allFruits[i + 1, j + 2].GetComponent<Fruit>().fruitType && board.allFruits[i, j + 2])
                                 {
                                     Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j + 2));
                                     fruit = board.allFruits[i + 1, j + 2].GetComponent<Fruit>();
@@ -359,7 +359,7 @@ public class SwipeHint : MonoBehaviour
 
                             if (j + 3 < board.height)
                             {
-                                if (board.allFruits[i, j + 3] && type == board.allFruits[i, j + 3].GetComponent<Fruit>().fruitType)
+                                if (board.allFruits[i, j + 3] && type == board.allFruits[i, j + 3].GetComponent<Fruit>().fruitType && board.allFruits[i, j + 2])
                                 {
                                     Debug.Log("Possible Move - Column: " + (i) + ", Row: " + (j + 3));
                                     fruit = board.allFruits[i, j + 3].GetComponent<Fruit>();
@@ -373,7 +373,7 @@ public class SwipeHint : MonoBehaviour
 
                             if (j - 2 >= 0)
                             {
-                                if (board.allFruits[i, j - 2] && type == board.allFruits[i, j - 2].GetComponent<Fruit>().fruitType)
+                                if (board.allFruits[i, j - 2] && type == board.allFruits[i, j - 2].GetComponent<Fruit>().fruitType && board.allFruits[i, j - 1])
                                 {
                                     Debug.Log("Possible Move - Column: " + (i) + ", Row: " + (j - 2));
                                     fruit = board.allFruits[i, j - 2].GetComponent<Fruit>();
@@ -388,7 +388,7 @@ public class SwipeHint : MonoBehaviour
 
                             if (j - 1 >= 0)
                             {
-                                if (i - 1 >= 0 && board.allFruits[i - 1, j - 1] && type == board.allFruits[i - 1, j - 1].GetComponent<Fruit>().fruitType)
+                                if (i - 1 >= 0 && board.allFruits[i - 1, j - 1] && type == board.allFruits[i - 1, j - 1].GetComponent<Fruit>().fruitType && board.allFruits[i, j - 1])
                                 {
                                     Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j - 1));
                                     fruit = board.allFruits[i - 1, j - 1].GetComponent<Fruit>();
@@ -398,7 +398,7 @@ public class SwipeHint : MonoBehaviour
                                     StopCoroutines();
                                     break;
                                 }
-                                else if (i + 1 < board.width && board.allFruits[i + 1, j - 1] && type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType)
+                                else if (i + 1 < board.width && board.allFruits[i + 1, j - 1] && type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType && board.allFruits[i, j - 1])
                                 {
                                     Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j - 1));
                                     fruit = board.allFruits[i + 1, j - 1].GetComponent<Fruit>();
@@ -447,7 +447,7 @@ public class SwipeHint : MonoBehaviour
                         {
                             if (i - 2 >= 0)
                             {
-                                if (j - 1 >= 0 && board.allFruits[i - 2, j - 1] && type == board.allFruits[i - 2, j - 1].GetComponent<Fruit>().fruitType)
+                                if (j - 1 >= 0 && board.allFruits[i - 2, j - 1] && type == board.allFruits[i - 2, j - 1].GetComponent<Fruit>().fruitType && board.allFruits[i - 2, j])
                                 {
                                     Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j - 1));
                                     fruit = board.allFruits[i - 2, j - 1].GetComponent<Fruit>();
@@ -457,7 +457,7 @@ public class SwipeHint : MonoBehaviour
                                     StopCoroutines();
                                     break;
                                 }
-                                else if (j + 1 < board.height && board.allFruits[i - 2, j + 1] && type == board.allFruits[i - 2, j + 1].GetComponent<Fruit>().fruitType)
+                                else if (j + 1 < board.height && board.allFruits[i - 2, j + 1] && type == board.allFruits[i - 2, j + 1].GetComponent<Fruit>().fruitType && board.allFruits[i - 2, j])
                                 {
                                     Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j + 1));
                                     fruit = board.allFruits[i - 2, j + 1].GetComponent<Fruit>();
@@ -472,7 +472,7 @@ public class SwipeHint : MonoBehaviour
 
                             if (i - 3 >= 0)
                             {
-                                if (board.allFruits[i - 3, j] && type == board.allFruits[i - 3, j].GetComponent<Fruit>().fruitType)
+                                if (board.allFruits[i - 3, j] && type == board.allFruits[i - 3, j].GetComponent<Fruit>().fruitType && board.allFruits[i - 2, j])
                                 {
                                     Debug.Log("Possible Move - Column: " + (i - 3) + ", Row: " + (j));
                                     fruit = board.allFruits[i - 3, j].GetComponent<Fruit>();
@@ -486,7 +486,7 @@ public class SwipeHint : MonoBehaviour
 
                             if (i + 2 < board.width)
                             {
-                                if (board.allFruits[i + 2, j] && type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType)
+                                if (board.allFruits[i + 2, j] && type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
                                 {
                                     Debug.Log("Possible Move - Column: " + (i + 2) + ", Row: " + (j));
                                     fruit = board.allFruits[i + 2, j].GetComponent<Fruit>();
@@ -502,7 +502,7 @@ public class SwipeHint : MonoBehaviour
 
                             if (i + 1 < board.width)
                             {
-                                if (j - 1 >= 0 && board.allFruits[i + 1, j - 1] && type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType)
+                                if (j - 1 >= 0 && board.allFruits[i + 1, j - 1] && type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
                                 {
                                     Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j - 1));
                                     fruit = board.allFruits[i + 1, j - 1].GetComponent<Fruit>();
@@ -512,7 +512,7 @@ public class SwipeHint : MonoBehaviour
                                     StopCoroutines();
                                     break;
                                 }
-                                else if (j + 1 < board.height && board.allFruits[i + 1, j + 1] && type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
+                                else if (j + 1 < board.height && board.allFruits[i + 1, j + 1] && type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
                                 {
                                     Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j + 1));
                                     fruit = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();

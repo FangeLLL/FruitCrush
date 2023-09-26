@@ -133,7 +133,7 @@ public class Board : MonoBehaviour
 
     public void SwipeFruits(float swipeAngle, int column, int row)
     {
-        StopCoroutine(GiveHint());
+        //StopCoroutine(GiveHint());
         swipeHint.isHintSearching = false;
 
         GameObject otherFruit;
@@ -353,6 +353,32 @@ public class Board : MonoBehaviour
                         fruitsCheck.Clear();
 
                         popped= true;
+
+                        if (swipeHint.fruit != null)
+                        {
+                            Animator animator = swipeHint.fruit.GetComponentInChildren<Animator>();
+                            if (animator != null)
+                            {
+                                //animator.enabled = false;
+
+                                animator.SetBool(swipeHint.fruit.swipeUp, false);
+                                animator.SetBool(swipeHint.fruit.swipeDown, false);
+                                animator.SetBool(swipeHint.fruit.swipeLeft, false);
+                                animator.SetBool(swipeHint.fruit.swipeRight, false);
+
+
+                                //StartCoroutine(AnimatorActivator());
+                            }
+                        }
+
+                        /*if (swipeHint.fruit == allFruits[i, j])
+                        {
+                            swipeHint.fruit.GetComponentInChildren<Animator>().enabled = false;
+                            //swipeHint.fruit.GetComponentInChildren<Animator>().enabled = true;
+                        }*/
+
+
+
                         achievementManager.AchievementProgress(typeFruits);                     
                     }
 
@@ -371,6 +397,7 @@ public class Board : MonoBehaviour
             if (!isRunning)
             {
                 StartCoroutine(GiveHint());
+                Debug.Log("HINT CALLED");
             }
             
         }
@@ -743,14 +770,17 @@ public class Board : MonoBehaviour
 
     public IEnumerator GiveHint()
     {
+        Debug.Log("HINT CALL ARRIVED TO COROUTINE");
         isRunning = true;
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
+        Debug.Log("HINT STARTED");
 
         if (!checkingMatch)
         {
             swipeHint.isHintSearching = true;
             swipeHint.continueIteration = true;
-        }        
+        }
+        else
+            yield return null;
     }   
-
 }

@@ -354,31 +354,19 @@ public class Board : MonoBehaviour
 
                         popped= true;
 
+                        // SWIPE HINT ANIMATION STOP
+
                         if (swipeHint.fruit != null)
                         {
                             Animator animator = swipeHint.fruit.GetComponentInChildren<Animator>();
-                            if (animator != null)
+                            if (animator != null && animator.gameObject.activeSelf && animator.runtimeAnimatorController != null && animator.isActiveAndEnabled)
                             {
-                                //animator.enabled = false;
-
                                 animator.SetBool(swipeHint.fruit.swipeUp, false);
                                 animator.SetBool(swipeHint.fruit.swipeDown, false);
                                 animator.SetBool(swipeHint.fruit.swipeLeft, false);
                                 animator.SetBool(swipeHint.fruit.swipeRight, false);
-
-
-                                //StartCoroutine(AnimatorActivator());
                             }
                         }
-
-                        /*if (swipeHint.fruit == allFruits[i, j])
-                        {
-                            swipeHint.fruit.GetComponentInChildren<Animator>().enabled = false;
-                            //swipeHint.fruit.GetComponentInChildren<Animator>().enabled = true;
-                        }*/
-
-
-
                         achievementManager.AchievementProgress(typeFruits);                     
                     }
 

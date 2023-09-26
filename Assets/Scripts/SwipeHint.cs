@@ -7,7 +7,6 @@ public class SwipeHint : MonoBehaviour
 {
     private Board board;
     public Fruit fruit;
-    private float hintTimer = 0f;
     public float hintThreshold = 3f; // Adjust this threshold as needed
 
     public bool isHintSearching;
@@ -18,7 +17,6 @@ public class SwipeHint : MonoBehaviour
     private void Start()
     {
         board = FindObjectOfType<Board>();       
-        hintTimer = 0f; // Initialize the hint timer
     }
 
     private void Update()

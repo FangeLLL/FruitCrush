@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Jobs;
+using Unity.Properties;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.U2D.IK;
@@ -262,6 +263,19 @@ public class Board : MonoBehaviour
         }
         fruit.GetComponent<Fruit>().isSwiped = true;
         otherFruit.GetComponent<Fruit>().isSwiped = true;
+
+        if (swipeHint.fruit != null)
+        {
+            Animator animator = swipeHint.fruit.GetComponentInChildren<Animator>();
+            if (animator != null && animator.gameObject.activeSelf && animator.runtimeAnimatorController != null && animator.isActiveAndEnabled)
+            {
+                animator.SetBool(swipeHint.fruit.swipeUp, false);
+                animator.SetBool(swipeHint.fruit.swipeDown, false);
+                animator.SetBool(swipeHint.fruit.swipeLeft, false);
+                animator.SetBool(swipeHint.fruit.swipeRight, false);
+            }
+        }
+
         audioManager.Swipe();
         StartCoroutine(CheckMove(fruit, otherFruit));
         if (!checkingMatch)

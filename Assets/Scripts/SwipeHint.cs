@@ -528,7 +528,7 @@ public class SwipeHint : MonoBehaviour
             }
 
         }
-        yield return new WaitForSeconds(0.1f);
+        //yield return new WaitForSeconds(0.1f);
         StopCoroutines();
     }
 
@@ -538,10 +538,10 @@ public class SwipeHint : MonoBehaviour
 
     #endregion
 
-    private void StopCoroutines()
+    public void StopCoroutines()
     {
         StopAllCoroutines();
-        board.isRunning = false;
+        //board.isRunning = false;
     }
 
     /*void Hint()

@@ -13,6 +13,9 @@ public class Board : MonoBehaviour
     public int width;
     public int height;
 
+    private float timer = 0f;
+    private float waitTime = 2f;
+
     [SerializeField]
     public AchievementManager achievementManager;
     public TaskController taskController;
@@ -21,6 +24,7 @@ public class Board : MonoBehaviour
 
     public bool checkingMatch = false;
     public bool isRunning = false;
+    public bool exitUpdate = false;
 
     public bool[] columnsFilling;
 
@@ -62,6 +66,30 @@ public class Board : MonoBehaviour
 
         SetUpWithArray(arrangeFruits,arrangeTiles);
         StartCoroutine(CheckAndDestroyMatches());
+    }
+
+    private void Update()
+    {
+        // Check if the conditions are met
+        if (!checkingMatch && !exitUpdate)
+        {
+            // Increment the timer
+            timer += Time.deltaTime;
+
+            // Check if two seconds have passed
+            if (timer >= waitTime)
+            {                
+                swipeHint.isHintSearching = true;
+                swipeHint.continueIteration = true;
+                timer = 0f;
+                exitUpdate = true;
+            }
+        }
+        else
+        {
+            // Reset the timer if conditions are not met
+            timer = 0f;
+        }
     }
 
     private void SetUpWithArray(int[,] arrangedFruits, int[,] arrangedTiles)
@@ -337,7 +365,7 @@ public class Board : MonoBehaviour
 
                     if (fruitsCheck.Count > 0)
                     {
-                        Debug.Log(fruitsCheck.Count+" popped same time");
+                        //Debug.Log(fruitsCheck.Count+" popped same time");
                         if (row && column)
                         {
                             Debug.Log("L or + shape happend");
@@ -382,11 +410,7 @@ public class Board : MonoBehaviour
         else
         {
             checkingMatch = false;
-            if (!isRunning)
-            {
-                StartCoroutine(GiveHint());
-                Debug.Log("HINT CALLED");
-            }
+            exitUpdate = false;
             
         }
 
@@ -755,20 +779,4 @@ public class Board : MonoBehaviour
         Destroy(allFruits[column, row]);
         allFruits[column, row] = fruit;
     }
-
-    public IEnumerator GiveHint()
-    {
-        Debug.Log("HINT CALL ARRIVED TO COROUTINE");
-        isRunning = true;
-        yield return new WaitForSeconds(2f);
-        Debug.Log("HINT STARTED");
-
-        if (!checkingMatch)
-        {
-            swipeHint.isHintSearching = true;
-            swipeHint.continueIteration = true;
-        }
-        else
-            yield return null;
-    }   
 }

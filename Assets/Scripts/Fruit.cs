@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Fruit : MonoBehaviour
 {
@@ -41,53 +42,54 @@ public class Fruit : MonoBehaviour
 
     void Update()
     {
-        
-
-        // For Moving Left or Right Sides
-        if (Mathf.Abs(targetV.x - transform.position.x) > .1)
+        if(SceneManager.GetActiveScene().name != "LevelEditor")
         {
-            // MOVE TOWARDS THE TARGET
-            tempPosition = new Vector2(targetV.x, transform.position.y);
-            transform.position = Vector2.Lerp(transform.position, tempPosition, speed);
-        }
-        else
-        {
-            // DIRECTLY SET THE POSITION
-            tempPosition = new Vector2(targetV.x, transform.position.y);
-            transform.position = tempPosition;
-            board.allFruits[column, row] = this.gameObject;
-        }
-
-
-        //  For Moving Up or Down Sides
-        if (Mathf.Abs(targetV.y - transform.position.y) > .1)
-        {
-            // MOVE TOWARDS THE TARGET
-            tempPosition = new Vector2(transform.position.x, targetV.y);
-            transform.position = Vector2.Lerp(transform.position, tempPosition, speed);
-        }
-        else
-        {
-            // DIRECTLY SET THE POSITION
-            tempPosition = new Vector2(transform.position.x, targetV.y);
-            transform.position = tempPosition;
-            board.allFruits[column, row] = this.gameObject;
-        }
-
-        
-
-        if(isClicked)
-        {
-            lastTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            if (Vector2.Distance(transform.position, lastTouchPosition) > 0.6f)
+            // For Moving Left or Right Sides
+            if (Mathf.Abs(targetV.x - transform.position.x) > .1)
             {
-                CalculateAngle();
-                isClicked = false;
-
+                // MOVE TOWARDS THE TARGET
+                tempPosition = new Vector2(targetV.x, transform.position.y);
+                transform.position = Vector2.Lerp(transform.position, tempPosition, speed);
             }
+            else
+            {
+                // DIRECTLY SET THE POSITION
+                tempPosition = new Vector2(targetV.x, transform.position.y);
+                transform.position = tempPosition;
+                board.allFruits[column, row] = this.gameObject;
+            }
+
+
+            //  For Moving Up or Down Sides
+            if (Mathf.Abs(targetV.y - transform.position.y) > .1)
+            {
+                // MOVE TOWARDS THE TARGET
+                tempPosition = new Vector2(transform.position.x, targetV.y);
+                transform.position = Vector2.Lerp(transform.position, tempPosition, speed);
+            }
+            else
+            {
+                // DIRECTLY SET THE POSITION
+                tempPosition = new Vector2(transform.position.x, targetV.y);
+                transform.position = tempPosition;
+                board.allFruits[column, row] = this.gameObject;
+            }
+
+
+
+            if (isClicked)
+            {
+                lastTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                if (Vector2.Distance(transform.position, lastTouchPosition) > 0.6f)
+                {
+                    CalculateAngle();
+                    isClicked = false;
+
+                }
+            }            
         }
 
-        if(Input.GetMouseButtonDown(1)) 
+        if (Input.GetMouseButtonDown(1))
         {
             // Convert the mouse position to world coordinates
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -96,11 +98,27 @@ public class Fruit : MonoBehaviour
             if (GetComponent<Collider2D>().OverlapPoint(mousePos))
             {
                 // If so, destroy this fruit
-                DestroyFruit();
+                if (SceneManager.GetActiveScene().name == "LevelEditor")
+                    NewDestroyFruit();
+                else
+                    return;
             }
         }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            // Convert the mouse position to world coordinates
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        
+            // Check if the mouse position is within the bounds of this fruit
+            if (GetComponent<Collider2D>().OverlapPoint(mousePos))
+            {
+                // If so, destroy this fruit
+                if (SceneManager.GetActiveScene().name == "LevelEditor")
+                    NewDestroyObstacle();
+                else
+                    return;
+            }
+        }
     }
 
     private void OnMouseDown()
@@ -109,14 +127,16 @@ public class Fruit : MonoBehaviour
         isClicked = true;
     }
 
-    void DestroyFruit()
+    // IT WILL BE DELETED
+
+    /*void DestroyFruit()
     {
-        // Destroy the current fruit
+        // DESTROY THE CURRENT FRUIT
         Destroy(gameObject);
 
-        // Call the method in the Board script to replace the destroyed fruit
+        // CALL THE METHOD IN THE BOARD SCRIPT TO REPLACE THE DESTROYED FRUIT
         board.ReplaceDestroyedFruit(column, row);
-    }
+    }*/
 
 
     private void CalculateAngle()
@@ -127,5 +147,21 @@ public class Fruit : MonoBehaviour
         board.SwipeFruits(swipeAngle, column, row);
     }
 
+    private void NewDestroyFruit()
+    {
+        // DESTROY THE CURRENT FRUIT
+        Destroy(gameObject);
 
+        // CALL THE METHOD IN THE LevelManager SCRIPT TO REPLACE THE DESTROYED FRUIT
+        FindObjectOfType<LevelManager>().ReplaceDestroyedFruit(column, row);
+    }
+
+    private void NewDestroyObstacle()
+    {
+        // DESTROY THE CURRENT FRUIT
+        Destroy(gameObject);
+
+        // CALL THE METHOD IN THE LevelManager SCRIPT TO REPLACE THE DESTROYED FRUIT
+        FindObjectOfType<LevelManager>().ReplaceObstacle(column, row);
+    }
 }

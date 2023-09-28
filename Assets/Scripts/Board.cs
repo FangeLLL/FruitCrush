@@ -165,6 +165,18 @@ public class Board : MonoBehaviour
         //StopCoroutine(GiveHint());
         swipeHint.isHintSearching = false;
 
+        if (swipeHint.fruit != null)
+        {
+            Animator animator = swipeHint.fruit.GetComponentInChildren<Animator>();
+            if (animator != null && animator.gameObject.activeSelf && animator.runtimeAnimatorController != null && animator.isActiveAndEnabled)
+            {
+                animator.SetBool(swipeHint.fruit.swipeUp, false);
+                animator.SetBool(swipeHint.fruit.swipeDown, false);
+                animator.SetBool(swipeHint.fruit.swipeLeft, false);
+                animator.SetBool(swipeHint.fruit.swipeRight, false);
+            }
+        }
+
         GameObject otherFruit;
         GameObject fruit = allFruits[column, row];
         if (fruit.GetComponent<Fruit>().isSwiped)
@@ -775,21 +787,20 @@ public class Board : MonoBehaviour
         float yOffset = height * 0.5f - 0.5f;
         Vector2 tempPosition = new Vector2(column - xOffset, row - yOffset);
 
-        // Instantiate a new fruit at the position of the destroyed fruit
+        // INSTANTIATE A NEW FRUIT AT THE POSITION OF THE DESTROYED FRUIT
         int fruitToUse = UnityEngine.Random.Range(0, fruits.Length);
         GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
 
-        // Set the parent and name of the new fruit
+        // SET THE PARENT AND NAME OF THE NEW FRUIT
         fruit.transform.parent = this.transform;
         fruit.name = "( " + column + ", " + row + " )";
 
-        // Set the column and row of the new fruit
+        // SET THE COLUMN AND ROW OF THE NEW FRUIT
         fruit.GetComponent<Fruit>().column = column;
         fruit.GetComponent<Fruit>().row = row;
         fruit.GetComponent<Fruit>().fruitType = fruitToUse;
 
-
-        // Add the new fruit to the allFruits array
+        // ADD THE NEW FRUIT TO THE allFruits ARRAY
         Destroy(allFruits[column, row]);
         allFruits[column, row] = fruit;
     }

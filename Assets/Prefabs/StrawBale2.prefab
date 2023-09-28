@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1591640915798354651}
   - component: {fileID: 8256839375181607625}
-  - component: {fileID: -1353538243252883472}
+  - component: {fileID: 7644661403254883778}
   m_Layer: 0
-  m_Name: StrawBale
+  m_Name: StrawBale2
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 7549f573040ddb44fb1c75c238e49463, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &-1353538243252883472
+--- !u!61 &7644661403254883778
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

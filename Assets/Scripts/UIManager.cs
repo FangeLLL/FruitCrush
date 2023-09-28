@@ -18,6 +18,9 @@ public class UIManager : MonoBehaviour
     public GameObject musicIcon;
     public GameObject musicDisableIcon;
     public GameObject settingsGray;
+    public GameObject gameFinishBoxTrue;
+    public GameObject gameFinishBoxFalse;
+    public GameObject gameFinishBoxLevel;
 
     public bool isSoundOn;
     public bool isMusicOn;
@@ -25,15 +28,7 @@ public class UIManager : MonoBehaviour
     string gameFinishTrigger = "GameFinishTrigger";
     string gameFinishTriggerReverse = "GameFinishTriggerReverse";
 
-    int[] anan1 = { 3, 0 };
-    int[] anan2 = { 0, 3 };
-    int[] anan3 = { 10, 10 };
-
     int settingsButtonCounter = 1;
-
-    public float wait1;
-    public float wait2;
-    public float wait3;
 
     void Update()
     {
@@ -45,21 +40,6 @@ public class UIManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.N))
         {
             GameFinished(false);
-        }
-
-        else if (Input.GetKeyDown(KeyCode.T))
-        {
-            achivementManager.AchievementProgress(anan1);
-        }
-
-        else if (Input.GetKeyDown(KeyCode.Y))
-        {
-            achivementManager.AchievementProgress(anan2);
-        }
-
-        else if (Input.GetKeyDown(KeyCode.U))
-        {
-            achivementManager.AchievementProgress(anan3);
         }
     }
 
@@ -110,7 +90,7 @@ public class UIManager : MonoBehaviour
         yield return null;
         finishBackground.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
 
-        yield return new WaitForSeconds(wait1);
+        yield return new WaitForSeconds(1.5f);
 
         if (status)
         {
@@ -126,21 +106,40 @@ public class UIManager : MonoBehaviour
             failedText.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
         }
 
-        yield return new WaitForSeconds(wait2);
+        yield return new WaitForSeconds(3);
 
         if (status)
         {
             congratText.GetComponent<Animator>().SetTrigger(gameFinishTriggerReverse);
-            yield return new WaitForSeconds(wait3);
+            yield return new WaitForSeconds(1);
             congratText.SetActive(false);
         }
 
         else
         {
             failedText.GetComponent<Animator>().SetTrigger(gameFinishTriggerReverse);
-            yield return new WaitForSeconds(wait3);
+            yield return new WaitForSeconds(1);
             failedText.SetActive(false);
         }
+
+        if (status)
+        {
+            gameFinishBoxTrue.SetActive(true);
+            gameFinishBoxTrue.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+        }
+        else
+        {
+            gameFinishBoxFalse.SetActive(false);
+            gameFinishBoxFalse.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+        }
+
+        yield return new WaitForSeconds(.5f);
+
+        gameFinishBoxLevel.SetActive(true);
+
+        yield return new WaitForSeconds(.25f);
+
+        gameFinishBoxLevel.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
     }
 
     public void SettingsButton()

@@ -12,6 +12,7 @@ public class Achievement
     public int[] steps;
     public int level = 1;
     public int progress = 0;
+    public Texture achievementBackground;
 }
 
 public class AchievementManager : MonoBehaviour
@@ -26,6 +27,7 @@ public class AchievementManager : MonoBehaviour
     public GameObject progressBarBackFade;
     public GameObject progressBarFill;
     public GameObject transitionFade;
+    public GameObject scrollingBackground;
     public TextMeshProUGUI achievementNameText;
     public TextMeshProUGUI achievementProgressText1;
     public TextMeshProUGUI achievementProgressText2;
@@ -49,7 +51,7 @@ public class AchievementManager : MonoBehaviour
 
     public void AchievementProgress(int[] progressArray)
     {
-        Achievement totalAchievement = FindAchievementByIndex(8);
+        Achievement totalAchievement = FindAchievementByIndex(5);
 
         for (int i = 0; i < progressArray.Length; i++)
         {
@@ -130,6 +132,7 @@ public class AchievementManager : MonoBehaviour
         achLevel = achievement.level;
         achievementProgressText1.text = ach1.ToString();
         achievementProgressText2.text = ach2.ToString();
+        scrollingBackground.GetComponent<RawImage>().texture = achievement.achievementBackground;
         StartCoroutine(DisplayTiming(ach1, ach2, achLevel));
     }
 

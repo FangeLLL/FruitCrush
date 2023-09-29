@@ -590,6 +590,7 @@ MonoBehaviour:
   achievementManager: {fileID: 1772865870}
   taskController: {fileID: 1772865872}
   swipeHint: {fileID: 160705529}
+  saveData: {fileID: 0}
   checkingMatch: 0
   isRunning: 0
   exitUpdate: 0
@@ -598,6 +599,7 @@ MonoBehaviour:
   - {fileID: 3566861933945487612, guid: a93f162c14c85804c91de0fb620e5409, type: 3}
   - {fileID: 3566861933945487612, guid: db85cb766090462468799094e763dc2a, type: 3}
   - {fileID: 3566861933945487612, guid: 05739bb40d03c5040938d6f697a1917d, type: 3}
+  - {fileID: 3566861933945487612, guid: b5852d23aa5fab3469fb3a26cf627ac8, type: 3}
   - {fileID: 3566861933945487612, guid: b5852d23aa5fab3469fb3a26cf627ac8, type: 3}
   strawBalePrefab: {fileID: 3330133265949295339, guid: 6e55f47fa5c0a774683277fda450e2a5, type: 3}
   tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
@@ -5612,6 +5614,7 @@ GameObject:
   - component: {fileID: 1772865871}
   - component: {fileID: 1772865870}
   - component: {fileID: 1772865872}
+  - component: {fileID: 1772865873}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5783,6 +5786,24 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a7b5c6e4ae16f2f47961b75e0c33b731, type: 3}
   avatarWindow: {fileID: 2049658801}
   moveText: {fileID: 363990715}
+--- !u!114 &1772865873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1772865867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bd828b79cae0de4590c1328c626223f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grid:
+    width: 0
+    height: 0
+    fruits: []
+    strawBalePrefab: {fileID: 0}
+    tilePrefab: {fileID: 0}
 --- !u!1 &1891334520
 GameObject:
   m_ObjectHideFlags: 0

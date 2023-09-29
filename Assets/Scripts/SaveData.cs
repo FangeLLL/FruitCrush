@@ -2,7 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class SaveData : MonoBehaviour
-{ 
+{
+    public static SaveData Instance { get; private set; }
+
     public Grid grid = new Grid();
 
     private void Update()
@@ -36,13 +38,16 @@ public class SaveData : MonoBehaviour
     }
 }
 
-    [System.Serializable]
-    public class Grid
-    {
-        public int width;
-        public int height;
-        public GameObject[] fruits;
-        public GameObject strawBalePrefab;
-        public GameObject tilePrefab;
+[System.Serializable]
+public class Grid
+{
+    public int width;
+    public int height;
+    public GameObject[] fruits;
+    public GameObject[,] allFruits;
+    public GameObject[,] allTiles;
+    public GameObject strawBalePrefab;
+    public GameObject tilePrefab;
 }
+
 

@@ -6,12 +6,12 @@ using UnityEngine.UIElements;
 public class LevelManager : MonoBehaviour
 {
     public int width;
-    public int height;      
+    public int height;
 
     // INITIALIZE TO 0
     private int currentFruitIndex = 0;
     //private int currentObstacleIndex = 0;
-    public int obstacleType;
+    public int obstacleType; 
 
     [SerializeField]
     public GameObject[] fruits;
@@ -24,7 +24,7 @@ public class LevelManager : MonoBehaviour
     public GameObject[,] allObstacles;
 
     private void Start()
-    {
+    {        
         allFruits = new GameObject[width, height];
         allTiles = new GameObject[width, height];
         allObstacles = new GameObject[width, height];
@@ -86,7 +86,7 @@ public class LevelManager : MonoBehaviour
                 GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
                 backgroundTile.transform.parent = this.transform;
                 backgroundTile.name = "( " + i + ", " + j + " )";
-                allTiles[i, j] = backgroundTile;
+                allTiles[i, j] = backgroundTile;              
                 if (arrangedTiles[i, j] == 3)
                 {
                     backgroundTile.GetComponent<BackgroundTile>().strawBale = true;
@@ -102,7 +102,7 @@ public class LevelManager : MonoBehaviour
                     fruit.GetComponent<Fruit>().column = i;
                     fruit.GetComponent<Fruit>().row = j;
                     fruit.GetComponent<Fruit>().fruitType = fruitToUse;
-                    allFruits[i, j] = fruit;
+                    allFruits[i, j] = fruit;                   
                 }
 
 

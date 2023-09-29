@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Jobs;
 using Unity.Properties;
 using Unity.VisualScripting;
@@ -21,6 +22,7 @@ public class Board : MonoBehaviour
     public AchievementManager achievementManager;
     public TaskController taskController;
     public SwipeHint swipeHint;
+    public SaveData saveData;
 
 
     public bool checkingMatch = false;
@@ -33,17 +35,25 @@ public class Board : MonoBehaviour
     Animator animator;
 
     [SerializeField]
-    public GameObject[] fruits;
+    private GameObject[] fruits;
     public GameObject strawBalePrefab;
     public GameObject tilePrefab;
 
 
     public GameObject[,] allFruits;
-    public GameObject[,] allTiles;   
+    public GameObject[,] allTiles;
+
+    private void Awake()
+    {
+        saveData = FindFirstObjectByType<SaveData>();
+        saveData.LoadFromJson();
+    }
 
     void Start()
-    {
-       // Time.timeScale = 0.2f;
+    {      
+        width = saveData.grid.width;
+        height = saveData.grid.height;
+        fruits = saveData.grid.fruits;
 
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         allFruits = new GameObject[width, height];

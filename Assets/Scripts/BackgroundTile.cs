@@ -48,17 +48,14 @@ public class BackgroundTile : MonoBehaviour
 
     public void Boom(int column,int row)
     {
-        Debug.Log("AAA LEVEL EDITOR");
         if (strawBale)
         {
-            Debug.Log("AAA LEVEL EDITOR GÝRDÝ 1");
             strawBale = false;
             StartCoroutine(board.FadeOut(strawBaleObj,false));
             taskController.TaskProgress(0);
             
             if (!board.columnsFilling[column])
             {
-                Debug.Log("AAA LEVEL EDITOR GÝRDÝ 2");
                 StartCoroutine(board.FillTheColumn(column));
             }
             

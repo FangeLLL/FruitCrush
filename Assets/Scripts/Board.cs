@@ -22,7 +22,7 @@ public class Board : MonoBehaviour
     public AchievementManager achievementManager;
     public TaskController taskController;
     public SwipeHint swipeHint;
-    public SaveData saveData;
+  //  public SaveData saveData;
 
 
     public bool checkingMatch = false;
@@ -36,6 +36,8 @@ public class Board : MonoBehaviour
 
     [SerializeField]
     private GameObject[] fruits;
+    [SerializeField]
+    private GameObject[] powerUps;
     public GameObject strawBalePrefab;
     public GameObject tilePrefab;
 
@@ -45,15 +47,15 @@ public class Board : MonoBehaviour
 
     private void Awake()
     {
-        saveData = FindFirstObjectByType<SaveData>();
-        saveData.LoadFromJson();
+      //  saveData = FindFirstObjectByType<SaveData>();
+      //  saveData.LoadFromJson();
     }
 
     void Start()
     {      
-        width = saveData.grid.width;
-        height = saveData.grid.height;
-        fruits = saveData.grid.fruits;
+     //   width = saveData.grid.width;
+      //  height = saveData.grid.height;
+      //  fruits = saveData.grid.fruits;
 
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         allFruits = new GameObject[width, height];
@@ -64,7 +66,7 @@ public class Board : MonoBehaviour
         int[,] arrangeFruits = new int[width, height];
         int[,] arrangeTiles = new int[width, height];
 
-        taskController.SetTask(0, height * 1);
+        taskController.SetTask(0, height * 3);
         taskController.SetMoveCount(10);
 
         for(int i = 0;i < 3; i++)
@@ -324,7 +326,7 @@ public class Board : MonoBehaviour
                 List<GameObject> fruitsCheckTemp = new List<GameObject>();
                 bool same = true;
                 int k = 0;
-                bool row = false, column = false;
+                bool rowPopped = false, columnPopped = false;
                 // it checking if bottom piece and one above it same. In every cycle it adds the one is currently below checking and if two of them not same
                 // then its out of the  cycle. Checking if the space is null or exist.
                 if (allFruits[i, j])
@@ -346,7 +348,7 @@ public class Board : MonoBehaviour
                     }
                     else
                     {
-                        column = true;
+                        columnPopped = true;
                         fruitsCheck.AddRange(fruitsCheckTemp);
                     }
                     k = 0;
@@ -368,7 +370,7 @@ public class Board : MonoBehaviour
                     }
                     else
                     {
-                        row= true;
+                        rowPopped = true;
                         fruitsCheck.AddRange(fruitsCheckTemp.Except(fruitsCheck).ToList());
                     }
 
@@ -402,10 +404,7 @@ public class Board : MonoBehaviour
                     if (fruitsCheck.Count > 0)
                     {
                         //Debug.Log(fruitsCheck.Count+" popped same time");
-                        if (row && column)
-                        {
-                            Debug.Log("L or + shape happend");
-                        }
+                       
                         audioManager.FruitCrush();
                         type = allFruits[i, j].GetComponent<Fruit>().fruitType;
                         typeFruits[type] += fruitsCheck.Count;
@@ -414,9 +413,34 @@ public class Board : MonoBehaviour
                         {
                             StartCoroutine(FadeOut(fruitsCheck[e], true));
                         }
-                        fruitsCheck.Clear();
+                        if (fruitsCheck.Count > 3)
+                        {
+                            GameObject fruitToChange = fruitsCheck[UnityEngine.Random.Range(0, fruitsCheck.Count)];
+                            int row = fruitToChange.GetComponent<Fruit>().row;
+                            int column = fruitToChange.GetComponent<Fruit>().column;
+                            if (rowPopped)
+                            {
+                                CreatePowerUp(column, row, -1);
 
-                        popped= true;
+                            }
+                            else if (columnPopped)
+                            {
+                                CreatePowerUp(column, row, -2);
+
+                            }
+                        }
+                        fruitsCheck.Clear();
+                        /*
+                        if (row && column)
+                        {
+                            CreatePowerUp(i, j, -1);
+                            Debug.Log("L or + shape happend");
+                        }
+                        */
+                       
+                        popped = true;
+
+
 
                         // SWIPE HINT ANIMATION STOP
 
@@ -450,84 +474,74 @@ public class Board : MonoBehaviour
             
         }
 
-        /*
-        if (fruitsCheck.Count > 0)
-        {
-            for (int i = 0; i < fruitsCheck.Count; i++)
-            {
-                StartCoroutine(FadeOut(fruitsCheck[i], true));
-            }
-            achievementManager.AchievementProgress(typeFruits);
-            yield return new WaitForSeconds(0.4f);
-            StartCoroutine(FillTheGaps());
-        }
-        else
-        {
-            checkingMatch = false;
-        }
-        */
-
     }
 
     private IEnumerator CheckMove(GameObject fruit, GameObject otherFruit)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>();
         Fruit otherFruitScript = otherFruit.GetComponent<Fruit>();
+        bool succesfulMove = false;
 
         ChangeTwoFruit(fruit, otherFruit);
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.4f);
 
-
-        // Checking if this is right move
-
-        if (CheckMatchSides(fruitScript.row, fruitScript.column) || CheckMatchSides(otherFruitScript.row, otherFruitScript.column))
+        if (fruitScript.fruitType < 0 || otherFruitScript.fruitType < 0)
         {
-            taskController.MovePlayed();
-            // If any of object has a match then function can just finish.
-            if (fruit)
+            if(fruitScript.fruitType < 0) {
+                //  fruit.GetComponent<PowerUpManagment>().ActivatePowerUp();
+                ActivatePowerUp(fruitScript.column,fruitScript.row,fruitScript.fruitType);
+            }
+
+            if (otherFruitScript.fruitType < 0)
             {
-                fruitScript.isSwiped = false;
+                // otherFruit.GetComponent<PowerUpManagment>().ActivatePowerUp();
+                ActivatePowerUp(otherFruitScript.column, otherFruitScript.row, otherFruitScript.fruitType);
 
             }
-            if (otherFruit)
-            {
-                otherFruitScript.isSwiped = false;
+            succesfulMove = true;
 
-            }
+        }
+        else if (CheckMatchSides(fruitScript.row, fruitScript.column) || CheckMatchSides(otherFruitScript.row, otherFruitScript.column))
+        {
+            // Checked if this is right move
+            succesfulMove = true;
+
+
         }
         else
         {
-            if (fruit && otherFruit)
+            if (!fruit || !otherFruit)
             {
-                audioManager.SwipeResist();
-                ChangeTwoFruit(fruit, otherFruit);
-                yield return new WaitForSeconds(0.3f);
-                if (fruit)
-                {
-                    fruitScript.isSwiped = false;
 
-                }
-                if (otherFruit)
-                {
-                    otherFruitScript.isSwiped = false;
+                succesfulMove = true;
 
-                }
             }
-            else
-            {
-                taskController.MovePlayed();
-                if (fruit)
-                {
-                    fruitScript.isSwiped = false;
-
-                }
-                if (otherFruit)
-                {
-                    otherFruitScript.isSwiped = false;
-
-                }
-            }
+            
         }
+
+        if(succesfulMove)
+        {
+            taskController.MovePlayed();
+           
+        }
+        else
+        {
+            audioManager.SwipeResist();
+            ChangeTwoFruit(fruit, otherFruit);
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        if (fruit)
+        {
+            fruitScript.isSwiped = false;
+
+        }
+        if (otherFruit)
+        {
+            otherFruitScript.isSwiped = false;
+
+        }
+
     }
 
     private void ChangeTwoFruit(GameObject fruit,GameObject otherFruit)
@@ -748,12 +762,48 @@ public class Board : MonoBehaviour
 
     }
 
+    private void CreatePowerUp(int column,int row,int type)
+    {
+        /*
+        Power Up Type Number;
+        
+        -1 : Horizantal Harvester
+        -2 : Vertical Harvester
+
+         */
+
+
+
+
+        float xOffset = width * 0.5f - 0.5f;
+        float yOffset = height * 0.5f - 0.5f;
+        Vector2 tempPosition = new Vector2(column - xOffset, height - yOffset);
+
+        GameObject newPowerUp = Instantiate(powerUps[(type*-1)-1], tempPosition, Quaternion.identity);
+        Fruit newPowerUpScript = newPowerUp.GetComponent<Fruit>();
+
+        // Set the parent and name of the new fruit
+        newPowerUp.transform.parent = this.transform;
+        newPowerUp.name = "( " + column + ", " + row + " )";
+
+        // Set the column and row of the new fruit
+        newPowerUpScript.column = column;
+        newPowerUpScript.row = row;
+        newPowerUpScript.fruitType = type;
+        newPowerUp.gameObject.transform.position = allTiles[column, row].transform.position;
+        newPowerUpScript.targetV = allTiles[column, row].transform.position;
+
+
+        // Add the new fruit to the allFruits array
+        allFruits[column, row] = newPowerUp;
+    }
+
     private IEnumerator CrossFall(int column,int row)
     {
         GameObject fruit=null;
         Fruit fruitScript;
         int previousColumn=-1;
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
         if (column - 1 >= 0 && allFruits[column - 1, row] && !allFruits[column, row-1])
         {
             fruit = allFruits[column - 1, row];
@@ -813,5 +863,43 @@ public class Board : MonoBehaviour
         // ADD THE NEW FRUIT TO THE allFruits ARRAY
         Destroy(allFruits[column, row]);
         allFruits[column, row] = fruit;
+    }
+
+    public void ActivatePowerUp(int column,int row,int type)
+    {     
+        switch (type)
+        {
+            // Horizontal Harvester power up
+            case -1:
+                for (int i = 0; i < width; i++)
+                {
+                    if (allFruits[i, row])
+                    {
+                        StartCoroutine(FadeOut(allFruits[i, row], true));
+                    }
+                    else
+                    {
+                        allTiles[i, row].GetComponent<BackgroundTile>().Boom(i, row);
+                    }
+
+                }
+                break;
+            // Vertical Harvester power up
+            case -2:
+
+                for (int i = 0; i < height; i++)
+                {
+                    if (allFruits[column, i])
+                    {
+                        StartCoroutine(FadeOut(allFruits[column, i], true));
+
+                    }
+                    else
+                    {
+                        allTiles[column, i].GetComponent<BackgroundTile>().Boom(column, i);
+                    }
+                }             
+                break;
+        }
     }
 }

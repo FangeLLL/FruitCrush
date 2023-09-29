@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public AchievementManager achivementManager;
+    public TaskController taskController;
 
     public GameObject congratText;
     public GameObject failedText;
@@ -27,6 +28,8 @@ public class UIManager : MonoBehaviour
     public GameObject gameFinishBoxTarget1OG;
     public GameObject gameFinishBoxTarget2;
     public GameObject starBox;
+    public GameObject quitButton;
+    public GameObject continueWithButton;
 
     public bool isSoundOn;
     public bool isMusicOn;
@@ -276,5 +279,26 @@ public class UIManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("MusicSetting", isMusicOn ? 1 : 0);
         PlayerPrefs.Save();
+    }
+
+    public void PlusMovesBought()
+    {
+        taskController.moveCount = 5;
+        taskController.moveText.text = taskController.moveCount.ToString();
+        StartCoroutine(PlusMoveBoughtEnum());
+    }
+
+    IEnumerator PlusMoveBoughtEnum()
+    {
+        continueWithButton.GetComponent<Animator>().SetTrigger("Tapped");
+
+        yield return new WaitForSeconds(0.15f);
+
+        gameFinishBoxFalse.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
+        finishBackground.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
+
+        yield return new WaitForSeconds(0.5f);
+
+        gameFinishBoxFalse.SetActive(false);
     }
 }

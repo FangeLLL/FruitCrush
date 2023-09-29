@@ -22,7 +22,7 @@ public class TaskController : MonoBehaviour
     public TaskDisplay[] taskDisplays;
     public Sprite[] taskSprites;
 
-    int moveCount;
+    public int moveCount;
     int currentObjectiveIndex = 0;
 
     public GameObject moveCountText;

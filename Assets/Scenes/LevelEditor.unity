@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6254090}
   - component: {fileID: 6254091}
+  - component: {fileID: 6254092}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -184,7 +185,24 @@ MonoBehaviour:
   - {fileID: 3330133265949295339, guid: fe41b404371a0c94c893126b94b8006f, type: 3}
   tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
   strawBalePrefab: {fileID: 3330133265949295339, guid: 6e55f47fa5c0a774683277fda450e2a5, type: 3}
-  tile: {fileID: 0}
+--- !u!114 &6254092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6254087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bd828b79cae0de4590c1328c626223f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grid:
+    width: 0
+    height: 0
+    fruits: []
+    strawBalePrefab: {fileID: 0}
+    tilePrefab: {fileID: 0}
 --- !u!1 &27178501
 GameObject:
   m_ObjectHideFlags: 0
@@ -3505,11 +3523,11 @@ MonoBehaviour:
   musicIcon: {fileID: 1253087892}
   musicDisableIcon: {fileID: 1793192844}
   settingsGray: {fileID: 873475424}
+  gameFinishBoxTrue: {fileID: 0}
+  gameFinishBoxFalse: {fileID: 0}
+  gameFinishBoxLevel: {fileID: 0}
   isSoundOn: 0
   isMusicOn: 0
-  wait1: 1.5
-  wait2: 3
-  wait3: 1
 --- !u!114 &1428364324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3528,46 +3546,55 @@ MonoBehaviour:
     steps: 190000003200000064000000c8000000f4010000e8030000d0070000
     level: 0
     progress: 0
+    achievementBackground: {fileID: 0}
   - name: Fruit 1 Achievement
     index: 0
     steps: 190000003200000064000000c8000000f4010000e8030000
     level: 0
     progress: 0
+    achievementBackground: {fileID: 0}
   - name: Fruit 2 Achievement
     index: 1
     steps: 190000003200000064000000c8000000f4010000e8030000
     level: 0
     progress: 0
+    achievementBackground: {fileID: 0}
   - name: Fruit 3 Achievement
     index: 2
     steps: 190000003200000064000000c8000000f4010000e8030000
     level: 0
     progress: 0
+    achievementBackground: {fileID: 0}
   - name: Fruit 4 Achievement
     index: 3
     steps: 190000003200000064000000c8000000f4010000e8030000
     level: 0
     progress: 0
+    achievementBackground: {fileID: 0}
   - name: Fruit 5 Achievement
     index: 4
     steps: 190000003200000064000000c8000000f4010000e8030000
     level: 0
     progress: 0
+    achievementBackground: {fileID: 0}
   - name: Fruit 6 Achievement
     index: 5
     steps: 190000003200000064000000c8000000f4010000e8030000
     level: 0
     progress: 0
+    achievementBackground: {fileID: 0}
   - name: Fruit 7 Achievement
     index: 6
     steps: 190000003200000064000000c8000000f4010000e8030000
     level: 0
     progress: 0
+    achievementBackground: {fileID: 0}
   - name: Fruit 8 Achievement
     index: 7
     steps: 190000003200000064000000c8000000f4010000e8030000
     level: 0
     progress: 0
+    achievementBackground: {fileID: 0}
   achievementBanners:
   - {fileID: 21300000, guid: a9a2eec14aaf1374c8292c6d225415d0, type: 3}
   - {fileID: 21300000, guid: cc9bda83c62e50847b784e5166444d54, type: 3}
@@ -3583,6 +3610,7 @@ MonoBehaviour:
   progressBarBackFade: {fileID: 1145220110}
   progressBarFill: {fileID: 1217943841}
   transitionFade: {fileID: 1039905130}
+  scrollingBackground: {fileID: 0}
   achievementNameText: {fileID: 2060789029}
   achievementProgressText1: {fileID: 1087737450}
   achievementProgressText2: {fileID: 989982501}

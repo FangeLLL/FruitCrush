@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-//[CreateAssetMenu(fileName = "GridData", menuName = "GridData")]
 public class LevelManager : MonoBehaviour
 {
     public int width;
-    public int height;
-
-    private int columnTemp;
-    private int rowTemp;
-        
+    public int height;      
 
     // INITIALIZE TO 0
     private int currentFruitIndex = 0;

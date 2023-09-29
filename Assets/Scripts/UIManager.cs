@@ -21,6 +21,12 @@ public class UIManager : MonoBehaviour
     public GameObject gameFinishBoxTrue;
     public GameObject gameFinishBoxFalse;
     public GameObject gameFinishBoxLevel;
+    public GameObject gameFinishBoxStar;
+    public GameObject gameFinishBoxMoveCount1;
+    public GameObject gameFinishBoxMoveCount2;
+    public GameObject gameFinishBoxTarget1OG;
+    public GameObject gameFinishBoxTarget2;
+    public GameObject starBox;
 
     public bool isSoundOn;
     public bool isMusicOn;
@@ -106,7 +112,7 @@ public class UIManager : MonoBehaviour
             failedText.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
         }
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1.5f);
 
         if (status)
         {
@@ -129,17 +135,38 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            gameFinishBoxFalse.SetActive(false);
+            gameFinishBoxFalse.SetActive(true);
             gameFinishBoxFalse.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+
+            gameFinishBoxMoveCount1.GetComponent<Animator>().SetTrigger("GameFinishTrigger1");
+            gameFinishBoxMoveCount2.GetComponent<Animator>().SetTrigger("GameFinishTrigger2");
+
+            gameFinishBoxTarget2 = Instantiate(gameFinishBoxTarget1OG);
+            gameFinishBoxTarget2.transform.SetParent(gameFinishBoxFalse.transform);
+            gameFinishBoxTarget2.transform.localPosition = new Vector3(-131.6f, 69.8f, 0);
+            gameFinishBoxTarget2.transform.localScale = new Vector3(3.98f, 3.98f, 3.98f);
         }
+
+        starBox.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
 
         yield return new WaitForSeconds(.5f);
 
         gameFinishBoxLevel.SetActive(true);
 
-        yield return new WaitForSeconds(.25f);
+        if (status)
+        {
+            gameFinishBoxStar.SetActive(true);
+        }
 
+        yield return null;
+
+        if (status)
+        {
+            gameFinishBoxStar.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+        }
         gameFinishBoxLevel.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+
+
     }
 
     public void SettingsButton()

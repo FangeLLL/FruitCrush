@@ -10,6 +10,7 @@ public class TaskDisplay
 {
     public int taskTypeIndex;
     public Image taskImage;
+    public GameObject checkMark;
     public TextMeshProUGUI taskText;
     public bool isCompleted;
 }
@@ -79,9 +80,8 @@ public class TaskController : MonoBehaviour
 
                 if (currentTaskNumber <= 0)
                 {
-                    // Optionally, you can do something when the objective is completed, like hiding the UI element.
-                    //taskDisplay.taskImage.gameObject.SetActive(false);
                     taskDisplay.taskText.gameObject.SetActive(false);
+                    taskDisplay.checkMark.GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
                     taskDisplay.isCompleted = true;
                 }
                 else

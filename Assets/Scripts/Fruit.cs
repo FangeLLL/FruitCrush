@@ -101,7 +101,8 @@ public class Fruit : MonoBehaviour
                 if (SceneManager.GetActiveScene().name == "LevelEditor")
                     NewDestroyFruit();
                 else
-                    return;
+                    board.ReplaceDestroyedFruit(column, row);
+                    Destroy(gameObject);
             }
         }
         if (Input.GetKeyDown(KeyCode.R))

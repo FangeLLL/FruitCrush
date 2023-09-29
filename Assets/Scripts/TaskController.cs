@@ -25,7 +25,7 @@ public class TaskController : MonoBehaviour
     int moveCount;
     int currentObjectiveIndex = 0;
 
-    public GameObject avatarWindow;
+    public GameObject moveCountText;
     public TextMeshProUGUI moveText;
     bool isLevelCompleted;
     bool moveCountFlag = true;
@@ -43,7 +43,7 @@ public class TaskController : MonoBehaviour
         
         if (moveCount <= 5 && moveCountFlag)
         {
-            avatarWindow.GetComponent<Animator>().SetTrigger("MoveWarning");
+            moveCountText.GetComponent<Animator>().SetTrigger("MoveWarning");
             moveCountFlag = false;
         }
 

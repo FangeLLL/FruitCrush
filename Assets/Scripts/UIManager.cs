@@ -286,6 +286,8 @@ public class UIManager : MonoBehaviour
         taskController.moveCount = 5;
         taskController.moveText.text = taskController.moveCount.ToString();
         StartCoroutine(PlusMoveBoughtEnum());
+        // Money Decrease
+        // Cost Increase
     }
 
     IEnumerator PlusMoveBoughtEnum()
@@ -296,8 +298,12 @@ public class UIManager : MonoBehaviour
 
         gameFinishBoxFalse.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
         finishBackground.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
+        starBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
+        gameFinishBoxLevel.SetActive(false);
+        yield return null;
+        gameFinishBoxLevel.transform.localPosition = new Vector3(0, 200, 0);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.45f);
 
         gameFinishBoxFalse.SetActive(false);
     }

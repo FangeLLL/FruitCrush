@@ -29,8 +29,6 @@ public class Board : MonoBehaviour
     public bool isRunning = false;
     public bool exitUpdate = false;
 
-    public bool[] columnsFilling;
-
     AudioManager audioManager;
     Animator animator;
 
@@ -40,6 +38,8 @@ public class Board : MonoBehaviour
     private GameObject[] powerUps;
     public GameObject strawBalePrefab;
     public GameObject tilePrefab;
+
+    private bool[] fillingColumn;
 
 
     public GameObject[,] allFruits;
@@ -52,16 +52,19 @@ public class Board : MonoBehaviour
     }
 
     void Start()
-    {      
-     //   width = saveData.grid.width;
-      //  height = saveData.grid.height;
-      //  fruits = saveData.grid.fruits;
+    {
+        //   width = saveData.grid.width;
+        //  height = saveData.grid.height;
+        //  fruits = saveData.grid.fruits;
+
+        fillingColumn = new bool[width];
+
+        StartCoroutine(FillTheGaps());
 
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         allFruits = new GameObject[width, height];
         allTiles = new GameObject[width, height];
 
-        columnsFilling = new bool[width]; 
         // SetUp();
         int[,] arrangeFruits = new int[width, height];
         int[,] arrangeTiles = new int[width, height];
@@ -464,8 +467,8 @@ public class Board : MonoBehaviour
 
         if (popped)
         {        
-            yield return new WaitForSeconds(0.4f);
-            StartCoroutine(FillTheGaps());
+            yield return new WaitForSeconds(0.3f);
+            StartCoroutine(CheckAndDestroyMatches());
         }
         else
         {
@@ -642,7 +645,7 @@ public class Board : MonoBehaviour
     public IEnumerator FadeOut(GameObject obj,bool explosion)
     {
         float elapsedTime = 0f;
-        float fadeDuration = 0.3f;
+        float fadeDuration = 0.25f;
         Color color = obj.GetComponentInChildren<SpriteRenderer>().color;
         if (explosion)
         {
@@ -658,16 +661,26 @@ public class Board : MonoBehaviour
             float alpha = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
 
             // Update the object's color with the new alpha
-            obj.GetComponentInChildren<SpriteRenderer>().color = new Color(color.r, color.g, color.b, alpha);
+            if (obj)
+            {
+                obj.GetComponentInChildren<SpriteRenderer>().color = new Color(color.r, color.g, color.b, alpha);
+            }
+            else
+            {
+                elapsedTime = fadeDuration;
+            }
 
             elapsedTime += Time.deltaTime;
             yield return null; // Wait for the next frame
         }
 
         // Ensure the object is completely transparent
-
-        obj.GetComponentInChildren<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 0f);
-        Destroy(obj);
+        if (obj)
+        {
+            obj.GetComponentInChildren<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 0f);
+            Destroy(obj);
+        }
+        
         
     }
 
@@ -678,19 +691,23 @@ public class Board : MonoBehaviour
         {
             // Starting from (0,0) location and its checks every column. It starts from botton to up and takes every empty place index and put it to queue
             // variable (emptyPlaces). 
-            if (!columnsFilling[i])
+            if (!fillingColumn[i])
             {
                 StartCoroutine(FillTheColumn(i));
             }
 
         }
         yield return new WaitForSeconds(0.3f);
-        StartCoroutine(CheckAndDestroyMatches());
+        if (!checkingMatch)
+        {
+            StartCoroutine(CheckAndDestroyMatches());
+        }
+        StartCoroutine(FillTheGaps());
     }
 
     public IEnumerator FillTheColumn(int i)
     {
-        columnsFilling[i] = true;
+        fillingColumn[i] = true;
 
         Queue<int> emptyPlaces = new Queue<int>();
 
@@ -709,7 +726,6 @@ public class Board : MonoBehaviour
 
                     int emptyRowIndex = emptyPlaces.Dequeue();
                     GameObject fruit = allFruits[i, j];
-                    allFruits[i, emptyRowIndex] = fruit;
                     allFruits[i, j] = null;
                     Fruit fruitScript = fruit.GetComponent<Fruit>();
 
@@ -754,11 +770,9 @@ public class Board : MonoBehaviour
 
 
             // Add the new fruit to the allFruits array
-            allFruits[i, emptyRowIndex] = newFruit;
             yield return new WaitForSeconds(0.1f);
         }
-
-        columnsFilling[i] = false;
+        fillingColumn[i] = false;
 
     }
 
@@ -802,19 +816,16 @@ public class Board : MonoBehaviour
     {
         GameObject fruit=null;
         Fruit fruitScript;
-        int previousColumn=-1;
         yield return new WaitForSeconds(0.5f);
         if (column - 1 >= 0 && allFruits[column - 1, row] && !allFruits[column, row-1])
         {
             fruit = allFruits[column - 1, row];
             allFruits[column-1, row] = null;
-            previousColumn=column - 1;
         }
         else if(column + 1 < width && allFruits[column + 1, row] && !allFruits[column, row - 1])
         {
             fruit = allFruits[column + 1, row];
             allFruits[column + 1, row] = null;
-            previousColumn = column + 1;
         }
 
         if (fruit)
@@ -824,15 +835,6 @@ public class Board : MonoBehaviour
             fruitScript.column = column;
             fruitScript.targetV= allTiles[column,row-1].transform.position;
             yield return new WaitForSeconds(0.5f);
-            if (previousColumn != -1 && !columnsFilling[previousColumn])
-            {
-                StartCoroutine(FillTheColumn(previousColumn));
-            }
-            yield return new WaitForSeconds(0.3f);
-            if (!columnsFilling[column])
-            {
-                StartCoroutine(FillTheColumn(column));
-            }  
             if(!checkingMatch)
             {
                 StartCoroutine(CheckAndDestroyMatches());

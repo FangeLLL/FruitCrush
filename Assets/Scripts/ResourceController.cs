@@ -8,8 +8,14 @@ public class ResourceController : MonoBehaviour
     public TextMeshProUGUI starText;
     public TextMeshProUGUI livesText;
 
-    public static int star = 3000;
-    public static int lives = 5;
+    public static int star;
+    public static int lives;
+
+    private void Awake()
+    {
+        star = PlayerPrefs.GetInt("Star", 1000);
+        lives = PlayerPrefs.GetInt("Lives", 5);
+    }
 
     private void Start()
     {
@@ -22,17 +28,23 @@ public class ResourceController : MonoBehaviour
     {
         star -= spentValue;
         starText.text = star.ToString();
+
+        PlayerPrefs.SetInt("Star", star);
     }
 
     public void GetHealtBack(int value)
     {
         lives += value;
         livesText.text = lives.ToString();
+
+        PlayerPrefs.SetInt("Lives", lives);
     }
 
     public void RetryOptionTrigger()
     {
         lives--;
         livesText.text = lives.ToString();
+
+        PlayerPrefs.SetInt("Lives", lives);
     }
 }

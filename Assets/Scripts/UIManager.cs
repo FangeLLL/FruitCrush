@@ -32,9 +32,10 @@ public class UIManager : MonoBehaviour
     public GameObject gameFinishBoxMoveBox;
     public GameObject gameFinishBoxPowerUpsBox;
     public GameObject starBox;
-    public GameObject heartBox;
+    public GameObject livesBox;
     public GameObject quitButton;
     public GameObject quitButton2;
+    public GameObject continueButton;
     public GameObject continueWithButton;
     public GameObject retryButton;
 
@@ -305,8 +306,7 @@ public class UIManager : MonoBehaviour
         else
         {
             //SHOP WILL BE SHOWN HERE!!!!!!!!!!!!
-            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.LoadScene(currentSceneIndex);
+            SceneManager.LoadScene("MainMenu");
         }
     }
 
@@ -342,7 +342,7 @@ public class UIManager : MonoBehaviour
 
         yield return null;
 
-        heartBox.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+        livesBox.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
         gameFinishBoxMoveBox.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
         retryButton.SetActive(true);
         yield return null;
@@ -372,5 +372,34 @@ public class UIManager : MonoBehaviour
 
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
+    }
+
+    public void QuitButton2Tapped()
+    {
+        StartCoroutine(QuitButton2TappedEnum());
+    }
+
+    IEnumerator QuitButton2TappedEnum()
+    {
+        quitButton2.GetComponent<Animator>().SetTrigger("Tapped");
+        quitButton2.GetComponent<Button>().interactable = false;
+
+        yield return new WaitForSeconds(0.15f);
+
+        SceneManager.LoadScene("MainMenu");
+    }
+    public void ContinueButton()
+    {
+        StartCoroutine(ContinueButtonEnum());
+    }
+
+    IEnumerator ContinueButtonEnum()
+    {
+        continueButton.GetComponent<Animator>().SetTrigger("Tapped");
+        continueButton.GetComponent<Button>().interactable = false;
+
+        yield return new WaitForSeconds(0.15f);
+
+        SceneManager.LoadScene("MainMenu");
     }
 }

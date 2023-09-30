@@ -41,6 +41,9 @@ public class Board : MonoBehaviour
 
     private bool[] fillingColumn;
 
+    bool hintBool = false;
+    bool popped = false;
+
 
     public GameObject[,] allFruits;
     public GameObject[,] allTiles;
@@ -87,7 +90,7 @@ public class Board : MonoBehaviour
     private void Update()
     {
         // Check if the conditions are met
-        if (!checkingMatch && !exitUpdate)
+        if (hintBool && !exitUpdate)
         {
             // Increment the timer
             timer += Time.deltaTime;
@@ -316,7 +319,8 @@ public class Board : MonoBehaviour
         List<GameObject> fruitsCheck = new List<GameObject>();
         checkingMatch = true;
         yield return null;
-        bool popped = false;
+        popped = false;
+        hintBool = false;
 
         int[] typeFruits = new int[fruits.Length];
 
@@ -359,14 +363,13 @@ public class Board : MonoBehaviour
                     //Row
                     while (same)
                     {
-                        if (i + k + 1 >= width || !allFruits[i + k + 1, j ] || allFruits[i + k, j ].GetComponent<Fruit>().fruitType != allFruits[i + k + 1, j ].GetComponent<Fruit>().fruitType)
+                        if (i + k + 1 >= width || !allFruits[i + k + 1, j] || allFruits[i + k, j].GetComponent<Fruit>().fruitType != allFruits[i + k + 1, j].GetComponent<Fruit>().fruitType)
                         {
                             same = false;
                         }
                         fruitsCheckTemp.Add(allFruits[i + k, j]);
                         k++;
                     }
-
                     if (k < 3)
                     {
                         fruitsCheckTemp.Clear();
@@ -376,9 +379,7 @@ public class Board : MonoBehaviour
                         rowPopped = true;
                         fruitsCheck.AddRange(fruitsCheckTemp.Except(fruitsCheck).ToList());
                     }
-
-
-
+                   
                     int type;
 
                     if (j + 1 < height && allFruits[i, j] && allFruits[i, j + 1] && (type = allFruits[i, j].GetComponent<Fruit>().fruitType) == allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
@@ -405,9 +406,7 @@ public class Board : MonoBehaviour
                     }
 
                     if (fruitsCheck.Count > 0)
-                    {
-                        //Debug.Log(fruitsCheck.Count+" popped same time");
-                       
+                    {                       
                         audioManager.FruitCrush();
                         type = allFruits[i, j].GetComponent<Fruit>().fruitType;
                         typeFruits[type] += fruitsCheck.Count;
@@ -421,7 +420,11 @@ public class Board : MonoBehaviour
                             GameObject fruitToChange = fruitsCheck[UnityEngine.Random.Range(0, fruitsCheck.Count)];
                             int row = fruitToChange.GetComponent<Fruit>().row;
                             int column = fruitToChange.GetComponent<Fruit>().column;
-                            if (rowPopped)
+                            if (rowPopped && columnPopped)
+                            {
+                                CreatePowerUp(column, row, -3);
+                            }
+                            else if (rowPopped)
                             {
                                 CreatePowerUp(column, row, -1);
 
@@ -431,19 +434,11 @@ public class Board : MonoBehaviour
                                 CreatePowerUp(column, row, -2);
 
                             }
+
                         }
-                        fruitsCheck.Clear();
-                        /*
-                        if (row && column)
-                        {
-                            CreatePowerUp(i, j, -1);
-                            Debug.Log("L or + shape happend");
-                        }
-                        */
+                        fruitsCheck.Clear();                     
                        
                         popped = true;
-
-
 
                         // SWIPE HINT ANIMATION STOP
 
@@ -465,17 +460,12 @@ public class Board : MonoBehaviour
             }
         }
 
-        if (popped)
-        {        
-            yield return new WaitForSeconds(0.3f);
-            StartCoroutine(CheckAndDestroyMatches());
-        }
-        else
+        if (!popped)
         {
-            checkingMatch = false;
             exitUpdate = false;
-            
+            hintBool= true;
         }
+        checkingMatch = false;
 
     }
 
@@ -783,7 +773,7 @@ public class Board : MonoBehaviour
         
         -1 : Horizantal Harvester
         -2 : Vertical Harvester
-
+        -3 : TNT
          */
 
 
@@ -877,11 +867,19 @@ public class Board : MonoBehaviour
                 {
                     if (allFruits[i, row])
                     {
-                        StartCoroutine(FadeOut(allFruits[i, row], true));
+                        if (allFruits[i, row].GetComponent<Fruit>().fruitType < 0 && i!=column && allFruits[i, row].GetComponent<Fruit>().fruitType != type)
+                        {
+                            ActivatePowerUp(i, row, allFruits[i, row].GetComponent<Fruit>().fruitType);
+                        }
+                        else
+                        {
+                            StartCoroutine(FadeOut(allFruits[i, row], true));
+                        }
                     }
-                    else
+                    else 
                     {
                         allTiles[i, row].GetComponent<BackgroundTile>().Boom(i, row);
+
                     }
 
                 }
@@ -893,8 +891,15 @@ public class Board : MonoBehaviour
                 {
                     if (allFruits[column, i])
                     {
-                        StartCoroutine(FadeOut(allFruits[column, i], true));
+                        if (allFruits[column, i].GetComponent<Fruit>().fruitType < 0 && i!=row && allFruits[column, i].GetComponent<Fruit>().fruitType!=type)
+                        {
+                            ActivatePowerUp(column, i, allFruits[column, i].GetComponent<Fruit>().fruitType);
+                        }
+                        else
+                        {
+                            StartCoroutine(FadeOut(allFruits[column, i], true));
 
+                        }
                     }
                     else
                     {
@@ -902,6 +907,36 @@ public class Board : MonoBehaviour
                     }
                 }             
                 break;
+               // TNT power up
+            case -3:
+
+                for (int i = column-1; i <= column+1; i++)
+                {
+                    for(int j = row-1; j <= row+1; j++)
+                    {
+                        if(row-1>=0 && row+1<height && column-1>=0 && column + 1 < width)
+                        {
+                            if (allFruits[i, j])
+                            {
+                                if (allFruits[i, j].GetComponent<Fruit>().fruitType < 0 && i != column && j != row && allFruits[i, j].GetComponent<Fruit>().fruitType != type)
+                                {
+                                    ActivatePowerUp(i, j, allFruits[i, j].GetComponent<Fruit>().fruitType);
+                                }
+                                else
+                                {
+                                    StartCoroutine(FadeOut(allFruits[i, j], true));
+                                }
+                            }
+                            else
+                            {
+                                allTiles[i, j].GetComponent<BackgroundTile>().Boom(i, j);
+                            }
+                        }
+                    }
+                }
+
+                break;
+
         }
     }
 }

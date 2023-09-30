@@ -683,7 +683,6 @@ MonoBehaviour:
   checkingMatch: 0
   isRunning: 0
   exitUpdate: 0
-  columnsFilling: 
   fruits:
   - {fileID: 3566861933945487612, guid: a93f162c14c85804c91de0fb620e5409, type: 3}
   - {fileID: 3566861933945487612, guid: db85cb766090462468799094e763dc2a, type: 3}
@@ -692,6 +691,7 @@ MonoBehaviour:
   powerUps:
   - {fileID: 7148421088010075250, guid: c7052b1bc5e43864db4d03c6a55e51c3, type: 3}
   - {fileID: 7148421088010075250, guid: 00ad14dbf5faad7488ad12c64a277e04, type: 3}
+  - {fileID: 7148421088010075250, guid: 3319a208155756443a292e419ac5c1a9, type: 3}
   strawBalePrefab: {fileID: 3330133265949295339, guid: 6e55f47fa5c0a774683277fda450e2a5, type: 3}
   tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
 --- !u!114 &160705529

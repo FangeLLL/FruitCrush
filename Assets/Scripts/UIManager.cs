@@ -153,6 +153,10 @@ public class UIManager : MonoBehaviour
             gameFinishBoxMoveCount1.GetComponent<Animator>().SetTrigger("GameFinishTrigger1");
             gameFinishBoxMoveCount2.GetComponent<Animator>().SetTrigger("GameFinishTrigger2");
 
+            if (gameFinishBoxTarget2 != null)
+            {
+                Destroy(gameFinishBoxTarget2);
+            }
             gameFinishBoxTarget2 = Instantiate(gameFinishBoxTarget1OG);
             gameFinishBoxTarget2.transform.SetParent(gameFinishBoxFalse.transform);
             gameFinishBoxTarget2.transform.localPosition = new Vector3(-131.6f, 69.8f, 0);
@@ -332,7 +336,25 @@ public class UIManager : MonoBehaviour
     {
         StartCoroutine(QuitButton1TappedEnum());
 
-        //task numbers will be crosses
+        for (int i = 1; i <= taskController.currentObjectiveIndex; i++)
+        {
+            string objectiveName = "Objective" + i.ToString();
+            Transform objec = GameObject.Find("TargetsBox(Clone)").transform.Find("TargetsDisplay");
+            Transform objective = objec.Find(objectiveName);
+
+            if (objective != null)
+            {
+                GameObject checkMark = objective.Find("CheckMark").gameObject;
+                GameObject text = objective.Find("ObjectiveTEXT").gameObject;
+
+                if (checkMark.transform.localScale == new Vector3(0,0,0))
+                {
+                    text.SetActive(false);
+                    GameObject crossMark = objective.Find("CrossMark").gameObject;
+                    crossMark.GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
+                }
+            }
+        }
     }
 
     IEnumerator QuitButton1TappedEnum()
@@ -388,6 +410,7 @@ public class UIManager : MonoBehaviour
 
         SceneManager.LoadScene("MainMenu");
     }
+
     public void ContinueButton()
     {
         StartCoroutine(ContinueButtonEnum());

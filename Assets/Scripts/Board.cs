@@ -84,7 +84,6 @@ public class Board : MonoBehaviour
         }
 
         SetUpWithArray(arrangeFruits,arrangeTiles);
-        StartCoroutine(CheckAndDestroyMatches());
     }
 
     private void Update()
@@ -336,7 +335,7 @@ public class Board : MonoBehaviour
                 bool rowPopped = false, columnPopped = false;
                 // it checking if bottom piece and one above it same. In every cycle it adds the one is currently below checking and if two of them not same
                 // then its out of the  cycle. Checking if the space is null or exist.
-                if (allFruits[i, j])
+                if (allFruits[i, j] && allFruits[i, j].GetComponent<Fruit>().fruitType>=0)
                 {
                     // Column
                     while (same)
@@ -476,18 +475,17 @@ public class Board : MonoBehaviour
         bool succesfulMove = false;
 
         ChangeTwoFruit(fruit, otherFruit);
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.5f);
 
         if (fruitScript.fruitType < 0 || otherFruitScript.fruitType < 0)
         {
             if(fruitScript.fruitType < 0) {
-                //  fruit.GetComponent<PowerUpManagment>().ActivatePowerUp();
-                ActivatePowerUp(fruitScript.column,fruitScript.row,fruitScript.fruitType);
+                ActivatePowerUp(fruitScript.column, fruitScript.row, fruitScript.fruitType);
+
             }
 
             if (otherFruitScript.fruitType < 0)
             {
-                // otherFruit.GetComponent<PowerUpManagment>().ActivatePowerUp();
                 ActivatePowerUp(otherFruitScript.column, otherFruitScript.row, otherFruitScript.fruitType);
 
             }
@@ -593,7 +591,7 @@ public class Board : MonoBehaviour
                 if (allFruits[column + k, row].GetComponent<Fruit>().fruitType == allFruits[column + k + 1, row].GetComponent<Fruit>().fruitType)
                 {
                     match++;
-                    if (match > 1)
+                    if (match == 2)
                     {
                         return true;
                     }
@@ -617,7 +615,7 @@ public class Board : MonoBehaviour
                 if (allFruits[column, row + k].GetComponent<Fruit>().fruitType == allFruits[column, row + k + 1].GetComponent<Fruit>().fruitType)
                 {
                     match++;
-                    if (match > 1)
+                    if (match == 2)
                     {
                         return true;
                     }
@@ -628,6 +626,8 @@ public class Board : MonoBehaviour
                 }
             }  
         }
+
+
         return false;
 
     }
@@ -709,6 +709,10 @@ public class Board : MonoBehaviour
                 {
                     // Putting empty place index to variable
                     emptyPlaces.Enqueue(j);
+                    if ((j + 1 < height && allTiles[i, j + 1].GetComponent<BackgroundTile>().strawBale)|| (j + 2 < height && allTiles[i, j + 2].GetComponent<BackgroundTile>().strawBale))
+                    {
+                        StartCoroutine(CrossFall(i, j+1));
+                    }
                 }
                 else if (emptyPlaces.Count > 0)
                 {
@@ -727,12 +731,7 @@ public class Board : MonoBehaviour
             }
             else
             {
-                if (j - 1 >= 0 && !allFruits[i, j - 1] && !allTiles[i, j - 1].GetComponent<BackgroundTile>().strawBale)
-                {
-                    StartCoroutine(CrossFall(i, j));
-                }
                 emptyPlaces.Clear();
-
             }
         }
 
@@ -777,13 +776,11 @@ public class Board : MonoBehaviour
          */
 
 
-
-
         float xOffset = width * 0.5f - 0.5f;
         float yOffset = height * 0.5f - 0.5f;
         Vector2 tempPosition = new Vector2(column - xOffset, height - yOffset);
 
-        GameObject newPowerUp = Instantiate(powerUps[(type*-1)-1], tempPosition, Quaternion.identity);
+        GameObject newPowerUp = Instantiate(powerUps[(type*-1)-1], tempPosition, powerUps[(type * -1) - 1].transform.rotation);
         Fruit newPowerUpScript = newPowerUp.GetComponent<Fruit>();
 
         // Set the parent and name of the new fruit
@@ -823,12 +820,7 @@ public class Board : MonoBehaviour
             fruitScript = fruit.GetComponent<Fruit>();
             fruitScript.row = row - 1;
             fruitScript.column = column;
-            fruitScript.targetV= allTiles[column,row-1].transform.position;
-            yield return new WaitForSeconds(0.5f);
-            if(!checkingMatch)
-            {
-                StartCoroutine(CheckAndDestroyMatches());
-            }
+            fruitScript.targetV= allTiles[column,row-1].transform.position; 
         }
         
     }
@@ -863,26 +855,19 @@ public class Board : MonoBehaviour
         {
             // Horizontal Harvester power up
             case -1:
-                for (int i = 0; i < width; i++)
-                {
-                    if (allFruits[i, row])
-                    {
-                        if (allFruits[i, row].GetComponent<Fruit>().fruitType < 0 && i!=column && allFruits[i, row].GetComponent<Fruit>().fruitType != type)
-                        {
-                            ActivatePowerUp(i, row, allFruits[i, row].GetComponent<Fruit>().fruitType);
-                        }
-                        else
-                        {
-                            StartCoroutine(FadeOut(allFruits[i, row], true));
-                        }
-                    }
-                    else 
-                    {
-                        allTiles[i, row].GetComponent<BackgroundTile>().Boom(i, row);
 
-                    }
+                GameObject newPowerUp = Instantiate(powerUps[0], allTiles[column,row].transform.position, powerUps[0].transform.rotation);
+                Fruit newPowerUpScript = newPowerUp.GetComponent<Fruit>();
+                newPowerUp.GetComponent<SpriteRenderer>().flipX= false;
 
-                }
+                newPowerUpScript.row = row;
+                newPowerUpScript.column = column;
+                newPowerUp.gameObject.transform.position = allTiles[column, row].transform.position;
+              //  newPowerUpScript.targetV = allTiles[column, row].transform.position;
+
+                HorizontalHarvesterMove(newPowerUp,true);
+                HorizontalHarvesterMove(allFruits[column,row],false);
+
                 break;
             // Vertical Harvester power up
             case -2:
@@ -897,7 +882,7 @@ public class Board : MonoBehaviour
                         }
                         else
                         {
-                            StartCoroutine(FadeOut(allFruits[column, i], true));
+                            StartCoroutine(FadeOut(allFruits[column, i], false));
 
                         }
                     }
@@ -924,7 +909,7 @@ public class Board : MonoBehaviour
                                 }
                                 else
                                 {
-                                    StartCoroutine(FadeOut(allFruits[i, j], true));
+                                    StartCoroutine(FadeOut(allFruits[i, j], false));
                                 }
                             }
                             else
@@ -938,5 +923,65 @@ public class Board : MonoBehaviour
                 break;
 
         }
+    }
+
+    public void HorizontalHarvesterMove(GameObject harvester,bool clone)
+    {
+        harvester.GetComponent<Collider2D>().enabled = false;
+        Fruit harvesterScript=harvester.GetComponent<Fruit>();
+        //harvesterScript.speed = 0.04f;
+        int row = harvesterScript.row,column=harvesterScript.column;
+        if (clone)
+        {
+            harvesterScript.targetV.x = allTiles[width-1, row].transform.position.x + 1;
+
+            for (int i = column+1; i < width; i++)
+            {
+                if (allFruits[i, row])
+                {
+                    if (allFruits[i, row].GetComponent<Fruit>().fruitType < 0 && allFruits[i, row].GetComponent<Fruit>().fruitType != -1)
+                    {
+                        ActivatePowerUp(i, row, allFruits[i, row].GetComponent<Fruit>().fruitType);
+                    }
+                    else
+                    {
+                        StartCoroutine(FadeOut(allFruits[i, row], false));
+                    }
+                }
+                else
+                {
+                    allTiles[i, row].GetComponent<BackgroundTile>().Boom(i, row);
+
+                }
+
+            }
+        }
+        else
+        {
+            harvester.GetComponent<Fruit>().targetV.x = allTiles[0, row].transform.position.x - 1;
+
+            for (int i = column-1; i >= 0; i--)
+            {
+                if (allFruits[i, row])
+                {
+                    if (allFruits[i, row].GetComponent<Fruit>().fruitType < 0 && allFruits[i, row].GetComponent<Fruit>().fruitType != -1)
+                    {
+                        ActivatePowerUp(i, row, allFruits[i, row].GetComponent<Fruit>().fruitType);
+                    }
+                    else
+                    {
+                        StartCoroutine(FadeOut(allFruits[i, row], false));
+                    }
+                }
+                else
+                {
+                    allTiles[i, row].GetComponent<BackgroundTile>().Boom(i, row);
+
+                }
+
+            }
+        }
+        StartCoroutine(FadeOut(harvester,false));
+
     }
 }

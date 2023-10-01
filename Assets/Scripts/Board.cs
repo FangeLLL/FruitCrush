@@ -41,7 +41,7 @@ public class Board : MonoBehaviour
 
     private bool[] fillingColumn;
 
-    bool hintBool = false;
+    public bool hintBool = false;
     bool popped = false;
 
 
@@ -332,7 +332,7 @@ public class Board : MonoBehaviour
                 List<GameObject> fruitsCheckTemp = new List<GameObject>();
                 bool same = true;
                 int k = 0;
-                bool rowPopped = false, columnPopped = false;
+                bool rowPopped = false, columnPopped = false, squarePopped = false;
                 // it checking if bottom piece and one above it same. In every cycle it adds the one is currently below checking and if two of them not same
                 // then its out of the  cycle. Checking if the space is null or exist.
                 if (allFruits[i, j] && allFruits[i, j].GetComponent<Fruit>().fruitType>=0)
@@ -390,7 +390,7 @@ public class Board : MonoBehaviour
                             fruitsCheckTemp.Add(allFruits[i, j + 1]);
                             fruitsCheckTemp.Add(allFruits[i + 1, j]);
                             fruitsCheckTemp.Add(allFruits[i + 1, j + 1]);
-
+                            squarePopped = true;
                             audioManager.FruitCrush();
                         }
                     }
@@ -416,12 +416,14 @@ public class Board : MonoBehaviour
                         }
                         if (fruitsCheck.Count > 3)
                         {
+                            // Creating Power Up
+
                             GameObject fruitToChange = fruitsCheck[UnityEngine.Random.Range(0, fruitsCheck.Count)];
                             int row = fruitToChange.GetComponent<Fruit>().row;
                             int column = fruitToChange.GetComponent<Fruit>().column;
                             if (rowPopped && columnPopped)
                             {
-                                CreatePowerUp(column, row, -3);
+                              //  CreatePowerUp(column, row, -3);
                             }
                             else if (rowPopped)
                             {
@@ -432,6 +434,9 @@ public class Board : MonoBehaviour
                             {
                                 CreatePowerUp(column, row, -2);
 
+                            }else if (squarePopped)
+                            {
+                                CreatePowerUp(column, row, -3);
                             }
 
                         }
@@ -888,8 +893,11 @@ public class Board : MonoBehaviour
                     ActivatePowerUp(fruit);
                     ActivatePowerUp(otherFruit);
                     break;
+                case -3:
+                    TNTExplosion(otherFruitScript.column, otherFruitScript.row, 2);
+                    Destroy(fruitScript);
+                    break;
             }
-
 
         }
         else
@@ -899,6 +907,7 @@ public class Board : MonoBehaviour
 
             switch (fruitScript.fruitType)
             {
+                // Horizontal Harvester
                 case -1:
                     switch (otherFruitScript.fruitType)
                     {
@@ -907,9 +916,23 @@ public class Board : MonoBehaviour
                             ActivatePowerUp(otherFruit);
                             break;
                         case -3:
+                            Destroy(otherFruit);
+                            if (fruitScript.row+1<height)
+                            {
+                                fruitScript.row++;
+                                ActivatePowerUp(fruit);
+                                fruitScript.row--;
+                            }
+                            ActivatePowerUp(fruit);
+                            if (fruitScript.row - 1 >= 0)
+                            {
+                                fruitScript.row--;
+                                ActivatePowerUp(fruit);
+                            }
                             break;
                     }
                     break;
+                    // Vertical Harvester
                 case -2:
                     switch (otherFruitScript.fruitType)
                     {
@@ -918,12 +941,59 @@ public class Board : MonoBehaviour
                             ActivatePowerUp(otherFruit);
                             break;
                         case -3:
+                            Destroy(otherFruit);
+                            if (fruitScript.column - 1 >= 0)
+                            {
+                                fruitScript.column--;
+                                ActivatePowerUp(fruit);
+                                fruitScript.column++;
+                            }
+                            ActivatePowerUp(fruit);
+                            if (fruitScript.column + 1 < width)
+                            {
+                                fruitScript.column++;
+                                ActivatePowerUp(fruit);
+                            }                        
+                            break;
+                    }
+                    break;
+                    // TNT 
+                case -3:
+                    switch (otherFruitScript.fruitType)
+                    {
+                        case -1:
+                            Destroy(fruit);
+                            if (otherFruitScript.row + 1 < height)
+                            {
+                                otherFruitScript.row++;
+                                ActivatePowerUp(otherFruit);
+                                otherFruitScript.row--;
+                            }
+                            ActivatePowerUp(otherFruit);
+                            if (otherFruitScript.row - 1 >= 0)
+                            {
+                                otherFruitScript.row--;
+                                ActivatePowerUp(otherFruit);
+                            }
+                            break;
+                        case -2:
+                            Destroy(fruit);
+                            if (otherFruitScript.column - 1 >= 0)
+                            {
+                                otherFruitScript.column--;
+                                ActivatePowerUp(otherFruit);
+                                otherFruitScript.column++;
+                            }
+                            ActivatePowerUp(otherFruit);
+                            if (otherFruitScript.column + 1 < width)
+                            {
+                                otherFruitScript.column++;
+                                ActivatePowerUp(otherFruit);
+                            }
                             break;
                     }
                     break;
             }
-
-
         }
     
     }
@@ -965,34 +1035,37 @@ public class Board : MonoBehaviour
                 break;
             // TNT power up
             case -3:
-
-                for (int i = column - 1; i <= column + 1; i++)
-                {
-                    for (int j = row - 1; j <= row + 1; j++)
-                    {
-                        if (row - 1 >= 0 && row + 1 < height && column - 1 >= 0 && column + 1 < width)
-                        {
-                            if (allFruits[i, j])
-                            {
-                                if (allFruits[i, j].GetComponent<Fruit>().fruitType < 0 && i != column && j != row && allFruits[i, j].GetComponent<Fruit>().fruitType != type)
-                                {
-                                    ActivatePowerUp(allFruits[i, j]);
-                                }
-                                else
-                                {
-                                    StartCoroutine(FadeOut(allFruits[i, j], false));
-                                }
-                            }
-                            else
-                            {
-                                allTiles[i, j].GetComponent<BackgroundTile>().Boom(i, j);
-                            }
-                        }
-                    }
-                }
-
+                TNTExplosion(column,row,1);
                 break;
 
+        }
+    }
+
+    private void TNTExplosion(int column, int row, int range)
+    {
+        for (int i = column - range; i <= column + range; i++)
+        {
+            for (int j = row - range; j <= row + range; j++)
+            {
+                if (j >= 0 && j < height && i >= 0 && i < width)
+                {
+                    if (allFruits[i, j])
+                    {
+                        if (allFruits[i, j].GetComponent<Fruit>().fruitType < 0 && i != column && j != row && allFruits[i, j].GetComponent<Fruit>().fruitType != -3)
+                        {
+                            ActivatePowerUp(allFruits[i, j]);
+                        }
+                        else
+                        {
+                            StartCoroutine(FadeOut(allFruits[i, j], false));
+                        }
+                    }
+                    else
+                    {
+                        allTiles[i, j].GetComponent<BackgroundTile>().Boom(i, j);
+                    }
+                }
+            }
         }
     }
 

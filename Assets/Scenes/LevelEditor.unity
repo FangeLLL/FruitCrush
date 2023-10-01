@@ -171,7 +171,6 @@ MonoBehaviour:
   width: 4
   height: 6
   obstacleType: 0
-  saveData: {fileID: 6254092}
   fruits:
   - {fileID: 3566861933945487612, guid: a93f162c14c85804c91de0fb620e5409, type: 3}
   - {fileID: 3566861933945487612, guid: db85cb766090462468799094e763dc2a, type: 3}
@@ -179,8 +178,6 @@ MonoBehaviour:
   - {fileID: 3566861933945487612, guid: 039b31e7d60a3244e804cd18d9684c83, type: 3}
   - {fileID: 3566861933945487612, guid: 05739bb40d03c5040938d6f697a1917d, type: 3}
   - {fileID: 3566861933945487612, guid: 39249f7716cd5394194090fc2e368229, type: 3}
-  - {fileID: 3566861933945487612, guid: b5852d23aa5fab3469fb3a26cf627ac8, type: 3}
-  - {fileID: 3566861933945487612, guid: 2da640a0dfd853f49a5c57d689c3b7f3, type: 3}
   obstacles:
   - {fileID: 3330133265949295339, guid: 6e55f47fa5c0a774683277fda450e2a5, type: 3}
   - {fileID: 3330133265949295339, guid: fe41b404371a0c94c893126b94b8006f, type: 3}
@@ -199,9 +196,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid:
-    width: 0
-    height: 0
-    fruits: []
+    width: 7
+    height: 6
+    fruits:
+    - {fileID: 3566861933945487612, guid: a93f162c14c85804c91de0fb620e5409, type: 3}
+    - {fileID: 3566861933945487612, guid: db85cb766090462468799094e763dc2a, type: 3}
+    - {fileID: 3566861933945487612, guid: 05739bb40d03c5040938d6f697a1917d, type: 3}
+    - {fileID: 3566861933945487612, guid: b5852d23aa5fab3469fb3a26cf627ac8, type: 3}
+    - {fileID: 3566861933945487612, guid: 2da640a0dfd853f49a5c57d689c3b7f3, type: 3}
     strawBalePrefab: {fileID: 0}
     tilePrefab: {fileID: 0}
 --- !u!1 &27178501
@@ -3477,21 +3479,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiManager: {fileID: 1428364323}
+  liveRegen: {fileID: 0}
   taskDisplays:
   - taskTypeIndex: 0
     taskImage: {fileID: 417438914}
+    checkMark: {fileID: 0}
     taskText: {fileID: 916735588}
     isCompleted: 0
   - taskTypeIndex: 0
     taskImage: {fileID: 674657780}
+    checkMark: {fileID: 0}
     taskText: {fileID: 1903879816}
     isCompleted: 0
   - taskTypeIndex: 0
     taskImage: {fileID: 940760896}
+    checkMark: {fileID: 0}
     taskText: {fileID: 1348061887}
     isCompleted: 0
   - taskTypeIndex: 0
     taskImage: {fileID: 1696043094}
+    checkMark: {fileID: 0}
     taskText: {fileID: 681326504}
     isCompleted: 0
   taskSprites:
@@ -3499,7 +3506,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a7b5c6e4ae16f2f47961b75e0c33b731, type: 3}
   - {fileID: 21300000, guid: a7b5c6e4ae16f2f47961b75e0c33b731, type: 3}
   - {fileID: 21300000, guid: a7b5c6e4ae16f2f47961b75e0c33b731, type: 3}
-  avatarWindow: {fileID: 1509799732}
+  moveCount: 0
+  currentObjectiveIndex: 0
+  moveCountText: {fileID: 0}
   moveText: {fileID: 1869845306}
 --- !u!114 &1428364323
 MonoBehaviour:
@@ -3514,6 +3523,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   achivementManager: {fileID: 1428364324}
+  taskController: {fileID: 0}
+  resourceController: {fileID: 0}
   congratText: {fileID: 1478434257}
   failedText: {fileID: 1948680175}
   finishBackground: {fileID: 1929034747}
@@ -3527,6 +3538,20 @@ MonoBehaviour:
   gameFinishBoxTrue: {fileID: 0}
   gameFinishBoxFalse: {fileID: 0}
   gameFinishBoxLevel: {fileID: 0}
+  gameFinishBoxStar: {fileID: 0}
+  gameFinishBoxMoveCount1: {fileID: 0}
+  gameFinishBoxMoveCount2: {fileID: 0}
+  gameFinishBoxTarget1OG: {fileID: 0}
+  gameFinishBoxTarget2: {fileID: 0}
+  gameFinishBoxMoveBox: {fileID: 0}
+  gameFinishBoxPowerUpsBox: {fileID: 0}
+  starBox: {fileID: 0}
+  livesBox: {fileID: 0}
+  quitButton: {fileID: 0}
+  quitButton2: {fileID: 0}
+  continueButton: {fileID: 0}
+  continueWithButton: {fileID: 0}
+  retryButton: {fileID: 0}
   isSoundOn: 0
   isMusicOn: 0
 --- !u!114 &1428364324

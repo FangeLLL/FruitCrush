@@ -2319,7 +2319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lives: 0
-  timeToRegen: 1200
+  timeToRegen: 20
   offlineTime: 0
   nextLiveRemainingTime: 0
   livesText: {fileID: 1812511980}
@@ -5693,6 +5693,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiManager: {fileID: 1772865871}
+  liveRegen: {fileID: 479588470}
   taskDisplays:
   - taskTypeIndex: 0
     taskImage: {fileID: 2021078081}
@@ -5753,8 +5754,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed77babca125a4441955ceb142dcc8ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  liveRegen: {fileID: 479588470}
   starText: {fileID: 1410421212}
-  livesText: {fileID: 1812511980}
 --- !u!1 &1779892733
 GameObject:
   m_ObjectHideFlags: 0

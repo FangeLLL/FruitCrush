@@ -218,6 +218,7 @@ public class UIManager : MonoBehaviour
 
         board.enabled = false;
         settingsIcon.GetComponent<Button>().interactable = false;
+        settingsGray.SetActive(true);
         settingsGray.GetComponent<Animator>().SetTrigger("SettingsOn");
         settingsIcon.GetComponent<Animator>().SetTrigger("SettingsOn"); 
         settingsIconShadow.GetComponent<Animator>().SetTrigger("SettingsOn"); // 0.5 sec
@@ -252,7 +253,11 @@ public class UIManager : MonoBehaviour
 
         soundIcon.GetComponent<Animator>().SetTrigger("SettingsOff"); // 0.33 sec
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.14f);
+
+        settingsGray.SetActive(false);
+
+        yield return new WaitForSeconds(0.16f);
 
         settingsIcon.GetComponent<Button>().interactable = true;
     }
@@ -314,6 +319,7 @@ public class UIManager : MonoBehaviour
         {
             taskController.moveCount = 5;
             taskController.moveText.text = taskController.moveCount.ToString();
+            taskController.onetime = true;
             resourceController.StarSpent(plusMovePrice);
             plusMovePrice += 1000;
             StartCoroutine(PlusMoveBoughtEnum());

@@ -52,7 +52,7 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            GameFinished(true);
+            taskController.FinishGame();
         }
         
         else if (Input.GetKeyDown(KeyCode.N))

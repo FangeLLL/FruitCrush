@@ -17,6 +17,7 @@ public class TaskDisplay
 public class TaskController : MonoBehaviour
 {
     public UIManager uiManager;
+    public LiveRegen liveRegen;
 
     //StrawBale Index = 0
     public TaskDisplay[] taskDisplays;
@@ -152,9 +153,10 @@ public class TaskController : MonoBehaviour
         }
     }
 
-    private void FinishGame()
+    public void FinishGame()
     {
         isLevelCompleted = true;
         uiManager.GameFinished(true);
+        liveRegen.LevelComplete();
     }
 }

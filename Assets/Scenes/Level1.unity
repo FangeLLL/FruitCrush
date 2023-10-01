@@ -897,6 +897,7 @@ MonoBehaviour:
   - {fileID: 7148421088010075250, guid: 3319a208155756443a292e419ac5c1a9, type: 3}
   strawBalePrefab: {fileID: 3330133265949295339, guid: 6e55f47fa5c0a774683277fda450e2a5, type: 3}
   tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
+  hintBool: 0
 --- !u!114 &160705529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7401,7 +7402,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - {fileID: 8300000, guid: 345d3e285b3dad847aa53c775f505840, type: 3}
-  - {fileID: 8300000, guid: c48c00a7d63a63f4db67f726d3659b76, type: 3}
+  - {fileID: 8300000, guid: 0d30a641577893e4e9aeeb4bc2c0cd70, type: 3}
   - {fileID: 8300000, guid: 9cd806e03db283544b354b6a59000267, type: 3}
   - {fileID: 8300000, guid: 2d7807756ca8e1047b8cc0dd856ebfd1, type: 3}
   - {fileID: 8300000, guid: 4f6d505046557b24596bfee8a05af235, type: 3}

@@ -74,7 +74,7 @@ public class AudioManager : MonoBehaviour
 
     public void FruitCrush()
     {
-        source.clip = sounds[Random.Range(3, 7)];
+        source.clip = sounds[Random.Range(4, 7)];
         source.PlayOneShot(source.clip);
     }
 
@@ -98,7 +98,7 @@ public class AudioManager : MonoBehaviour
 
     public void StarbaleBreak()
     {
-        source.clip = sounds[Random.Range(11, 13)];
+        source.clip = sounds[11];
         source.PlayOneShot(source.clip);
     }
 

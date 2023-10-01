@@ -708,7 +708,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lives: 0
-  timeToRegen: 1200
+  timeToRegen: 20
   offlineTime: 0
   nextLiveRemainingTime: 0
   livesText: {fileID: 1812511980}

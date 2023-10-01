@@ -6,7 +6,7 @@ using UnityEngine;
 public class LiveRegen : MonoBehaviour
 {
     public int lives;
-    public int timeToRegen = 1200;
+    public int timeToRegen = 20;
     public int offlineTime;
     public int nextLiveRemainingTime;
 
@@ -15,15 +15,15 @@ public class LiveRegen : MonoBehaviour
 
     private void Start()
     {
-        lives = PlayerPrefs.GetInt("Lives", 4);
+        lives = PlayerPrefs.GetInt("Lives", 2);
         livesText.text = lives.ToString();
-        nextLiveRemainingTime = PlayerPrefs.GetInt("NLRT", 1200);
+        nextLiveRemainingTime = PlayerPrefs.GetInt("NLRT", 20);
         CalculateOfflineTime();
     }
 
     void CalculateOfflineTime()
     {
-        offlineTime = 0;
+        offlineTime = 5;
         //Calculate the time since last time player opened the game.
         CheckLiveStatus();
     }

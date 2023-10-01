@@ -22,8 +22,6 @@ public class Fruit : MonoBehaviour
 
     private Board board;
 
-    public float speed = 0.04f;
-
     public bool isClicked,isSwiped=false;
 
     public Animator animator;
@@ -40,7 +38,7 @@ public class Fruit : MonoBehaviour
         targetV.y = transform.position.y;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if(SceneManager.GetActiveScene().name != "LevelEditor")
         {
@@ -49,7 +47,7 @@ public class Fruit : MonoBehaviour
             {
                 // MOVE TOWARDS THE TARGET
                 tempPosition = new Vector2(targetV.x, transform.position.y);
-                transform.position = Vector2.Lerp(transform.position, tempPosition, speed);
+                transform.position = Vector2.Lerp(transform.position, tempPosition, 0.2f);
             }
             else
             {
@@ -64,7 +62,7 @@ public class Fruit : MonoBehaviour
             {
                 // MOVE TOWARDS THE TARGET
                 tempPosition = new Vector2(transform.position.x, targetV.y);
-                transform.position = Vector2.Lerp(transform.position, tempPosition, speed);
+                transform.position = Vector2.Lerp(transform.position, tempPosition, 0.2f);
             }
             else
             {

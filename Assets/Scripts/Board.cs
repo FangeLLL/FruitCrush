@@ -179,6 +179,11 @@ public class Board : MonoBehaviour
 
     public void SwipeFruits(float swipeAngle, int column, int row)
     {
+        if (taskController.moveCount<1)
+        {
+            return;
+        }
+
         //StopCoroutine(GiveHint());
         swipeHint.isHintSearching = false;
 
@@ -511,7 +516,7 @@ public class Board : MonoBehaviour
             }
             else
             {
-                yield return new WaitForSeconds(0.3f);
+                yield return new WaitForSeconds(0.1f);
                 if (CheckMatchSides(fruitScript.row, fruitScript.column) || CheckMatchSides(otherFruitScript.row, otherFruitScript.column))
                 {
                     // Checked if this is right move
@@ -571,27 +576,10 @@ public class Board : MonoBehaviour
 
         fruitScript.row = otherFruitScript.row;
         fruitScript.column = otherFruitScript.column;
-      //  fruitScript.speed = 0.08f;
 
         otherFruitScript.row = tempRow;
         otherFruitScript.column=tempCol;
-     //   otherFruitScript.speed = 0.08f;
-
-       
-        /*
-        yield return new WaitForSeconds(0.2f);
-
-        if (fruit)
-        {
-            fruitScript.speed = 0.04f;
-
-        }
-        if (otherFruit)
-        {
-            otherFruitScript.speed = 0.04f;
-
-        }
-        */
+    
     }
 
     private bool CheckMatchSides(int row,int column)
@@ -656,6 +644,21 @@ public class Board : MonoBehaviour
 
     public IEnumerator FadeOut(GameObject obj,bool explosion)
     {
+        
+        // If fruit type 
+
+        if (obj.GetComponent<Fruit>())
+        {
+            if (obj.GetComponent<Fruit>().fruitType == -100)
+            {
+                yield break;
+            }
+            else
+            {
+                obj.GetComponent<Fruit>().fruitType = -100;
+            }
+        }
+        
         float elapsedTime = 0f;
         float fadeDuration = 0.25f;
         Color color = obj.GetComponentInChildren<SpriteRenderer>().color;
@@ -895,7 +898,6 @@ public class Board : MonoBehaviour
                     break;
                 case -3:
                     TNTExplosion(otherFruitScript.column, otherFruitScript.row, 2);
-                    Destroy(fruitScript);
                     break;
             }
 
@@ -1051,7 +1053,7 @@ public class Board : MonoBehaviour
                 {
                     if (allFruits[i, j])
                     {
-                        if (allFruits[i, j].GetComponent<Fruit>().fruitType < 0 && i != column && j != row && allFruits[i, j].GetComponent<Fruit>().fruitType != -3)
+                        if (allFruits[i, j].GetComponent<Fruit>().fruitType < 0 && i != column && j != row)
                         {
                             ActivatePowerUp(allFruits[i, j]);
                         }

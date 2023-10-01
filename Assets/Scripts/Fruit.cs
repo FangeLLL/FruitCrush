@@ -90,6 +90,11 @@ public class Fruit : MonoBehaviour
             }            
         }
 
+       
+    }
+
+    void Update()
+    {
         if (Input.GetMouseButtonDown(1))
         {
             // Convert the mouse position to world coordinates
@@ -103,7 +108,7 @@ public class Fruit : MonoBehaviour
                     NewDestroyFruit();
                 else
                     board.ReplaceDestroyedFruit(column, row);
-                    Destroy(gameObject);
+                Destroy(gameObject);
             }
         }
         if (Input.GetKeyDown(KeyCode.R))

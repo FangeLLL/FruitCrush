@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LiveRegen : MonoBehaviour
 {
     public int lives;
-    public int timeToRegen = 20;
+    public int timeToRegen;
     public int offlineTime;
     public int nextLiveRemainingTime;
 
@@ -15,24 +17,36 @@ public class LiveRegen : MonoBehaviour
 
     private void Start()
     {
+        timeToRegen = 90;
         lives = PlayerPrefs.GetInt("Lives", 2);
         livesText.text = lives.ToString();
-        nextLiveRemainingTime = PlayerPrefs.GetInt("NLRT", 20);
+        nextLiveRemainingTime = PlayerPrefs.GetInt("NLRT", timeToRegen);
+
+        if (lives == 5)
+        {
+            nextLiveRemainingTime = timeToRegen;
+        }
+
+        if (SceneManager.GetActiveScene().name != "MainMenu")
+        {
+            LevelStarted();
+        }
+
         CalculateOfflineTime();
     }
 
     void CalculateOfflineTime()
     {
-        offlineTime = 5;
+        offlineTime = 0;
         //Calculate the time since last time player opened the game.
         CheckLiveStatus();
     }
 
     void CheckLiveStatus()
     {
-        Debug.Log("1");
-        if (lives == 5)
+        if (lives >= 5)
         {
+            lives = 5;
             livesText.text = lives.ToString();
             livesStatusText.text = "Full";
             offlineTime = 0;
@@ -63,28 +77,10 @@ public class LiveRegen : MonoBehaviour
                 {
                     nextLiveRemainingTime -= offlineTime;
                     offlineTime = 0;
+                    StopCoroutine(StartCountdown());
                     StartCoroutine(StartCountdown());
                 }
-
             }
-        }
-    }
-
-    void UpdateUI()
-    {
-        if (nextLiveRemainingTime >= 0)
-        {
-            livesStatusText.gameObject.SetActive(true);
-            livesStatusText.text = FormatTime(nextLiveRemainingTime);
-        }
-        else
-        {
-            lives++;
-            livesText.text = lives.ToString();
-            SaveLives();
-            StopCoroutine(StartCountdown());
-            nextLiveRemainingTime = timeToRegen;
-            CheckLiveStatus();
         }
     }
 
@@ -94,7 +90,21 @@ public class LiveRegen : MonoBehaviour
         {
             nextLiveRemainingTime--;
             PlayerPrefs.SetInt("NLRT", nextLiveRemainingTime);
-            UpdateUI();
+
+            if (nextLiveRemainingTime >= 0)
+            {
+                livesStatusText.gameObject.SetActive(true);
+                livesStatusText.text = FormatTime(nextLiveRemainingTime);
+            }
+            else
+            {
+                lives++;
+                livesText.text = lives.ToString();
+                SaveLives();
+                nextLiveRemainingTime = timeToRegen;
+                CheckLiveStatus();
+                break;
+            }
             yield return new WaitForSeconds(1);
         }
     }
@@ -108,6 +118,32 @@ public class LiveRegen : MonoBehaviour
 
     void SaveLives()
     {
+        PlayerPrefs.SetInt("Lives", lives);
+    }
+
+    public void LevelComplete()
+    {
+        lives++;
+
+        if (lives > 5)
+        {
+            lives = 5;
+            livesText.text = "Full";
+            PlayerPrefs.SetInt("NLRT", timeToRegen);
+        }
+        else
+        {
+            livesText.text = lives.ToString();
+        }
+
+        PlayerPrefs.SetInt("Lives", lives);
+    }
+
+    public void LevelStarted()
+    {
+        lives--;
+        livesText.text = lives.ToString();
+
         PlayerPrefs.SetInt("Lives", lives);
     }
 }

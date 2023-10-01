@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     public AchievementManager achivementManager;
     public TaskController taskController;
+    public ResourceController resourceController;
 
     public GameObject congratText;
     public GameObject failedText;
@@ -27,9 +29,15 @@ public class UIManager : MonoBehaviour
     public GameObject gameFinishBoxMoveCount2;
     public GameObject gameFinishBoxTarget1OG;
     public GameObject gameFinishBoxTarget2;
+    public GameObject gameFinishBoxMoveBox;
+    public GameObject gameFinishBoxPowerUpsBox;
     public GameObject starBox;
+    public GameObject livesBox;
     public GameObject quitButton;
+    public GameObject quitButton2;
+    public GameObject continueButton;
     public GameObject continueWithButton;
+    public GameObject retryButton;
 
     public bool isSoundOn;
     public bool isMusicOn;
@@ -38,6 +46,7 @@ public class UIManager : MonoBehaviour
     string gameFinishTriggerReverse = "GameFinishTriggerReverse";
 
     int settingsButtonCounter = 1;
+    int plusMovePrice = 900;
 
     void Update()
     {
@@ -144,10 +153,16 @@ public class UIManager : MonoBehaviour
             gameFinishBoxMoveCount1.GetComponent<Animator>().SetTrigger("GameFinishTrigger1");
             gameFinishBoxMoveCount2.GetComponent<Animator>().SetTrigger("GameFinishTrigger2");
 
+            if (gameFinishBoxTarget2 != null)
+            {
+                Destroy(gameFinishBoxTarget2);
+            }
             gameFinishBoxTarget2 = Instantiate(gameFinishBoxTarget1OG);
             gameFinishBoxTarget2.transform.SetParent(gameFinishBoxFalse.transform);
             gameFinishBoxTarget2.transform.localPosition = new Vector3(-131.6f, 69.8f, 0);
             gameFinishBoxTarget2.transform.localScale = new Vector3(3.98f, 3.98f, 3.98f);
+
+            quitButton.GetComponent<Button>().interactable = true;
         }
 
         starBox.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
@@ -283,28 +298,131 @@ public class UIManager : MonoBehaviour
 
     public void PlusMovesBought()
     {
-        taskController.moveCount = 5;
-        taskController.moveText.text = taskController.moveCount.ToString();
-        StartCoroutine(PlusMoveBoughtEnum());
-        // Money Decrease
-        // Cost Increase
+        if (ResourceController.star > plusMovePrice)
+        {
+            taskController.moveCount = 5;
+            taskController.moveText.text = taskController.moveCount.ToString();
+            resourceController.StarSpent(plusMovePrice);
+            plusMovePrice += 1000;
+            StartCoroutine(PlusMoveBoughtEnum());
+        }
+        
+        else
+        {
+            //SHOP WILL BE SHOWN HERE!!!!!!!!!!!!
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
     IEnumerator PlusMoveBoughtEnum()
     {
         continueWithButton.GetComponent<Animator>().SetTrigger("Tapped");
 
-        yield return new WaitForSeconds(0.15f);
+        yield return null;
 
         gameFinishBoxFalse.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
         finishBackground.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
         starBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
         gameFinishBoxLevel.SetActive(false);
-        yield return null;
         gameFinishBoxLevel.transform.localPosition = new Vector3(0, 200, 0);
 
         yield return new WaitForSeconds(0.45f);
 
+        continueWithButton.GetComponentInChildren<TextMeshProUGUI>().text = "Continue with           " + plusMovePrice.ToString();
         gameFinishBoxFalse.SetActive(false);
+    }
+
+    public void QuitButton1Tapped()
+    {
+        StartCoroutine(QuitButton1TappedEnum());
+
+        for (int i = 1; i <= taskController.currentObjectiveIndex; i++)
+        {
+            string objectiveName = "Objective" + i.ToString();
+            Transform objec = GameObject.Find("TargetsBox(Clone)").transform.Find("TargetsDisplay");
+            Transform objective = objec.Find(objectiveName);
+
+            if (objective != null)
+            {
+                GameObject checkMark = objective.Find("CheckMark").gameObject;
+                GameObject text = objective.Find("ObjectiveTEXT").gameObject;
+
+                if (checkMark.transform.localScale == new Vector3(0,0,0))
+                {
+                    text.SetActive(false);
+                    GameObject crossMark = objective.Find("CrossMark").gameObject;
+                    crossMark.GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
+                }
+            }
+        }
+    }
+
+    IEnumerator QuitButton1TappedEnum()
+    {
+        quitButton.GetComponent<Animator>().SetTrigger("Tapped");
+        quitButton.GetComponent<Button>().interactable = false;
+
+        yield return null;
+
+        livesBox.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+        gameFinishBoxMoveBox.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+        retryButton.SetActive(true);
+        yield return null;
+        continueWithButton.SetActive(false);
+
+        yield return new WaitForSeconds(0.17f);
+
+        quitButton.SetActive(false);
+        quitButton2.SetActive(true);
+
+        yield return new WaitForSeconds(0.13f);
+
+        gameFinishBoxPowerUpsBox.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+    }
+
+    public void RetryButtonTapped()
+    {
+        StartCoroutine(RetryButtonTappedEnum());
+    }
+
+    IEnumerator RetryButtonTappedEnum()
+    {
+        retryButton.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+        //resourceController.RetryOptionTrigger();
+
+        yield return new WaitForSeconds(.1f);
+
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
+    }
+
+    public void QuitButton2Tapped()
+    {
+        StartCoroutine(QuitButton2TappedEnum());
+    }
+
+    IEnumerator QuitButton2TappedEnum()
+    {
+        quitButton2.GetComponent<Animator>().SetTrigger("Tapped");
+        quitButton2.GetComponent<Button>().interactable = false;
+
+        yield return new WaitForSeconds(0.15f);
+
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void ContinueButton()
+    {
+        StartCoroutine(ContinueButtonEnum());
+    }
+
+    IEnumerator ContinueButtonEnum()
+    {
+        continueButton.GetComponent<Animator>().SetTrigger("Tapped");
+        continueButton.GetComponent<Button>().interactable = false;
+
+        yield return new WaitForSeconds(0.15f);
+
+        SceneManager.LoadScene("MainMenu");
     }
 }

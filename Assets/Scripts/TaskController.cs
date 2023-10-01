@@ -23,7 +23,7 @@ public class TaskController : MonoBehaviour
     public Sprite[] taskSprites;
 
     public int moveCount;
-    int currentObjectiveIndex = 0;
+    public int currentObjectiveIndex = 0;
 
     public GameObject moveCountText;
     public TextMeshProUGUI moveText;

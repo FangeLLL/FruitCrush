@@ -56,7 +56,6 @@ public class Fruit : MonoBehaviour
                 // DIRECTLY SET THE POSITION
                 tempPosition = new Vector2(targetV.x, transform.position.y);
                 transform.position = tempPosition;
-                board.allFruits[column, row] = this.gameObject;
             }
 
 
@@ -72,6 +71,10 @@ public class Fruit : MonoBehaviour
                 // DIRECTLY SET THE POSITION
                 tempPosition = new Vector2(transform.position.x, targetV.y);
                 transform.position = tempPosition;
+            }
+
+            if (Vector2.Distance(targetV, transform.position) < .5f)
+            {
                 board.allFruits[column, row] = this.gameObject;
             }
 

@@ -53,11 +53,7 @@ public class BackgroundTile : MonoBehaviour
             strawBale = false;
             StartCoroutine(board.FadeOut(strawBaleObj,false));
             taskController.TaskProgress(0);
-            
-            if (!board.columnsFilling[column])
-            {
-                StartCoroutine(board.FillTheColumn(column));
-            }
+         
             
         }
     }

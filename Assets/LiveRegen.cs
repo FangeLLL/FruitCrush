@@ -8,16 +8,16 @@ using UnityEngine.SceneManagement;
 public class LiveRegen : MonoBehaviour
 {
     public int lives;
-    public int timeToRegen;
-    public int offlineTime;
-    public int nextLiveRemainingTime;
+    int timeToRegen;
+    int offlineTime;
+    int nextLiveRemainingTime;
 
     public TextMeshProUGUI livesText;
     public TextMeshProUGUI livesStatusText;
 
     private void Start()
     {
-        timeToRegen = 90;
+        timeToRegen = 1800;
         lives = PlayerPrefs.GetInt("Lives", 2);
         livesText.text = lives.ToString();
         nextLiveRemainingTime = PlayerPrefs.GetInt("NLRT", timeToRegen);
@@ -30,14 +30,18 @@ public class LiveRegen : MonoBehaviour
         if (SceneManager.GetActiveScene().name != "MainMenu")
         {
             LevelStarted();
+            CheckLiveStatus();
+        }
+        else
+        {
+            CalculateOfflineTime();
         }
 
-        CalculateOfflineTime();
     }
 
     void CalculateOfflineTime()
     {
-        offlineTime = 0;
+        offlineTime = 1000;
         //Calculate the time since last time player opened the game.
         CheckLiveStatus();
     }
@@ -48,6 +52,7 @@ public class LiveRegen : MonoBehaviour
         {
             lives = 5;
             livesText.text = lives.ToString();
+            SaveLives();
             livesStatusText.text = "Full";
             offlineTime = 0;
             nextLiveRemainingTime = 0;
@@ -145,5 +150,12 @@ public class LiveRegen : MonoBehaviour
         livesText.text = lives.ToString();
 
         PlayerPrefs.SetInt("Lives", lives);
+    }
+
+    public void LivesRefilled()
+    {
+        lives = 5;
+        StopCoroutine(StartCountdown());
+        CheckLiveStatus();
     }
 }

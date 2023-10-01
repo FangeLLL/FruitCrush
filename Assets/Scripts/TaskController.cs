@@ -51,6 +51,7 @@ public class TaskController : MonoBehaviour
         if (moveCount <= 0)
         {
             StartCoroutine(OutofMovesCoroutine());
+            //DEACTIVATE BOARD
         }
     }
 

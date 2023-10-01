@@ -6,12 +6,13 @@ using UnityEngine;
 public class ResourceController : MonoBehaviour
 {
     public TextMeshProUGUI starText;
+    public TextMeshProUGUI starShopText;
 
     public static int star;
 
     private void Awake()
     {
-        star = PlayerPrefs.GetInt("Star", 1000);
+        star = PlayerPrefs.GetInt("Star", 99999);
     }
 
     private void Start()

@@ -18,6 +18,7 @@ public class TaskController : MonoBehaviour
 {
     public UIManager uiManager;
     public LiveRegen liveRegen;
+    public Board board;
 
     //StrawBale Index = 0
     public TaskDisplay[] taskDisplays;
@@ -26,10 +27,32 @@ public class TaskController : MonoBehaviour
     public int moveCount;
     public int currentObjectiveIndex = 0;
 
+    float timer;
+    public bool onetime = true;
+
     public GameObject moveCountText;
     public TextMeshProUGUI moveText;
     bool isLevelCompleted;
     bool moveCountFlag = true;
+
+    private void Update()
+    {
+        if (board.hintBool && moveCount <= 0 && onetime)
+        {
+            timer += Time.deltaTime;
+
+            if (timer >= .1f)
+            {
+                StartCoroutine(OutofMovesCoroutine());
+                onetime = false;
+                timer = 0f;
+            }
+        }
+        else
+        {
+            timer = 0f;
+        }
+    }
 
     public void SetMoveCount(int _moveCount)
     {
@@ -46,12 +69,6 @@ public class TaskController : MonoBehaviour
         {
             moveCountText.GetComponent<Animator>().SetTrigger("MoveWarning");
             moveCountFlag = false;
-        }
-
-        if (moveCount <= 0)
-        {
-            StartCoroutine(OutofMovesCoroutine());
-            //DEACTIVATE BOARD
         }
     }
 

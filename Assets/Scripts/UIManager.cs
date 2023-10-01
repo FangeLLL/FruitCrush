@@ -319,6 +319,7 @@ public class UIManager : MonoBehaviour
         {
             taskController.moveCount = 5;
             taskController.moveText.text = taskController.moveCount.ToString();
+            taskController.onetime = true;
             resourceController.StarSpent(plusMovePrice);
             plusMovePrice += 1000;
             StartCoroutine(PlusMoveBoughtEnum());

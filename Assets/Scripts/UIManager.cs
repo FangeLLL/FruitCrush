@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     public AchievementManager achivementManager;
     public TaskController taskController;
     public ResourceController resourceController;
+    public LiveRegen liveRegen;
+    public Board board;
 
     public GameObject congratText;
     public GameObject failedText;
@@ -38,6 +40,14 @@ public class UIManager : MonoBehaviour
     public GameObject continueButton;
     public GameObject continueWithButton;
     public GameObject retryButton;
+    public GameObject shopBackground;
+    public GameObject shopTopUI;
+    public GameObject outOfLivesBox;
+    public GameObject outOfLivesBoxQuitButton;
+    public GameObject refillButton;
+
+    public TextMeshProUGUI movePriceText;
+    public TextMeshProUGUI refillPriceText;
 
     public bool isSoundOn;
     public bool isMusicOn;
@@ -46,7 +56,8 @@ public class UIManager : MonoBehaviour
     string gameFinishTriggerReverse = "GameFinishTriggerReverse";
 
     int settingsButtonCounter = 1;
-    int plusMovePrice = 900;
+    int plusMovePrice = 500;
+    int refillPrice = 1000;
 
     void Update()
     {
@@ -205,6 +216,7 @@ public class UIManager : MonoBehaviour
     {
         yield return null;
 
+        board.enabled = false;
         settingsIcon.GetComponent<Button>().interactable = false;
         settingsGray.GetComponent<Animator>().SetTrigger("SettingsOn");
         settingsIcon.GetComponent<Animator>().SetTrigger("SettingsOn"); 
@@ -309,8 +321,7 @@ public class UIManager : MonoBehaviour
         
         else
         {
-            //SHOP WILL BE SHOWN HERE!!!!!!!!!!!!
-            SceneManager.LoadScene("MainMenu");
+            BuyStarsButtonTapped();
         }
     }
 
@@ -328,7 +339,7 @@ public class UIManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.45f);
 
-        continueWithButton.GetComponentInChildren<TextMeshProUGUI>().text = "Continue with           " + plusMovePrice.ToString();
+        movePriceText.text = plusMovePrice.ToString();
         gameFinishBoxFalse.SetActive(false);
     }
 
@@ -387,13 +398,19 @@ public class UIManager : MonoBehaviour
 
     IEnumerator RetryButtonTappedEnum()
     {
-        retryButton.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
-        //resourceController.RetryOptionTrigger();
+        if (liveRegen.lives <= 0)
+        {
+            outOfLivesBox.SetActive(true);
+            outOfLivesBox.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
 
-        yield return new WaitForSeconds(.1f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(.1f);
 
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
+            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currentSceneIndex);
+        }
     }
 
     public void QuitButton2Tapped()
@@ -424,5 +441,67 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(0.15f);
 
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void ShopCloseButtonTapped()
+    {
+        shopBackground.SetActive(false);
+        shopTopUI.GetComponent<Animator>().SetTrigger("ShopClose");
+    }
+
+    public void BuyStarsButtonTapped()
+    {
+        if (!shopBackground.activeSelf)
+        {
+            resourceController.starShopText.text = resourceController.starText.text;
+            shopBackground.SetActive(true);
+            shopTopUI.GetComponent<Animator>().SetTrigger("ShopOpen");
+        }
+    }
+
+    public void OutOfLivesBoxQuitButtonTapped()
+    {
+        StartCoroutine(OutOfLivesBoxQuitButtonTappedEnum());
+    }
+
+    IEnumerator OutOfLivesBoxQuitButtonTappedEnum()
+    {
+        outOfLivesBoxQuitButton.GetComponent<Animator>().SetTrigger("Tapped");
+
+        yield return null;
+
+        outOfLivesBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
+
+        yield return new WaitForSeconds(0.5f);
+
+        outOfLivesBox.SetActive(false);
+    }
+
+    public void RefillButtonTapped()
+    {
+        if (ResourceController.star >= refillPrice)
+        {
+            liveRegen.LivesRefilled();
+            resourceController.StarSpent(refillPrice);
+            StartCoroutine(RefillButtonTappedEnum());
+        }
+        else
+        {
+            BuyStarsButtonTapped();
+        }
+        
+    }
+
+    IEnumerator RefillButtonTappedEnum()
+    {
+        refillButton.GetComponent<Animator>().SetTrigger("Tapped");
+
+        yield return null;
+
+        outOfLivesBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
+
+        yield return new WaitForSeconds(0.5f);
+
+        outOfLivesBox.SetActive(false);
     }
 }

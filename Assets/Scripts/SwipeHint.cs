@@ -21,11 +21,19 @@ public class SwipeHint : MonoBehaviour
 
     private void Update()
     {
-        if (isHintSearching)
+        if(board.hintBool && !board.exitUpdate)
         {
-            StartCoroutine(ColumnSquareIteration());
-            isHintSearching = false;
+            if (isHintSearching)
+            {
+                StartCoroutine(ColumnSquareIteration());
+                isHintSearching = false;
+            }
         }
+        else
+        {
+            StopAllCoroutines();
+        }
+        
     }
 
     #region Iteration

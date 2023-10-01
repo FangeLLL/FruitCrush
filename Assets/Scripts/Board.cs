@@ -41,7 +41,7 @@ public class Board : MonoBehaviour
 
     private bool[] fillingColumn;
 
-    bool hintBool = false;
+    public bool hintBool = false;
     bool popped = false;
 
 

@@ -12,25 +12,20 @@ public class MainMenuController : MonoBehaviour
     public GameObject starBox;
     public GameObject livesBox;
     public TextMeshProUGUI starText;
-    public TextMeshProUGUI livesText;
-    public TextMeshProUGUI livesStatusText;
 
     public int star;
-    public int lives;
 
     private void Start()
     {
         GetSetValues();
-        ActivateUI();
+        //ActivateUI();
+        Invoke("ActivateUI", 0.25f);
     }
 
     private void GetSetValues()
     {
         star = PlayerPrefs.GetInt("Star", 1000);
-        lives = PlayerPrefs.GetInt("Lives", 5);
-
         starText.text = star.ToString();
-        livesText.text = lives.ToString();
     }
 
     private void ActivateUI()

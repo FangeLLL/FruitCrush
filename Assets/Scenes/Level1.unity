@@ -223,7 +223,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -2218,6 +2218,7 @@ GameObject:
   - component: {fileID: 479588469}
   - component: {fileID: 479588468}
   - component: {fileID: 479588467}
+  - component: {fileID: 479588470}
   m_Layer: 5
   m_Name: HeartBox
   m_TagString: Untagged
@@ -2305,6 +2306,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 479588465}
   m_CullTransparentMesh: 1
+--- !u!114 &479588470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479588465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfd28393c9b320d4cb59a5204987184d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lives: 0
+  timeToRegen: 1200
+  offlineTime: 0
+  nextLiveRemainingTime: 0
+  livesText: {fileID: 1812511980}
+  livesStatusText: {fileID: 15796888}
 --- !u!1 &484246508
 GameObject:
   m_ObjectHideFlags: 0

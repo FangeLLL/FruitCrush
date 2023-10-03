@@ -993,7 +993,7 @@ public class Board : MonoBehaviour
     
     }
 
-    private void ActivatePowerUp(GameObject fruit)
+    public void ActivatePowerUp(GameObject fruit)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>();
         fruitScript.fadeout = true;
@@ -1081,6 +1081,7 @@ public class Board : MonoBehaviour
                     if (allFruits[i, j])
                     {
                         DestroyController(allFruits[i, j], false);
+                        audioManager.FruitCrush();
                     }
                     allTiles[i, j].GetComponent<BackgroundTile>().Boom();
                 }
@@ -1104,6 +1105,7 @@ public class Board : MonoBehaviour
                 if (allFruits[i, row])
                 {
                     DestroyController(allFruits[i, row], false);
+                    audioManager.FruitCrush();
 
                 }
                 allTiles[i, row].GetComponent<BackgroundTile>().Boom();
@@ -1119,7 +1121,7 @@ public class Board : MonoBehaviour
                 if (allFruits[i, row])
                 {
                     DestroyController(allFruits[i, row], false);
-
+                    audioManager.FruitCrush();
                 }
                 allTiles[i, row].GetComponent<BackgroundTile>().Boom();
 
@@ -1144,6 +1146,7 @@ public class Board : MonoBehaviour
                 if (allFruits[column,i])
                 {
                     DestroyController(allFruits[column, i], false);
+                    audioManager.FruitCrush();
                 }
                 allTiles[column, i].GetComponent<BackgroundTile>().Boom();
 
@@ -1158,6 +1161,7 @@ public class Board : MonoBehaviour
                 if (allFruits[column, i])
                 {
                     DestroyController(allFruits[column, i], false);
+                    audioManager.FruitCrush();
                 }
                 allTiles[column, i].GetComponent<BackgroundTile>().Boom();
 

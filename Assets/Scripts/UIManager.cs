@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     public TaskController taskController;
     public ResourceController resourceController;
     public LiveRegen liveRegen;
+    public LevelController levelController;
 
     public GameObject congratText;
     public GameObject failedText;
@@ -48,6 +49,7 @@ public class UIManager : MonoBehaviour
 
     public TextMeshProUGUI movePriceText;
     public TextMeshProUGUI refillPriceText;
+    public TextMeshProUGUI levelText;
 
     public bool isSoundOn;
     public bool isMusicOn;
@@ -108,6 +110,7 @@ public class UIManager : MonoBehaviour
     //SUCCESS: PLAYER FINISHED ALL MISSIONS
     public void GameFinished(bool status)
     {
+        levelText.text = levelController.currentLevel.ToString();
         StartCoroutine(GameFinishUI(status));
     }
 
@@ -123,6 +126,7 @@ public class UIManager : MonoBehaviour
 
         if (status)
         {
+            levelController.LevelPassed();
             congratText.SetActive(true);
             yield return null;
             congratText.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
@@ -318,7 +322,6 @@ public class UIManager : MonoBehaviour
     {
         if (ResourceController.star > plusMovePrice)
         {
-            taskController.moveCount = 5;
             taskController.moveText.text = taskController.moveCount.ToString();
             taskController.onetime = true;
             taskController.isBoardActive = true;
@@ -337,6 +340,10 @@ public class UIManager : MonoBehaviour
     {
         continueWithButton.GetComponent<Animator>().SetTrigger("Tapped");
 
+        yield return new WaitForSeconds(0.1f);
+
+        taskController.moveCount = 5;
+
         yield return null;
 
         gameFinishBoxFalse.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
@@ -345,7 +352,7 @@ public class UIManager : MonoBehaviour
         gameFinishBoxLevel.SetActive(false);
         gameFinishBoxLevel.transform.localPosition = new Vector3(0, 200, 0);
 
-        yield return new WaitForSeconds(0.45f);
+        yield return new WaitForSeconds(0.35f);
 
         movePriceText.text = plusMovePrice.ToString();
         gameFinishBoxFalse.SetActive(false);

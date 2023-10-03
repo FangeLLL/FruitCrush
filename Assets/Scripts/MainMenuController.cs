@@ -8,9 +8,11 @@ using UnityEngine.UI;
 public class MainMenuController : MonoBehaviour
 {
     public LiveRegen liveRegen;
+    public LevelController levelController;
 
     public TextMeshProUGUI starText;
     public TextMeshProUGUI starShopText;
+    public TextMeshProUGUI levelBoxText;
     public GameObject playButton;
     public GameObject starBox;
     public GameObject livesBox;
@@ -20,6 +22,10 @@ public class MainMenuController : MonoBehaviour
     public GameObject outOfLivesBox;
     public GameObject outOfLivesBoxQuitButton;
     public GameObject refillButton;
+    public GameObject playBox;
+    public GameObject playBoxQuitButton;
+    public GameObject playBoxPlayButton;
+    public GameObject levelBox;
 
     public int star;
     int refillPrice = 1000;
@@ -51,10 +57,45 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayButtonTapped()
     {
+        levelBoxText.text = levelController.currentLevel.ToString();
         StartCoroutine(PlayButtonTappedEnum());
     }
 
     IEnumerator PlayButtonTappedEnum()
+    {
+        playButton.GetComponent<Animator>().SetTrigger("Tapped");
+        playBox.SetActive(true);
+        playBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+
+        yield return new WaitForSeconds(.5f);
+
+        levelBox.SetActive(true);
+        levelBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+    }
+
+    public void PlayBoxQuitButtonTapped()
+    {
+        StartCoroutine(PlayBoxQuitButtonTappedEnum());
+    }
+
+    IEnumerator PlayBoxQuitButtonTappedEnum()
+    {
+        playBoxQuitButton.GetComponent<Animator>().SetTrigger("Tapped");
+        playBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
+        levelBox.SetActive(false);
+        levelBox.transform.localPosition = new Vector3(0, 200, 0);
+
+        yield return new WaitForSeconds(0.35f);
+
+        playBox.SetActive(false);
+    }
+
+    public void PlayBoxPlayButtonTapped()
+    {
+        StartCoroutine(PlayBoxPlayButtonTappedEnum());
+    }
+
+    IEnumerator PlayBoxPlayButtonTappedEnum()
     {
         playButton.GetComponent<Animator>().SetTrigger("Tapped");
 
@@ -109,7 +150,7 @@ public class MainMenuController : MonoBehaviour
 
     public void RefillButtonTapped()
     {
-        if (ResourceController.star >= refillPrice)
+        if (star >= refillPrice)
         {
             liveRegen.LivesRefilled();
             StarSpent(refillPrice);

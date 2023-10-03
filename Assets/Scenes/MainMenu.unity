@@ -496,7 +496,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
@@ -2179,7 +2179,7 @@ RectTransform:
   m_GameObject: {fileID: 1708275402}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.45000112, y: 0.45000112, z: 0.45000112}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1528645420}
@@ -2187,7 +2187,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -316.19247, y: -100}
-  m_SizeDelta: {x: 128, y: 128}
+  m_SizeDelta: {x: 56, y: 56}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &1708275404
 Animator:
@@ -2229,7 +2229,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
@@ -2789,6 +2789,7 @@ MonoBehaviour:
   livesBox: {fileID: 672404959}
   shopBackground: {fileID: 123667230}
   shopTopUI: {fileID: 1528645416}
+  shopCloseButton: {fileID: 1708275402}
   outOfLivesBox: {fileID: 1817888126}
   outOfLivesBoxQuitButton: {fileID: 1987663090}
   refillButton: {fileID: 1473298964}

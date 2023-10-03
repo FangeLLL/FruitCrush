@@ -16,6 +16,7 @@ public class MainMenuController : MonoBehaviour
     public GameObject livesBox;
     public GameObject shopBackground;
     public GameObject shopTopUI;
+    public GameObject shopCloseButton;
     public GameObject outOfLivesBox;
     public GameObject outOfLivesBoxQuitButton;
     public GameObject refillButton;
@@ -75,6 +76,7 @@ public class MainMenuController : MonoBehaviour
     {
         shopBackground.SetActive(false);
         shopTopUI.GetComponent<Animator>().SetTrigger("ShopClose");
+        shopCloseButton.GetComponent<Animator>().SetTrigger("Tapped");
     }
 
     public void BuyStarsButtonTapped()

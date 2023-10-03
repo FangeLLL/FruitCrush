@@ -123,11 +123,21 @@ public class Fruit : MonoBehaviour
     }
 
     private void OnMouseDown()
-    {
+    {     
         firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         isClicked = true;
     }
-
+    
+    private void OnMouseUp()
+    {
+        isClicked = false;
+        if (fruitType < 0 && board.taskController.moveCount > 0)
+        {
+            board.taskController.MovePlayed();
+            board.ActivatePowerUp(gameObject);
+        }     
+    }
+    
     // IT WILL BE DELETED
 
     /*void DestroyFruit()

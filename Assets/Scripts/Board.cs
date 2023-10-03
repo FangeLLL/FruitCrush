@@ -417,7 +417,7 @@ public class Board : MonoBehaviour
                       //   fruitsCheck[UnityEngine.Random.Range(0, fruitsCheck.Count)];
                         for (int e = 0; e < fruitsCheck.Count; e++)
                         {
-                            StartCoroutine(FadeOut(fruitsCheck[e], true));
+                            DestroyController(fruitsCheck[e], true);
                         }
                         if (fruitsCheck.Count > 3)
                         {
@@ -642,33 +642,12 @@ public class Board : MonoBehaviour
 
     }
 
-    public IEnumerator FadeOut(GameObject obj,bool explosion)
+    public IEnumerator FadeOut(GameObject obj)
     {
-        
-        // If fruit type 
-
-        if (obj.GetComponent<Fruit>())
-        {
-            if (obj.GetComponent<Fruit>().fruitType == -100)
-            {
-                yield break;
-            }
-            else
-            {
-                obj.GetComponent<Fruit>().fruitType = -100;
-            }
-        }
-        
+               
         float elapsedTime = 0f;
         float fadeDuration = 0.25f;
-        Color color = obj.GetComponentInChildren<SpriteRenderer>().color;
-        if (explosion)
-        {
-            int row = obj.GetComponent<Fruit>().row;
-            int column = obj.GetComponent<Fruit>().column;
-
-            allTiles[column, row].GetComponent<BackgroundTile>().Explosion(column, row);
-        }
+        Color color = obj.GetComponentInChildren<SpriteRenderer>().color;      
        
         while (elapsedTime < fadeDuration)
         {
@@ -897,6 +876,8 @@ public class Board : MonoBehaviour
                     ActivatePowerUp(otherFruit);
                     break;
                 case -3:
+                    fruitScript.fadeout = true;
+                    StartCoroutine(FadeOut(fruit));
                     TNTExplosion(otherFruitScript.column, otherFruitScript.row, 2);
                     break;
             }
@@ -1003,6 +984,7 @@ public class Board : MonoBehaviour
     private void ActivatePowerUp(GameObject fruit)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>();
+        fruitScript.fadeout = true;
         int column = fruitScript.column, row = fruitScript.row, type = fruitScript.fruitType;
         switch (type)
         {
@@ -1043,8 +1025,41 @@ public class Board : MonoBehaviour
         }
     }
 
+    private void DestroyController(GameObject obj, bool explosion)
+    {
+        // If fruit type 
+
+        if (obj.GetComponent<Fruit>().fadeout)
+        {
+            return;
+        }
+        else
+        {
+            obj.GetComponent<Fruit>().fadeout = true;
+            // If object is not a powerup than it will be fadeout. Power ups will fadeout by their cycle. If obj do not have script than it means its
+            // straw bale or something like that
+            if (obj.GetComponent<Fruit>().fruitType >= 0)
+            {
+                if (explosion)
+                {
+                    int row = obj.GetComponent<Fruit>().row;
+                    int column = obj.GetComponent<Fruit>().column;
+
+                    allTiles[column, row].GetComponent<BackgroundTile>().Explosion(column, row);
+                }
+                StartCoroutine(FadeOut(obj));
+            }
+            else
+            {
+                ActivatePowerUp(obj);
+            }
+        }
+    }
+
     private void TNTExplosion(int column, int row, int range)
     {
+        allFruits[column, row].GetComponent<Fruit>().fadeout = true;
+        StartCoroutine(FadeOut(allFruits[column, row]));
         for (int i = column - range; i <= column + range; i++)
         {
             for (int j = row - range; j <= row + range; j++)
@@ -1053,19 +1068,9 @@ public class Board : MonoBehaviour
                 {
                     if (allFruits[i, j])
                     {
-                        if (allFruits[i, j].GetComponent<Fruit>().fruitType < 0 && !(i == column && j == row))
-                        {
-                            ActivatePowerUp(allFruits[i, j]);
-                        }
-                        else
-                        {
-                            StartCoroutine(FadeOut(allFruits[i, j], false));
-                        }
+                        DestroyController(allFruits[i, j], false);
                     }
-                    else
-                    {
-                        allTiles[i, j].GetComponent<BackgroundTile>().Boom(i, j);
-                    }
+                    allTiles[i, j].GetComponent<BackgroundTile>().Boom(i, j);
                 }
             }
         }
@@ -1083,23 +1088,13 @@ public class Board : MonoBehaviour
 
             for (int i = column+1; i < width; i++)
             {
+
                 if (allFruits[i, row])
                 {
-                    if (allFruits[i, row].GetComponent<Fruit>().fruitType < 0 && allFruits[i, row].GetComponent<Fruit>().fruitType != -1)
-                    {
-                        ActivatePowerUp(allFruits[i, row]);
-                    }
-                    else
-                    {
-                        StartCoroutine(FadeOut(allFruits[i, row], false));
-                    }
-                }
-                else
-                {
-                    allTiles[i, row].GetComponent<BackgroundTile>().Boom(i, row);
+                    DestroyController(allFruits[i, row], false);
 
                 }
-
+                allTiles[i, row].GetComponent<BackgroundTile>().Boom(i, row);
             }
         }
         else
@@ -1108,26 +1103,18 @@ public class Board : MonoBehaviour
 
             for (int i = column-1; i >= 0; i--)
             {
+
                 if (allFruits[i, row])
                 {
-                    if (allFruits[i, row].GetComponent<Fruit>().fruitType < 0 && allFruits[i, row].GetComponent<Fruit>().fruitType != -1)
-                    {
-                        ActivatePowerUp(allFruits[i, row]);
-                    }
-                    else
-                    {
-                        StartCoroutine(FadeOut(allFruits[i, row], false));
-                    }
-                }
-                else
-                {
-                    allTiles[i, row].GetComponent<BackgroundTile>().Boom(i, row);
+                    DestroyController(allFruits[i, row], false);
 
                 }
+                allTiles[i, row].GetComponent<BackgroundTile>().Boom(i, row);
 
             }
         }
-        StartCoroutine(FadeOut(harvester,false));
+        allTiles[column, row].GetComponent<BackgroundTile>().Boom(column, row);
+        StartCoroutine(FadeOut(harvester));
 
     }
 
@@ -1144,20 +1131,9 @@ public class Board : MonoBehaviour
             {
                 if (allFruits[column,i])
                 {
-                    if (allFruits[column, i].GetComponent<Fruit>().fruitType < 0 && allFruits[column, i].GetComponent<Fruit>().fruitType != -2)
-                    {
-                        ActivatePowerUp(allFruits[column, i]);
-                    }
-                    else
-                    {
-                        StartCoroutine(FadeOut(allFruits[column, i], false));
-                    }
+                    DestroyController(allFruits[column, i], false);
                 }
-                else
-                {
-                    allTiles[column, i].GetComponent<BackgroundTile>().Boom(column, i);
-
-                }
+                allTiles[column, i].GetComponent<BackgroundTile>().Boom(column, i);
 
             }
         }
@@ -1169,24 +1145,14 @@ public class Board : MonoBehaviour
             {
                 if (allFruits[column, i])
                 {
-                    if (allFruits[column, i].GetComponent<Fruit>().fruitType < 0 && allFruits[column, i].GetComponent<Fruit>().fruitType != -2)
-                    {
-                        ActivatePowerUp(allFruits[column, i]);
-                    }
-                    else
-                    {
-                        StartCoroutine(FadeOut(allFruits[column, i], false));
-                    }
+                    DestroyController(allFruits[column, i], false);
                 }
-                else
-                {
-                    allTiles[column, i].GetComponent<BackgroundTile>().Boom(column, i);
-
-                }
+                allTiles[column, i].GetComponent<BackgroundTile>().Boom(column, i);
 
             }
         }
-        StartCoroutine(FadeOut(harvester, false));
+        allTiles[column, row].GetComponent<BackgroundTile>().Boom(column, row);
+        StartCoroutine(FadeOut(harvester));
 
     }
 }

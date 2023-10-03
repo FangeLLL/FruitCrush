@@ -18,6 +18,8 @@ public class Fruit : MonoBehaviour
     private Vector2 lastTouchPosition;
     public Vector2 firstTouchPosition;
 
+    public bool fadeout = false;
+
     public Vector2 targetV;
 
     private Board board;

@@ -51,7 +51,7 @@ public class BackgroundTile : MonoBehaviour
         if (strawBale)
         {
             strawBale = false;
-            StartCoroutine(board.FadeOut(strawBaleObj,false));
+            StartCoroutine(board.FadeOut(strawBaleObj));
             taskController.TaskProgress(0);
          
             

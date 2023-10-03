@@ -5,10 +5,11 @@ using UnityEngine;
 public class BackgroundTile : MonoBehaviour
 {
 
-    public bool strawBale=false;
+    public bool strawBale=false, wheatFarm=false;
     private Board board;
     private TaskController taskController;
     public GameObject strawBaleObj;
+    public GameObject wheatFarmObj;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +28,7 @@ public class BackgroundTile : MonoBehaviour
             {
                 if (board.allTiles[column + i, row].GetComponent<BackgroundTile>().strawBale)
                 {
-                    board.allTiles[column + i, row].GetComponent<BackgroundTile>().Boom(column + i, row);
+                    board.allTiles[column + i, row].GetComponent<BackgroundTile>().BoxExplode();
                 }
             }
             
@@ -39,23 +40,41 @@ public class BackgroundTile : MonoBehaviour
             {
                 if (board.allTiles[column, row + i].GetComponent<BackgroundTile>().strawBale)
                 {
-                    board.allTiles[column, row + i].GetComponent<BackgroundTile>().Boom(column, row + i);
+                    board.allTiles[column, row + i].GetComponent<BackgroundTile>().BoxExplode();
                 }
             }      
         }
 
+        Boom();
+
     }
 
-    public void Boom(int column,int row)
+    public void BoxExplode()
     {
         if (strawBale)
         {
             strawBale = false;
             StartCoroutine(board.FadeOut(strawBaleObj));
             taskController.TaskProgress(0);
-         
-            
+
         }
+    }
+
+    public void Boom()
+    {
+        if (strawBale)
+
+        {
+            strawBale = false;
+            StartCoroutine(board.FadeOut(strawBaleObj));
+            taskController.TaskProgress(0);
+
+        }else if (wheatFarm) {
+            wheatFarm = false;
+            StartCoroutine(board.FadeOut(wheatFarmObj));
+            taskController.TaskProgress(1);
+        }
+
     }
 
    

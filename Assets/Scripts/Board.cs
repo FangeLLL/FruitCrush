@@ -37,6 +37,7 @@ public class Board : MonoBehaviour
     [SerializeField]
     private GameObject[] powerUps;
     public GameObject strawBalePrefab;
+    public GameObject wheatFarmPrefab;
     public GameObject tilePrefab;
 
     private bool[] fillingColumn;
@@ -73,13 +74,22 @@ public class Board : MonoBehaviour
         int[,] arrangeTiles = new int[width, height];
 
         taskController.SetTask(0, height * 3);
+        taskController.SetTask(1, height * 2);
         taskController.SetMoveCount(20);
 
-        for(int i = 0;i < 3; i++)
+        for(int i = 0;i < 1; i++)
         {
             for (int j = 0; j < height; j++)
             {
                 arrangeTiles[i, j] = 1;
+            }
+        }
+
+        for (int i = 1; i < 3; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                arrangeTiles[i, j] = 2;
             }
         }
 
@@ -127,10 +137,15 @@ public class Board : MonoBehaviour
                 backgroundTile.transform.parent = this.transform;
                 backgroundTile.name = "( " + i + ", " + j + " )";
                 allTiles[i, j] = backgroundTile;
-                if (arrangedTiles[i, j] == 1)
+                if (arrangedTiles[i, j] == 1 || arrangedTiles[i, j] == 2)
                 {
                     backgroundTile.GetComponent<BackgroundTile>().strawBale = true;
                     backgroundTile.GetComponent<BackgroundTile>().strawBaleObj = Instantiate(strawBalePrefab, tempPosition, Quaternion.identity);
+                    if(arrangedTiles[i, j] == 2)
+                    {
+                        backgroundTile.GetComponent<BackgroundTile>().wheatFarm = true;
+                        backgroundTile.GetComponent<BackgroundTile>().wheatFarmObj = Instantiate(wheatFarmPrefab, tempPosition, Quaternion.identity);
+                    }
                 }
                 else
                 {
@@ -1066,7 +1081,7 @@ public class Board : MonoBehaviour
                     {
                         DestroyController(allFruits[i, j], false);
                     }
-                    allTiles[i, j].GetComponent<BackgroundTile>().Boom(i, j);
+                    allTiles[i, j].GetComponent<BackgroundTile>().Boom();
                 }
             }
         }
@@ -1090,7 +1105,7 @@ public class Board : MonoBehaviour
                     DestroyController(allFruits[i, row], false);
 
                 }
-                allTiles[i, row].GetComponent<BackgroundTile>().Boom(i, row);
+                allTiles[i, row].GetComponent<BackgroundTile>().Boom();
             }
         }
         else
@@ -1105,11 +1120,11 @@ public class Board : MonoBehaviour
                     DestroyController(allFruits[i, row], false);
 
                 }
-                allTiles[i, row].GetComponent<BackgroundTile>().Boom(i, row);
+                allTiles[i, row].GetComponent<BackgroundTile>().Boom();
 
             }
         }
-        allTiles[column, row].GetComponent<BackgroundTile>().Boom(column, row);
+        allTiles[column, row].GetComponent<BackgroundTile>().Boom();
         StartCoroutine(FadeOut(harvester));
 
     }
@@ -1129,7 +1144,7 @@ public class Board : MonoBehaviour
                 {
                     DestroyController(allFruits[column, i], false);
                 }
-                allTiles[column, i].GetComponent<BackgroundTile>().Boom(column, i);
+                allTiles[column, i].GetComponent<BackgroundTile>().Boom();
 
             }
         }
@@ -1143,11 +1158,11 @@ public class Board : MonoBehaviour
                 {
                     DestroyController(allFruits[column, i], false);
                 }
-                allTiles[column, i].GetComponent<BackgroundTile>().Boom(column, i);
+                allTiles[column, i].GetComponent<BackgroundTile>().Boom();
 
             }
         }
-        allTiles[column, row].GetComponent<BackgroundTile>().Boom(column, row);
+        allTiles[column, row].GetComponent<BackgroundTile>().Boom();
         StartCoroutine(FadeOut(harvester));
 
     }

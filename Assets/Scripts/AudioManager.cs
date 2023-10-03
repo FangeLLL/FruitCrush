@@ -80,7 +80,7 @@ public class AudioManager : MonoBehaviour
 
     public void FruitFall()
     {
-        source.clip = sounds[Random.Range(7, 9)];
+        source.clip = sounds[7];
         source.PlayOneShot(source.clip);
     }
 

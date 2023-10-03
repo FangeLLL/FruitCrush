@@ -96,7 +96,7 @@ public class AudioManager : MonoBehaviour
         source.PlayOneShot(source.clip);
     }
 
-    public void StarbaleBreak()
+    public void StrawBaleBreak()
     {
         source.clip = sounds[11];
         source.PlayOneShot(source.clip);

@@ -10,12 +10,15 @@ public class BackgroundTile : MonoBehaviour
     private TaskController taskController;
     public GameObject strawBaleObj;
     public GameObject wheatFarmObj;
+    AudioManager audioManager;
+
 
     // Start is called before the first frame update
     void Start()
     {
         board = FindObjectOfType<Board>();
         taskController = FindObjectOfType<TaskController>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
     }
 
@@ -54,6 +57,7 @@ public class BackgroundTile : MonoBehaviour
         if (strawBale)
         {
             strawBale = false;
+            audioManager.StrawBaleBreak();
             StartCoroutine(board.FadeOut(strawBaleObj));
             taskController.TaskProgress(0);
 
@@ -63,14 +67,12 @@ public class BackgroundTile : MonoBehaviour
     public void Boom()
     {
         if (strawBale)
-
         {
-            strawBale = false;
-            StartCoroutine(board.FadeOut(strawBaleObj));
-            taskController.TaskProgress(0);
+           BoxExplode();
 
         }else if (wheatFarm) {
             wheatFarm = false;
+            audioManager.MarbleBreak();
             StartCoroutine(board.FadeOut(wheatFarmObj));
             taskController.TaskProgress(1);
         }

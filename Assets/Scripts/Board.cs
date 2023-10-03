@@ -7,6 +7,7 @@ using Unity.Jobs;
 using Unity.Properties;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.U2D.IK;
 using static UnityEngine.GraphicsBuffer;
 
@@ -118,6 +119,7 @@ public class Board : MonoBehaviour
             // Reset the timer if conditions are not met
             timer = 0f;
         }
+     
     }
 
     private void SetUpWithArray(int[,] arrangedFruits, int[,] arrangedTiles)
@@ -126,7 +128,7 @@ public class Board : MonoBehaviour
         height = arrangedTiles.GetLength(1);
 
         float xOffset = width * 0.5f - 0.5f;
-        float yOffset = height * 0.5f - 0.5f;
+        float yOffset = (height * 0.5f - 0.5f)+1.1f;
 
         for (int i = 0; i < width; i++)
         {
@@ -391,7 +393,6 @@ public class Board : MonoBehaviour
                             fruitsCheckTemp.Add(allFruits[i + 1, j]);
                             fruitsCheckTemp.Add(allFruits[i + 1, j + 1]);
                             squarePopped = true;
-                            audioManager.FruitCrush();
                         }
                     }
 
@@ -409,7 +410,6 @@ public class Board : MonoBehaviour
                         audioManager.FruitCrush();
                         type = allFruits[i, j].GetComponent<Fruit>().fruitType;
                         typeFruits[type] += fruitsCheck.Count;
-                      //   fruitsCheck[UnityEngine.Random.Range(0, fruitsCheck.Count)];
                         for (int e = 0; e < fruitsCheck.Count; e++)
                         {
                             DestroyController(fruitsCheck[e], true);
@@ -732,7 +732,7 @@ public class Board : MonoBehaviour
                 else if (emptyPlaces.Count > 0)
                 {
                     // if there is a piece then piece new location will be first empty place in queue.
-
+                    audioManager.FruitFall();
                     int emptyRowIndex = emptyPlaces.Dequeue();
                     GameObject fruit = allFruits[i, j];
                     allFruits[i, j] = null;
@@ -772,7 +772,7 @@ public class Board : MonoBehaviour
             newFruitScript.fruitType = fruitToUse;
             newFruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
 
-
+            audioManager.FruitFall();
             // Add the new fruit to the allFruits array
             yield return new WaitForSeconds(0.1f);
         }
@@ -832,6 +832,7 @@ public class Board : MonoBehaviour
 
         if (fruit)
         {
+            audioManager.FruitFall();
             fruitScript = fruit.GetComponent<Fruit>();
             fruitScript.row = row - 1;
             fruitScript.column = column;

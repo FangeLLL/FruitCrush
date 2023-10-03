@@ -60,7 +60,6 @@ public class Fruit : MonoBehaviour
                 transform.position = tempPosition;
             }
 
-
             //  For Moving Up or Down Sides
             if (Mathf.Abs(targetV.y - transform.position.y) > .1)
             {
@@ -75,15 +74,6 @@ public class Fruit : MonoBehaviour
                 transform.position = tempPosition;
             }
 
-            /*
-
-            if (Vector2.Distance(targetV, transform.position) < .5f)
-            {
-                board.allFruits[column, row] = this.gameObject;
-            }
-            */
-
-
             if (isClicked)
             {
                 lastTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -94,9 +84,7 @@ public class Fruit : MonoBehaviour
 
                 }
             }            
-        }
-
-       
+        }      
     }
 
     void Update()

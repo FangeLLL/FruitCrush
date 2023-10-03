@@ -73,7 +73,7 @@ public class Board : MonoBehaviour
         int[,] arrangeTiles = new int[width, height];
 
         taskController.SetTask(0, height * 3);
-        taskController.SetMoveCount(10);
+        taskController.SetMoveCount(20);
 
         for(int i = 0;i < 3; i++)
         {
@@ -1053,7 +1053,7 @@ public class Board : MonoBehaviour
                 {
                     if (allFruits[i, j])
                     {
-                        if (allFruits[i, j].GetComponent<Fruit>().fruitType < 0 && i != column && j != row)
+                        if (allFruits[i, j].GetComponent<Fruit>().fruitType < 0 && !(i == column && j == row))
                         {
                             ActivatePowerUp(allFruits[i, j]);
                         }

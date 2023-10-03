@@ -42,6 +42,8 @@ public class Fruit : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().name != "LevelEditor")
         {
+            board.allFruits[column, row] = this.gameObject;
+
             // For Moving Left or Right Sides
             if (Mathf.Abs(targetV.x - transform.position.x) > .1)
             {
@@ -71,11 +73,13 @@ public class Fruit : MonoBehaviour
                 transform.position = tempPosition;
             }
 
+            /*
+
             if (Vector2.Distance(targetV, transform.position) < .5f)
             {
                 board.allFruits[column, row] = this.gameObject;
             }
-
+            */
 
 
             if (isClicked)

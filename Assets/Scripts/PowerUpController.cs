@@ -11,6 +11,7 @@ public class PowerUps
     public GameObject powerUp;
     public GameObject countBoxDeactive;
     public GameObject countBoxActivated;
+    public GameObject buyPowerUps;
     public TextMeshProUGUI count;
     public bool isActivated;
 }
@@ -21,6 +22,13 @@ public class PowerUpController : MonoBehaviour
 
     public Sprite activeSprite;
     public Sprite deactiveSprite;
+
+    public GameObject shopBackground;
+    public GameObject shopTopUI;
+    public GameObject shopCloseButton;
+
+    public TextMeshProUGUI starText;
+    public TextMeshProUGUI starShopText;
 
     private string amountSaveKeyPrefix = "PowerUpAmount_";
     private string statusSaveKeyPrefix = "PowerUpStatus_";
@@ -39,22 +47,40 @@ public class PowerUpController : MonoBehaviour
             powerUps[i].isActivated = savedStatus;
             powerUps[i].count.text = savedAmount.ToString();
 
-            if (savedStatus)
+            if (powerUps[i].amount > 0)
             {
-                powerUps[i].powerUp.GetComponent<Image>().sprite = activeSprite;
-                powerUps[i].countBoxDeactive.SetActive(false);
-                powerUps[i].count.gameObject.SetActive(false);
-                powerUps[i].countBoxActivated.SetActive(true);
-                powerUps[i].amount--;
-                powerUps[i].count.text = powerUps[i].amount.ToString();
+                if (savedStatus)
+                {
+                    powerUps[i].powerUp.GetComponent<Image>().sprite = activeSprite;
+                    powerUps[i].countBoxDeactive.SetActive(false);
+                    powerUps[i].count.gameObject.SetActive(false);
+                    powerUps[i].countBoxActivated.SetActive(true);
+                    powerUps[i].amount--;
+                    powerUps[i].count.text = powerUps[i].amount.ToString();
+                    powerUps[i].buyPowerUps.SetActive(false);
+                }
+                else
+                {
+                    powerUps[i].powerUp.GetComponent<Image>().sprite = deactiveSprite;
+                    powerUps[i].countBoxDeactive.SetActive(true);
+                    powerUps[i].count.gameObject.SetActive(true);
+                    powerUps[i].countBoxActivated.SetActive(false);
+                    powerUps[i].buyPowerUps.SetActive(false);
+                }
             }
+            
             else
             {
                 powerUps[i].powerUp.GetComponent<Image>().sprite = deactiveSprite;
-                powerUps[i].countBoxDeactive.SetActive(true);
-                powerUps[i].count.gameObject.SetActive(true);
+                powerUps[i].countBoxDeactive.SetActive(false);
+                powerUps[i].count.gameObject.SetActive(false);
                 powerUps[i].countBoxActivated.SetActive(false);
+
+                powerUps[i].isActivated = false;
+
+                powerUps[i].buyPowerUps.SetActive(true);
             }
+            
         }
     }
 
@@ -64,29 +90,37 @@ public class PowerUpController : MonoBehaviour
         {
             PowerUps selectedPowerUp = powerUps[index];
 
-            if (!selectedPowerUp.isActivated)
-            {
-                selectedPowerUp.powerUp.GetComponent<Animator>().SetTrigger("Tapped");
-                selectedPowerUp.powerUp.GetComponent<Image>().sprite = activeSprite;
-                selectedPowerUp.isActivated = true;
-                selectedPowerUp.countBoxDeactive.SetActive(false);
-                selectedPowerUp.count.gameObject.SetActive(false);
-                selectedPowerUp.countBoxActivated.SetActive(true);
-                selectedPowerUp.amount--;
+            selectedPowerUp.powerUp.GetComponent<Animator>().SetTrigger("Tapped");
 
-                selectedPowerUp.count.text = selectedPowerUp.amount.ToString();
+            if (selectedPowerUp.amount > 0)
+            {
+                if (!selectedPowerUp.isActivated)
+                {
+                    selectedPowerUp.powerUp.GetComponent<Image>().sprite = activeSprite;
+                    selectedPowerUp.isActivated = true;
+                    selectedPowerUp.countBoxDeactive.SetActive(false);
+                    selectedPowerUp.count.gameObject.SetActive(false);
+                    selectedPowerUp.countBoxActivated.SetActive(true);
+                    selectedPowerUp.amount--;
+
+                    selectedPowerUp.count.text = selectedPowerUp.amount.ToString();
+                }
+                else
+                {
+                    selectedPowerUp.powerUp.GetComponent<Image>().sprite = deactiveSprite;
+                    selectedPowerUp.isActivated = false;
+                    selectedPowerUp.countBoxDeactive.SetActive(true);
+                    selectedPowerUp.count.gameObject.SetActive(true);
+                    selectedPowerUp.countBoxActivated.SetActive(false);
+                    selectedPowerUp.amount++;
+
+                    selectedPowerUp.count.text = selectedPowerUp.amount.ToString();
+                }
             }
+            
             else
             {
-                selectedPowerUp.powerUp.GetComponent<Animator>().SetTrigger("Tapped");
-                selectedPowerUp.powerUp.GetComponent<Image>().sprite = deactiveSprite;
-                selectedPowerUp.isActivated = false;
-                selectedPowerUp.countBoxDeactive.SetActive(true);
-                selectedPowerUp.count.gameObject.SetActive(true);
-                selectedPowerUp.countBoxActivated.SetActive(false);
-                selectedPowerUp.amount++;
-
-                selectedPowerUp.count.text = selectedPowerUp.amount.ToString();
+                BuyPowerUpButtonTapped();
             }
 
             string amountSaveKey = amountSaveKeyPrefix + index.ToString();
@@ -107,6 +141,16 @@ public class PowerUpController : MonoBehaviour
         else
         {
             return false;
+        }
+    }
+
+    void BuyPowerUpButtonTapped()
+    {
+        if (!shopBackground.activeSelf)
+        {
+            starShopText.text = starText.text;
+            shopBackground.SetActive(true);
+            shopTopUI.GetComponent<Animator>().SetTrigger("ShopOpen");
         }
     }
 }

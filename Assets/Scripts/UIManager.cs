@@ -110,7 +110,7 @@ public class UIManager : MonoBehaviour
     //SUCCESS: PLAYER FINISHED ALL MISSIONS
     public void GameFinished(bool status)
     {
-        levelText.text = levelController.currentLevel.ToString();
+        levelText.text = "Level" + levelController.currentLevel.ToString();
         StartCoroutine(GameFinishUI(status));
     }
 

@@ -13,6 +13,7 @@ public class MainMenuController : MonoBehaviour
     public TextMeshProUGUI starText;
     public TextMeshProUGUI starShopText;
     public TextMeshProUGUI levelBoxText;
+
     public GameObject playButton;
     public GameObject starBox;
     public GameObject livesBox;
@@ -57,7 +58,7 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayButtonTapped()
     {
-        levelBoxText.text = levelController.currentLevel.ToString();
+        levelBoxText.text = "Level" + levelController.currentLevel.ToString();
         StartCoroutine(PlayButtonTappedEnum());
     }
 

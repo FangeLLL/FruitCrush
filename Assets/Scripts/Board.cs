@@ -476,8 +476,11 @@ public class Board : MonoBehaviour
         Fruit otherFruitScript = otherFruit.GetComponent<Fruit>();
         bool succesfulMove = false;
 
+        // If two object are power ups then merge happens.
+
         if (fruitScript.fruitType < 0 && otherFruitScript.fruitType < 0)
         {
+            // Selected power up moves towards to other power up
             fruitScript.row = otherFruitScript.row;
             fruitScript.column = otherFruitScript.column;
             fruitScript.targetV = otherFruitScript.targetV;
@@ -488,6 +491,7 @@ public class Board : MonoBehaviour
         }
         else
         {
+            // If one of them is power up then they switch and power up activate.
             ChangeTwoFruit(fruit, otherFruit);
             yield return new WaitForSeconds(0.2f);
 
@@ -516,13 +520,13 @@ public class Board : MonoBehaviour
                 }
                 else
                 {
-                    if (!fruit || !otherFruit)
+                    if (!fruit || !otherFruit||fruitScript.fadeout||otherFruitScript.fadeout)
                     {
 
                         succesfulMove = true;
 
                     }
-
+                  
                 }
             }        
         }

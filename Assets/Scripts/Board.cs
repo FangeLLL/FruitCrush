@@ -179,7 +179,7 @@ public class Board : MonoBehaviour
 
     public void SwipeFruits(float swipeAngle, int column, int row)
     {
-        if (taskController.moveCount<1)
+        if (taskController.moveCount<1 || !taskController.isBoardActive)
         {
             return;
         }
@@ -209,14 +209,9 @@ public class Board : MonoBehaviour
         if (swipeAngle > -45 && swipeAngle <= 45 && column + 1 < width)
         {
             // RIGHT SWIPE
-            if ((otherFruit) = allFruits[column + 1, row])
+            if (FruitAvailable(allFruits[column + 1, row]))
             {
-                if (Mathf.Abs(otherFruit.GetComponent<Fruit>().targetV.y - otherFruit.transform.position.y) > .1f)
-                {
-                    Debug.Log("You cant swipe right!!!");
-                    audioManager.SwipeResistBorder();
-                    return;
-                }
+                otherFruit = allFruits[column + 1, row];
             }
             else
             {
@@ -229,14 +224,9 @@ public class Board : MonoBehaviour
         else if (swipeAngle > 45 && swipeAngle <= 135 && row + 1 < height)
         {
             // UP SWIPE
-            if((otherFruit) = allFruits[column, row + 1])
+            if(FruitAvailable(allFruits[column, row + 1]))
             {
-                if (Mathf.Abs(otherFruit.GetComponent<Fruit>().targetV.y - otherFruit.transform.position.y) > .1f)
-                {
-                    Debug.Log("You cant swipe up!!!");
-                    audioManager.SwipeResistBorder();
-                    return;
-                }
+                otherFruit = allFruits[column, row + 1];          
             }
             else
             {
@@ -249,14 +239,9 @@ public class Board : MonoBehaviour
         else if ((swipeAngle > 135 || swipeAngle <= -135) && column > 0)
         {
             // LEFT SWIPE
-            if ((otherFruit) = allFruits[column - 1, row])
+            if (FruitAvailable(allFruits[column - 1, row]))
             {
-                if (Mathf.Abs(otherFruit.GetComponent<Fruit>().targetV.y - otherFruit.transform.position.y) > .1f)
-                {
-                    Debug.Log("You cant swipe left!!!");
-                    audioManager.SwipeResistBorder();
-                    return;
-                }
+                otherFruit = allFruits[column - 1, row];
             }
             else
             {
@@ -269,14 +254,9 @@ public class Board : MonoBehaviour
         else if (swipeAngle < -45 && swipeAngle >= -135 && row > 0)
         {
             // DOWN SWIPE
-            if((otherFruit) = allFruits[column, row - 1])
+            if(FruitAvailable(allFruits[column, row - 1]))
             {
-                if (Mathf.Abs(otherFruit.GetComponent<Fruit>().targetV.y - otherFruit.transform.position.y) > .1f)
-                {
-                    Debug.Log("You cant swipe down!!!");
-                    audioManager.SwipeResistBorder();
-                    return;
-                }
+                otherFruit = allFruits[column, row - 1];
             }
             else
             {
@@ -340,12 +320,12 @@ public class Board : MonoBehaviour
                 bool rowPopped = false, columnPopped = false, squarePopped = false;
                 // it checking if bottom piece and one above it same. In every cycle it adds the one is currently below checking and if two of them not same
                 // then its out of the  cycle. Checking if the space is null or exist.
-                if (allFruits[i, j] && allFruits[i, j].GetComponent<Fruit>().fruitType>=0)
+                if (FruitAvailable(allFruits[i, j]) && allFruits[i, j].GetComponent<Fruit>().fruitType>=0)
                 {
                     // Column
                     while (same)
                     {
-                        if (j + k + 1 >= height || !allFruits[i, j + k + 1] || allFruits[i, j + k].GetComponent<Fruit>().fruitType != allFruits[i, j + k + 1].GetComponent<Fruit>().fruitType)
+                        if (j + k + 1 >= height || !FruitAvailable(allFruits[i, j + k + 1]) || allFruits[i, j + k].GetComponent<Fruit>().fruitType != allFruits[i, j + k + 1].GetComponent<Fruit>().fruitType)
                         {
                             same = false;
                         }
@@ -367,7 +347,7 @@ public class Board : MonoBehaviour
                     //Row
                     while (same)
                     {
-                        if (i + k + 1 >= width || !allFruits[i + k + 1, j] || allFruits[i + k, j].GetComponent<Fruit>().fruitType != allFruits[i + k + 1, j].GetComponent<Fruit>().fruitType)
+                        if (i + k + 1 >= width || !FruitAvailable(allFruits[i + k + 1, j]) || allFruits[i + k, j].GetComponent<Fruit>().fruitType != allFruits[i + k + 1, j].GetComponent<Fruit>().fruitType)
                         {
                             same = false;
                         }
@@ -386,9 +366,9 @@ public class Board : MonoBehaviour
                    
                     int type;
 
-                    if (j + 1 < height && allFruits[i, j] && allFruits[i, j + 1] && (type = allFruits[i, j].GetComponent<Fruit>().fruitType) == allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
+                    if (j + 1 < height && FruitAvailable(allFruits[i, j]) && FruitAvailable(allFruits[i, j + 1]) && (type = allFruits[i, j].GetComponent<Fruit>().fruitType) == allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
                     {
-                        if (i + 1 < width && allFruits[i + 1, j] && allFruits[i + 1, j + 1] && allFruits[i + 1, j].GetComponent<Fruit>().fruitType
+                        if (i + 1 < width && FruitAvailable(allFruits[i + 1, j]) && FruitAvailable(allFruits[i + 1, j + 1]) && allFruits[i + 1, j].GetComponent<Fruit>().fruitType
                         == allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType && type == allFruits[i + 1, j].GetComponent<Fruit>().fruitType)
                         {
                             fruitsCheckTemp.Add(allFruits[i, j]);
@@ -476,6 +456,18 @@ public class Board : MonoBehaviour
         }
         checkingMatch = false;
 
+    }
+
+    private bool FruitAvailable(GameObject obj)
+    {
+        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.5f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private IEnumerator CheckMove(GameObject fruit, GameObject otherFruit)
@@ -808,12 +800,12 @@ public class Board : MonoBehaviour
         GameObject fruit=null;
         Fruit fruitScript;
         yield return new WaitForSeconds(0.5f);
-        if (column - 1 >= 0 && allFruits[column - 1, row] && !allFruits[column, row-1])
+        if (column - 1 >= 0 && FruitAvailable(allFruits[column - 1, row]) && !allFruits[column, row-1])
         {
             fruit = allFruits[column - 1, row];
             allFruits[column-1, row] = null;
         }
-        else if(column + 1 < width && allFruits[column + 1, row] && !allFruits[column, row - 1])
+        else if(column + 1 < width && FruitAvailable(allFruits[column + 1, row]) && !allFruits[column, row - 1])
         {
             fruit = allFruits[column + 1, row];
             allFruits[column + 1, row] = null;

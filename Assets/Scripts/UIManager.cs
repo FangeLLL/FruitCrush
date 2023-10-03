@@ -11,7 +11,6 @@ public class UIManager : MonoBehaviour
     public TaskController taskController;
     public ResourceController resourceController;
     public LiveRegen liveRegen;
-    public Board board;
 
     public GameObject congratText;
     public GameObject failedText;
@@ -217,7 +216,7 @@ public class UIManager : MonoBehaviour
     {
         yield return null;
 
-        board.enabled = false;
+        taskController.isBoardActive = false;
         settingsIcon.GetComponent<Button>().interactable = false;
         settingsGray.SetActive(true);
         settingsGray.GetComponent<Animator>().SetTrigger("SettingsOn");
@@ -241,6 +240,7 @@ public class UIManager : MonoBehaviour
     {
         yield return null;
 
+        taskController.isBoardActive = true;
         settingsIcon.GetComponent<Button>().interactable = false;
         settingsGray.GetComponent<Animator>().SetTrigger("SettingsOff");
         settingsIcon.GetComponent<Animator>().SetTrigger("SettingsOff");
@@ -321,6 +321,7 @@ public class UIManager : MonoBehaviour
             taskController.moveCount = 5;
             taskController.moveText.text = taskController.moveCount.ToString();
             taskController.onetime = true;
+            taskController.isBoardActive = true;
             resourceController.StarSpent(plusMovePrice);
             plusMovePrice += 1000;
             StartCoroutine(PlusMoveBoughtEnum());

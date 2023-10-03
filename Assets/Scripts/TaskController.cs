@@ -29,11 +29,12 @@ public class TaskController : MonoBehaviour
 
     float timer;
     public bool onetime = true;
+    bool isLevelCompleted;
+    bool moveCountFlag = true;
+    public bool isBoardActive = true;
 
     public GameObject moveCountText;
     public TextMeshProUGUI moveText;
-    bool isLevelCompleted;
-    bool moveCountFlag = true;
 
     private void Update()
     {
@@ -41,9 +42,9 @@ public class TaskController : MonoBehaviour
         {
             timer += Time.deltaTime;
 
-            if (timer >= .1f)
+            if (timer >= 1.5f)
             {
-                StartCoroutine(OutofMovesCoroutine());
+                OutofMoves();
                 onetime = false;
                 timer = 0f;
             }
@@ -69,6 +70,11 @@ public class TaskController : MonoBehaviour
         {
             moveCountText.GetComponent<Animator>().SetTrigger("MoveWarning");
             moveCountFlag = false;
+        }
+
+        if (moveCount <= 0)
+        {
+            isBoardActive = false;
         }
     }
 
@@ -160,11 +166,8 @@ public class TaskController : MonoBehaviour
         }
     }
 
-    //THIS FUNCTION WAITS FOR 3 SECONDS BEFORE ALL MOVEMENT FINISHES ON GRID (TEMP!!!)
-    IEnumerator OutofMovesCoroutine()
+    void OutofMoves()
     {
-        yield return new WaitForSeconds(3f);
-
         if (!isLevelCompleted)
         {
             uiManager.GameFinished(false);
@@ -173,6 +176,7 @@ public class TaskController : MonoBehaviour
 
     public void FinishGame()
     {
+        isBoardActive = false;
         isLevelCompleted = true;
         uiManager.GameFinished(true);
         liveRegen.LevelComplete();

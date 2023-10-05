@@ -58,7 +58,7 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayButtonTapped()
     {
-        levelBoxText.text = "Level" + levelController.currentLevel.ToString();
+        levelBoxText.text = "Level " + levelController.currentLevel.ToString();
         StartCoroutine(PlayButtonTappedEnum());
     }
 

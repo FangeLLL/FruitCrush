@@ -14,7 +14,7 @@ public class LevelController : MonoBehaviour
     public void LevelPassed()
     {
         currentLevel++;
-        PlayerPrefs.SetInt("Level", currentLevel);
+        PlayerPrefs.SetInt("Level ", currentLevel);
         PlayerPrefs.Save();
     }
 }

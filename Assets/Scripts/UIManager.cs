@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour
     public GameObject gameFinishBoxFalse;
     public GameObject gameFinishBoxLevel;
     public GameObject gameFinishBoxStar;
+    public GameObject starGlow;
     public GameObject gameFinishBoxMoveCount1;
     public GameObject gameFinishBoxMoveCount2;
     public GameObject gameFinishBoxTarget1OG;
@@ -110,7 +111,7 @@ public class UIManager : MonoBehaviour
     //SUCCESS: PLAYER FINISHED ALL MISSIONS
     public void GameFinished(bool status)
     {
-        levelText.text = "Level" + levelController.currentLevel.ToString();
+        levelText.text = "Level " + levelController.currentLevel.ToString();
         StartCoroutine(GameFinishUI(status));
     }
 
@@ -193,11 +194,16 @@ public class UIManager : MonoBehaviour
 
         yield return null;
 
+        gameFinishBoxLevel.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+
         if (status)
         {
             gameFinishBoxStar.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+
+            yield return new WaitForSeconds(1);
+
+            starGlow.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
         }
-        gameFinishBoxLevel.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
 
 
     }

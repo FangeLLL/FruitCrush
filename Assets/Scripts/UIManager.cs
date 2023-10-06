@@ -106,9 +106,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    //FUNCTION TO CALL WHEN PLAYER FAILES OR SUCCESS LEVEL
-    //FAILING: PLAYER RUNS OUT OF MOVES BEFORE COMPLETING LEVEL MISSION
-    //SUCCESS: PLAYER FINISHED ALL MISSIONS
     public void GameFinished(bool status)
     {
         levelText.text = "Level " + levelController.currentLevel.ToString();
@@ -328,9 +325,7 @@ public class UIManager : MonoBehaviour
     {
         if (ResourceController.star > plusMovePrice)
         {
-            taskController.moveText.text = taskController.moveCount.ToString();
             taskController.onetime = true;
-            taskController.isBoardActive = true;
             resourceController.StarSpent(plusMovePrice);
             plusMovePrice += 1000;
             StartCoroutine(PlusMoveBoughtEnum());
@@ -349,6 +344,8 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         taskController.moveCount = 5;
+        taskController.moveText.text = taskController.moveCount.ToString();
+        taskController.isBoardActive = true;
 
         yield return null;
 

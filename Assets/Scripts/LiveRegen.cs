@@ -10,6 +10,7 @@ public class LiveRegen : MonoBehaviour
     public int lives;
     int timeToRegen;
     int offlineTime;
+    int offlineTimeToRegen;
     int nextLiveRemainingTime;
 
     public TextMeshProUGUI livesText;
@@ -18,7 +19,7 @@ public class LiveRegen : MonoBehaviour
     private void Start()
     {
         timeToRegen = 1800;
-        lives = PlayerPrefs.GetInt("Lives", 2);
+        lives = PlayerPrefs.GetInt("Lives", 5);
         livesText.text = lives.ToString();
         nextLiveRemainingTime = PlayerPrefs.GetInt("NLRT", timeToRegen);
 
@@ -41,8 +42,7 @@ public class LiveRegen : MonoBehaviour
 
     void CalculateOfflineTime()
     {
-        offlineTime = 1000;
-        //Calculate the time since last time player opened the game.
+        offlineTime = offlineTimeToRegen;
         CheckLiveStatus();
     }
 
@@ -157,5 +157,28 @@ public class LiveRegen : MonoBehaviour
         lives = 5;
         StopCoroutine(StartCountdown());
         CheckLiveStatus();
+    }
+
+    private void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+        {
+            PlayerPrefs.SetString("LastLogoutTime", System.DateTime.Now.ToString());
+            PlayerPrefs.Save();
+        }
+
+        else
+        {
+            string lastLogoutTimeString = PlayerPrefs.GetString("LastLogoutTime", string.Empty);
+
+            if (!string.IsNullOrEmpty(lastLogoutTimeString))
+            {
+                System.DateTime lastLogoutTime = System.DateTime.Parse(lastLogoutTimeString);
+                System.TimeSpan offlineDuration = System.DateTime.Now - lastLogoutTime;
+
+                double time = offlineDuration.TotalSeconds;
+                offlineTimeToRegen = (int)time;
+            }
+        }
     }
 }

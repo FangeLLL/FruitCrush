@@ -12,7 +12,7 @@ public class ResourceController : MonoBehaviour
 
     private void Awake()
     {
-        star = PlayerPrefs.GetInt("Star", 99999);
+        star = PlayerPrefs.GetInt("Star", 50000);
     }
 
     private void Start()
@@ -26,5 +26,15 @@ public class ResourceController : MonoBehaviour
         starText.text = star.ToString();
 
         PlayerPrefs.SetInt("Star", star);
+        PlayerPrefs.Save();
+    }
+
+    public void StarReward(int rewardValue)
+    {
+        star += rewardValue;
+        starText.text = star.ToString();
+
+        PlayerPrefs.SetInt("Star", star);
+        PlayerPrefs.Save();
     }
 }

@@ -19,6 +19,7 @@ public class TaskController : MonoBehaviour
     public UIManager uiManager;
     public LiveRegen liveRegen;
     public Board board;
+    public RewardController rewardController;
 
     //StrawBale Index = 0
     public TaskDisplay[] taskDisplays;
@@ -28,10 +29,13 @@ public class TaskController : MonoBehaviour
     public int currentObjectiveIndex = 0;
 
     float timer;
+    float timer2;
+
     public bool onetime = true;
+    public bool isBoardActive = true;
+
     bool isLevelCompleted;
     bool moveCountFlag = true;
-    public bool isBoardActive = true;
 
     public GameObject moveCountText;
     public TextMeshProUGUI moveText;
@@ -52,6 +56,22 @@ public class TaskController : MonoBehaviour
         else
         {
             timer = 0f;
+        }
+
+        if (board.hintBool && isLevelCompleted && onetime)
+        {
+            timer2 += Time.deltaTime;
+
+            if (timer2 >= 1.5f)
+            {
+                uiManager.GameFinished(true);
+                onetime = false;
+                timer2 = 0f;
+            }
+        }
+        else
+        {
+            timer2 = 0f;
         }
     }
 
@@ -178,7 +198,7 @@ public class TaskController : MonoBehaviour
     {
         isBoardActive = false;
         isLevelCompleted = true;
-        uiManager.GameFinished(true);
         liveRegen.LevelComplete();
+        rewardController.GiveStarReward(200);
     }
 }

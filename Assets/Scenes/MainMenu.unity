@@ -4797,6 +4797,8 @@ GameObject:
   - component: {fileID: 1772865870}
   - component: {fileID: 1772865871}
   - component: {fileID: 1772865872}
+  - component: {fileID: 1772865873}
+  - component: {fileID: 1772865874}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -4833,6 +4835,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   liveRegen: {fileID: 672404961}
   levelController: {fileID: 1772865872}
+  resourceController: {fileID: 1772865874}
   starText: {fileID: 249815904}
   starShopText: {fileID: 1740485052}
   levelBoxText: {fileID: 1152246326}
@@ -4849,7 +4852,6 @@ MonoBehaviour:
   playBoxQuitButton: {fileID: 597542891}
   playBoxPlayButton: {fileID: 1908895777}
   levelBox: {fileID: 592313175}
-  star: 0
 --- !u!114 &1772865871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4904,6 +4906,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLevel: 0
+--- !u!114 &1772865873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1772865867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d58bbabcc639814ab3a45ca258c5e17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceController: {fileID: 1772865874}
+--- !u!114 &1772865874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1772865867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed77babca125a4441955ceb142dcc8ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  starText: {fileID: 249815904}
+  starShopText: {fileID: 1740485052}
 --- !u!1 &1784563648
 GameObject:
   m_ObjectHideFlags: 0

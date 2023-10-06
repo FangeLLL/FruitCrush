@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -55,7 +56,10 @@ public class PowerUpController : MonoBehaviour
                     powerUps[i].countBoxDeactive.SetActive(false);
                     powerUps[i].count.gameObject.SetActive(false);
                     powerUps[i].countBoxActivated.SetActive(true);
-                    powerUps[i].amount--;
+                    if (SceneManager.GetActiveScene().name != "MainMenu")
+                    {
+                        powerUps[i].amount--;
+                    }
                     powerUps[i].count.text = powerUps[i].amount.ToString();
                     powerUps[i].buyPowerUps.SetActive(false);
                 }
@@ -92,7 +96,7 @@ public class PowerUpController : MonoBehaviour
 
             selectedPowerUp.powerUp.GetComponent<Animator>().SetTrigger("Tapped");
 
-            if (selectedPowerUp.amount > 0)
+            if (selectedPowerUp.amount > 0 || selectedPowerUp.isActivated)
             {
                 if (!selectedPowerUp.isActivated)
                 {

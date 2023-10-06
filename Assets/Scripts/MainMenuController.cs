@@ -9,6 +9,7 @@ public class MainMenuController : MonoBehaviour
 {
     public LiveRegen liveRegen;
     public LevelController levelController;
+    public ResourceController resourceController;
 
     public TextMeshProUGUI starText;
     public TextMeshProUGUI starShopText;
@@ -28,27 +29,14 @@ public class MainMenuController : MonoBehaviour
     public GameObject playBoxPlayButton;
     public GameObject levelBox;
 
-    public int star;
+    //public int star;
     int refillPrice = 1000;
 
     private void Start()
     {
-        GetSetValues();
         Invoke("ActivateUI", 0.25f);
     }
 
-    private void GetSetValues()
-    {
-        star = PlayerPrefs.GetInt("Star", 99999);
-        starText.text = star.ToString();
-    }
-    public void StarSpent(int spentValue)
-    {
-        star -= spentValue;
-        starText.text = star.ToString();
-
-        PlayerPrefs.SetInt("Star", star);
-    }
 
     private void ActivateUI()
     {
@@ -151,10 +139,10 @@ public class MainMenuController : MonoBehaviour
 
     public void RefillButtonTapped()
     {
-        if (star >= refillPrice)
+        if (ResourceController.star >= refillPrice)
         {
             liveRegen.LivesRefilled();
-            StarSpent(refillPrice);
+            resourceController.StarSpent(refillPrice);
             StartCoroutine(RefillButtonTappedEnum());
         }
         else

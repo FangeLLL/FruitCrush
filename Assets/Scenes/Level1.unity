@@ -9315,6 +9315,7 @@ GameObject:
   - component: {fileID: 1772865874}
   - component: {fileID: 1772865875}
   - component: {fileID: 1772865876}
+  - component: {fileID: 1772865877}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -9482,6 +9483,7 @@ MonoBehaviour:
   uiManager: {fileID: 1772865871}
   liveRegen: {fileID: 1774749132}
   board: {fileID: 160705528}
+  rewardController: {fileID: 1772865877}
   taskDisplays:
   - taskTypeIndex: 0
     taskImage: {fileID: 2021078081}
@@ -9600,6 +9602,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLevel: 0
+--- !u!114 &1772865877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1772865867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d58bbabcc639814ab3a45ca258c5e17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceController: {fileID: 1772865874}
 --- !u!1 &1774749130
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,13 +15,15 @@ public class UIManager : MonoBehaviour
 
     public GameObject congratText;
     public GameObject failedText;
-    public GameObject finishBackground;
+    public GameObject finishBackground1;
+    public GameObject finishBackground2;
     public GameObject settingsIcon;
     public GameObject settingsIconShadow;
     public GameObject soundIcon;
     public GameObject soundDisableIcon;
     public GameObject musicIcon;
     public GameObject musicDisableIcon;
+    public GameObject exitGameIcon;
     public GameObject settingsGray;
     public GameObject gameFinishBoxTrue;
     public GameObject gameFinishBoxFalse;
@@ -47,6 +49,9 @@ public class UIManager : MonoBehaviour
     public GameObject outOfLivesBox;
     public GameObject outOfLivesBoxQuitButton;
     public GameObject refillButton;
+    public GameObject quitLevelBox;
+    public GameObject quitLevelBoxCloseButton;
+    public GameObject quitLevelButton;
 
     public TextMeshProUGUI movePriceText;
     public TextMeshProUGUI refillPriceText;
@@ -54,6 +59,7 @@ public class UIManager : MonoBehaviour
 
     public bool isSoundOn;
     public bool isMusicOn;
+    bool onetimeBool = true;
 
     string gameFinishTrigger = "GameFinishTrigger";
     string gameFinishTriggerReverse = "GameFinishTriggerReverse";
@@ -116,9 +122,19 @@ public class UIManager : MonoBehaviour
     {
         achivementManager.SaveAchievementData();
 
-        finishBackground.SetActive(true);
-        yield return null;
-        finishBackground.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+        if (status)
+        {
+            finishBackground1.SetActive(true);
+            yield return null;
+            finishBackground1.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+        }
+        else
+        {
+            finishBackground2.SetActive(true);
+            yield return null;
+            finishBackground2.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+        }
+        
 
         yield return new WaitForSeconds(1.5f);
 
@@ -201,8 +217,6 @@ public class UIManager : MonoBehaviour
 
             starGlow.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
         }
-
-
     }
 
     public void SettingsButton()
@@ -238,6 +252,10 @@ public class UIManager : MonoBehaviour
 
         musicIcon.GetComponent<Animator>().SetTrigger("SettingsOn"); // 0.33 sec
 
+        yield return new WaitForSeconds(0.1f);
+
+        exitGameIcon.GetComponent<Animator>().SetTrigger("SettingsOn"); // 0.33 sec
+
         yield return new WaitForSeconds(0.3f);
 
         settingsIcon.GetComponent<Button>().interactable = true;
@@ -249,9 +267,13 @@ public class UIManager : MonoBehaviour
 
         taskController.isBoardActive = true;
         settingsIcon.GetComponent<Button>().interactable = false;
-        settingsGray.GetComponent<Animator>().SetTrigger("SettingsOff");
+        if (!quitLevelBox.activeSelf) settingsGray.GetComponent<Animator>().SetTrigger("SettingsOff");
         settingsIcon.GetComponent<Animator>().SetTrigger("SettingsOff");
         settingsIconShadow.GetComponent<Animator>().SetTrigger("SettingsOff");
+
+        yield return new WaitForSeconds(0.1f);
+
+        exitGameIcon.GetComponent<Animator>().SetTrigger("SettingsOff"); // 0.33 sec
 
         yield return new WaitForSeconds(0.1f);
 
@@ -263,7 +285,7 @@ public class UIManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.14f);
 
-        settingsGray.SetActive(false);
+        if (!quitLevelBox.activeSelf) settingsGray.SetActive(false);
 
         yield return new WaitForSeconds(0.16f);
 
@@ -350,13 +372,14 @@ public class UIManager : MonoBehaviour
         yield return null;
 
         gameFinishBoxFalse.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
-        finishBackground.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
+        finishBackground1.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
         starBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
         gameFinishBoxLevel.SetActive(false);
         gameFinishBoxLevel.transform.localPosition = new Vector3(0, 200, 0);
 
         yield return new WaitForSeconds(0.35f);
 
+        finishBackground1.SetActive(false);
         movePriceText.text = plusMovePrice.ToString();
         gameFinishBoxFalse.SetActive(false);
     }
@@ -522,5 +545,126 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         outOfLivesBox.SetActive(false);
+    }
+
+    public void GameFinishSkipped1()
+    {
+        if (onetimeBool)
+        {
+            StopAllCoroutines();
+            StartCoroutine(GameFinish1Skipped());
+            onetimeBool = false;
+        }
+    }
+
+    IEnumerator GameFinish1Skipped()
+    {
+        gameFinishBoxTrue.SetActive(true);
+        gameFinishBoxTrue.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+
+        starBox.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+
+        yield return new WaitForSeconds(.5f);
+
+        gameFinishBoxLevel.SetActive(true);
+        gameFinishBoxStar.SetActive(true);
+        
+        yield return null;
+
+        gameFinishBoxLevel.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+        gameFinishBoxStar.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+
+        yield return new WaitForSeconds(1);
+
+        starGlow.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+    }
+
+    public void GameFinishSkipped2()
+    {
+        if (onetimeBool)
+        {
+            StopAllCoroutines();
+            StartCoroutine(GameFinish2Skipped());
+            onetimeBool = false;
+        }
+    }
+
+    IEnumerator GameFinish2Skipped()
+    {
+        gameFinishBoxFalse.SetActive(true);
+        gameFinishBoxFalse.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+
+        gameFinishBoxMoveCount1.GetComponent<Animator>().SetTrigger("GameFinishTrigger1");
+        gameFinishBoxMoveCount2.GetComponent<Animator>().SetTrigger("GameFinishTrigger2");
+
+        if (gameFinishBoxTarget2 != null)
+        {
+            Destroy(gameFinishBoxTarget2);
+        }
+        gameFinishBoxTarget2 = Instantiate(gameFinishBoxTarget1OG);
+        gameFinishBoxTarget2.transform.SetParent(gameFinishBoxFalse.transform);
+        gameFinishBoxTarget2.transform.localPosition = new Vector3(-131.6f, 69.8f, 0);
+        gameFinishBoxTarget2.transform.localScale = new Vector3(3.98f, 3.98f, 3.98f);
+
+        quitButton.GetComponent<Button>().interactable = true;
+        starBox.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+
+        yield return new WaitForSeconds(.5f);
+
+        gameFinishBoxLevel.SetActive(true);
+
+        yield return null;
+
+        gameFinishBoxLevel.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+    }
+
+    public void ExitGameButtonTapped()
+    {
+        SettingsButton();
+        settingsGray.GetComponent<Button>().interactable = false;
+        StartCoroutine(ExitGameButtonTappedEnum());
+    }
+
+    IEnumerator ExitGameButtonTappedEnum()
+    {
+        quitLevelBox.SetActive(true);
+        exitGameIcon.GetComponent<Animator>().SetTrigger("SettingsToggle");
+
+        yield return null;
+
+        quitLevelBox.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+    }
+
+    public void ExitGameBoxCloseButtonTapped()
+    {
+        StartCoroutine(ExitGameBoxCloseButtonTappedEnum());
+    }
+
+    IEnumerator ExitGameBoxCloseButtonTappedEnum()
+    {
+        quitLevelBoxCloseButton.GetComponent<Animator>().SetTrigger("Tapped");
+        settingsGray.GetComponent<Animator>().SetTrigger("SettingsOff");
+        quitLevelBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
+
+        yield return new WaitForSeconds(0.5f);
+
+        quitLevelBox.SetActive(false);
+        settingsGray.SetActive(false);
+        settingsGray.GetComponent<Button>().interactable = true;
+    }
+
+    public void ExitGameBoxQuitButtonTapped()
+    {
+        StartCoroutine(ExitGameBoxQuitButtonTappedEnum());
+    }
+
+    IEnumerator ExitGameBoxQuitButtonTappedEnum()
+    {
+        quitLevelButton.GetComponent<Animator>().SetTrigger("Tapped");
+        quitLevelButton.GetComponent<Button>().interactable = false;
+
+        yield return new WaitForSeconds(0.15f);
+
+        SceneManager.LoadScene("MainMenu");
     }
 }

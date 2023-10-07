@@ -131,10 +131,12 @@ public class UIManager : MonoBehaviour
         else
         {
             finishBackground2.SetActive(true);
+            finishBackground2.GetComponent<Button>().interactable = true;
             yield return null;
             finishBackground2.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
         }
         
+            onetimeBool = true;
 
         yield return new WaitForSeconds(1.5f);
 
@@ -169,6 +171,9 @@ public class UIManager : MonoBehaviour
             failedText.SetActive(false);
         }
 
+        finishBackground1.GetComponent<Button>().interactable = false;
+        finishBackground2.GetComponent<Button>().interactable = false;
+
         if (status)
         {
             gameFinishBoxTrue.SetActive(true);
@@ -192,9 +197,10 @@ public class UIManager : MonoBehaviour
             gameFinishBoxTarget2.transform.localScale = new Vector3(3.98f, 3.98f, 3.98f);
 
             quitButton.GetComponent<Button>().interactable = true;
+
+            starBox.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
         }
 
-        starBox.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
 
         yield return new WaitForSeconds(.5f);
 
@@ -372,14 +378,14 @@ public class UIManager : MonoBehaviour
         yield return null;
 
         gameFinishBoxFalse.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
-        finishBackground1.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
+        finishBackground2.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
         starBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
         gameFinishBoxLevel.SetActive(false);
         gameFinishBoxLevel.transform.localPosition = new Vector3(0, 200, 0);
 
         yield return new WaitForSeconds(0.35f);
 
-        finishBackground1.SetActive(false);
+        finishBackground2.SetActive(false);
         movePriceText.text = plusMovePrice.ToString();
         gameFinishBoxFalse.SetActive(false);
     }
@@ -554,6 +560,7 @@ public class UIManager : MonoBehaviour
             StopAllCoroutines();
             StartCoroutine(GameFinish1Skipped());
             onetimeBool = false;
+            congratText.SetActive(false);
         }
     }
 
@@ -586,6 +593,8 @@ public class UIManager : MonoBehaviour
             StopAllCoroutines();
             StartCoroutine(GameFinish2Skipped());
             onetimeBool = false;
+            failedText.SetActive(false);
+            failedText.GetComponent<TextMeshProUGUI>().fontSize = 0;
         }
     }
 

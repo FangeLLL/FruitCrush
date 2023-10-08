@@ -32,13 +32,61 @@ public class MainMenuController : MonoBehaviour
     public GameObject MenuBackground;
     public GameObject settingsMenu;
     public GameObject settingsCloseButton;
+    public GameObject musicToggleBlock;
+    public GameObject soundToggleBlock;
+    public GameObject hintToggleBlock;
 
-    //public int star;
     int refillPrice = 1000;
+
+    public bool isSoundOn;
+    public bool isMusicOn;
+    public bool isHintOn;
 
     private void Start()
     {
         Invoke("ActivateUI", 0.25f);
+
+        int soundSetting = PlayerPrefs.GetInt("SoundSetting", 1);
+        isSoundOn = soundSetting == 1;
+
+        int musicSetting = PlayerPrefs.GetInt("MusicSetting", 1);
+        isMusicOn = musicSetting == 1;
+
+        int hintSetting = PlayerPrefs.GetInt("HintSetting", 1);
+        isHintOn = hintSetting == 1;
+
+        if (isSoundOn)
+        {
+            //ACTIVATE SOUND
+            soundToggleBlock.transform.localPosition = new Vector3(116, 0, 0);
+        }
+        else
+        {
+            //DEACTIVATE SOUND
+            soundToggleBlock.transform.localPosition = new Vector3(-116, 0, 0);
+        }
+
+        if (isMusicOn)
+        {
+            //ACTIVATE MUSIC
+            musicToggleBlock.transform.localPosition = new Vector3(116, 0, 0);
+        }
+        else
+        {
+            //DEACTIVATE MUSIC
+            musicToggleBlock.transform.localPosition = new Vector3(-116, 0, 0);
+        }
+
+        if (isHintOn)
+        {
+            //ACTIVATE HINT
+            hintToggleBlock.GetComponent<Animator>().SetTrigger("SettingOn");
+        }
+        else
+        {
+            //DEACTIVATE HINT
+            hintToggleBlock.GetComponent<Animator>().SetTrigger("SettingOff");
+        }
     }
 
 
@@ -47,6 +95,78 @@ public class MainMenuController : MonoBehaviour
         starBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
         livesBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
         settingsIcon.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+    }
+
+    public void ToggleMusic()
+    {
+        isMusicOn = !isMusicOn;
+
+        if (isMusicOn)
+        {
+            //ACTIVATE MUSIC
+            musicToggleBlock.GetComponent<Animator>().SetTrigger("SettingOn");
+        }
+        else
+        {
+            //DEACTIVATE MUSIC
+            musicToggleBlock.GetComponent<Animator>().SetTrigger("SettingOff");
+        }
+
+        SaveMusicSetting();
+    }
+
+    private void SaveMusicSetting()
+    {
+        PlayerPrefs.SetInt("MusicSetting", isMusicOn ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    public void ToggleSound()
+    {
+        isSoundOn = !isSoundOn;
+
+        if (isSoundOn)
+        {
+            //ACTIVATE SOUND
+            soundToggleBlock.GetComponent<Animator>().SetTrigger("SettingOn");
+        }
+        else
+        {
+            //DEACTIVATE SOUND
+            soundToggleBlock.GetComponent<Animator>().SetTrigger("SettingOff");
+        }
+
+        SaveSoundSetting();
+    }
+
+    private void SaveSoundSetting()
+    {
+        PlayerPrefs.SetInt("SoundSetting", isSoundOn ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    public void ToggleHint()
+    {
+        isHintOn = !isHintOn;
+
+        if (isHintOn)
+        {
+            //ACTIVATE HINT
+            hintToggleBlock.GetComponent<Animator>().SetTrigger("SettingOn");
+        }
+        else
+        {
+            //DEACTIVATE HINT
+            hintToggleBlock.GetComponent<Animator>().SetTrigger("SettingOff");
+        }
+
+        SaveHintSetting();
+    }
+
+    private void SaveHintSetting()
+    {
+        PlayerPrefs.SetInt("HintSetting", isHintOn ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     public void PlayButtonTapped()

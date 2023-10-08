@@ -18,6 +18,7 @@ public class MainMenuController : MonoBehaviour
     public GameObject playButton;
     public GameObject starBox;
     public GameObject livesBox;
+    public GameObject settingsIcon;
     public GameObject shopBackground;
     public GameObject shopTopUI;
     public GameObject shopCloseButton;
@@ -28,6 +29,9 @@ public class MainMenuController : MonoBehaviour
     public GameObject playBoxQuitButton;
     public GameObject playBoxPlayButton;
     public GameObject levelBox;
+    public GameObject MenuBackground;
+    public GameObject settingsMenu;
+    public GameObject settingsCloseButton;
 
     //public int star;
     int refillPrice = 1000;
@@ -42,6 +46,7 @@ public class MainMenuController : MonoBehaviour
     {
         starBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
         livesBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+        settingsIcon.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
     }
 
     public void PlayButtonTapped()
@@ -163,5 +168,18 @@ public class MainMenuController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         outOfLivesBox.SetActive(false);
+    }
+
+    public void SettingsButtonTapped()
+    {
+        MenuBackground.SetActive(true);
+        settingsMenu.SetActive(true);
+        settingsMenu.GetComponent<Animator>().SetTrigger("MenuOpen");
+    }
+
+    public void SettingsCloseButtonTapped()
+    {
+        MenuBackground.SetActive(false);
+        settingsMenu.SetActive(false);
     }
 }

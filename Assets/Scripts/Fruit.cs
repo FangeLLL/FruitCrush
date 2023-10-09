@@ -131,7 +131,7 @@ public class Fruit : MonoBehaviour
     private void OnMouseUp()
     {
         isClicked = false;
-        if (fruitType < 0 && board.taskController.moveCount > 0)
+        if (fruitType < 0 && board.taskController.moveCount > 0 && !isSwiped)
         {
             board.taskController.MovePlayed();
             board.ActivatePowerUp(gameObject);

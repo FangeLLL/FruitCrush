@@ -1084,6 +1084,7 @@ public class Board : MonoBehaviour
                         audioManager.FruitCrush();
                     }
                     allTiles[i, j].GetComponent<BackgroundTile>().Boom();
+
                 }
             }
         }
@@ -1109,6 +1110,7 @@ public class Board : MonoBehaviour
 
                 }
                 allTiles[i, row].GetComponent<BackgroundTile>().Boom();
+
             }
         }
         else
@@ -1148,8 +1150,11 @@ public class Board : MonoBehaviour
                     DestroyController(allFruits[column, i], false);
                     audioManager.FruitCrush();
                 }
-                allTiles[column, i].GetComponent<BackgroundTile>().Boom();
+                else
+                {
+                    allTiles[column, i].GetComponent<BackgroundTile>().Boom();
 
+                }
             }
         }
         else
@@ -1163,8 +1168,10 @@ public class Board : MonoBehaviour
                     DestroyController(allFruits[column, i], false);
                     audioManager.FruitCrush();
                 }
-                allTiles[column, i].GetComponent<BackgroundTile>().Boom();
-
+                else
+                {
+                    allTiles[column, i].GetComponent<BackgroundTile>().Boom();
+                }
             }
         }
         allTiles[column, row].GetComponent<BackgroundTile>().Boom();

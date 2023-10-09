@@ -74,19 +74,19 @@ public class Board : MonoBehaviour
         int[,] arrangeFruits = new int[width, height];
         int[,] arrangeTiles = new int[width, height];
 
-        taskController.SetTask(0, height * 3);
-        taskController.SetTask(1, height * 2);
-        taskController.SetMoveCount(20);
+        taskController.SetTask(0, height * 6);
+        taskController.SetTask(1, height * 6);
+        taskController.SetMoveCount(25);
 
-        for(int i = 0;i < 1; i++)
+        for(int i = width-3;i < width; i++)
         {
             for (int j = 0; j < height; j++)
             {
-                arrangeTiles[i, j] = 1;
+                arrangeTiles[i, j] = 2;
             }
         }
 
-        for (int i = 1; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < height; j++)
             {
@@ -702,7 +702,7 @@ public class Board : MonoBehaviour
             }
 
         }
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
         if (!checkingMatch)
         {
             StartCoroutine(CheckAndDestroyMatches());

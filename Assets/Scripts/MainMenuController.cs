@@ -10,6 +10,7 @@ public class MainMenuController : MonoBehaviour
     public LiveRegen liveRegen;
     public LevelController levelController;
     public ResourceController resourceController;
+    public ShopController shopController;
 
     public TextMeshProUGUI starText;
     public TextMeshProUGUI starShopText;
@@ -232,15 +233,33 @@ public class MainMenuController : MonoBehaviour
         shopBackground.SetActive(false);
         shopTopUI.GetComponent<Animator>().SetTrigger("ShopClose");
         shopCloseButton.GetComponent<Animator>().SetTrigger("Tapped");
+
+        for (int i = 0; i < shopController.shopItems.Length; i++)
+        {
+            shopController.shopItems[i].item.transform.localPosition += new Vector3(500, 0, 0);
+        }
     }
 
     public void BuyStarsButtonTapped()
     {
         if (!shopBackground.activeSelf)
         {
-            starShopText.text = starText.text;
-            shopBackground.SetActive(true);
-            shopTopUI.GetComponent<Animator>().SetTrigger("ShopOpen");
+            StartCoroutine(BuyStarsButtonTappedEnum());
+        }
+    }
+
+    IEnumerator BuyStarsButtonTappedEnum()
+    {
+        yield return null;
+
+        starShopText.text = starText.text;
+        shopBackground.SetActive(true);
+        shopTopUI.GetComponent<Animator>().SetTrigger("ShopOpen");
+
+        for (int i = 0; i < shopController.shopItems.Length; i++)
+        {
+            shopController.shopItems[i].item.GetComponent<Animator>().SetTrigger("ShopOpen");
+            yield return new WaitForSeconds(0.01f);
         }
     }
 

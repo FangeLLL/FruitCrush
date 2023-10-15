@@ -18,12 +18,14 @@ public class ResourceController : MonoBehaviour
     private void Start()
     {
         starText.text = star.ToString();
+        starShopText.text = star.ToString();
     }
 
     public void StarSpent(int spentValue)
     {
         star -= spentValue;
         starText.text = star.ToString();
+        starShopText.text = star.ToString();
 
         PlayerPrefs.SetInt("Star", star);
         PlayerPrefs.Save();
@@ -33,6 +35,7 @@ public class ResourceController : MonoBehaviour
     {
         star += rewardValue;
         starText.text = star.ToString();
+        starShopText.text = star.ToString();
 
         PlayerPrefs.SetInt("Star", star);
         PlayerPrefs.Save();

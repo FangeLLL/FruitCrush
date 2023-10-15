@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     public ResourceController resourceController;
     public LiveRegen liveRegen;
     public LevelController levelController;
+    public ShopController shopController;
 
     public GameObject congratText;
     public GameObject failedText;
@@ -495,15 +496,33 @@ public class UIManager : MonoBehaviour
         shopBackground.SetActive(false);
         shopTopUI.GetComponent<Animator>().SetTrigger("ShopClose");
         shopCloseButton.GetComponent<Animator>().SetTrigger("Tapped");
+
+        for (int i = 0; i < shopController.shopItems.Length; i++)
+        {
+            shopController.shopItems[i].item.transform.localPosition += new Vector3(500, 0, 0);
+        }
     }
 
     public void BuyStarsButtonTapped()
     {
         if (!shopBackground.activeSelf)
         {
-            resourceController.starShopText.text = resourceController.starText.text;
-            shopBackground.SetActive(true);
-            shopTopUI.GetComponent<Animator>().SetTrigger("ShopOpen");
+            StartCoroutine(BuyStarsButtonTappedEnum());
+        }
+    }
+
+    IEnumerator BuyStarsButtonTappedEnum()
+    {
+        yield return null;
+
+        resourceController.starShopText.text = resourceController.starText.text;
+        shopBackground.SetActive(true);
+        shopTopUI.GetComponent<Animator>().SetTrigger("ShopOpen");
+
+        for (int i = 0; i < shopController.shopItems.Length; i++)
+        {
+            shopController.shopItems[i].item.GetComponent<Animator>().SetTrigger("ShopOpen");
+            yield return new WaitForSeconds(0.01f);
         }
     }
 

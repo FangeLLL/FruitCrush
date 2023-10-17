@@ -337,7 +337,7 @@ public class Board : MonoBehaviour
                 bool rowPopped = false, columnPopped = false, squarePopped = false;
                 // it checking if bottom piece and one above it same. In every cycle it adds the one is currently below checking and if two of them not same
                 // then its out of the  cycle. Checking if the space is null or exist.
-                if (FruitAvailable(allFruits[i, j]) && allFruits[i, j].GetComponent<Fruit>().fruitType>=0)
+                if (FruitAvailable(allFruits[i, j]) && allFruits[i, j].GetComponent<Fruit>().fruitType >= 0)
                 {
                     // Column
                     while (same)
@@ -380,7 +380,7 @@ public class Board : MonoBehaviour
                         rowPopped = true;
                         fruitsCheck.AddRange(fruitsCheckTemp.Except(fruitsCheck).ToList());
                     }
-                   
+
                     int type;
 
                     if (j + 1 < height && FruitAvailable(allFruits[i, j]) && FruitAvailable(allFruits[i, j + 1]) && (type = allFruits[i, j].GetComponent<Fruit>().fruitType) == allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
@@ -406,7 +406,7 @@ public class Board : MonoBehaviour
                     }
 
                     if (fruitsCheck.Count > 0)
-                    {                       
+                    {
                         audioManager.FruitCrush();
                         type = allFruits[i, j].GetComponent<Fruit>().fruitType;
                         typeFruits[type] += fruitsCheck.Count;
@@ -423,7 +423,7 @@ public class Board : MonoBehaviour
                             int column = fruitToChange.GetComponent<Fruit>().column;
                             if (rowPopped && columnPopped)
                             {
-                              //  CreatePowerUp(column, row, -3);
+                                //  CreatePowerUp(column, row, -3);
                             }
                             else if (rowPopped)
                             {
@@ -434,14 +434,15 @@ public class Board : MonoBehaviour
                             {
                                 CreatePowerUp(column, row, -2);
 
-                            }else if (squarePopped)
+                            }
+                            else if (squarePopped)
                             {
                                 CreatePowerUp(column, row, -3);
                             }
 
                         }
-                        fruitsCheck.Clear();                     
-                       
+                        fruitsCheck.Clear();
+
                         popped = true;
 
                         // SWIPE HINT ANIMATION STOP
@@ -457,7 +458,7 @@ public class Board : MonoBehaviour
                                 animator.SetBool(swipeHint.fruit.swipeRight, false);
                             }
                         }
-                        achievementManager.AchievementProgress(typeFruits);                     
+                        achievementManager.AchievementProgress(typeFruits);
                     }
 
                 }
@@ -467,11 +468,13 @@ public class Board : MonoBehaviour
         if (!popped)
         {
             exitUpdate = false;
-            hintBool= true;
+            hintBool = true;
         }
         checkingMatch = false;
 
     }
+
+  
 
     private bool FruitAvailable(GameObject obj)
     {
@@ -1150,11 +1153,7 @@ public class Board : MonoBehaviour
                     DestroyController(allFruits[column, i], false);
                     audioManager.FruitCrush();
                 }
-                else
-                {
-                    allTiles[column, i].GetComponent<BackgroundTile>().Boom();
-
-                }
+                allTiles[column, i].GetComponent<BackgroundTile>().Boom();
             }
         }
         else
@@ -1168,10 +1167,8 @@ public class Board : MonoBehaviour
                     DestroyController(allFruits[column, i], false);
                     audioManager.FruitCrush();
                 }
-                else
-                {
-                    allTiles[column, i].GetComponent<BackgroundTile>().Boom();
-                }
+                allTiles[column, i].GetComponent<BackgroundTile>().Boom();
+
             }
         }
         allTiles[column, row].GetComponent<BackgroundTile>().Boom();

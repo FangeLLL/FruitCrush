@@ -23,7 +23,7 @@ public class Board : MonoBehaviour
     public AchievementManager achievementManager;
     public TaskController taskController;
     public SwipeHint swipeHint;
-  //  public SaveData saveData;
+    public SaveData saveData;
 
 
     public bool checkingMatch = false;
@@ -52,15 +52,19 @@ public class Board : MonoBehaviour
 
     private void Awake()
     {
-      //  saveData = FindFirstObjectByType<SaveData>();
-      //  saveData.LoadFromJson();
+        saveData.LoadFromJson();
+
     }
 
     void Start()
     {
-        //   width = saveData.grid.width;
-        //  height = saveData.grid.height;
-        //  fruits = saveData.grid.fruits;
+        width = saveData.gridData.width;
+        height = saveData.gridData.height;
+        fruits = saveData.gridData.fruits;
+
+        //width = SaveData.Instance.gridData.width;
+        //height = SaveData.Instance.gridData.height;
+        //fruits = SaveData.Instance.gridData.fruits;
 
         fillingColumn = new bool[width];
 
@@ -78,7 +82,7 @@ public class Board : MonoBehaviour
         taskController.SetTask(1, height * 6);
         taskController.SetMoveCount(25);
 
-        for(int i = width-3;i < width; i++)
+        /*for(int i = width-3;i < width; i++)
         {
             for (int j = 0; j < height; j++)
             {
@@ -92,9 +96,10 @@ public class Board : MonoBehaviour
             {
                 arrangeTiles[i, j] = 2;
             }
-        }
+        }*/
 
-        SetUpWithArray(arrangeFruits,arrangeTiles);
+        //SetUpWithArray(arrangeFruits,arrangeTiles);
+        SetUp();
     }
 
     private void Update()

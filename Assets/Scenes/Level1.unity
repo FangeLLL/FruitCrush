@@ -1494,6 +1494,7 @@ MonoBehaviour:
   achievementManager: {fileID: 1772865870}
   taskController: {fileID: 1772865872}
   swipeHint: {fileID: 160705529}
+  saveData: {fileID: 1772865879}
   checkingMatch: 0
   isRunning: 0
   exitUpdate: 0
@@ -1501,6 +1502,7 @@ MonoBehaviour:
   - {fileID: 3566861933945487612, guid: a93f162c14c85804c91de0fb620e5409, type: 3}
   - {fileID: 3566861933945487612, guid: db85cb766090462468799094e763dc2a, type: 3}
   - {fileID: 3566861933945487612, guid: 05739bb40d03c5040938d6f697a1917d, type: 3}
+  - {fileID: 3566861933945487612, guid: b5852d23aa5fab3469fb3a26cf627ac8, type: 3}
   - {fileID: 3566861933945487612, guid: b5852d23aa5fab3469fb3a26cf627ac8, type: 3}
   powerUps:
   - {fileID: 7148421088010075250, guid: c7052b1bc5e43864db4d03c6a55e51c3, type: 3}
@@ -14616,12 +14618,12 @@ GameObject:
   - component: {fileID: 1772865871}
   - component: {fileID: 1772865870}
   - component: {fileID: 1772865872}
-  - component: {fileID: 1772865873}
   - component: {fileID: 1772865874}
   - component: {fileID: 1772865875}
   - component: {fileID: 1772865876}
   - component: {fileID: 1772865877}
   - component: {fileID: 1772865878}
+  - component: {fileID: 1772865879}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -14828,24 +14830,6 @@ MonoBehaviour:
   isBoardActive: 1
   moveCountText: {fileID: 363990713}
   moveText: {fileID: 363990715}
---- !u!114 &1772865873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1772865867}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bd828b79cae0de4590c1328c626223f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grid:
-    width: 0
-    height: 0
-    fruits: []
-    strawBalePrefab: {fileID: 0}
-    tilePrefab: {fileID: 0}
 --- !u!114 &1772865874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14977,6 +14961,27 @@ MonoBehaviour:
     rewardedPowerUp2: 0
     rewardedPowerUp3: 0
   resourceController: {fileID: 1772865874}
+--- !u!114 &1772865879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1772865867}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bd828b79cae0de4590c1328c626223f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridData:
+    width: 3
+    height: 3
+    fruits:
+    - {fileID: 3566861933945487612, guid: a93f162c14c85804c91de0fb620e5409, type: 3}
+    - {fileID: 3566861933945487612, guid: b5852d23aa5fab3469fb3a26cf627ac8, type: 3}
+    strawBalePrefab: {fileID: 0}
+    tilePrefab: {fileID: 0}
+  saveFilePath: 
 --- !u!1 &1774749130
 GameObject:
   m_ObjectHideFlags: 0

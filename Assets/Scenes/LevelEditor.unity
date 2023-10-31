@@ -168,8 +168,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfce22907c96d7c40b1a7be5a1ac6885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 4
-  height: 6
+  width: 5
+  height: 7
   obstacleType: 0
   fruits:
   - {fileID: 3566861933945487612, guid: a93f162c14c85804c91de0fb620e5409, type: 3}
@@ -195,17 +195,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bd828b79cae0de4590c1328c626223f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid:
-    width: 7
-    height: 6
+  gridData:
+    width: 4
+    height: 5
     fruits:
     - {fileID: 3566861933945487612, guid: a93f162c14c85804c91de0fb620e5409, type: 3}
     - {fileID: 3566861933945487612, guid: db85cb766090462468799094e763dc2a, type: 3}
     - {fileID: 3566861933945487612, guid: 05739bb40d03c5040938d6f697a1917d, type: 3}
-    - {fileID: 3566861933945487612, guid: b5852d23aa5fab3469fb3a26cf627ac8, type: 3}
-    - {fileID: 3566861933945487612, guid: 2da640a0dfd853f49a5c57d689c3b7f3, type: 3}
+    - {fileID: 3566861933945487612, guid: 39249f7716cd5394194090fc2e368229, type: 3}
     strawBalePrefab: {fileID: 0}
     tilePrefab: {fileID: 0}
+  saveFilePath: 
 --- !u!1 &27178501
 GameObject:
   m_ObjectHideFlags: 0
@@ -3473,13 +3473,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1428364321}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d9511e1aa1b47964c84bf773642daa4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   uiManager: {fileID: 1428364323}
   liveRegen: {fileID: 0}
+  board: {fileID: 0}
+  rewardController: {fileID: 0}
   taskDisplays:
   - taskTypeIndex: 0
     taskImage: {fileID: 417438914}
@@ -3508,6 +3510,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a7b5c6e4ae16f2f47961b75e0c33b731, type: 3}
   moveCount: 0
   currentObjectiveIndex: 0
+  onetime: 1
+  isBoardActive: 1
   moveCountText: {fileID: 0}
   moveText: {fileID: 1869845306}
 --- !u!114 &1428364323
@@ -3517,7 +3521,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1428364321}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e279ae6a3e9b3c4e94db46846c7242a, type: 3}
   m_Name: 
@@ -3525,20 +3529,26 @@ MonoBehaviour:
   achivementManager: {fileID: 1428364324}
   taskController: {fileID: 0}
   resourceController: {fileID: 0}
+  liveRegen: {fileID: 0}
+  levelController: {fileID: 0}
+  shopController: {fileID: 0}
   congratText: {fileID: 1478434257}
   failedText: {fileID: 1948680175}
-  finishBackground: {fileID: 1929034747}
+  finishBackground1: {fileID: 0}
+  finishBackground2: {fileID: 0}
   settingsIcon: {fileID: 1337254237}
   settingsIconShadow: {fileID: 27178501}
   soundIcon: {fileID: 715917847}
   soundDisableIcon: {fileID: 221142314}
   musicIcon: {fileID: 1253087892}
   musicDisableIcon: {fileID: 1793192844}
+  exitGameIcon: {fileID: 0}
   settingsGray: {fileID: 873475424}
   gameFinishBoxTrue: {fileID: 0}
   gameFinishBoxFalse: {fileID: 0}
   gameFinishBoxLevel: {fileID: 0}
   gameFinishBoxStar: {fileID: 0}
+  starGlow: {fileID: 0}
   gameFinishBoxMoveCount1: {fileID: 0}
   gameFinishBoxMoveCount2: {fileID: 0}
   gameFinishBoxTarget1OG: {fileID: 0}
@@ -3552,6 +3562,18 @@ MonoBehaviour:
   continueButton: {fileID: 0}
   continueWithButton: {fileID: 0}
   retryButton: {fileID: 0}
+  shopBackground: {fileID: 0}
+  shopTopUI: {fileID: 0}
+  shopCloseButton: {fileID: 0}
+  outOfLivesBox: {fileID: 0}
+  outOfLivesBoxQuitButton: {fileID: 0}
+  refillButton: {fileID: 0}
+  quitLevelBox: {fileID: 0}
+  quitLevelBoxCloseButton: {fileID: 0}
+  quitLevelButton: {fileID: 0}
+  movePriceText: {fileID: 0}
+  refillPriceText: {fileID: 0}
+  levelText: {fileID: 0}
   isSoundOn: 0
   isMusicOn: 0
 --- !u!114 &1428364324

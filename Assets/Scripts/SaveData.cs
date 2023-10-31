@@ -42,7 +42,8 @@ public class SaveData : MonoBehaviour
 
     public void LoadFromJson()
     {
-        if (File.Exists(saveFilePath))
+
+        if (File.Exists(saveFilePath = Application.persistentDataPath + "/GridData.json"))
         {
             string loadGridData = File.ReadAllText(saveFilePath);
 

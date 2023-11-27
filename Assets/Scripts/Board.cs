@@ -78,28 +78,23 @@ public class Board : MonoBehaviour
         int[,] arrangeFruits = new int[width, height];
         int[,] arrangeTiles = new int[width, height];
 
+        for (int i = 0;height> i; i++)
+        {
+            for(int j = 0; width > j; j++)
+            {
+                arrangeTiles[i, j] = saveData.gridData.allTilesTotal[(width*i)+j];
+                arrangeFruits[i, j] = saveData.gridData.allFruitsTotal[(width * i) + j];
+
+            }
+        }
+
         taskController.SetTask(0, height * 6);
         taskController.SetTask(1, height * 6);
         taskController.SetMoveCount(25);
 
-        /*for(int i = width-3;i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                arrangeTiles[i, j] = 2;
-            }
-        }
 
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                arrangeTiles[i, j] = 2;
-            }
-        }*/
-
-        //SetUpWithArray(arrangeFruits,arrangeTiles);
-        SetUp();
+        SetUpWithArray(arrangeFruits,arrangeTiles);
+        //SetUp();
     }
 
     private void Update()
@@ -129,8 +124,8 @@ public class Board : MonoBehaviour
 
     private void SetUpWithArray(int[,] arrangedFruits, int[,] arrangedTiles)
     {
-        width = arrangedTiles.GetLength(0);
-        height = arrangedTiles.GetLength(1);
+       // width = arrangedTiles.GetLength(0);
+       // height = arrangedTiles.GetLength(1);
 
         float xOffset = width * 0.5f - 0.5f;
         float yOffset = (height * 0.5f - 0.5f)+1.1f;
@@ -156,8 +151,7 @@ public class Board : MonoBehaviour
                 }
                 else
                 {
-                     // int fruitToUse = arrangedFruits[i,j];
-                    int fruitToUse = UnityEngine.Random.Range(0, fruits.Length);
+                    int fruitToUse = arrangedFruits[i,j];
                     GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
                     fruit.transform.parent = this.transform;
                     fruit.name = "( " + i + ", " + j + " )";
@@ -478,8 +472,6 @@ public class Board : MonoBehaviour
         checkingMatch = false;
 
     }
-
-  
 
     private bool FruitAvailable(GameObject obj)
     {

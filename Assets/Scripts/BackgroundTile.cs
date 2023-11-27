@@ -11,6 +11,7 @@ public class BackgroundTile : MonoBehaviour
     public GameObject strawBaleObj;
     public GameObject wheatFarmObj;
     AudioManager audioManager;
+    public int tileType=0;
 
 
     // Start is called before the first frame update

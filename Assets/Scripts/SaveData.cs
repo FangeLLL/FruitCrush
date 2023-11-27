@@ -17,18 +17,6 @@ public class SaveData : MonoBehaviour
         saveFilePath = Application.persistentDataPath + "/GridData.json";
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            SaveToJson();
-        }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            LoadFromJson();
-        }
-    }
-
     public void SaveToJson()
     {
         string saveGridData = JsonUtility.ToJson(gridData);
@@ -68,10 +56,10 @@ public class Grid
     public int width;
     public int height;
     public GameObject[] fruits;
-    public GameObject[,] allFruits;
-    public GameObject[,] allTiles;
-    public GameObject strawBalePrefab;
-    public GameObject tilePrefab;
+    // Json files does not support 2d arrays so these values store all fruits by starting down left corner and finishing top right corner. So, total lenght
+    // for these arrays is (width x height) .
+    public int[] allFruitsTotal;
+    public int[] allTilesTotal;
 }
 
 

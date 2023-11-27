@@ -8,18 +8,19 @@ public class SaveData : MonoBehaviour
 {
     //public static SaveData Instance { get; private set; }
 
-    public Grid gridData;
+    public Grid[] gridData;
     public string saveFilePath;
 
     private void Start()
     {
-        gridData = new Grid();
+        gridData = new Grid[1000];
+        LoadFromJson();
         saveFilePath = Application.persistentDataPath + "/GridData.json";
     }
 
     public void SaveToJson()
     {
-        string saveGridData = JsonUtility.ToJson(gridData);
+        string saveGridData = JsonHelper.ToJson(gridData,true);
         File.WriteAllText(saveFilePath, saveGridData);
         Debug.Log("Save file created at: " + saveFilePath);
 
@@ -35,7 +36,7 @@ public class SaveData : MonoBehaviour
         {
             string loadGridData = File.ReadAllText(saveFilePath);
 
-            gridData = JsonUtility.FromJson<Grid>(loadGridData);
+            gridData = JsonHelper.FromJson<Grid>(loadGridData);
 
             //string filePath = Application.persistentDataPath + "/GridData.json";
             //string inventoryData = System.IO.File.ReadAllText(filePath);
@@ -53,6 +54,7 @@ public class SaveData : MonoBehaviour
 [System.Serializable]
 public class Grid
 {
+    public int level;
     public int width;
     public int height;
     public GameObject[] fruits;

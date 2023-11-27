@@ -200,5 +200,8 @@ public class TaskController : MonoBehaviour
         isLevelCompleted = true;
         liveRegen.LevelComplete();
         rewardController.GiveStarReward(200);
+        int userLevel = PlayerPrefs.GetInt("level");
+        userLevel++;
+        PlayerPrefs.SetInt("level",userLevel);
     }
 }

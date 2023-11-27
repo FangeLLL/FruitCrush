@@ -46,6 +46,7 @@ public class Board : MonoBehaviour
     public bool hintBool = false;
     bool popped = false;
 
+    public int userLevel;
 
     public GameObject[,] allFruits;
     public GameObject[,] allTiles;
@@ -58,9 +59,13 @@ public class Board : MonoBehaviour
 
     void Start()
     {
-        width = saveData.gridData.width;
-        height = saveData.gridData.height;
-        fruits = saveData.gridData.fruits;
+        userLevel = PlayerPrefs.GetInt("level", 0);
+
+        Grid gridData = saveData.gridData[userLevel];
+
+        width = gridData.width;
+        height = gridData.height;
+        fruits = gridData.fruits;
 
         //width = SaveData.Instance.gridData.width;
         //height = SaveData.Instance.gridData.height;
@@ -78,12 +83,15 @@ public class Board : MonoBehaviour
         int[,] arrangeFruits = new int[width, height];
         int[,] arrangeTiles = new int[width, height];
 
+        int[] savedTiles = gridData.allTilesTotal;
+        int[] savedFruits = gridData.allFruitsTotal;
+
         for (int i = 0;height> i; i++)
         {
             for(int j = 0; width > j; j++)
             {
-                arrangeTiles[i, j] = saveData.gridData.allTilesTotal[(width*i)+j];
-                arrangeFruits[i, j] = saveData.gridData.allFruitsTotal[(width * i) + j];
+                arrangeTiles[i, j] = savedTiles[(width*i)+j];
+                arrangeFruits[i, j] = savedFruits[(width * i) + j];
 
             }
         }

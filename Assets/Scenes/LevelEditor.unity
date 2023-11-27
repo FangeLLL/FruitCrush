@@ -181,6 +181,7 @@ MonoBehaviour:
   - {fileID: 3330133265949295339, guid: fe41b404371a0c94c893126b94b8006f, type: 3}
   tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
   strawBalePrefab: {fileID: 3330133265949295339, guid: 6e55f47fa5c0a774683277fda450e2a5, type: 3}
+  level: 5
 --- !u!114 &6254092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,13 +195,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridData:
-    width: 4
-    height: 5
-    fruits:
-    - {fileID: 3566861933945487612, guid: a93f162c14c85804c91de0fb620e5409, type: 3}
-    - {fileID: 3566861933945487612, guid: db85cb766090462468799094e763dc2a, type: 3}
-    - {fileID: 3566861933945487612, guid: 05739bb40d03c5040938d6f697a1917d, type: 3}
-    - {fileID: 3566861933945487612, guid: 39249f7716cd5394194090fc2e368229, type: 3}
+  - level: 0
+    width: 0
+    height: 0
+    fruits: []
+    allFruitsTotal: 
+    allTilesTotal: 
+  - level: 0
+    width: 0
+    height: 0
+    fruits: []
+    allFruitsTotal: 
+    allTilesTotal: 
+  - level: 0
+    width: 0
+    height: 0
+    fruits: []
+    allFruitsTotal: 
+    allTilesTotal: 
   saveFilePath: 
 --- !u!1 &27178501
 GameObject:

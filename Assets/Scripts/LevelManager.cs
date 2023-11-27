@@ -26,6 +26,7 @@ public class LevelManager : MonoBehaviour
 
     private SaveData saveData;
 
+    public int level=1;
 
     private void Start()
     {        
@@ -42,16 +43,20 @@ public class LevelManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.S))
         {
-            saveTheBoard();
+            saveTheBoard(level);
         }
      
     }
 
-    private void saveTheBoard()
+    private void saveTheBoard(int level)
     {
-        saveData.gridData.width = width;
-        saveData.gridData.height = height;
-        saveData.gridData.fruits= fruits;
+        level--;
+        saveData.gridData[level] = new Grid();
+
+        saveData.gridData[level].width = width;
+        saveData.gridData[level].height = height;
+        saveData.gridData[level].fruits= fruits;
+        saveData.gridData[level].level= level+1;
 
         int[] arrangeFruits = new int[width * height];
         int[] arrangeTiles = new int[width * height];
@@ -65,8 +70,8 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-        saveData.gridData.allFruitsTotal= arrangeFruits;
-        saveData.gridData.allTilesTotal= arrangeTiles;
+        saveData.gridData[level].allFruitsTotal= arrangeFruits;
+        saveData.gridData[level].allTilesTotal= arrangeTiles;
         saveData.SaveToJson();
     }
 

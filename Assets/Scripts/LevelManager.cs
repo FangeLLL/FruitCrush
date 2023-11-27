@@ -24,12 +24,16 @@ public class LevelManager : MonoBehaviour
     public GameObject[,] allTiles;
     public GameObject[,] allObstacles;
 
+    public int moveCount;
+    public int[] taskElements;
+
     private SaveData saveData;
 
     public int level=1;
 
     private void Start()
     {        
+        taskElements= new int[2];
         saveData= GetComponent<SaveData>();
 
         allFruits = new GameObject[width, height];
@@ -57,6 +61,8 @@ public class LevelManager : MonoBehaviour
         saveData.gridData[level].height = height;
         saveData.gridData[level].fruits= fruits;
         saveData.gridData[level].level= level+1;
+        saveData.gridData[level].moveCount= moveCount;
+        saveData.gridData[level].taskElements= taskElements;
 
         int[] arrangeFruits = new int[width * height];
         int[] arrangeTiles = new int[width * height];

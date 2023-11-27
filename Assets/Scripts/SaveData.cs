@@ -7,7 +7,7 @@ using System.Net;
 public class SaveData : MonoBehaviour
 {
     //public static SaveData Instance { get; private set; }
-
+    [HideInInspector]
     public Grid[] gridData;
     public string saveFilePath;
 
@@ -62,6 +62,8 @@ public class Grid
     // for these arrays is (width x height) .
     public int[] allFruitsTotal;
     public int[] allTilesTotal;
+    public int moveCount;
+    public int[] taskElements;
 }
 
 

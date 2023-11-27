@@ -96,9 +96,9 @@ public class Board : MonoBehaviour
             }
         }
 
-        taskController.SetTask(0, height * 6);
-        taskController.SetTask(1, height * 6);
-        taskController.SetMoveCount(25);
+        taskController.SetTask(0, gridData.taskElements[0]);
+        taskController.SetTask(1, gridData.taskElements[1]);
+        taskController.SetMoveCount(gridData.moveCount);
 
 
         SetUpWithArray(arrangeFruits,arrangeTiles);

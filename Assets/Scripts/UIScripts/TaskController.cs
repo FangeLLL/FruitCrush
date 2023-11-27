@@ -98,21 +98,30 @@ public class TaskController : MonoBehaviour
         }
     }
 
-    public void SetTask(int taskTypeIndex, int _taskNumber)
+    public void SetTask(int[] taskArray)
     {
-        if (currentObjectiveIndex < taskDisplays.Length)
+        if (currentObjectiveIndex < taskDisplays.Length && taskArray != null)
         {
-            TaskDisplay taskDisplay = taskDisplays[currentObjectiveIndex];
 
-            taskDisplay.taskImage.sprite = taskSprites[taskTypeIndex];
-            taskDisplay.taskText.text = _taskNumber.ToString();
-            taskDisplay.taskTypeIndex = taskTypeIndex;
-            taskDisplay.taskImage.gameObject.SetActive(true);
+            for (int i = 0; i < taskArray.Length; i++)
+            {
+                if (taskArray[i] != 0)
+                {
+                    TaskDisplay taskDisplay = taskDisplays[currentObjectiveIndex];
 
-            currentObjectiveIndex++;
+                    taskDisplay.taskImage.sprite = taskSprites[i];
+                    taskDisplay.taskText.text = taskArray[i].ToString();
+                    taskDisplay.taskTypeIndex = i;
+                    taskDisplay.taskImage.gameObject.SetActive(true);
+
+                    currentObjectiveIndex++;
+                }
+            }
+
             ObjectiveLocationSetter();
         }
     }
+
 
     public void TaskProgress(int taskTypeIndex)
     {
@@ -200,8 +209,5 @@ public class TaskController : MonoBehaviour
         isLevelCompleted = true;
         liveRegen.LevelComplete();
         rewardController.GiveStarReward(200);
-        int userLevel = PlayerPrefs.GetInt("level");
-        userLevel++;
-        PlayerPrefs.SetInt("level",userLevel);
     }
 }

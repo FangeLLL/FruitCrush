@@ -13,6 +13,8 @@ public class Achievement
     public int level = 1;
     public int progress = 0;
     public Texture achievementBackground;
+    public int rewardIndex;
+    public int rewardAmount;
 }
 
 public class AchievementManager : MonoBehaviour

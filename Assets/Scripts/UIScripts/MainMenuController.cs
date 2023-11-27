@@ -20,6 +20,7 @@ public class MainMenuController : MonoBehaviour
     public GameObject starBox;
     public GameObject livesBox;
     public GameObject settingsIcon;
+    public GameObject tasksIcon;
     public GameObject shopBackground;
     public GameObject shopTopUI;
     public GameObject shopCloseButton;
@@ -33,6 +34,8 @@ public class MainMenuController : MonoBehaviour
     public GameObject MenuBackground;
     public GameObject settingsMenu;
     public GameObject settingsCloseButton;
+    public GameObject tasksMenu;
+    public GameObject tasksCloseButton;
     public GameObject musicToggleBlock;
     public GameObject soundToggleBlock;
     public GameObject hintToggleBlock;
@@ -45,7 +48,7 @@ public class MainMenuController : MonoBehaviour
 
     private void Start()
     {
-        Invoke("ActivateUI", 0.25f);
+        StartCoroutine(ActivateUICoroutine());
 
         int soundSetting = PlayerPrefs.GetInt("SoundSetting", 1);
         isSoundOn = soundSetting == 1;
@@ -90,12 +93,17 @@ public class MainMenuController : MonoBehaviour
         }
     }
 
-
-    private void ActivateUI()
+    IEnumerator ActivateUICoroutine()
     {
+        yield return new WaitForSeconds(0.25f);
+
         starBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
         livesBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
         settingsIcon.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+
+        yield return new WaitForSeconds(0.25f);
+
+        tasksIcon.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
     }
 
     public void ToggleMusic()
@@ -320,5 +328,18 @@ public class MainMenuController : MonoBehaviour
     {
         MenuBackground.SetActive(false);
         settingsMenu.SetActive(false);
+    }
+
+    public void TasksButtonTapped()
+    {
+        MenuBackground.SetActive(true);
+        tasksMenu.SetActive(true);
+        tasksMenu.GetComponent<Animator>().SetTrigger("MenuOpen");
+    }
+
+    public void TasksCloseButtonTapped()
+    {
+        MenuBackground.SetActive(false);
+        tasksMenu.SetActive(false);
     }
 }

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI; // Import Unity UI namespace
 using Random = UnityEngine.Random;
 
 public class DailyTaskManager : MonoBehaviour
@@ -10,7 +12,8 @@ public class DailyTaskManager : MonoBehaviour
         CompleteLevels,
         CrushFruits,
         FirstTry,
-        MakeMoves
+        MakeMoves,
+        CreateSpecialFruits
     }
 
     [Serializable]
@@ -21,10 +24,29 @@ public class DailyTaskManager : MonoBehaviour
     }
 
     public List<DailyMission> missionPool;
-
     public int missionsPerDay = 3;
 
     private List<DailyMission> selectedMissions = new List<DailyMission>();
+
+    public Canvas taskMenuCanvas;
+    public List<GameObject> taskBoxes;
+
+    [Serializable]
+    public class TaskBox
+    {
+        public TextMeshProUGUI taskText;
+        public TextMeshProUGUI taskProgressText;
+        public TextMeshProUGUI rewardText;
+    }
+
+    private Dictionary<DailyMissionType, string> missionDescriptions = new Dictionary<DailyMissionType, string>
+    {
+        { DailyMissionType.CompleteLevels, "Complete levels" },
+        { DailyMissionType.CrushFruits, "Crush fruits" },
+        { DailyMissionType.FirstTry, "Complete levels in your  first try" },
+        { DailyMissionType.MakeMoves, "Make moves" },
+        { DailyMissionType.CreateSpecialFruits, "Create special fruits" }
+    };
 
     private void SelectRandomMissions()
     {
@@ -46,9 +68,22 @@ public class DailyTaskManager : MonoBehaviour
             }
         }
 
-        foreach (var mission in selectedMissions)
+        UpdateTaskMenu();
+    }
+
+    private void UpdateTaskMenu()
+    {
+        for (int i = 0; i < taskBoxes.Count && i < selectedMissions.Count; i++)
         {
-            Debug.Log($"Daily Mission: {mission.type} - Target Count: {mission.targetCount}");
+            TextMeshProUGUI taskText = taskBoxes[i].transform.Find("TaskText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI taskProgressText = taskBoxes[i].transform.Find("TaskProgressText").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI rewardText = taskBoxes[i].transform.Find("RewardText").GetComponent<TextMeshProUGUI>();
+
+            DailyMissionType missionType = selectedMissions[i].type;
+
+            taskText.text = $"{missionDescriptions[missionType]}";
+            taskProgressText.text = $"0/{selectedMissions[i].targetCount}";
+            rewardText.text = "Reward";
         }
     }
 

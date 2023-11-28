@@ -21,6 +21,7 @@ public class MainMenuController : MonoBehaviour
     public GameObject livesBox;
     public GameObject settingsIcon;
     public GameObject tasksIcon;
+    public GameObject grayBack;
     public GameObject shopBackground;
     public GameObject shopTopUI;
     public GameObject shopCloseButton;
@@ -180,6 +181,7 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayButtonTapped()
     {
+        grayBack.SetActive(true);
         levelBoxText.text = "Level " + levelController.currentLevel.ToString();
         StartCoroutine(PlayButtonTappedEnum());
     }
@@ -203,6 +205,7 @@ public class MainMenuController : MonoBehaviour
 
     IEnumerator PlayBoxQuitButtonTappedEnum()
     {
+        grayBack.SetActive(false);
         playBoxQuitButton.GetComponent<Animator>().SetTrigger("Tapped");
         playBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
         levelBox.SetActive(false);

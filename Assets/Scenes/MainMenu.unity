@@ -698,7 +698,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Complete levels
+  m_text: ccc
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: be221cebcdd3159448cf32be534500e7, type: 2}
   m_sharedMaterial: {fileID: -6373688845668365826, guid: be221cebcdd3159448cf32be534500e7, type: 2}
@@ -2744,7 +2744,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Make moves
+  m_text: aaa
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: be221cebcdd3159448cf32be534500e7, type: 2}
   m_sharedMaterial: {fileID: -6373688845668365826, guid: be221cebcdd3159448cf32be534500e7, type: 2}
@@ -3301,7 +3301,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 77d72fffb8b435749bd84c5c9ebf52ac, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b3aac6d94f807e946ba5906e3fd5afd4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8521,7 +8521,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Complete levels in first try
+  m_text: bbb
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: be221cebcdd3159448cf32be534500e7, type: 2}
   m_sharedMaterial: {fileID: -6373688845668365826, guid: be221cebcdd3159448cf32be534500e7, type: 2}
@@ -12300,7 +12300,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000091552734, y: -0.00012207031}
+  m_AnchoredPosition: {x: -0.00012207031, y: -0.00012207031}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1599627643
@@ -13786,15 +13786,15 @@ MonoBehaviour:
   - type: 0
     targetCount: 3
   - type: 1
-    targetCount: 1000
+    targetCount: 500
   - type: 2
     targetCount: 1
   - type: 3
     targetCount: 50
   - type: 4
-    targetCount: 5
+    targetCount: 10
   missionsPerDay: 3
-  taskMenuCanvas: {fileID: 0}
+  taskMenuCanvas: {fileID: 2102001167}
   taskBoxes:
   - {fileID: 371369529}
   - {fileID: 824468791}
@@ -17257,12 +17257,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 422223103}
-  - {fileID: 1817888127}
   - {fileID: 1416875329}
   - {fileID: 348412210}
   - {fileID: 1599627642}
   - {fileID: 592313179}
   - {fileID: 918834738}
+  - {fileID: 1817888127}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

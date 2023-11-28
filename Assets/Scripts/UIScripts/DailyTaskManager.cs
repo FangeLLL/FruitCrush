@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI; // Import Unity UI namespace
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class DailyTaskManager : MonoBehaviour
@@ -31,6 +31,8 @@ public class DailyTaskManager : MonoBehaviour
     public Canvas taskMenuCanvas;
     public List<GameObject> taskBoxes;
 
+    public TextMeshProUGUI countdownText;
+
     [Serializable]
     public class TaskBox
     {
@@ -47,6 +49,8 @@ public class DailyTaskManager : MonoBehaviour
         { DailyMissionType.MakeMoves, "Make moves" },
         { DailyMissionType.CreateSpecialFruits, "Create special fruits" }
     };
+
+    private DateTime nextResetTime; // Time of the next daily reset
 
     private void SelectRandomMissions()
     {
@@ -68,6 +72,10 @@ public class DailyTaskManager : MonoBehaviour
             }
         }
 
+        // Set the next daily reset time to 3 pm
+        nextResetTime = DateTime.Today.Add(new TimeSpan(15, 0, 0));
+
+        // Update the text objects in the task menu canvas
         UpdateTaskMenu();
     }
 
@@ -82,13 +90,26 @@ public class DailyTaskManager : MonoBehaviour
             DailyMissionType missionType = selectedMissions[i].type;
 
             taskText.text = $"{missionDescriptions[missionType]}";
-            taskProgressText.text = $"0/{selectedMissions[i].targetCount}";
+            taskProgressText.text = $"{selectedMissions[i].targetCount}";
             rewardText.text = "Reward";
         }
+    }
+
+    private void UpdateCountdownText()
+    {
+        // Calculate the time remaining until the next reset
+        TimeSpan timeRemaining = nextResetTime - DateTime.Now;
+
+        countdownText.text = $"{timeRemaining.Hours}h {timeRemaining.Minutes}m {timeRemaining.Seconds}s";
     }
 
     void Start()
     {
         SelectRandomMissions();
+    }
+
+    void Update()
+    {
+        UpdateCountdownText();
     }
 }

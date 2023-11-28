@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 
 public class DailyTaskManager : MonoBehaviour
 {
+    [Serializable]
     public enum DailyMissionType
     {
         CompleteLevels,
@@ -17,10 +18,16 @@ public class DailyTaskManager : MonoBehaviour
     }
 
     [Serializable]
-    public struct DailyMission
+    public class DailyMission
     {
         public DailyMissionType type;
         public int targetCount;
+    }
+
+    [Serializable]
+    public class DailyMissionsWrapper
+    {
+        public List<DailyMission> missions;
     }
 
     public List<DailyMission> missionPool;
@@ -50,33 +57,63 @@ public class DailyTaskManager : MonoBehaviour
         { DailyMissionType.CreateSpecialFruits, "Create special fruits" }
     };
 
-    private DateTime nextResetTime; // Time of the next daily reset
+    private DateTime nextResetTime;
+
+    private const string SaveKey = "SelectedMissions";
+    private const string LastOpenedDateKey = "LastOpenedDate";
+
+    public bool newDay;
 
     private void SelectRandomMissions()
     {
-        selectedMissions.Clear();
-
-        for (int i = 0; i < missionPool.Count; i++)
+        if (!PlayerPrefs.HasKey(SaveKey) || newDay)
         {
-            int randomIndex = Random.Range(i, missionPool.Count);
-            DailyMission temp = missionPool[i];
-            missionPool[i] = missionPool[randomIndex];
-            missionPool[randomIndex] = temp;
-        }
+            selectedMissions.Clear();
 
-        for (int i = 0; i < missionsPerDay; i++)
-        {
-            if (i < missionPool.Count)
+            for (int i = 0; i < missionPool.Count; i++)
             {
-                selectedMissions.Add(missionPool[i]);
+                int randomIndex = Random.Range(i, missionPool.Count);
+                DailyMission temp = missionPool[i];
+                missionPool[i] = missionPool[randomIndex];
+                missionPool[randomIndex] = temp;
             }
+
+            for (int i = 0; i < missionsPerDay; i++)
+            {
+                if (i < missionPool.Count)
+                {
+                    selectedMissions.Add(missionPool[i]);
+                }
+            }
+
+            SaveSelectedMissions();
+        }
+        else
+        {
+            LoadSelectedMissions();
         }
 
-        // Set the next daily reset time to 3 pm
-        nextResetTime = DateTime.Today.Add(new TimeSpan(15, 0, 0));
+        nextResetTime = DateTime.Today.AddDays(1).Add(new TimeSpan(24, 0, 0));
 
-        // Update the text objects in the task menu canvas
         UpdateTaskMenu();
+    }
+
+    private void SaveSelectedMissions()
+    {
+        var missionsWrapper = new DailyMissionsWrapper { missions = selectedMissions };
+
+        string missionsJson = JsonUtility.ToJson(missionsWrapper);
+        PlayerPrefs.SetString(SaveKey, missionsJson);
+        PlayerPrefs.Save();
+    }
+
+    private void LoadSelectedMissions()
+    {
+        string missionsJson = PlayerPrefs.GetString(SaveKey);
+
+        var missionsWrapper = JsonUtility.FromJson<DailyMissionsWrapper>(missionsJson);
+
+        selectedMissions = missionsWrapper.missions;
     }
 
     private void UpdateTaskMenu()
@@ -90,14 +127,13 @@ public class DailyTaskManager : MonoBehaviour
             DailyMissionType missionType = selectedMissions[i].type;
 
             taskText.text = $"{missionDescriptions[missionType]}";
-            taskProgressText.text = $"{selectedMissions[i].targetCount}";
+            taskProgressText.text = $"0/{selectedMissions[i].targetCount}";
             rewardText.text = "Reward";
         }
     }
 
     private void UpdateCountdownText()
     {
-        // Calculate the time remaining until the next reset
         TimeSpan timeRemaining = nextResetTime - DateTime.Now;
 
         countdownText.text = $"{timeRemaining.Hours}h {timeRemaining.Minutes}m {timeRemaining.Seconds}s";
@@ -106,6 +142,25 @@ public class DailyTaskManager : MonoBehaviour
     void Start()
     {
         SelectRandomMissions();
+
+        string storedLastOpenedDate = PlayerPrefs.GetString(LastOpenedDateKey, "");
+
+        DateTime currentDate = DateTime.Now;
+        string currentDateString = currentDate.ToString("yyyy-MM-dd");
+
+        if (storedLastOpenedDate == currentDateString)
+        {
+            Debug.Log("The game was opened today.");
+            newDay = false;
+        }
+        else
+        {
+            Debug.Log("The game was opened on a different day or it's the first time.");
+            newDay = true;
+
+            PlayerPrefs.SetString(LastOpenedDateKey, currentDateString);
+            PlayerPrefs.Save();
+        }
     }
 
     void Update()

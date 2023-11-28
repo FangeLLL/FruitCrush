@@ -7,6 +7,7 @@ using Unity.Jobs;
 using Unity.Properties;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D.IK;
 using static UnityEngine.GraphicsBuffer;
@@ -1020,6 +1021,7 @@ public class Board : MonoBehaviour
 
                 HorizontalHarvesterMove(cloneHorizontal, true);
                 HorizontalHarvesterMove(fruit, false);
+                audioManager.Harvester();
 
                 break;
             // Vertical Harvester power up
@@ -1035,10 +1037,12 @@ public class Board : MonoBehaviour
 
                 VerticalHarvesterMove(cloneVertical, true);
                 VerticalHarvesterMove(fruit, false);
+                audioManager.Harvester();
                 break;
             // TNT power up
             case -3:
                 TNTExplosion(column,row,1);
+                audioManager.Pickaxe();
                 break;
 
         }

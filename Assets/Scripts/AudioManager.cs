@@ -155,4 +155,46 @@ public class AudioManager : MonoBehaviour
         source.clip = sounds[21];
         source.PlayOneShot(source.clip);
     }
+
+    public void GlassHit()
+    {
+        source.clip = sounds[22];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void GlassShatter()
+    {
+        source.clip = sounds[23];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void GrassBreak()
+    {
+        source.clip = sounds[24];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void Harvester()
+    {
+        source.clip = sounds[25];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void Pickaxe()
+    {
+        source.clip = sounds[26];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void JellyBreak()
+    {
+        source.clip = sounds[27];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void UnknownSoundEffect()
+    {
+        source.clip = sounds[28];
+        source.PlayOneShot(source.clip);
+    }
 }

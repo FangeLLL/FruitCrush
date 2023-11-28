@@ -1512,6 +1512,7 @@ MonoBehaviour:
   wheatFarmPrefab: {fileID: 6852588376716934326, guid: ad1b1ae42f3cc564d9f5736dfad49c04, type: 3}
   tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
   hintBool: 0
+  userLevel: 0
 --- !u!114 &160705529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14605,6 +14606,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ece220ce1baa82f41a99e0e231318a32, type: 3}
   - {fileID: 8300000, guid: 668d8879d120e2842ad7589cf8b2f5a6, type: 3}
   - {fileID: 8300000, guid: 5aa473a5d9fdf0f4ab428137a77e2f3f, type: 3}
+  - {fileID: 8300000, guid: ec15894a70631084fad35f3e8f5b8d87, type: 3}
+  - {fileID: 8300000, guid: 049e02cb87a57f642aa07d38d85d7b01, type: 3}
+  - {fileID: 8300000, guid: 51c0298806d821649812d59dd158c0f7, type: 3}
+  - {fileID: 8300000, guid: 6b670db051c76c34282c26114419f139, type: 3}
+  - {fileID: 8300000, guid: d4bc46f317a35204eb0955ebafda960c, type: 3}
+  - {fileID: 8300000, guid: 8200fba753c303b47925d6a646a88e37, type: 3}
+  - {fileID: 8300000, guid: fef9bb7690f7a1241b432ebf46c96184, type: 3}
   source: {fileID: 0}
 --- !u!1 &1772865867
 GameObject:
@@ -14665,42 +14673,56 @@ MonoBehaviour:
     level: 0
     progress: 0
     achievementBackground: {fileID: 2800000, guid: d342fbcc2b0d46545aaa025897da9045, type: 3}
+    rewardIndex: 0
+    rewardAmount: 0
   - name: Bananas Destroyed
     index: 0
     steps: 64000000f4010000e8030000d00700008813000010270000a0860100
     level: 0
     progress: 0
     achievementBackground: {fileID: 2800000, guid: 91c281dba31c8474b9897aa336b3aca3, type: 3}
+    rewardIndex: 0
+    rewardAmount: 0
   - name: Cherrys Destroyed
     index: 1
     steps: 64000000f4010000e8030000d00700008813000010270000a0860100
     level: 0
     progress: 0
     achievementBackground: {fileID: 2800000, guid: 2295dffff18ef554f9e1d8e0a463472c, type: 3}
+    rewardIndex: 0
+    rewardAmount: 0
   - name: Grapes Destroyed
     index: 2
     steps: 64000000f4010000e8030000d00700008813000010270000a0860100
     level: 0
     progress: 0
     achievementBackground: {fileID: 2800000, guid: 11bafa2ded77095498fae5df0fa01029, type: 3}
+    rewardIndex: 0
+    rewardAmount: 0
   - name: Oranges Destroyed
     index: 3
     steps: 64000000f4010000e8030000d00700008813000010270000a0860100
     level: 0
     progress: 0
     achievementBackground: {fileID: 2800000, guid: 1dce05a06cae2ec4ba45724b3948d7a2, type: 3}
+    rewardIndex: 0
+    rewardAmount: 0
   - name: Avakados Destroyed
     index: 4
     steps: 64000000f4010000e8030000d00700008813000010270000a0860100
     level: 0
     progress: 0
     achievementBackground: {fileID: 2800000, guid: e2ea3abcf928266439268810d52a4048, type: 3}
+    rewardIndex: 0
+    rewardAmount: 0
   - name: StrawBales Destroyed
     index: 4
     steps: 64000000f4010000e8030000d00700008813000010270000a0860100
     level: 0
     progress: 0
     achievementBackground: {fileID: 2800000, guid: 39cb8d2165d1d334b8fb25af3c24e5a2, type: 3}
+    rewardIndex: 0
+    rewardAmount: 0
   achievementBanners:
   - {fileID: 21300000, guid: a9a2eec14aaf1374c8292c6d225415d0, type: 3}
   - {fileID: 21300000, guid: cc9bda83c62e50847b784e5166444d54, type: 3}
@@ -14974,13 +14996,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridData:
-    width: 3
-    height: 3
-    fruits:
-    - {fileID: 3566861933945487612, guid: a93f162c14c85804c91de0fb620e5409, type: 3}
-    - {fileID: 3566861933945487612, guid: b5852d23aa5fab3469fb3a26cf627ac8, type: 3}
-    strawBalePrefab: {fileID: 0}
-    tilePrefab: {fileID: 0}
+  - level: 0
+    width: 0
+    height: 0
+    fruits: []
+    allFruitsTotal: 
+    allTilesTotal: 
+    moveCount: 0
+    taskElements: 
+  - level: 0
+    width: 0
+    height: 0
+    fruits: []
+    allFruitsTotal: 
+    allTilesTotal: 
+    moveCount: 0
+    taskElements: 
+  - level: 0
+    width: 0
+    height: 0
+    fruits: []
+    allFruitsTotal: 
+    allTilesTotal: 
+    moveCount: 0
+    taskElements: 
+  - level: 0
+    width: 0
+    height: 0
+    fruits: []
+    allFruitsTotal: 
+    allTilesTotal: 
+    moveCount: 0
+    taskElements: 
+  - level: 0
+    width: 0
+    height: 0
+    fruits: []
+    allFruitsTotal: 
+    allTilesTotal: 
+    moveCount: 0
+    taskElements: 
   saveFilePath: 
 --- !u!1 &1774749130
 GameObject:

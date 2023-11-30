@@ -11,6 +11,7 @@ public class MainMenuController : MonoBehaviour
     public LevelController levelController;
     public ResourceController resourceController;
     public ShopController shopController;
+    public DailyTaskManager dailyTaskManager;
 
     public TextMeshProUGUI starText;
     public TextMeshProUGUI starShopText;
@@ -338,11 +339,13 @@ public class MainMenuController : MonoBehaviour
         MenuBackground.SetActive(true);
         tasksMenu.SetActive(true);
         tasksMenu.GetComponent<Animator>().SetTrigger("MenuOpen");
+        dailyTaskManager.TaskIconNotification();
     }
 
     public void TasksCloseButtonTapped()
     {
         MenuBackground.SetActive(false);
         tasksMenu.SetActive(false);
+        dailyTaskManager.TaskIconNotification();
     }
 }

@@ -23,6 +23,8 @@ public class DailyTaskManager : MonoBehaviour
         public DailyMissionType type;
         public int targetCount;
         public int currentProgress;
+        public bool rewardTaken;
+        public bool isCompleted;
     }
 
     [Serializable]
@@ -40,6 +42,12 @@ public class DailyTaskManager : MonoBehaviour
     public List<GameObject> taskBoxes;
 
     public TextMeshProUGUI countdownText;
+
+    public Sprite greenTask;
+    public Sprite greenDarkTask;
+
+    public GameObject redNotif;
+    public GameObject greenNotif;
 
     [Serializable]
     public class TaskBox
@@ -146,10 +154,23 @@ public class DailyTaskManager : MonoBehaviour
             {
                 if (selectedMissions[i].targetCount <= makeMovesTask)
                 {
+                    selectedMissions[i].isCompleted = true;
                     selectedMissions[i].currentProgress = selectedMissions[i].targetCount;
+                    if (!selectedMissions[i].rewardTaken)
+                    {
+                        taskBoxes[i].GetComponent<Image>().sprite = greenTask;
+                        taskBoxes[i].GetComponent<Button>().interactable = true;
+                    }
+                    else
+                    {
+                        taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
+                        taskBoxes[i].GetComponent<Button>().interactable = false;
+                    }
+                    
                 }
                 else
                 {
+                    selectedMissions[i].isCompleted = false;
                     selectedMissions[i].currentProgress = makeMovesTask;
                 }
             }
@@ -157,10 +178,22 @@ public class DailyTaskManager : MonoBehaviour
             {
                 if (selectedMissions[i].targetCount <= totalCrushTask)
                 {
+                    selectedMissions[i].isCompleted = true;
                     selectedMissions[i].currentProgress = selectedMissions[i].targetCount;
+                    if (!selectedMissions[i].rewardTaken)
+                    {
+                        taskBoxes[i].GetComponent<Image>().sprite = greenTask;
+                        taskBoxes[i].GetComponent<Button>().interactable = true;
+                    }
+                    else
+                    {
+                        taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
+                        taskBoxes[i].GetComponent<Button>().interactable = false;
+                    }
                 }
                 else
                 {
+                    selectedMissions[i].isCompleted = false;
                     selectedMissions[i].currentProgress = totalCrushTask;
                 }
             }
@@ -168,10 +201,22 @@ public class DailyTaskManager : MonoBehaviour
             {
                 if (selectedMissions[i].targetCount <= levelFinishTask)
                 {
+                    selectedMissions[i].isCompleted = true;
                     selectedMissions[i].currentProgress = selectedMissions[i].targetCount;
+                    if (!selectedMissions[i].rewardTaken)
+                    {
+                        taskBoxes[i].GetComponent<Image>().sprite = greenTask;
+                        taskBoxes[i].GetComponent<Button>().interactable = true;
+                    }
+                    else
+                    {
+                        taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
+                        taskBoxes[i].GetComponent<Button>().interactable = false;
+                    }
                 }
                 else
                 {
+                    selectedMissions[i].isCompleted = false;
                     selectedMissions[i].currentProgress = levelFinishTask;
                 }
             }
@@ -179,17 +224,28 @@ public class DailyTaskManager : MonoBehaviour
             {
                 if (selectedMissions[i].targetCount <= specialFruitTask)
                 {
+                    selectedMissions[i].isCompleted = true;
                     selectedMissions[i].currentProgress = selectedMissions[i].targetCount;
+                    if (!selectedMissions[i].rewardTaken)
+                    {
+                        taskBoxes[i].GetComponent<Image>().sprite = greenTask;
+                        taskBoxes[i].GetComponent<Button>().interactable = true;
+                    }
+                    else
+                    {
+                        taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
+                        taskBoxes[i].GetComponent<Button>().interactable = false;
+                    }
                 }
                 else
                 {
+                    selectedMissions[i].isCompleted = false;
                     selectedMissions[i].currentProgress = specialFruitTask;
                 }
             }
 
-
             taskProgressText.text = $"{selectedMissions[i].currentProgress}/{selectedMissions[i].targetCount}";
-            rewardText.text = "Reward";
+            //rewardText.text = "Reward";
         }
     }
 
@@ -222,10 +278,47 @@ public class DailyTaskManager : MonoBehaviour
             PlayerPrefs.SetString(LastOpenedDateKey, currentDateString);
             PlayerPrefs.Save();
         }
+
+        TaskIconNotification();
+        redNotif.SetActive(true);
     }
 
     void Update()
     {
         UpdateCountdownText();
+    }
+
+    public void TaskRewardTaken(int i)
+    {
+        taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
+        taskBoxes[i].GetComponent<Button>().interactable = false;
+        selectedMissions[i].rewardTaken = true;
+    }
+
+    int notifCount;
+
+    public void TaskIconNotification()
+    {
+        redNotif.SetActive(false);
+
+        for (int i = 0; i < selectedMissions.Count; i++)
+        {
+            if (!selectedMissions[i].rewardTaken && selectedMissions[i].isCompleted)
+            {
+                notifCount++;
+            }
+        }
+
+        if (notifCount > 0)
+        {
+            greenNotif.SetActive(true);
+            greenNotif.GetComponentInChildren<TextMeshProUGUI>().text = notifCount.ToString();
+        }
+        else
+        {
+            greenNotif.SetActive(false);
+        }
+
+        notifCount = 0;
     }
 }

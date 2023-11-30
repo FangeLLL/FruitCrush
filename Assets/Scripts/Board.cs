@@ -47,6 +47,8 @@ public class Board : MonoBehaviour
     public bool hintBool = false;
     bool popped = false;
 
+    List<int> existFruits = new List<int>();
+
     public int userLevel;
 
     public GameObject[,] allFruits;
@@ -67,20 +69,17 @@ public class Board : MonoBehaviour
         width = gridData.width;
         height = gridData.height;
 
-        /*
-        int[] indexesOfFruits = new int[fruits.Length];
+        // Getting avaliable fruits indexes and adding them to a list. existFruits list has indexes of avaliable fruits and this list going to be used when
+        // creating new fruits.
 
-        for(int i = 0; i < indexesOfFruits.Length; i++)
+        for (int i = 0;i < gridData.fruits.Length; i++)
         {
-            
+            if (gridData.fruits[i] == 1)
+            {
+                existFruits.Add(i);
+            }
         }
-        */
 
-        // fruits = gridData.fruits;
-
-        //width = SaveData.Instance.gridData.width;
-        //height = SaveData.Instance.gridData.height;
-        //fruits = SaveData.Instance.gridData.fruits;
 
         fillingColumn = new bool[width];
 
@@ -775,9 +774,10 @@ public class Board : MonoBehaviour
             int emptyRowIndex = emptyPlaces.Dequeue();
             Vector2 tempPosition = new Vector2(i - xOffset, height - yOffset);
 
-            // Instantiate a new fruit at the position of the destroyed fruit
-            int fruitToUse = UnityEngine.Random.Range(0, fruits.Length);
-            GameObject newFruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
+            // Instantiate a new fruit at the position of the destroyed fruit. Fruit that going to be created must be from existFruits variable. existFruits
+            // list contains indexes of avaliable fruits.
+            int fruitToUse = UnityEngine.Random.Range(0, existFruits.Count);
+            GameObject newFruit = Instantiate(fruits[existFruits[fruitToUse]], tempPosition, Quaternion.identity);
             Fruit newFruitScript = newFruit.GetComponent<Fruit>();
 
             // Set the parent and name of the new fruit

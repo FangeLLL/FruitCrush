@@ -65,6 +65,13 @@ public class AchievementManager : MonoBehaviour
                 individualAchievement.progress += progress;
                 totalAchievement.progress += progress;
 
+                int totalCrushTask = PlayerPrefs.GetInt("TotalCrushTask", 0);
+
+                totalCrushTask += progress;
+
+                PlayerPrefs.SetInt("TotalCrushTask", totalCrushTask);
+                PlayerPrefs.Save();
+
                 for (int j = individualAchievement.level; j < individualAchievement.steps.Length; j++)
                 {
                     if (individualAchievement.progress >= individualAchievement.steps[j])

@@ -22,6 +22,7 @@ public class DailyTaskManager : MonoBehaviour
     {
         public DailyMissionType type;
         public int targetCount;
+        public int currentProgress;
     }
 
     [Serializable]
@@ -70,6 +71,14 @@ public class DailyTaskManager : MonoBehaviour
         {
             selectedMissions.Clear();
 
+            PlayerPrefs.SetInt("MakeMoveTask", 0);
+            PlayerPrefs.SetInt("TotalCrushTask", 0);
+            PlayerPrefs.SetInt("LevelFinishTask", 0);
+            PlayerPrefs.SetInt("LevelFinishFirstTryTask", 0);
+            PlayerPrefs.SetInt("SpecialFruitTask", 0);
+
+            PlayerPrefs.Save();
+
             for (int i = 0; i < missionPool.Count; i++)
             {
                 int randomIndex = Random.Range(i, missionPool.Count);
@@ -116,8 +125,13 @@ public class DailyTaskManager : MonoBehaviour
         selectedMissions = missionsWrapper.missions;
     }
 
-    private void UpdateTaskMenu()
+    private void UpdateTaskMenu()   
     {
+        int makeMovesTask = PlayerPrefs.GetInt("MakeMoveTask", 0);
+        int totalCrushTask = PlayerPrefs.GetInt("TotalCrushTask", 0);
+        int levelFinishTask = PlayerPrefs.GetInt("LevelFinishTask", 0);
+        int specialFruitTask = PlayerPrefs.GetInt("SpecialFruitTask", 0);
+
         for (int i = 0; i < taskBoxes.Count && i < selectedMissions.Count; i++)
         {
             TextMeshProUGUI taskText = taskBoxes[i].transform.Find("TaskText").GetComponent<TextMeshProUGUI>();
@@ -127,7 +141,54 @@ public class DailyTaskManager : MonoBehaviour
             DailyMissionType missionType = selectedMissions[i].type;
 
             taskText.text = $"{missionDescriptions[missionType]}";
-            taskProgressText.text = $"0/{selectedMissions[i].targetCount}";
+
+            if (taskText.text == "Make moves")
+            {
+                if (selectedMissions[i].targetCount <= makeMovesTask)
+                {
+                    selectedMissions[i].currentProgress = selectedMissions[i].targetCount;
+                }
+                else
+                {
+                    selectedMissions[i].currentProgress = makeMovesTask;
+                }
+            }
+            else if (taskText.text == "Crush fruits")
+            {
+                if (selectedMissions[i].targetCount <= totalCrushTask)
+                {
+                    selectedMissions[i].currentProgress = selectedMissions[i].targetCount;
+                }
+                else
+                {
+                    selectedMissions[i].currentProgress = totalCrushTask;
+                }
+            }
+            else if (taskText.text == "Complete levels")
+            {
+                if (selectedMissions[i].targetCount <= levelFinishTask)
+                {
+                    selectedMissions[i].currentProgress = selectedMissions[i].targetCount;
+                }
+                else
+                {
+                    selectedMissions[i].currentProgress = levelFinishTask;
+                }
+            }
+            else if (taskText.text == "Create special fruits")
+            {
+                if (selectedMissions[i].targetCount <= specialFruitTask)
+                {
+                    selectedMissions[i].currentProgress = selectedMissions[i].targetCount;
+                }
+                else
+                {
+                    selectedMissions[i].currentProgress = specialFruitTask;
+                }
+            }
+
+
+            taskProgressText.text = $"{selectedMissions[i].currentProgress}/{selectedMissions[i].targetCount}";
             rewardText.text = "Reward";
         }
     }

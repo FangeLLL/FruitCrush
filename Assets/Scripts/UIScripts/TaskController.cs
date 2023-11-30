@@ -96,6 +96,13 @@ public class TaskController : MonoBehaviour
         {
             isBoardActive = false;
         }
+
+        int madeMove = PlayerPrefs.GetInt("MakeMoveTask", 0);
+
+        madeMove++;
+
+        PlayerPrefs.SetInt("MakeMoveTask", madeMove);
+        PlayerPrefs.Save();
     }
 
     public void SetTask(int[] taskArray)
@@ -209,5 +216,12 @@ public class TaskController : MonoBehaviour
         isLevelCompleted = true;
         liveRegen.LevelComplete();
         rewardController.GiveStarReward(200);
+
+        int levelFinishTask = PlayerPrefs.GetInt("LevelFinishTask", 0);
+
+        levelFinishTask++;
+
+        PlayerPrefs.SetInt("MakeMoveTask", levelFinishTask);
+        PlayerPrefs.Save();
     }
 }

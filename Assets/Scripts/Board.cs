@@ -808,6 +808,12 @@ public class Board : MonoBehaviour
         -3 : TNT
          */
 
+        int powerUpCreate = PlayerPrefs.GetInt("SpecialFruitTask", 0);
+
+        powerUpCreate++;
+
+        PlayerPrefs.SetInt("SpecialFruitTask", powerUpCreate);
+        PlayerPrefs.Save();
 
         float xOffset = width * 0.5f - 0.5f;
         float yOffset = height * 0.5f - 0.5f;

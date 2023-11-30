@@ -89,6 +89,7 @@ public class Fruit : MonoBehaviour
 
     void Update()
     {
+        /*
         if (Input.GetMouseButtonDown(1))
         {
             // Convert the mouse position to world coordinates
@@ -98,6 +99,7 @@ public class Fruit : MonoBehaviour
             if (GetComponent<Collider2D>().OverlapPoint(mousePos))
             {
                 // If so, destroy this fruit
+
                 if (SceneManager.GetActiveScene().name == "LevelEditor")
                     NewDestroyFruit();
                 else
@@ -105,6 +107,8 @@ public class Fruit : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+        */
+        /*
         if (Input.GetKeyDown(KeyCode.R))
         {
             // Convert the mouse position to world coordinates
@@ -120,6 +124,7 @@ public class Fruit : MonoBehaviour
                     return;
             }
         }
+        */
     }
 
     private void OnMouseDown()
@@ -158,6 +163,7 @@ public class Fruit : MonoBehaviour
         board.SwipeFruits(swipeAngle, column, row);
     }
 
+    /*
     private void NewDestroyFruit()
     {
         // DESTROY THE CURRENT FRUIT
@@ -175,4 +181,5 @@ public class Fruit : MonoBehaviour
         // CALL THE METHOD IN THE LevelManager SCRIPT TO REPLACE THE DESTROYED FRUIT
         FindObjectOfType<LevelManager>().ReplaceObstacle(column, row);
     }
+    */
 }

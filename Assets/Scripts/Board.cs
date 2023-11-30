@@ -47,6 +47,8 @@ public class Board : MonoBehaviour
     public bool hintBool = false;
     bool popped = false;
 
+    IndexLibrary indexLibrary = new IndexLibrary();
+
     List<int> existFruits = new List<int>();
 
     public int userLevel;
@@ -96,11 +98,13 @@ public class Board : MonoBehaviour
         int[] savedTiles = gridData.allTilesTotal;
         int[] savedFruits = gridData.allFruitsTotal;
 
+        // Converting one dimensional array (json saved data) to two dimensional array. 
+
         for (int i = 0;height> i; i++)
         {
             for(int j = 0; width > j; j++)
             {
-                arrangeTiles[i, j] = savedTiles[(width*i)+j];
+                arrangeTiles[i, j] = savedTiles[(width * i) + j];
                 arrangeFruits[i, j] = savedFruits[(width * i) + j];
 
             }
@@ -156,19 +160,25 @@ public class Board : MonoBehaviour
                 backgroundTile.transform.parent = this.transform;
                 backgroundTile.name = "( " + i + ", " + j + " )";
                 allTiles[i, j] = backgroundTile;
-                if (arrangedTiles[i, j] == 1 || arrangedTiles[i, j] == 2)
+                if (arrangedTiles[i, j] != 0)
                 {
-                    backgroundTile.GetComponent<BackgroundTile>().strawBale = true;
-                    backgroundTile.GetComponent<BackgroundTile>().strawBaleObj = Instantiate(strawBalePrefab, tempPosition, Quaternion.identity);
-                    if(arrangedTiles[i, j] == 2)
+                    bool[] obstacleBools = indexLibrary.GetBoolObstacles(arrangedTiles[i, j]);
+                    if (obstacleBools[0])
+                    {
+                        backgroundTile.GetComponent<BackgroundTile>().strawBale = true;
+                        backgroundTile.GetComponent<BackgroundTile>().strawBaleObj = Instantiate(strawBalePrefab, tempPosition, Quaternion.identity);
+                    }
+                   
+                    if(obstacleBools[1])
                     {
                         backgroundTile.GetComponent<BackgroundTile>().wheatFarm = true;
                         backgroundTile.GetComponent<BackgroundTile>().wheatFarmObj = Instantiate(wheatFarmPrefab, tempPosition, Quaternion.identity);
                     }
                 }
-                else
+                // If type of fruit -1 then it means fruit does not exist.
+                if (arrangedFruits[i,j]>0)
                 {
-                    int fruitToUse = arrangedFruits[i,j];
+                    int fruitToUse = arrangedFruits[i, j];
                     GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
                     fruit.transform.parent = this.transform;
                     fruit.name = "( " + i + ", " + j + " )";
@@ -776,8 +786,8 @@ public class Board : MonoBehaviour
 
             // Instantiate a new fruit at the position of the destroyed fruit. Fruit that going to be created must be from existFruits variable. existFruits
             // list contains indexes of avaliable fruits.
-            int fruitToUse = UnityEngine.Random.Range(0, existFruits.Count);
-            GameObject newFruit = Instantiate(fruits[existFruits[fruitToUse]], tempPosition, Quaternion.identity);
+            int fruitToUse = existFruits[UnityEngine.Random.Range(0, existFruits.Count)];
+            GameObject newFruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
             Fruit newFruitScript = newFruit.GetComponent<Fruit>();
 
             // Set the parent and name of the new fruit
@@ -864,7 +874,7 @@ public class Board : MonoBehaviour
         }
         
     }
-
+    /*
     public void ReplaceDestroyedFruit(int column, int row)
     {
         float xOffset = width * 0.5f - 0.5f;
@@ -888,7 +898,7 @@ public class Board : MonoBehaviour
         Destroy(allFruits[column, row]);
         allFruits[column, row] = fruit;
     }
-
+    */
     public void ActivateMergePowerUp(GameObject fruit, GameObject otherFruit)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>(), otherFruitScript=otherFruit.GetComponent<Fruit>();

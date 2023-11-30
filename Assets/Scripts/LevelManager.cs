@@ -15,6 +15,7 @@ public class LevelManager : MonoBehaviour
     public int obstacleType; 
 
     [SerializeField]
+    public int[] existFruits;
     public GameObject[] fruits;
     public GameObject[] obstacles;
     public GameObject tilePrefab;
@@ -35,6 +36,7 @@ public class LevelManager : MonoBehaviour
     {        
         taskElements= new int[2];
         saveData= GetComponent<SaveData>();
+        existFruits = new int[5];
 
         allFruits = new GameObject[width, height];
         allTiles = new GameObject[width, height];
@@ -59,13 +61,13 @@ public class LevelManager : MonoBehaviour
 
         saveData.gridData[level].width = width;
         saveData.gridData[level].height = height;
-        saveData.gridData[level].fruits= fruits;
         saveData.gridData[level].level= level+1;
         saveData.gridData[level].moveCount= moveCount;
         saveData.gridData[level].taskElements= taskElements;
 
         int[] arrangeFruits = new int[width * height];
         int[] arrangeTiles = new int[width * height];
+        saveData.gridData[level].fruits= existFruits;
 
         for (int i = 0; i < height; i++)
         {

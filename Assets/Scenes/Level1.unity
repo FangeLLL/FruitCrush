@@ -1503,7 +1503,6 @@ MonoBehaviour:
   - {fileID: 3566861933945487612, guid: db85cb766090462468799094e763dc2a, type: 3}
   - {fileID: 3566861933945487612, guid: 05739bb40d03c5040938d6f697a1917d, type: 3}
   - {fileID: 3566861933945487612, guid: b5852d23aa5fab3469fb3a26cf627ac8, type: 3}
-  - {fileID: 3566861933945487612, guid: b5852d23aa5fab3469fb3a26cf627ac8, type: 3}
   powerUps:
   - {fileID: 7148421088010075250, guid: c7052b1bc5e43864db4d03c6a55e51c3, type: 3}
   - {fileID: 7148421088010075250, guid: 00ad14dbf5faad7488ad12c64a277e04, type: 3}
@@ -14999,7 +14998,7 @@ MonoBehaviour:
   - level: 0
     width: 0
     height: 0
-    fruits: []
+    fruits: 
     allFruitsTotal: 
     allTilesTotal: 
     moveCount: 0
@@ -15007,7 +15006,7 @@ MonoBehaviour:
   - level: 0
     width: 0
     height: 0
-    fruits: []
+    fruits: 
     allFruitsTotal: 
     allTilesTotal: 
     moveCount: 0
@@ -15015,7 +15014,7 @@ MonoBehaviour:
   - level: 0
     width: 0
     height: 0
-    fruits: []
+    fruits: 
     allFruitsTotal: 
     allTilesTotal: 
     moveCount: 0
@@ -15023,7 +15022,7 @@ MonoBehaviour:
   - level: 0
     width: 0
     height: 0
-    fruits: []
+    fruits: 
     allFruitsTotal: 
     allTilesTotal: 
     moveCount: 0
@@ -15031,7 +15030,7 @@ MonoBehaviour:
   - level: 0
     width: 0
     height: 0
-    fruits: []
+    fruits: 
     allFruitsTotal: 
     allTilesTotal: 
     moveCount: 0

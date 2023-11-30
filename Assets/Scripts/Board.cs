@@ -66,7 +66,17 @@ public class Board : MonoBehaviour
 
         width = gridData.width;
         height = gridData.height;
-        fruits = gridData.fruits;
+
+        /*
+        int[] indexesOfFruits = new int[fruits.Length];
+
+        for(int i = 0; i < indexesOfFruits.Length; i++)
+        {
+            
+        }
+        */
+
+        // fruits = gridData.fruits;
 
         //width = SaveData.Instance.gridData.width;
         //height = SaveData.Instance.gridData.height;

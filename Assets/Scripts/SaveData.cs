@@ -34,6 +34,7 @@ public class SaveData : MonoBehaviour
 
         if (File.Exists(saveFilePath = Application.persistentDataPath + "/GridData.json"))
         {
+
             string loadGridData = File.ReadAllText(saveFilePath);
 
             gridData = JsonHelper.FromJson<Grid>(loadGridData);
@@ -57,7 +58,17 @@ public class Grid
     public int level;
     public int width;
     public int height;
-    public GameObject[] fruits;
+    /*
+    Every index represent a fruit and if its value 1 then it exist in the board but if not then it does not exist default.
+    Index of Fruits:
+    0 - Banana
+    1 - Cherry
+    2 - Grape 
+    3 - Orange
+    4 - Avocado
+    
+    */
+    public int[] fruits;
     // Json files does not support 2d arrays so these values store all fruits by starting down left corner and finishing top right corner. So, total lenght
     // for these arrays is (width x height) .
     public int[] allFruitsTotal;

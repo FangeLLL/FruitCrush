@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class ResourceController : MonoBehaviour
 {
+    public PowerUpController powerUpController;
+
     public TextMeshProUGUI starText;
     public TextMeshProUGUI starShopText;
 
@@ -39,5 +41,17 @@ public class ResourceController : MonoBehaviour
 
         PlayerPrefs.SetInt("Star", star);
         PlayerPrefs.Save();
+    }
+
+    public void PowerUp1Rewards(int rewardValue)
+    {
+        powerUpController.powerUps[0].amount += rewardValue;
+        powerUpController.PowerUpUIUpdate();
+    }
+
+    public void PowerUp2Rewards(int rewardValue)
+    {
+        powerUpController.powerUps[1].amount += rewardValue;
+        powerUpController.PowerUpUIUpdate();
     }
 }

@@ -36,6 +36,11 @@ public class PowerUpController : MonoBehaviour
 
     void Start()
     {
+        PowerUpUIUpdate();
+    }
+
+    public void PowerUpUIUpdate()
+    {
         for (int i = 0; i < powerUps.Length; i++)
         {
             string amountSaveKey = amountSaveKeyPrefix + i.ToString();
@@ -72,7 +77,7 @@ public class PowerUpController : MonoBehaviour
                     powerUps[i].buyPowerUps.SetActive(false);
                 }
             }
-            
+
             else
             {
                 powerUps[i].powerUp.GetComponent<Image>().sprite = deactiveSprite;
@@ -84,7 +89,7 @@ public class PowerUpController : MonoBehaviour
 
                 powerUps[i].buyPowerUps.SetActive(true);
             }
-            
+
         }
     }
 

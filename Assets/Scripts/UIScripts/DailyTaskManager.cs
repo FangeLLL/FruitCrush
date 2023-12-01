@@ -36,7 +36,7 @@ public class DailyTaskManager : MonoBehaviour
     public List<DailyMission> missionPool;
     public int missionsPerDay = 3;
 
-    private List<DailyMission> selectedMissions = new List<DailyMission>();
+    public List<DailyMission> selectedMissions = new List<DailyMission>();
 
     public Canvas taskMenuCanvas;
     public List<GameObject> taskBoxes;
@@ -293,6 +293,7 @@ public class DailyTaskManager : MonoBehaviour
         taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
         taskBoxes[i].GetComponent<Button>().interactable = false;
         selectedMissions[i].rewardTaken = true;
+        SaveSelectedMissions();
     }
 
     int notifCount;

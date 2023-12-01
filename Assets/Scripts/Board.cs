@@ -100,6 +100,7 @@ public class Board : MonoBehaviour
 
         // Converting one dimensional array (json saved data) to two dimensional array. 
 
+
         for (int i = 0;height> i; i++)
         {
             for(int j = 0; width > j; j++)
@@ -143,10 +144,13 @@ public class Board : MonoBehaviour
      
     }
 
+    /// <summary>
+    /// It 
+    /// </summary>
+    /// <param name="arrangedFruits"></param>
+    /// <param name="arrangedTiles"></param>
     private void SetUpWithArray(int[,] arrangedFruits, int[,] arrangedTiles)
     {
-       // width = arrangedTiles.GetLength(0);
-       // height = arrangedTiles.GetLength(1);
 
         float xOffset = width * 0.5f - 0.5f;
         float yOffset = (height * 0.5f - 0.5f)+1.1f;

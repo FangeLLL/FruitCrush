@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.Drawing;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
-    public int width;
-    public int height;
+    static public int width = 5;
+    static public int height = 5;
     public int chosenId;
+
+    public int widthChanger = width;
+    public int heightChanger = height;
 
     /*
     // INITIALIZE TO 0
@@ -44,13 +48,15 @@ public class LevelManager : MonoBehaviour
 
         allFruits = new GameObject[width, height];
         allTiles = new GameObject[width, height];
-    //   allObstacles = new GameObject[width, height];
   
         SetUp();
     }
 
     private void Update()
     {
+        // Changing static variables from inspector
+        width = widthChanger;
+        height = heightChanger;
         if (Input.GetKeyDown(KeyCode.S))
         {
             saveTheBoard(level);
@@ -124,57 +130,6 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    /*
-    public void ReplaceDestroyedFruit(int column, int row)
-    {
-        float xOffset = width * 0.5f - 0.5f;
-        float yOffset = height * 0.5f - 0.5f;
-        Vector2 tempPosition = new Vector2(column - xOffset, row - yOffset);
-
-        // INSTANTIATE A NEW FRUIT AT THE POSITION OF THE DESTROYED FRUIT
-        GameObject fruit = Instantiate(fruits[currentFruitIndex], tempPosition, Quaternion.identity);
-
-        // SET THE PARENT AND NAME OF THE NEW FRUIT
-        fruit.transform.parent = this.transform;
-        fruit.name = "( " + column + ", " + row + " )";
-
-        // SET THE COLUMN AND ROW OF THE NEW FRUIT
-        fruit.GetComponent<Fruit>().column = column;
-        fruit.GetComponent<Fruit>().row = row;
-        fruit.GetComponent<Fruit>().fruitType = currentFruitIndex;
-
-        // ADD THE NEW FRUIT TO THE ALLFRUITS ARRAY
-        Destroy(allFruits[column, row]);
-        allFruits[column, row] = fruit;
-
-        // INCREMENT THE currentFruitIndex AND WRAP IT AROUND IF IT GOES BEYOND THE ARRAY LENGTH
-        currentFruitIndex = (currentFruitIndex + 1) % fruits.Length;
-    }
-    */
-    /*
-    public void ReplaceObstacle(int column, int row)
-    {
-        float xOffset = width * 0.5f - 0.5f;
-        float yOffset = height * 0.5f - 0.5f;
-        Vector2 tempPosition = new Vector2(column - xOffset, row - yOffset);
-
-        if (allFruits[column, row])
-        {
-            Destroy(allFruits[column, row]);
-
-            // Spawn straw bales at the specified position
-         //   GameObject strawBale = Instantiate(strawBalePrefab, tempPosition, Quaternion.identity);
-
-            // Update the allFruits array if necessary
-            allFruits[column, row] = null; // You can set it to null since the obstacle is destroyed
-        }
-        else
-        {
-            // Handle the case where there was no fruit or obstacle at the specified position
-            // You can add code for this scenario if needed
-        }
-    }
-    */
     public void ReplaceObject(int column, int row)
     {
         float xOffset = width * 0.5f - 0.5f;
@@ -258,5 +213,11 @@ public class LevelManager : MonoBehaviour
 
         chosenId= id;
 
+    }
+
+    public void RestartScene()
+    {
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

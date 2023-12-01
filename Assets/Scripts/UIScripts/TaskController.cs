@@ -221,6 +221,11 @@ public class TaskController : MonoBehaviour
 
         levelFinishTask++;
 
+        int userLevel = PlayerPrefs.GetInt("level",0);
+        userLevel++;
+        PlayerPrefs.SetInt("level", userLevel);
+
+
         PlayerPrefs.SetInt("MakeMoveTask", levelFinishTask);
         PlayerPrefs.Save();
     }

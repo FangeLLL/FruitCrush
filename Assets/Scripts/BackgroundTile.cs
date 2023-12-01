@@ -19,8 +19,7 @@ public class BackgroundTile : MonoBehaviour
     {
         board = FindObjectOfType<Board>();
         taskController = FindObjectOfType<TaskController>();
-        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();        
     }
 
     public void Explosion(int column,int row)

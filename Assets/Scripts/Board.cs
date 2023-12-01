@@ -55,6 +55,8 @@ public class Board : MonoBehaviour
 
     public GameObject[,] allFruits;
     public GameObject[,] allTiles;
+    public float scaleNumber;
+    private float scaleFactorFruit;
 
     private void Awake()
     {
@@ -63,13 +65,15 @@ public class Board : MonoBehaviour
     }
 
     void Start()
-    {
+    {               
         userLevel = PlayerPrefs.GetInt("level", 0);
 
         Grid gridData = saveData.gridData[userLevel];
 
         width = gridData.width;
         height = gridData.height;
+
+        RearrangeScaleNumber();
 
         // Getting avaliable fruits indexes and adding them to a list. existFruits list has indexes of avaliable fruits and this list going to be used when
         // creating new fruits.
@@ -143,19 +147,74 @@ public class Board : MonoBehaviour
      
     }
 
+    private void RearrangeScaleNumber()
+    {
+        int max;
+
+        if(width>=height)
+        {
+            max = width;
+        }
+        else
+        {
+            max = height;
+        }
+
+        switch (max)
+        {
+            case 4:
+            case 5:
+                scaleNumber = 1.5f;
+                break;
+            case 6:
+                scaleNumber = 1.3f;
+                break;
+            case 7:
+            case 8:
+                scaleNumber = 1.2f;
+                break;
+            case 9:
+            case 10:
+                scaleNumber = 1f;
+                break;
+            case 11:
+                scaleNumber = 0.9f;
+                break;
+        }
+
+        scaleFactorFruit = scaleNumber / 1.2f;
+    }
+
     private void SetUpWithArray(int[,] arrangedFruits, int[,] arrangedTiles)
     {
-       // width = arrangedTiles.GetLength(0);
-       // height = arrangedTiles.GetLength(1);
+        // width = arrangedTiles.GetLength(0);
+        // height = arrangedTiles.GetLength(1);
 
-        float xOffset = width * 0.5f - 0.5f;
-        float yOffset = (height * 0.5f - 0.5f)+1.1f;
+        
+
+        float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
+        float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
+        tilePrefab.transform.localScale = new Vector3(scaleNumber, scaleNumber, scaleNumber);
+
+        foreach(GameObject fruitScale in fruits)
+        {
+            fruitScale.transform.localScale = new Vector3(scaleFactorFruit, scaleFactorFruit, scaleFactorFruit);
+        }
+
+        foreach(GameObject powerUpScale in powerUps)
+        {
+            powerUpScale.transform.localScale = new Vector3(scaleFactorFruit, scaleFactorFruit, scaleFactorFruit);
+        }
+
+        wheatFarmPrefab.transform.localScale = new Vector3(scaleNumber, scaleNumber, scaleNumber);
+        strawBalePrefab.transform.localScale = new Vector3(scaleNumber, scaleNumber, scaleNumber);
 
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
             {
-                Vector2 tempPosition = new Vector2(i - xOffset, j - yOffset);
+                
+                Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, j * scaleNumber - yOffset);
                 GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
                 backgroundTile.transform.parent = this.transform;
                 backgroundTile.name = "( " + i + ", " + j + " )";
@@ -779,10 +838,10 @@ public class Board : MonoBehaviour
 
         while (emptyPlaces.Count > 0)
         {
-            float xOffset = width * 0.5f - 0.5f;
-            float yOffset = height * 0.5f - 0.5f;
+            float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
+            float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
             int emptyRowIndex = emptyPlaces.Dequeue();
-            Vector2 tempPosition = new Vector2(i - xOffset, height - yOffset);
+            Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, height * scaleNumber - yOffset);
 
             // Instantiate a new fruit at the position of the destroyed fruit. Fruit that going to be created must be from existFruits variable. existFruits
             // list contains indexes of avaliable fruits.

@@ -104,6 +104,7 @@ public class Board : MonoBehaviour
 
         // Converting one dimensional array (json saved data) to two dimensional array. 
 
+
         for (int i = 0;height> i; i++)
         {
             for(int j = 0; width > j; j++)

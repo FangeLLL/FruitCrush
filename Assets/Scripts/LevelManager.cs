@@ -15,6 +15,9 @@ public class LevelManager : MonoBehaviour
     public int widthChanger = width;
     public int heightChanger = height;
 
+    public float scaleNumber;
+    public float scaleFactorFruit;
+
     /*
     // INITIALIZE TO 0
     private int currentFruitIndex = 0;
@@ -41,8 +44,11 @@ public class LevelManager : MonoBehaviour
     public int level=1;
 
     private void Start()
-    {        
-        taskElements= new int[2];
+    {
+        widthChanger = width;
+        heightChanger = height;
+    RearrangeScaleNumber();
+        taskElements = new int[2];
         saveData= GetComponent<SaveData>();
         existFruits = new int[5];
 
@@ -103,14 +109,25 @@ public class LevelManager : MonoBehaviour
 
     private void SetUp()
     {
-        float xOffset = width * 0.5f - 0.5f;
-        float yOffset = height * 0.5f - 0.5f;
+        float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
+        float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
+        tilePrefab.transform.localScale = new Vector3(scaleNumber, scaleNumber, scaleNumber);
+
+        foreach (GameObject fruitScale in fruits)
+        {
+            fruitScale.transform.localScale = new Vector3(scaleFactorFruit, scaleFactorFruit, scaleFactorFruit);
+        }
+
+        foreach (GameObject obstacleScale in obstacles)
+        {
+            obstacleScale.transform.localScale = new Vector3(scaleNumber, scaleNumber, scaleNumber);
+        }
 
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
             {
-                Vector2 tempPosition = new Vector2(i - xOffset, j - yOffset);
+                Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, j * scaleNumber - yOffset);
                 GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity) as GameObject;
                 backgroundTile.transform.parent = this.transform;
                 backgroundTile.GetComponent<LevelEditorBackgroundTile>().row = j;
@@ -132,9 +149,9 @@ public class LevelManager : MonoBehaviour
 
     public void ReplaceObject(int column, int row)
     {
-        float xOffset = width * 0.5f - 0.5f;
-        float yOffset = height * 0.5f - 0.5f;
-        Vector2 tempPosition = new Vector2(column - xOffset, row - yOffset);
+        float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
+        float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
+        Vector2 tempPosition = new Vector2(column * scaleNumber - xOffset, row * scaleNumber - yOffset);
 
         // INSTANTIATE A NEW FRUIT AT THE POSITION OF THE DESTROYED FRUIT
         if (chosenId >= 0)
@@ -220,4 +237,43 @@ public class LevelManager : MonoBehaviour
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    private void RearrangeScaleNumber()
+    {
+        int max;
+
+        if (width >= height)
+        {
+            max = width;
+        }
+        else
+        {
+            max = height;
+        }
+
+        switch (max)
+        {
+            case 4:
+            case 5:
+                scaleNumber = 1.5f;
+                break;
+            case 6:
+                scaleNumber = 1.3f;
+                break;
+            case 7:
+            case 8:
+                scaleNumber = 1.2f;
+                break;
+            case 9:
+            case 10:
+                scaleNumber = 1f;
+                break;
+            case 11:
+                scaleNumber = 0.9f;
+                break;
+        }
+
+        scaleFactorFruit = scaleNumber / 1.2f;
+    }
+
 }

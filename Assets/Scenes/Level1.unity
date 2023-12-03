@@ -1495,6 +1495,7 @@ MonoBehaviour:
   taskController: {fileID: 1772865872}
   swipeHint: {fileID: 160705529}
   saveData: {fileID: 1772865879}
+  specialPowerController: {fileID: 1772865880}
   checkingMatch: 0
   isRunning: 0
   exitUpdate: 0
@@ -1514,6 +1515,7 @@ MonoBehaviour:
   hintBool: 0
   userLevel: 0
   scaleNumber: 0
+  specialPowerID: 0
 --- !u!114 &160705529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15590,6 +15592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cce6a82c6c09ed74ea197a5467d0cbb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  board: {fileID: 160705528}
   specialPowerUpsList:
   - amount: 10
     powerUp: {fileID: 0}

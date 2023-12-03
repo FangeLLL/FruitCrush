@@ -49,9 +49,6 @@ public class MainMenuController : Sounds
     public bool isMusicOn;
     public bool isHintOn;
 
-    private AudioSource sound;
-    private AudioSource music;
-
     private void Start()
     {
         StartCoroutine(ActivateUICoroutine());
@@ -64,8 +61,6 @@ public class MainMenuController : Sounds
 
         int hintSetting = PlayerPrefs.GetInt("HintSetting", 1);
         isHintOn = hintSetting == 1;
-
-        sound = GameObject.Find("AudioManager").GetComponent<AudioSource>();
 
         if (isSoundOn)
         {
@@ -136,6 +131,7 @@ public class MainMenuController : Sounds
         }
 
         SaveMusicSetting();
+        audioManager.MenuClick();
     }
 
     private void SaveMusicSetting()
@@ -162,6 +158,7 @@ public class MainMenuController : Sounds
         }
 
         SaveSoundSetting();
+        audioManager.MenuClick();
     }
 
     private void SaveSoundSetting()
@@ -186,6 +183,7 @@ public class MainMenuController : Sounds
         }
 
         SaveHintSetting();
+        audioManager.MenuClick();
     }
 
     private void SaveHintSetting()
@@ -238,6 +236,7 @@ public class MainMenuController : Sounds
     public void PlayBoxPlayButtonTapped()
     {
         StartCoroutine(PlayBoxPlayButtonTappedEnum());
+        audioManager.MenuClick();
     }
 
     IEnumerator PlayBoxPlayButtonTappedEnum()
@@ -268,6 +267,7 @@ public class MainMenuController : Sounds
         {
             shopController.shopItems[i].item.transform.localPosition += new Vector3(500, 0, 0);
         }
+        audioManager.MenuClickReturn();
     }
 
     public void BuyStarsButtonTapped()
@@ -276,6 +276,7 @@ public class MainMenuController : Sounds
         {
             StartCoroutine(BuyStarsButtonTappedEnum());
         }
+        audioManager.MenuClick();
     }
 
     IEnumerator BuyStarsButtonTappedEnum()
@@ -296,6 +297,7 @@ public class MainMenuController : Sounds
     public void OutOfLivesBoxQuitButtonTapped()
     {
         StartCoroutine(OutOfLivesBoxQuitButtonTappedEnum());
+        audioManager.MenuClickReturn();
     }
 
     IEnumerator OutOfLivesBoxQuitButtonTappedEnum()
@@ -323,7 +325,7 @@ public class MainMenuController : Sounds
         {
             BuyStarsButtonTapped();
         }
-
+        audioManager.MenuClick();
     }
 
     IEnumerator RefillButtonTappedEnum()
@@ -344,12 +346,14 @@ public class MainMenuController : Sounds
         MenuBackground.SetActive(true);
         settingsMenu.SetActive(true);
         settingsMenu.GetComponent<Animator>().SetTrigger("MenuOpen");
+        audioManager.MenuClick();
     }
 
     public void SettingsCloseButtonTapped()
     {
         MenuBackground.SetActive(false);
         settingsMenu.SetActive(false);
+        audioManager.MenuClickReturn();
     }
 
     public void TasksButtonTapped()
@@ -359,6 +363,7 @@ public class MainMenuController : Sounds
         tasksMenu.GetComponent<Animator>().SetTrigger("MenuOpen");
         dailyTaskManager.TaskIconNotification();
         dailyTaskManager.UpdateTaskMenu();
+        audioManager.MenuClick();
     }
 
     public void TasksCloseButtonTapped()
@@ -366,5 +371,6 @@ public class MainMenuController : Sounds
         MenuBackground.SetActive(false);
         tasksMenu.SetActive(false);
         dailyTaskManager.TaskIconNotification();
+        audioManager.MenuClickReturn();
     }
 }

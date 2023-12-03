@@ -25,7 +25,7 @@ public class Board : MonoBehaviour
     public TaskController taskController;
     public SwipeHint swipeHint;
     public SaveData saveData;
-
+    public SpecialPowerController specialPowerController;
 
     public bool checkingMatch = false;
     public bool isRunning = false;
@@ -1240,22 +1240,25 @@ public class Board : MonoBehaviour
         {
             case 1:
                 // Special Power Vertical Destroyer
+                specialPowerController.SpecialPowerUpUsed(0);
                 DestroyOneTile(column, row);
                 VerticalDestroy(column, row, false);
                 VerticalDestroy(column, row, true);
                 break;
             case 2:
                 // Special Power Horizontal Destroyer
+                specialPowerController.SpecialPowerUpUsed(1);
                 DestroyOneTile(column, row);
                 HorizontalDestroy(column, row, false);
                 HorizontalDestroy(column, row, true);
                 break;
             case 3:
                 // Special Power One Tile Destroyer
+                specialPowerController.SpecialPowerUpUsed(2);
                 DestroyOneTile(column, row);
                 break;
             case 4:
-
+                specialPowerController.SpecialPowerUpUsed(3);
                 break;
         }
     }

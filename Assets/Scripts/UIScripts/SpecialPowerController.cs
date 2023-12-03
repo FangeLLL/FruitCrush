@@ -14,6 +14,8 @@ public class SpecialPowerUps
 }
 public class SpecialPowerController : MonoBehaviour
 {
+    public Board board;
+
     public List<SpecialPowerUps> specialPowerUpsList;
 
     public void SpecialPowerUpSelected(int index)
@@ -25,14 +27,12 @@ public class SpecialPowerController : MonoBehaviour
 
         if (specialPowerUpsList[index].isActivated)
         {
-            //BertuFunction(index + 1);
-            Debug.Log("Burito " + index + 1);
+            board.SelectedSpecialPower(index);
         }
 
         else
         {
             DeselectUI(index);
-            Debug.Log("Closed");
         }
     }
 

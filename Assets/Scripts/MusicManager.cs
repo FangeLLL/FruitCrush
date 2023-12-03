@@ -13,6 +13,7 @@ public class MusicManager : Sounds
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            source = GameObject.FindGameObjectWithTag("MusicManager").GetComponent<AudioSource>();
         }
         else
         {
@@ -21,11 +22,23 @@ public class MusicManager : Sounds
         }
     }
 
+    private void Start()
+    {
+        MainMenuMusic();
+    }
+
     private void Update()
     {
-        if (SceneManager.GetActiveScene().name != "Menu")
+        if (SceneManager.GetActiveScene().name != "MainMenu")
         {
             source.volume = 0;
         }
+    }
+
+    public void MainMenuMusic()
+    {
+        source.loop = true;
+        source.clip = sounds[0];
+        source.PlayOneShot(source.clip);
     }
 }

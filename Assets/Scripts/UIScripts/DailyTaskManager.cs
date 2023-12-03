@@ -165,7 +165,6 @@ public class DailyTaskManager : MonoBehaviour
                 taskBox.GetComponent<Image>().sprite = greenTask;
                 taskBox.GetComponent<Button>().interactable = true;
                 taskBox.GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
-                Debug.Log("ananen");
             }
             else
             {
@@ -175,7 +174,6 @@ public class DailyTaskManager : MonoBehaviour
                 taskBox.transform.localScale = new Vector3(0.46f, 0.46f, 0.46f);
                 taskBox.transform.Find("TaskText").GetComponent<TextMeshProUGUI>().color = Color.black;
                 taskBox.transform.Find("TaskProgressText").GetComponent<TextMeshProUGUI>().color = Color.black;
-                Debug.Log("anan");
             }
         }
         else
@@ -267,6 +265,7 @@ public class DailyTaskManager : MonoBehaviour
             }
         }
         SaveSelectedMissions();
+        UpdateTaskMenu();
     }
 
     int notifCount;

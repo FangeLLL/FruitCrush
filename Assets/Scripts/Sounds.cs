@@ -41,22 +41,38 @@ public class Sounds : MonoBehaviour
 
     private void PlaySounds()
     {
-        source.UnPause();
+        if(source != null)
+            source.UnPause();
     }
 
     private void PauseAudioSources()
     {
-        source.Pause();
+        if (source != null)
+            source.Pause();
     }
 
-    public void MuteSounds(AudioSource source)
+    public void MuteSoundEffects()
     {
-        source.volume = 0;
+        source = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioSource>();
+        source.mute = true;
     }
 
-    public void UnMuteSounds(AudioSource source)
+    public void UnMuteSoundEffects()
     {
-        source.volume = 1;
+        source = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioSource>();
+        source.mute = false;
+    }
+
+    public void MuteMusics()
+    {
+        source = GameObject.FindGameObjectWithTag("MusicManager").GetComponent<AudioSource>();
+        source.mute = true;
+    }
+
+    public void UnMuteMusics()
+    {
+        source = GameObject.FindGameObjectWithTag("MusicManager").GetComponent<AudioSource>();
+        source.mute = false;
     }
 
 }

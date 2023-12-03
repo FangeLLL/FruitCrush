@@ -4869,9 +4869,10 @@ GameObject:
   m_Component:
   - component: {fileID: 512258489}
   - component: {fileID: 512258488}
+  - component: {fileID: 512258490}
   m_Layer: 0
   m_Name: MusicManager
-  m_TagString: Untagged
+  m_TagString: MusicManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4886,7 +4887,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: d26e561de134db24c88c4686ec5f9553, type: 2}
-  m_audioClip: {fileID: 8300000, guid: f827f03ee009c854b896fc09d7900adf, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -4987,6 +4988,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &512258490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 512258487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f78b57439e28ea4cb156204261db5a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - {fileID: 8300000, guid: f827f03ee009c854b896fc09d7900adf, type: 3}
+  source: {fileID: 0}
 --- !u!1 &515799427
 GameObject:
   m_ObjectHideFlags: 0
@@ -8759,7 +8775,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 679, y: -933}
+  m_AnchoredPosition: {x: 679, y: -952}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1003730218
@@ -8782,10 +8798,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Time Until Next Daily Tasks
+  m_text: 23h 58m 31s
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f94fd2958440d0d4dbd9c377a028d36d, type: 2}
-  m_sharedMaterial: {fileID: -6373688845668365826, guid: f94fd2958440d0d4dbd9c377a028d36d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: dbdf0ed7709ffee46b07bdc95f5e3a44, type: 2}
+  m_sharedMaterial: {fileID: -6373688845668365826, guid: dbdf0ed7709ffee46b07bdc95f5e3a44, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -8809,8 +8825,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 5.83
-  m_fontSizeBase: 5.83
+  m_fontSize: 6.62
+  m_fontSizeBase: 6.62
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -10270,7 +10286,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 679, y: -795}
+  m_AnchoredPosition: {x: 679, y: -800}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1225037968
@@ -10320,8 +10336,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 5.83
-  m_fontSizeBase: 5.83
+  m_fontSize: 5.55
+  m_fontSizeBase: 5.55
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -14567,7 +14583,7 @@ GameObject:
   - component: {fileID: 1772453843}
   m_Layer: 0
   m_Name: AudioManager
-  m_TagString: Untagged
+  m_TagString: AudioManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14769,11 +14785,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6740af4651773ee47bedb468f99fcb8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sounds: []
+  source: {fileID: 0}
   liveRegen: {fileID: 672404961}
   levelController: {fileID: 1772865872}
   resourceController: {fileID: 1772865874}
   shopController: {fileID: 1772865875}
   dailyTaskManager: {fileID: 1772865876}
+  audioManager: {fileID: 1772453843}
   starText: {fileID: 249815904}
   starShopText: {fileID: 1740485052}
   levelBoxText: {fileID: 1408416232}
@@ -17028,7 +17047,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.4608117, g: 0.38625848, b: 0.5283019, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

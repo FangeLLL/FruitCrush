@@ -14456,7 +14456,7 @@ GameObject:
   - component: {fileID: 1772453843}
   m_Layer: 0
   m_Name: AudioManager
-  m_TagString: Untagged
+  m_TagString: AudioManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14614,6 +14614,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d4bc46f317a35204eb0955ebafda960c, type: 3}
   - {fileID: 8300000, guid: 8200fba753c303b47925d6a646a88e37, type: 3}
   - {fileID: 8300000, guid: fef9bb7690f7a1241b432ebf46c96184, type: 3}
+  - {fileID: 8300000, guid: fef9bb7690f7a1241b432ebf46c96184, type: 3}
+  - {fileID: 8300000, guid: fef9bb7690f7a1241b432ebf46c96184, type: 3}
   source: {fileID: 0}
 --- !u!1 &1772865867
 GameObject:
@@ -14755,6 +14757,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e279ae6a3e9b3c4e94db46846c7242a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sounds: []
+  source: {fileID: 0}
   achivementManager: {fileID: 1772865870}
   taskController: {fileID: 1772865872}
   resourceController: {fileID: 1772865874}

@@ -5,13 +5,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainMenuController : MonoBehaviour
+public class MainMenuController : Sounds
 {
     public LiveRegen liveRegen;
     public LevelController levelController;
     public ResourceController resourceController;
     public ShopController shopController;
     public DailyTaskManager dailyTaskManager;
+    public AudioManager audioManager;
 
     public TextMeshProUGUI starText;
     public TextMeshProUGUI starShopText;
@@ -48,6 +49,9 @@ public class MainMenuController : MonoBehaviour
     public bool isMusicOn;
     public bool isHintOn;
 
+    private AudioSource sound;
+    private AudioSource music;
+
     private void Start()
     {
         StartCoroutine(ActivateUICoroutine());
@@ -61,26 +65,32 @@ public class MainMenuController : MonoBehaviour
         int hintSetting = PlayerPrefs.GetInt("HintSetting", 1);
         isHintOn = hintSetting == 1;
 
+        sound = GameObject.Find("AudioManager").GetComponent<AudioSource>();
+
         if (isSoundOn)
         {
             //ACTIVATE SOUND
             soundToggleBlock.transform.localPosition = new Vector3(116, 0, 0);
+            UnMuteSoundEffects();
         }
         else
         {
             //DEACTIVATE SOUND
             soundToggleBlock.transform.localPosition = new Vector3(-116, 0, 0);
+            MuteSoundEffects();
         }
 
         if (isMusicOn)
         {
             //ACTIVATE MUSIC
             musicToggleBlock.transform.localPosition = new Vector3(116, 0, 0);
+            UnMuteMusics();
         }
         else
         {
             //DEACTIVATE MUSIC
             musicToggleBlock.transform.localPosition = new Vector3(-116, 0, 0);
+            MuteMusics();
         }
 
         if (isHintOn)
@@ -116,11 +126,13 @@ public class MainMenuController : MonoBehaviour
         {
             //ACTIVATE MUSIC
             musicToggleBlock.GetComponent<Animator>().SetTrigger("SettingOn");
+            UnMuteMusics();
         }
         else
         {
             //DEACTIVATE MUSIC
             musicToggleBlock.GetComponent<Animator>().SetTrigger("SettingOff");
+            MuteMusics();
         }
 
         SaveMusicSetting();
@@ -140,11 +152,13 @@ public class MainMenuController : MonoBehaviour
         {
             //ACTIVATE SOUND
             soundToggleBlock.GetComponent<Animator>().SetTrigger("SettingOn");
+            UnMuteSoundEffects();
         }
         else
         {
             //DEACTIVATE SOUND
             soundToggleBlock.GetComponent<Animator>().SetTrigger("SettingOff");
+            MuteSoundEffects();
         }
 
         SaveSoundSetting();
@@ -186,6 +200,8 @@ public class MainMenuController : MonoBehaviour
         grayBack.SetActive(true);
         levelBoxText.text = "Level " + levelcount.ToString();
         StartCoroutine(PlayButtonTappedEnum());
+
+        audioManager.MenuClick();
     }
 
     IEnumerator PlayButtonTappedEnum()
@@ -203,6 +219,7 @@ public class MainMenuController : MonoBehaviour
     public void PlayBoxQuitButtonTapped()
     {
         StartCoroutine(PlayBoxQuitButtonTappedEnum());
+        audioManager.MenuClickReturn();
     }
 
     IEnumerator PlayBoxQuitButtonTappedEnum()

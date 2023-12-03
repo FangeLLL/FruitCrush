@@ -6,7 +6,7 @@ public class AudioManager : Sounds
 {
     private void Awake()
     {
-        source = GetComponent<AudioSource>();
+        source = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioSource>();
     }
 
     public void Swipe()

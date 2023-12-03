@@ -182,8 +182,9 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayButtonTapped()
     {
+        int levelcount = PlayerPrefs.GetInt("level", 1);
         grayBack.SetActive(true);
-        levelBoxText.text = "Level " + levelController.currentLevel.ToString();
+        levelBoxText.text = "Level " + levelcount.ToString();
         StartCoroutine(PlayButtonTappedEnum());
     }
 

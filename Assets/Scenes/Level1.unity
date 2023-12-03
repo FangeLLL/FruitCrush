@@ -1513,6 +1513,7 @@ MonoBehaviour:
   tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
   hintBool: 0
   userLevel: 0
+  scaleNumber: 0
 --- !u!114 &160705529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14843,8 +14844,8 @@ MonoBehaviour:
     isCompleted: 0
   taskSprites:
   - {fileID: 21300000, guid: 7549f573040ddb44fb1c75c238e49463, type: 3}
+  - {fileID: 21300000, guid: 519ee4913832c2c4ebce0c87edd2a375, type: 3}
   - {fileID: 21300000, guid: 0a6ce9f7b5f88a8438ffbea37a010d65, type: 3}
-  - {fileID: 21300000, guid: a7b5c6e4ae16f2f47961b75e0c33b731, type: 3}
   - {fileID: 21300000, guid: a7b5c6e4ae16f2f47961b75e0c33b731, type: 3}
   moveCount: 0
   currentObjectiveIndex: 0
@@ -14864,6 +14865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed77babca125a4441955ceb142dcc8ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  powerUpController: {fileID: 0}
   starText: {fileID: 1457977306}
   starShopText: {fileID: 716362280}
 --- !u!114 &1772865875
@@ -14933,6 +14935,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resourceController: {fileID: 1772865874}
+  dailyTaskManager: {fileID: 0}
+  rewardUI: []
+  rewardSprites: []
+  rewardGray: {fileID: 0}
+  rewardText: {fileID: 0}
+  tapToClaimText: {fileID: 0}
 --- !u!114 &1772865878
 MonoBehaviour:
   m_ObjectHideFlags: 0

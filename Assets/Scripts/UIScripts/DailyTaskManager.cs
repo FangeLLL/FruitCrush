@@ -144,7 +144,6 @@ public class DailyTaskManager : MonoBehaviour
         {
             TextMeshProUGUI taskText = taskBoxes[i].transform.Find("TaskText").GetComponent<TextMeshProUGUI>();
             TextMeshProUGUI taskProgressText = taskBoxes[i].transform.Find("TaskProgressText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI rewardText = taskBoxes[i].transform.Find("RewardText").GetComponent<TextMeshProUGUI>();
 
             DailyMissionType missionType = selectedMissions[i].type;
 
@@ -160,13 +159,18 @@ public class DailyTaskManager : MonoBehaviour
                     {
                         taskBoxes[i].GetComponent<Image>().sprite = greenTask;
                         taskBoxes[i].GetComponent<Button>().interactable = true;
+                        taskBoxes[i].GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
                     }
                     else
                     {
                         taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
                         taskBoxes[i].GetComponent<Button>().interactable = false;
+                        taskBoxes[i].GetComponent<Animator>().SetTrigger("RewardTakenTrigger");
+                        taskBoxes[i].transform.localScale = new Vector3(0.46f, 0.46f, 0.46f);
+                        taskText.color = Color.black;
+                        taskProgressText.color = Color.black;
+                        Debug.Log("anan");
                     }
-                    
                 }
                 else
                 {
@@ -184,11 +188,17 @@ public class DailyTaskManager : MonoBehaviour
                     {
                         taskBoxes[i].GetComponent<Image>().sprite = greenTask;
                         taskBoxes[i].GetComponent<Button>().interactable = true;
+                        taskBoxes[i].GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
                     }
                     else
                     {
                         taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
                         taskBoxes[i].GetComponent<Button>().interactable = false;
+                        taskBoxes[i].GetComponent<Animator>().SetTrigger("RewardTakenTrigger");
+                        taskBoxes[i].transform.localScale = new Vector3(0.46f, 0.46f, 0.46f);
+                        taskText.color = Color.black;
+                        taskProgressText.color = Color.black;
+                        Debug.Log("anan");
                     }
                 }
                 else
@@ -199,48 +209,44 @@ public class DailyTaskManager : MonoBehaviour
             }
             else if (taskText.text == "Complete levels")
             {
-                if (selectedMissions[i].targetCount <= levelFinishTask)
+                selectedMissions[i].isCompleted = true;
+                selectedMissions[i].currentProgress = selectedMissions[i].targetCount;
+                if (!selectedMissions[i].rewardTaken)
                 {
-                    selectedMissions[i].isCompleted = true;
-                    selectedMissions[i].currentProgress = selectedMissions[i].targetCount;
-                    if (!selectedMissions[i].rewardTaken)
-                    {
-                        taskBoxes[i].GetComponent<Image>().sprite = greenTask;
-                        taskBoxes[i].GetComponent<Button>().interactable = true;
-                    }
-                    else
-                    {
-                        taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
-                        taskBoxes[i].GetComponent<Button>().interactable = false;
-                    }
+                    taskBoxes[i].GetComponent<Image>().sprite = greenTask;
+                    taskBoxes[i].GetComponent<Button>().interactable = true;
+                    taskBoxes[i].GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
                 }
                 else
                 {
-                    selectedMissions[i].isCompleted = false;
-                    selectedMissions[i].currentProgress = levelFinishTask;
+                    taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
+                    taskBoxes[i].GetComponent<Button>().interactable = false;
+                    taskBoxes[i].GetComponent<Animator>().SetTrigger("RewardTakenTrigger");
+                    taskBoxes[i].transform.localScale = new Vector3(0.46f, 0.46f, 0.46f);
+                    taskText.color = Color.black;
+                    taskProgressText.color = Color.black;
+                    Debug.Log("anan");
                 }
             }
             else if (taskText.text == "Create special fruits")
             {
-                if (selectedMissions[i].targetCount <= specialFruitTask)
+                selectedMissions[i].isCompleted = true;
+                selectedMissions[i].currentProgress = selectedMissions[i].targetCount;
+                if (!selectedMissions[i].rewardTaken)
                 {
-                    selectedMissions[i].isCompleted = true;
-                    selectedMissions[i].currentProgress = selectedMissions[i].targetCount;
-                    if (!selectedMissions[i].rewardTaken)
-                    {
-                        taskBoxes[i].GetComponent<Image>().sprite = greenTask;
-                        taskBoxes[i].GetComponent<Button>().interactable = true;
-                    }
-                    else
-                    {
-                        taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
-                        taskBoxes[i].GetComponent<Button>().interactable = false;
-                    }
+                    taskBoxes[i].GetComponent<Image>().sprite = greenTask;
+                    taskBoxes[i].GetComponent<Button>().interactable = true;
+                    taskBoxes[i].GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
                 }
                 else
                 {
-                    selectedMissions[i].isCompleted = false;
-                    selectedMissions[i].currentProgress = specialFruitTask;
+                    taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
+                    taskBoxes[i].GetComponent<Button>().interactable = false;
+                    taskBoxes[i].GetComponent<Animator>().SetTrigger("RewardTakenTrigger");
+                    taskBoxes[i].transform.localScale = new Vector3(0.46f, 0.46f, 0.46f);
+                    taskText.color = Color.black;
+                    taskProgressText.color = Color.black;
+                    Debug.Log("anan");
                 }
             }
 

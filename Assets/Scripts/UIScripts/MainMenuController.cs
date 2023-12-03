@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainMenuController : MonoBehaviour
+public class MainMenuController : Sounds
 {
     public LiveRegen liveRegen;
     public LevelController levelController;
@@ -48,6 +48,9 @@ public class MainMenuController : MonoBehaviour
     public bool isMusicOn;
     public bool isHintOn;
 
+    private AudioSource sound;
+    private AudioSource music;
+
     private void Start()
     {
         StartCoroutine(ActivateUICoroutine());
@@ -61,26 +64,32 @@ public class MainMenuController : MonoBehaviour
         int hintSetting = PlayerPrefs.GetInt("HintSetting", 1);
         isHintOn = hintSetting == 1;
 
+        sound = GameObject.Find("AudioManager").GetComponent<AudioSource>();
+
         if (isSoundOn)
         {
             //ACTIVATE SOUND
             soundToggleBlock.transform.localPosition = new Vector3(116, 0, 0);
+            UnMuteSounds(sound);
         }
         else
         {
             //DEACTIVATE SOUND
             soundToggleBlock.transform.localPosition = new Vector3(-116, 0, 0);
+            MuteSounds(sound);
         }
 
         if (isMusicOn)
         {
             //ACTIVATE MUSIC
             musicToggleBlock.transform.localPosition = new Vector3(116, 0, 0);
+            UnMuteSounds(music);
         }
         else
         {
             //DEACTIVATE MUSIC
             musicToggleBlock.transform.localPosition = new Vector3(-116, 0, 0);
+            MuteSounds(music);
         }
 
         if (isHintOn)
@@ -116,11 +125,13 @@ public class MainMenuController : MonoBehaviour
         {
             //ACTIVATE MUSIC
             musicToggleBlock.GetComponent<Animator>().SetTrigger("SettingOn");
+            UnMuteSounds(music);
         }
         else
         {
             //DEACTIVATE MUSIC
             musicToggleBlock.GetComponent<Animator>().SetTrigger("SettingOff");
+            MuteSounds(music);
         }
 
         SaveMusicSetting();
@@ -140,11 +151,13 @@ public class MainMenuController : MonoBehaviour
         {
             //ACTIVATE SOUND
             soundToggleBlock.GetComponent<Animator>().SetTrigger("SettingOn");
+            UnMuteSounds(sound);
         }
         else
         {
             //DEACTIVATE SOUND
             soundToggleBlock.GetComponent<Animator>().SetTrigger("SettingOff");
+            MuteSounds(sound);
         }
 
         SaveSoundSetting();

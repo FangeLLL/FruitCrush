@@ -115,7 +115,8 @@ public class UIManager : MonoBehaviour
 
     public void GameFinished(bool status)
     {
-        levelText.text = "Level " + levelController.currentLevel.ToString();
+        int levelCount = PlayerPrefs.GetInt("level") + 1;
+        levelText.text = "Level " + levelCount.ToString();
         StartCoroutine(GameFinishUI(status));
     }
 

@@ -54,25 +54,25 @@ public class Sounds : MonoBehaviour
     public void MuteSoundEffects()
     {
         source = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioSource>();
-        source.volume = 0;
+        source.mute = true;
     }
 
     public void UnMuteSoundEffects()
     {
         source = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioSource>();
-        source.volume = 1;
+        source.mute = false;
     }
 
     public void MuteMusics()
     {
         source = GameObject.FindGameObjectWithTag("MusicManager").GetComponent<AudioSource>();
-        source.volume = 0;
+        source.mute = true;
     }
 
     public void UnMuteMusics()
     {
         source = GameObject.FindGameObjectWithTag("MusicManager").GetComponent<AudioSource>();
-        source.volume = 1;
+        source.mute = false;
     }
 
 }

@@ -70,26 +70,26 @@ public class MainMenuController : Sounds
         {
             //ACTIVATE SOUND
             soundToggleBlock.transform.localPosition = new Vector3(116, 0, 0);
-            UnMuteSounds(sound);
+            UnMuteSoundEffects();
         }
         else
         {
             //DEACTIVATE SOUND
             soundToggleBlock.transform.localPosition = new Vector3(-116, 0, 0);
-            MuteSounds(sound);
+            MuteSoundEffects();
         }
 
         if (isMusicOn)
         {
             //ACTIVATE MUSIC
             musicToggleBlock.transform.localPosition = new Vector3(116, 0, 0);
-            UnMuteSounds(music);
+            UnMuteMusics();
         }
         else
         {
             //DEACTIVATE MUSIC
             musicToggleBlock.transform.localPosition = new Vector3(-116, 0, 0);
-            MuteSounds(music);
+            MuteMusics();
         }
 
         if (isHintOn)
@@ -125,13 +125,13 @@ public class MainMenuController : Sounds
         {
             //ACTIVATE MUSIC
             musicToggleBlock.GetComponent<Animator>().SetTrigger("SettingOn");
-            UnMuteSounds(music);
+            UnMuteMusics();
         }
         else
         {
             //DEACTIVATE MUSIC
             musicToggleBlock.GetComponent<Animator>().SetTrigger("SettingOff");
-            MuteSounds(music);
+            MuteMusics();
         }
 
         SaveMusicSetting();
@@ -151,13 +151,13 @@ public class MainMenuController : Sounds
         {
             //ACTIVATE SOUND
             soundToggleBlock.GetComponent<Animator>().SetTrigger("SettingOn");
-            UnMuteSounds(sound);
+            UnMuteSoundEffects();
         }
         else
         {
             //DEACTIVATE SOUND
             soundToggleBlock.GetComponent<Animator>().SetTrigger("SettingOff");
-            MuteSounds(sound);
+            MuteSoundEffects();
         }
 
         SaveSoundSetting();

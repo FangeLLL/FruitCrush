@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class UIManager : Sounds
 {
     public AchievementManager achivementManager;
     public TaskController taskController;
@@ -94,22 +94,26 @@ public class UIManager : MonoBehaviour
         {
             //ACTIVATE SOUND
             soundDisableIcon.SetActive(false);
+            UnMuteSoundEffects();
         }
         else
         {
             //DEACTIVATE SOUND
             soundDisableIcon.SetActive(true);
+            MuteSoundEffects();
         }
 
         if (isMusicOn)
         {
             //ACTIVATE SOUND
             musicDisableIcon.SetActive(false);
+            UnMuteMusics();
         }
         else
         {
             //DEACTIVATE SOUND
             musicDisableIcon.SetActive(true);
+            MuteMusics();
         }
     }
 
@@ -309,11 +313,14 @@ public class UIManager : MonoBehaviour
         {
             //ACTIVATE SOUND
             soundDisableIcon.SetActive(false);
+            UnMuteSoundEffects();
+
         }
         else
         {
             //DEACTIVATE SOUND
             soundDisableIcon.SetActive(true);
+            MuteSoundEffects();
         }
 
         SaveSoundSetting();
@@ -334,12 +341,14 @@ public class UIManager : MonoBehaviour
         {
             //ACTIVATE SOUND
             musicDisableIcon.SetActive(false);
+            UnMuteMusics();
 
         }
         else
         {
             //DEACTIVATE SOUND
             musicDisableIcon.SetActive(true);
+            MuteMusics();
         }
 
         SaveMusicSetting();

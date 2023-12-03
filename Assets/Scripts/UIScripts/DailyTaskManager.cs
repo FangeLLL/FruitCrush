@@ -254,12 +254,15 @@ public class DailyTaskManager : MonoBehaviour
         TimeSpan timeRemaining = nextResetTime - DateTime.Now;
 
         countdownText.text = $"{timeRemaining.Hours}h {timeRemaining.Minutes}m {timeRemaining.Seconds}s";
+
+        if (countdownText.text == "0h 0m 1s")
+        {
+            FakeStart();
+        }
     }
 
     void Start()
     {
-        SelectRandomMissions();
-
         string storedLastOpenedDate = PlayerPrefs.GetString(LastOpenedDateKey, "");
 
         DateTime currentDate = DateTime.Now;
@@ -279,6 +282,33 @@ public class DailyTaskManager : MonoBehaviour
             PlayerPrefs.Save();
         }
 
+        SelectRandomMissions();
+        TaskIconNotification();
+        redNotif.SetActive(true);
+    }
+
+    void FakeStart()
+    {
+        string storedLastOpenedDate = PlayerPrefs.GetString(LastOpenedDateKey, "");
+
+        DateTime currentDate = DateTime.Now;
+        string currentDateString = currentDate.ToString("yyyy-MM-dd");
+
+        if (storedLastOpenedDate == currentDateString)
+        {
+            Debug.Log("The game was opened today.");
+            newDay = false;
+        }
+        else
+        {
+            Debug.Log("The game was opened on a different day or it's the first time.");
+            newDay = true;
+
+            PlayerPrefs.SetString(LastOpenedDateKey, currentDateString);
+            PlayerPrefs.Save();
+        }
+
+        SelectRandomMissions();
         TaskIconNotification();
         redNotif.SetActive(true);
     }

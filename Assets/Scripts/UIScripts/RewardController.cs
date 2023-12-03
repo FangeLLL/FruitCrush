@@ -32,7 +32,8 @@ public class RewardController : MonoBehaviour
     {
         if (rewardTrigger)
         {
-            //StartCoroutine(RewardTriggerEnum());
+            int[] a = { 150, 0, 0, 0, 0 };
+            DisplayRewards(a);
         }
     }
 

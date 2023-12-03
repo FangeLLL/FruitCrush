@@ -48,10 +48,12 @@ public class IndexLibrary
         if (tileType == 1)
         {
             obstacleBools[0] = true;
+            obstacleBools[1] = false;
         }
 
         if (tileType == 2)
         {
+            obstacleBools[0] = false;
             obstacleBools[1] = true;
         }
 

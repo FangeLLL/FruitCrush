@@ -68,12 +68,12 @@ public class Board : MonoBehaviour
     {               
         userLevel = PlayerPrefs.GetInt("level", 0);
 
+        RearrangeScaleNumber();
+
         Grid gridData = saveData.gridData[userLevel];
 
         width = gridData.width;
         height = gridData.height;
-
-        RearrangeScaleNumber();
 
         // Getting avaliable fruits indexes and adding them to a list. existFruits list has indexes of avaliable fruits and this list going to be used when
         // creating new fruits.
@@ -86,7 +86,6 @@ public class Board : MonoBehaviour
             }
         }
 
-
         fillingColumn = new bool[width];
 
         StartCoroutine(FillTheGaps());
@@ -95,7 +94,6 @@ public class Board : MonoBehaviour
         allFruits = new GameObject[width, height];
         allTiles = new GameObject[width, height];
 
-        // SetUp();
         int[,] arrangeFruits = new int[width, height];
         int[,] arrangeTiles = new int[width, height];
 
@@ -103,7 +101,6 @@ public class Board : MonoBehaviour
         int[] savedFruits = gridData.allFruitsTotal;
 
         // Converting one dimensional array (json saved data) to two dimensional array. 
-
 
         for (int i = 0;height> i; i++)
         {
@@ -118,9 +115,7 @@ public class Board : MonoBehaviour
         taskController.SetTask(gridData.taskElements);
         taskController.SetMoveCount(gridData.moveCount);
 
-
         SetUpWithArray(arrangeFruits,arrangeTiles);
-        //SetUp();
     }
 
     private void Update()
@@ -236,7 +231,7 @@ public class Board : MonoBehaviour
                     }
                 }
                 // If type of fruit -1 then it means fruit does not exist.
-                if (arrangedFruits[i,j]>0)
+                if (arrangedFruits[i,j]>=0)
                 {
                     int fruitToUse = arrangedFruits[i, j];
                     GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);

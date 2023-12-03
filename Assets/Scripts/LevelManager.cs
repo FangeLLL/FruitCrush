@@ -18,23 +18,17 @@ public class LevelManager : MonoBehaviour
     public float scaleNumber;
     public float scaleFactorFruit;
 
-    /*
-    // INITIALIZE TO 0
-    private int currentFruitIndex = 0;
-    //private int currentObstacleIndex = 0;
-    public int obstacleType; 
-    */
+    IndexLibrary indexLibrary = new IndexLibrary();
+
     [SerializeField]
     public int[] existFruits;
     public GameObject[] fruitCheckboxes;
     public GameObject[] fruits;
     public GameObject[] obstacles;
     public GameObject tilePrefab;
-  //  public GameObject strawBalePrefab;
 
     public GameObject[,] allFruits;
     public GameObject[,] allTiles;
-   // public GameObject[,] allObstacles;
 
     public int moveCount;
     public int[] taskElements;
@@ -47,7 +41,7 @@ public class LevelManager : MonoBehaviour
     {
         widthChanger = width;
         heightChanger = height;
-    RearrangeScaleNumber();
+        RearrangeScaleNumber();
         taskElements = new int[2];
         saveData= GetComponent<SaveData>();
         existFruits = new int[5];
@@ -65,12 +59,12 @@ public class LevelManager : MonoBehaviour
         height = heightChanger;
         if (Input.GetKeyDown(KeyCode.S))
         {
-            saveTheBoard(level);
+            SaveTheBoard(level);
         }
      
     }
 
-    private void saveTheBoard(int level)
+    private void SaveTheBoard(int level)
     {
         level--;
         saveData.gridData[level] = new Grid();
@@ -105,6 +99,68 @@ public class LevelManager : MonoBehaviour
         saveData.gridData[level].allFruitsTotal= arrangeFruits;
         saveData.gridData[level].allTilesTotal= arrangeTiles;
         saveData.SaveToJson();
+    }
+
+    private void SetUpWithArray(int[,] arrangedFruits, int[,] arrangedTiles)
+    {
+        // width = arrangedTiles.GetLength(0);
+        // height = arrangedTiles.GetLength(1);
+
+        float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
+        float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
+        tilePrefab.transform.localScale = new Vector3(scaleNumber, scaleNumber, scaleNumber);
+
+        foreach (GameObject fruitScale in fruits)
+        {
+            fruitScale.transform.localScale = new Vector3(scaleFactorFruit, scaleFactorFruit, scaleFactorFruit);
+        }
+
+        foreach (GameObject obstacleScale in obstacles)
+        {
+            obstacleScale.transform.localScale = new Vector3(scaleNumber, scaleNumber, scaleNumber);
+        }
+
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+
+                Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, j * scaleNumber - yOffset);
+                GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
+                backgroundTile.transform.parent = this.transform;
+                backgroundTile.name = "( " + i + ", " + j + " )";
+                allTiles[i, j] = backgroundTile;
+                if (arrangedTiles[i, j] != 0)
+                {
+                    bool[] obstacleBools = indexLibrary.GetBoolObstacles(arrangedTiles[i, j]);
+                    if (obstacleBools[0])
+                    {
+                        backgroundTile.GetComponent<BackgroundTile>().strawBale = true;
+                        backgroundTile.GetComponent<BackgroundTile>().strawBaleObj = Instantiate(obstacles[0], tempPosition, Quaternion.identity);
+                    }
+
+                    if (obstacleBools[1])
+                    {
+                        backgroundTile.GetComponent<BackgroundTile>().wheatFarm = true;
+                        backgroundTile.GetComponent<BackgroundTile>().wheatFarmObj = Instantiate(obstacles[1], tempPosition, Quaternion.identity);
+                    }
+                }
+                // If type of fruit -1 then it means fruit does not exist.
+                if (arrangedFruits[i, j] > 0)
+                {
+                    int fruitToUse = arrangedFruits[i, j];
+                    GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
+                    fruit.transform.parent = this.transform;
+                    fruit.name = "( " + i + ", " + j + " )";
+                    fruit.GetComponent<Fruit>().column = i;
+                    fruit.GetComponent<Fruit>().row = j;
+                    fruit.GetComponent<Fruit>().fruitType = fruitToUse;
+                    allFruits[i, j] = fruit;
+                }
+
+
+            }
+        }
     }
 
     private void SetUp()
@@ -156,6 +212,12 @@ public class LevelManager : MonoBehaviour
         // INSTANTIATE A NEW FRUIT AT THE POSITION OF THE DESTROYED FRUIT
         if (chosenId >= 0)
         {
+            if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().tileType!=0)
+            {
+                // Destroy strawbale
+                Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[0]);
+                StartCoroutine(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().RearrangeTileType());
+            }
             GameObject fruit = Instantiate(fruits[chosenId], tempPosition, Quaternion.identity);
             fruit.transform.parent = this.transform;
             fruit.name = "( " + column + ", " + row + " )";

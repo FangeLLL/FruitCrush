@@ -1493,7 +1493,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &143980086
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8798,7 +8798,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Time Until Next Daily Tasks
+  m_text: 23h 58m 31s
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dbdf0ed7709ffee46b07bdc95f5e3a44, type: 2}
   m_sharedMaterial: {fileID: -6373688845668365826, guid: dbdf0ed7709ffee46b07bdc95f5e3a44, type: 2}
@@ -14792,6 +14792,7 @@ MonoBehaviour:
   resourceController: {fileID: 1772865874}
   shopController: {fileID: 1772865875}
   dailyTaskManager: {fileID: 1772865876}
+  audioManager: {fileID: 1772453843}
   starText: {fileID: 249815904}
   starShopText: {fileID: 1740485052}
   levelBoxText: {fileID: 1408416232}

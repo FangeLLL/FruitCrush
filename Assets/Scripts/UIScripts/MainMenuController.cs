@@ -12,6 +12,7 @@ public class MainMenuController : Sounds
     public ResourceController resourceController;
     public ShopController shopController;
     public DailyTaskManager dailyTaskManager;
+    public AudioManager audioManager;
 
     public TextMeshProUGUI starText;
     public TextMeshProUGUI starShopText;
@@ -199,6 +200,8 @@ public class MainMenuController : Sounds
         grayBack.SetActive(true);
         levelBoxText.text = "Level " + levelcount.ToString();
         StartCoroutine(PlayButtonTappedEnum());
+
+        audioManager.MenuClick();
     }
 
     IEnumerator PlayButtonTappedEnum()
@@ -216,6 +219,7 @@ public class MainMenuController : Sounds
     public void PlayBoxQuitButtonTapped()
     {
         StartCoroutine(PlayBoxQuitButtonTappedEnum());
+        audioManager.MenuClickReturn();
     }
 
     IEnumerator PlayBoxQuitButtonTappedEnum()

@@ -156,16 +156,21 @@ public class RewardController : MonoBehaviour
 
     IEnumerator DisplayAnimationReverse()
     {
+        StopCoroutine(DisplayAnimation());
+
         yield return null;
 
         rewardGray.GetComponent<Animator>().SetTrigger("RewardDisplayTriggerReverse");
         rewardText.GetComponent<Animator>().SetTrigger("RewardDisplayTriggerReverse");
         tapToClaimText.GetComponent<Animator>().SetTrigger("RewardDisplayTriggerReverse");
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.25f);
 
         rewardGray.SetActive(false);
         rewardText.SetActive(false);
+        rewardText.GetComponent<TextMeshProUGUI>().fontSize = 0;
         tapToClaimText.SetActive(false);
+        tapToClaimText.GetComponent<TextMeshProUGUI>().fontSize = 0;
+
     }
 }

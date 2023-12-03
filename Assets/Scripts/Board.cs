@@ -25,7 +25,7 @@ public class Board : MonoBehaviour
     public TaskController taskController;
     public SwipeHint swipeHint;
     public SaveData saveData;
-
+    public SpecialPowerController specialPowerController;
 
     public bool checkingMatch = false;
     public bool isRunning = false;
@@ -57,6 +57,10 @@ public class Board : MonoBehaviour
     public GameObject[,] allTiles;
     public float scaleNumber;
     private float scaleFactorFruit;
+
+    // Test variable
+    public int specialPowerID = 0;
+    bool specialSwipe = false;
 
     private void Awake()
     {
@@ -195,7 +199,9 @@ public class Board : MonoBehaviour
                 GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
                 backgroundTile.transform.parent = this.transform;
                 backgroundTile.name = "( " + i + ", " + j + " )";
-                allTiles[i, j] = backgroundTile;
+                backgroundTile.GetComponent<BackgroundTile>().column = i;
+                backgroundTile.GetComponent<BackgroundTile>().row = j;
+               allTiles[i, j] = backgroundTile;
                 if (arrangedTiles[i, j] != 0)
                 {
                     bool[] obstacleBools = indexLibrary.GetBoolObstacles(arrangedTiles[i, j]);
@@ -225,33 +231,6 @@ public class Board : MonoBehaviour
                 }
 
                
-            }
-        }
-    }
-
-    private void SetUp()
-    {
-      float  xOffset = width * 0.5f - 0.5f;
-      float  yOffset = height * 0.5f - 0.5f;
-
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                Vector2 tempPosition = new Vector2(i - xOffset, j - yOffset);
-                GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity) as GameObject;
-                backgroundTile.transform.parent = this.transform;
-                backgroundTile.name = "( " + i + ", " + j + " )";
-                allTiles[i, j] = backgroundTile;
-
-                int fruitToUse = UnityEngine.Random.Range(0, fruits.Length);
-                GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
-                fruit.transform.parent = this.transform;
-                fruit.name = "( " + i + ", " + j + " )";
-                fruit.GetComponent<Fruit>().column = i;
-                fruit.GetComponent<Fruit>().row = j;
-                fruit.GetComponent<Fruit>().fruitType = fruitToUse;
-                allFruits[i, j] = fruit;
             }
         }
     }
@@ -1152,34 +1131,14 @@ public class Board : MonoBehaviour
         {
             harvesterScript.targetV.x = allTiles[width-1, row].transform.position.x + 1;
 
-            for (int i = column+1; i < width; i++)
-            {
-
-                if (allFruits[i, row])
-                {
-                    DestroyController(allFruits[i, row], false);
-                    audioManager.FruitCrush();
-
-                }
-                allTiles[i, row].GetComponent<BackgroundTile>().Boom();
-
-            }
+            HorizontalDestroy(column, row, true);
         }
         else
         {
             harvester.GetComponent<Fruit>().targetV.x = allTiles[0, row].transform.position.x - 1;
 
-            for (int i = column-1; i >= 0; i--)
-            {
+            HorizontalDestroy(column, row, false);
 
-                if (allFruits[i, row])
-                {
-                    DestroyController(allFruits[i, row], false);
-                    audioManager.FruitCrush();
-                }
-                allTiles[i, row].GetComponent<BackgroundTile>().Boom();
-
-            }
         }
         allTiles[column, row].GetComponent<BackgroundTile>().Boom();
         StartCoroutine(FadeOut(harvester));
@@ -1208,6 +1167,14 @@ public class Board : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Destroy one side of vertical from the point. If up boolean true then it destroy up of the point and if not down. This function
+    /// currently used by vertical special power and vertical harvester.
+    /// By Bertuð Abalý
+    /// </summary>
+    /// <param name="column"></param>
+    /// <param name="row"></param>
+    /// <param name="up"></param>
     private void VerticalDestroy(int column,int row,bool up)
     {
         if (up)
@@ -1236,4 +1203,121 @@ public class Board : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// Destroy one side of horizontal from the point. If right boolean true then it destroy right side of the point and if not left side. This function
+    /// currently used by horizontal special power and horizontal harvester.
+    /// By Bertuð Abalý
+    /// </summary>
+    /// <param name="column"></param>
+    /// <param name="row"></param>
+    /// <param name="right"></param>
+    private void HorizontalDestroy(int column, int row, bool right)
+    {
+        if (right)
+        {
+            for (int i = column + 1; i < width; i++)
+            {
+
+                if (allFruits[i, row])
+                {
+                    DestroyController(allFruits[i, row], false);
+                    audioManager.FruitCrush();
+
+                }
+                allTiles[i, row].GetComponent<BackgroundTile>().Boom();
+
+            }
+        }
+        else
+        {
+            for (int i = column - 1; i >= 0; i--)
+            {
+
+                if (allFruits[i, row])
+                {
+                    DestroyController(allFruits[i, row], false);
+                    audioManager.FruitCrush();
+                }
+                allTiles[i, row].GetComponent<BackgroundTile>().Boom();
+
+            }
+        }
+    }
+
+    /// <summary>
+    /// Destroy just one tile.
+    /// By Bertuð Abalý
+    /// </summary>
+    /// <param name="column"></param>
+    /// <param name="row"></param>
+    private void DestroyOneTile(int column,int row)
+    {
+        DestroyController(allFruits[column, row], false);
+        audioManager.FruitCrush();
+        allTiles[column, row].GetComponent<BackgroundTile>().Boom();
+    }
+
+    /// <summary>
+    /// This function activate selected special power. 
+    /// By Bertuð Abalý
+    /// </summary>
+    /// <param name="column"></param>
+    /// <param name="row"></param>
+    public void ActivateSpecialPower(int column,int row)
+    {
+        switch (specialPowerID)
+        {
+            case 1:
+                // Special Power: Vertical Destroyer
+                specialPowerController.SpecialPowerUpUsed(0);
+                DestroyOneTile(column, row);
+                VerticalDestroy(column, row, false);
+                VerticalDestroy(column, row, true);
+                break;
+            case 2:
+                // Special Power: Horizontal Destroyer
+                specialPowerController.SpecialPowerUpUsed(1);
+                DestroyOneTile(column, row);
+                HorizontalDestroy(column, row, false);
+                HorizontalDestroy(column, row, true);
+                break;
+            case 3:
+                // Special Power: One Tile Destroyer
+                specialPowerController.SpecialPowerUpUsed(2);
+                DestroyOneTile(column, row);
+                break;
+            case 4:
+                // Special Power: Super Swipe
+                specialSwipe = true;
+                specialPowerController.SpecialPowerUpUsed(3);
+                break;
+        }
+    }
+
+    /// <summary>
+    /// This function will call from Special Power Controller script and related to Special Power buttons. specialPowerID represent selected special power.
+    /// If called by same id then it will be disabled.
+    /// By Bertuð Abalý
+    /// </summary>
+    /// <param name="id"></param>
+    public void SelectedSpecialPower(int id)
+    {
+        if(id == specialPowerID)
+        {
+            specialPowerID= 0;
+        }
+        else
+        {
+            specialPowerID = id;
+        }
+
+        // Disable specialSwipe Special Power
+        if (specialPowerID==4)
+        {
+            specialSwipe= false;
+        }
+
+    }
+
 }

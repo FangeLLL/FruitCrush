@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static DailyTaskManager;
 using Random = UnityEngine.Random;
 
 public class DailyTaskManager : MonoBehaviour
@@ -133,7 +134,7 @@ public class DailyTaskManager : MonoBehaviour
         selectedMissions = missionsWrapper.missions;
     }
 
-    private void UpdateTaskMenu()   
+    public void UpdateTaskMenu()
     {
         int makeMovesTask = PlayerPrefs.GetInt("MakeMoveTask", 0);
         int totalCrushTask = PlayerPrefs.GetInt("TotalCrushTask", 0);
@@ -144,108 +145,62 @@ public class DailyTaskManager : MonoBehaviour
         {
             TextMeshProUGUI taskText = taskBoxes[i].transform.Find("TaskText").GetComponent<TextMeshProUGUI>();
             TextMeshProUGUI taskProgressText = taskBoxes[i].transform.Find("TaskProgressText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI rewardText = taskBoxes[i].transform.Find("RewardText").GetComponent<TextMeshProUGUI>();
 
             DailyMissionType missionType = selectedMissions[i].type;
 
             taskText.text = $"{missionDescriptions[missionType]}";
+            UpdateTaskBox(taskBoxes[i], selectedMissions[i], missionType, makeMovesTask, totalCrushTask, levelFinishTask, specialFruitTask);
+        }
+    }
 
-            if (taskText.text == "Make moves")
-            {
-                if (selectedMissions[i].targetCount <= makeMovesTask)
-                {
-                    selectedMissions[i].isCompleted = true;
-                    selectedMissions[i].currentProgress = selectedMissions[i].targetCount;
-                    if (!selectedMissions[i].rewardTaken)
-                    {
-                        taskBoxes[i].GetComponent<Image>().sprite = greenTask;
-                        taskBoxes[i].GetComponent<Button>().interactable = true;
-                    }
-                    else
-                    {
-                        taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
-                        taskBoxes[i].GetComponent<Button>().interactable = false;
-                    }
-                    
-                }
-                else
-                {
-                    selectedMissions[i].isCompleted = false;
-                    selectedMissions[i].currentProgress = makeMovesTask;
-                }
-            }
-            else if (taskText.text == "Crush fruits")
-            {
-                if (selectedMissions[i].targetCount <= totalCrushTask)
-                {
-                    selectedMissions[i].isCompleted = true;
-                    selectedMissions[i].currentProgress = selectedMissions[i].targetCount;
-                    if (!selectedMissions[i].rewardTaken)
-                    {
-                        taskBoxes[i].GetComponent<Image>().sprite = greenTask;
-                        taskBoxes[i].GetComponent<Button>().interactable = true;
-                    }
-                    else
-                    {
-                        taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
-                        taskBoxes[i].GetComponent<Button>().interactable = false;
-                    }
-                }
-                else
-                {
-                    selectedMissions[i].isCompleted = false;
-                    selectedMissions[i].currentProgress = totalCrushTask;
-                }
-            }
-            else if (taskText.text == "Complete levels")
-            {
-                if (selectedMissions[i].targetCount <= levelFinishTask)
-                {
-                    selectedMissions[i].isCompleted = true;
-                    selectedMissions[i].currentProgress = selectedMissions[i].targetCount;
-                    if (!selectedMissions[i].rewardTaken)
-                    {
-                        taskBoxes[i].GetComponent<Image>().sprite = greenTask;
-                        taskBoxes[i].GetComponent<Button>().interactable = true;
-                    }
-                    else
-                    {
-                        taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
-                        taskBoxes[i].GetComponent<Button>().interactable = false;
-                    }
-                }
-                else
-                {
-                    selectedMissions[i].isCompleted = false;
-                    selectedMissions[i].currentProgress = levelFinishTask;
-                }
-            }
-            else if (taskText.text == "Create special fruits")
-            {
-                if (selectedMissions[i].targetCount <= specialFruitTask)
-                {
-                    selectedMissions[i].isCompleted = true;
-                    selectedMissions[i].currentProgress = selectedMissions[i].targetCount;
-                    if (!selectedMissions[i].rewardTaken)
-                    {
-                        taskBoxes[i].GetComponent<Image>().sprite = greenTask;
-                        taskBoxes[i].GetComponent<Button>().interactable = true;
-                    }
-                    else
-                    {
-                        taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
-                        taskBoxes[i].GetComponent<Button>().interactable = false;
-                    }
-                }
-                else
-                {
-                    selectedMissions[i].isCompleted = false;
-                    selectedMissions[i].currentProgress = specialFruitTask;
-                }
-            }
+    private void UpdateTaskBox(GameObject taskBox, DailyMission currentMission, DailyMissionType missionType, int makeMovesTask, int totalCrushTask, int levelFinishTask, int specialFruitTask)
+    {
+        if (currentMission.targetCount <= GetCurrentTaskCount(missionType, makeMovesTask, totalCrushTask, levelFinishTask, specialFruitTask))
+        {
+            currentMission.isCompleted = true;
+            currentMission.currentProgress = currentMission.targetCount;
 
-            taskProgressText.text = $"{selectedMissions[i].currentProgress}/{selectedMissions[i].targetCount}";
-            //rewardText.text = "Reward";
+            if (!currentMission.rewardTaken)
+            {
+                taskBox.GetComponent<Image>().sprite = greenTask;
+                taskBox.GetComponent<Button>().interactable = true;
+                taskBox.GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
+                Debug.Log("ananen");
+            }
+            else
+            {
+                taskBox.GetComponent<Image>().sprite = greenDarkTask;
+                taskBox.GetComponent<Button>().interactable = false;
+                taskBox.GetComponent<Animator>().SetTrigger("RewardTakenTrigger");
+                taskBox.transform.localScale = new Vector3(0.46f, 0.46f, 0.46f);
+                taskBox.transform.Find("TaskText").GetComponent<TextMeshProUGUI>().color = Color.black;
+                taskBox.transform.Find("TaskProgressText").GetComponent<TextMeshProUGUI>().color = Color.black;
+                Debug.Log("anan");
+            }
+        }
+        else
+        {
+            currentMission.isCompleted = false;
+            currentMission.currentProgress = GetCurrentTaskCount(missionType, makeMovesTask, totalCrushTask, levelFinishTask, specialFruitTask);
+        }
+
+        taskBox.transform.Find("TaskProgressText").GetComponent<TextMeshProUGUI>().text = $"{currentMission.currentProgress}/{currentMission.targetCount}";
+    }
+    
+    private int GetCurrentTaskCount(DailyMissionType missionType, int makeMovesTask, int totalCrushTask, int levelFinishTask, int specialFruitTask)
+    {
+        switch (missionType)
+        {
+            case DailyMissionType.MakeMoves:
+                return makeMovesTask;
+            case DailyMissionType.CrushFruits:
+                return totalCrushTask;
+            case DailyMissionType.CompleteLevels:
+                return levelFinishTask;
+            case DailyMissionType.CreateSpecialFruits:
+                return specialFruitTask;
+            default:
+                return 0;
         }
     }
 
@@ -263,28 +218,7 @@ public class DailyTaskManager : MonoBehaviour
 
     void Start()
     {
-        string storedLastOpenedDate = PlayerPrefs.GetString(LastOpenedDateKey, "");
-
-        DateTime currentDate = DateTime.Now;
-        string currentDateString = currentDate.ToString("yyyy-MM-dd");
-
-        if (storedLastOpenedDate == currentDateString)
-        {
-            Debug.Log("The game was opened today.");
-            newDay = false;
-        }
-        else
-        {
-            Debug.Log("The game was opened on a different day or it's the first time.");
-            newDay = true;
-
-            PlayerPrefs.SetString(LastOpenedDateKey, currentDateString);
-            PlayerPrefs.Save();
-        }
-
-        SelectRandomMissions();
-        TaskIconNotification();
-        redNotif.SetActive(true);
+        FakeStart();
     }
 
     void FakeStart()
@@ -323,6 +257,15 @@ public class DailyTaskManager : MonoBehaviour
         taskBoxes[i].GetComponent<Image>().sprite = greenDarkTask;
         taskBoxes[i].GetComponent<Button>().interactable = false;
         selectedMissions[i].rewardTaken = true;
+
+        foreach (Transform child in taskBoxes[i].transform)
+        {
+            TextMeshProUGUI textMeshPro = child.GetComponent<TextMeshProUGUI>();
+            if (textMeshPro != null)
+            {
+                textMeshPro.color = Color.black;
+            }
+        }
         SaveSelectedMissions();
     }
 

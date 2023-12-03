@@ -92,7 +92,7 @@ public class TaskController : MonoBehaviour
             moveCountFlag = false;
         }
 
-        if (moveCount <= 0)
+        if (moveCount <= 0 || AreAllObjectivesComplete())
         {
             isBoardActive = false;
         }
@@ -225,8 +225,7 @@ public class TaskController : MonoBehaviour
         userLevel++;
         PlayerPrefs.SetInt("level", userLevel);
 
-
-        PlayerPrefs.SetInt("MakeMoveTask", levelFinishTask);
+        PlayerPrefs.SetInt("LevelFinishTask", levelFinishTask);
         PlayerPrefs.Save();
     }
 }

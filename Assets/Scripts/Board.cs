@@ -934,31 +934,7 @@ public class Board : MonoBehaviour
         }
         
     }
-    /*
-    public void ReplaceDestroyedFruit(int column, int row)
-    {
-        float xOffset = width * 0.5f - 0.5f;
-        float yOffset = height * 0.5f - 0.5f;
-        Vector2 tempPosition = new Vector2(column - xOffset, row - yOffset);
-
-        // INSTANTIATE A NEW FRUIT AT THE POSITION OF THE DESTROYED FRUIT
-        int fruitToUse = UnityEngine.Random.Range(0, fruits.Length);
-        GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
-
-        // SET THE PARENT AND NAME OF THE NEW FRUIT
-        fruit.transform.parent = this.transform;
-        fruit.name = "( " + column + ", " + row + " )";
-
-        // SET THE COLUMN AND ROW OF THE NEW FRUIT
-        fruit.GetComponent<Fruit>().column = column;
-        fruit.GetComponent<Fruit>().row = row;
-        fruit.GetComponent<Fruit>().fruitType = fruitToUse;
-
-        // ADD THE NEW FRUIT TO THE allFruits ARRAY
-        Destroy(allFruits[column, row]);
-        allFruits[column, row] = fruit;
-    }
-    */
+    
     public void ActivateMergePowerUp(GameObject fruit, GameObject otherFruit)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>(), otherFruitScript=otherFruit.GetComponent<Fruit>();

@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class AudioManager : Sounds
 {
+    private void Awake()
+    {
+        source = GetComponent<AudioSource>();
+    }
+
     public void Swipe()
     {
         source.clip = sounds[0];

@@ -11,11 +11,6 @@ public class Sounds : MonoBehaviour
 
     private Vector2 previousWindowSize;
 
-    private void Awake()
-    {
-        source = GetComponent<AudioSource>();
-    }
-
     private void Update()
     {
         if (HasWindowResized())
@@ -54,13 +49,14 @@ public class Sounds : MonoBehaviour
         source.Pause();
     }
 
-    public void MuteSounds()
+    public void MuteSounds(AudioSource source)
     {
         source.volume = 0;
     }
 
-    public void UnMuteSounds()
+    public void UnMuteSounds(AudioSource source)
     {
         source.volume = 1;
     }
+
 }

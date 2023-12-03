@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 
 [System.Serializable]
-public class SpecialPowerUps
+public class SpecialPower
 {
     public int amount;
     public GameObject powerUp;
@@ -16,23 +16,25 @@ public class SpecialPowerController : MonoBehaviour
 {
     public Board board;
 
-    public List<SpecialPowerUps> specialPowerUpsList;
+    public List<SpecialPower> specialPowerUpsList;
 
     public void SpecialPowerUpSelected(int index)
     {
         if (index >= 0 && index < specialPowerUpsList.Count)
         {
             specialPowerUpsList[index].isActivated = !specialPowerUpsList[index].isActivated;
+            board.SelectedSpecialPower(index);
         }
 
         if (specialPowerUpsList[index].isActivated)
         {
-            board.SelectedSpecialPower(index);
+            Debug.Log("Activated");
         }
 
         else
         {
             DeselectUI(index);
+            Debug.Log("Deactivated");
         }
     }
 

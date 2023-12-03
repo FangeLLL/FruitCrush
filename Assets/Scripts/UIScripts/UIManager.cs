@@ -13,6 +13,7 @@ public class UIManager : Sounds
     public LiveRegen liveRegen;
     public LevelController levelController;
     public ShopController shopController;
+    public AudioManager audioManager;
 
     public GameObject congratText;
     public GameObject failedText;
@@ -233,6 +234,7 @@ public class UIManager : Sounds
 
     public void SettingsButton()
     {
+        audioManager.MenuClick();
         settingsButtonCounter++;
 
         if (settingsButtonCounter % 2 == 0)
@@ -243,6 +245,7 @@ public class UIManager : Sounds
         {
             StartCoroutine(SettingsOff());
         }
+
     }
 
     IEnumerator SettingsOn()
@@ -306,6 +309,7 @@ public class UIManager : Sounds
 
     public void ToggleSound()
     {
+        audioManager.MenuClick();
         isSoundOn = !isSoundOn;
         soundIcon.GetComponent<Animator>().SetTrigger("SettingsToggle");
 
@@ -334,6 +338,7 @@ public class UIManager : Sounds
 
     public void ToggleMusic()
     {
+        audioManager.MenuClick();
         isMusicOn = !isMusicOn;
         musicIcon.GetComponent<Animator>().SetTrigger("SettingsToggle");
 
@@ -362,6 +367,7 @@ public class UIManager : Sounds
 
     public void PlusMovesBought()
     {
+        audioManager.MenuClick();
         if (ResourceController.star > plusMovePrice)
         {
             taskController.onetime = true;
@@ -403,6 +409,7 @@ public class UIManager : Sounds
 
     public void QuitButton1Tapped()
     {
+        audioManager.MenuClickReturn();
         StartCoroutine(QuitButton1TappedEnum());
 
         for (int i = 1; i <= taskController.currentObjectiveIndex; i++)
@@ -451,6 +458,7 @@ public class UIManager : Sounds
 
     public void RetryButtonTapped()
     {
+        audioManager.MenuClick();
         StartCoroutine(RetryButtonTappedEnum());
     }
 
@@ -473,6 +481,7 @@ public class UIManager : Sounds
 
     public void QuitButton2Tapped()
     {
+        audioManager.MenuClickReturn();
         StartCoroutine(QuitButton2TappedEnum());
     }
 
@@ -488,6 +497,7 @@ public class UIManager : Sounds
 
     public void ContinueButton()
     {
+        audioManager.MenuClick();
         StartCoroutine(ContinueButtonEnum());
     }
 
@@ -503,6 +513,7 @@ public class UIManager : Sounds
 
     public void ShopCloseButtonTapped()
     {
+        audioManager.MenuClickReturn();
         shopBackground.SetActive(false);
         shopTopUI.GetComponent<Animator>().SetTrigger("ShopClose");
         shopCloseButton.GetComponent<Animator>().SetTrigger("Tapped");
@@ -515,6 +526,7 @@ public class UIManager : Sounds
 
     public void BuyStarsButtonTapped()
     {
+        audioManager.MenuClick();
         if (!shopBackground.activeSelf)
         {
             StartCoroutine(BuyStarsButtonTappedEnum());
@@ -538,6 +550,7 @@ public class UIManager : Sounds
 
     public void OutOfLivesBoxQuitButtonTapped()
     {
+        audioManager.MenuClickReturn();
         StartCoroutine(OutOfLivesBoxQuitButtonTappedEnum());
     }
 
@@ -556,6 +569,7 @@ public class UIManager : Sounds
 
     public void RefillButtonTapped()
     {
+        audioManager.MenuClick();
         if (ResourceController.star >= refillPrice)
         {
             liveRegen.LivesRefilled();
@@ -566,7 +580,6 @@ public class UIManager : Sounds
         {
             BuyStarsButtonTapped();
         }
-        
     }
 
     IEnumerator RefillButtonTappedEnum()
@@ -658,6 +671,7 @@ public class UIManager : Sounds
 
     public void ExitGameButtonTapped()
     {
+        audioManager.MenuClick();
         SettingsButton();
         settingsGray.GetComponent<Button>().interactable = false;
         StartCoroutine(ExitGameButtonTappedEnum());
@@ -675,6 +689,7 @@ public class UIManager : Sounds
 
     public void ExitGameBoxCloseButtonTapped()
     {
+        audioManager.MenuClickReturn();
         StartCoroutine(ExitGameBoxCloseButtonTappedEnum());
     }
 
@@ -693,6 +708,7 @@ public class UIManager : Sounds
 
     public void ExitGameBoxQuitButtonTapped()
     {
+        audioManager.MenuClick();
         StartCoroutine(ExitGameBoxQuitButtonTappedEnum());
     }
 

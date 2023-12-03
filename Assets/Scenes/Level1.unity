@@ -15296,6 +15296,7 @@ MonoBehaviour:
   liveRegen: {fileID: 1774749132}
   levelController: {fileID: 1772865876}
   shopController: {fileID: 1772865878}
+  audioManager: {fileID: 1772453843}
   congratText: {fileID: 8239670280394325329}
   failedText: {fileID: 5853299501709311760}
   finishBackground1: {fileID: 2764453122124811735}

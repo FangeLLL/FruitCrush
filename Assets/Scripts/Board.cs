@@ -490,16 +490,19 @@ public class Board : MonoBehaviour
                             else if (rowPopped)
                             {
                                 CreatePowerUp(column, row, -1);
+                                audioManager.PowerUpGain();
 
                             }
                             else if (columnPopped)
                             {
                                 CreatePowerUp(column, row, -2);
+                                audioManager.PowerUpGain();
 
                             }
                             else if (squarePopped)
                             {
                                 CreatePowerUp(column, row, -3);
+                                audioManager.PowerUpGain2();
                             }
 
                         }

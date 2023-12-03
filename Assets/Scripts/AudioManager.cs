@@ -4,9 +4,28 @@ using UnityEngine;
 
 public class AudioManager : Sounds
 {
+    [SerializeField] private AudioSource powerUpGainSource;
+    [SerializeField] private AudioSource hoeSource;
+    [SerializeField] private AudioSource harvesterSource;
     private void Awake()
     {
-        source = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioSource>();
+        source = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioSource>();        
+    }
+
+    private void Update()
+    {
+        if(source.mute)
+        {
+            powerUpGainSource.mute = true;
+            hoeSource.mute=true;
+            harvesterSource.mute=true;
+        }
+        else
+        {
+            powerUpGainSource.mute = false;
+            hoeSource.mute=false;
+            harvesterSource.mute=false;
+        }
     }
 
     public void Swipe()
@@ -131,9 +150,8 @@ public class AudioManager : Sounds
 
     public void Harvester()
     {
-        source.volume = 0.25f;
-        source.clip = sounds[25];
-        source.PlayOneShot(source.clip);
+        harvesterSource.clip = sounds[25];
+        harvesterSource.PlayOneShot(harvesterSource.clip);
     }
 
     public void Pickaxe()
@@ -152,5 +170,16 @@ public class AudioManager : Sounds
     {
         source.clip = sounds[28];
         source.PlayOneShot(source.clip);
+    }
+
+    public void PowerUpGain()
+    {
+        powerUpGainSource.clip = sounds[29];
+        powerUpGainSource.PlayOneShot(powerUpGainSource.clip);
+    }
+    public void PowerUpGain2()
+    {
+        powerUpGainSource.clip = sounds[30];
+        powerUpGainSource.PlayOneShot(powerUpGainSource.clip);
     }
 }

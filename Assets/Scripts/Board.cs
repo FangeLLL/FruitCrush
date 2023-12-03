@@ -59,7 +59,7 @@ public class Board : MonoBehaviour
     private float scaleFactorFruit;
 
     // Test variable
-    int specialCounter = 1;
+    public int specialPowerID = 0;
     bool specialSwipe = false;
 
     private void Awake()
@@ -1236,30 +1236,41 @@ public class Board : MonoBehaviour
     // This function for test purposes.
     public void ActivateSpecialPower(int column,int row)
     {
-        switch (specialCounter)
+        switch (specialPowerID)
         {
             case 1:
+                // Special Power Vertical Destroyer
                 DestroyOneTile(column, row);
                 VerticalDestroy(column, row, false);
                 VerticalDestroy(column, row, true);
                 break;
             case 2:
+                // Special Power Horizontal Destroyer
                 DestroyOneTile(column, row);
                 HorizontalDestroy(column, row, false);
                 HorizontalDestroy(column, row, true);
                 break;
             case 3:
+                // Special Power One Tile Destroyer
                 DestroyOneTile(column, row);
                 break;
             case 4:
 
                 break;
         }
-        specialCounter++;
-        if (specialCounter > 4)
+    }
+
+    public void SelectedSpecialPower(int id)
+    {
+        if(id == specialPowerID)
         {
-            specialCounter= 1;
+            specialPowerID= 0;
         }
+        else
+        {
+            specialPowerID = id;
+        }
+
     }
 
 }

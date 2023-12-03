@@ -24,7 +24,7 @@ public class BackgroundTile : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(0) && board.specialPowerID != 0)
         {
             // Convert the mouse position to world coordinates
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

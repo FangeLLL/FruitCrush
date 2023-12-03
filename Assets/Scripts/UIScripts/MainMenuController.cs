@@ -182,7 +182,7 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayButtonTapped()
     {
-        int levelcount = PlayerPrefs.GetInt("level", 1);
+        int levelcount = PlayerPrefs.GetInt("level", 0) + 1;
         grayBack.SetActive(true);
         levelBoxText.text = "Level " + levelcount.ToString();
         StartCoroutine(PlayButtonTappedEnum());
@@ -341,6 +341,7 @@ public class MainMenuController : MonoBehaviour
         tasksMenu.SetActive(true);
         tasksMenu.GetComponent<Animator>().SetTrigger("MenuOpen");
         dailyTaskManager.TaskIconNotification();
+        dailyTaskManager.UpdateTaskMenu();
     }
 
     public void TasksCloseButtonTapped()

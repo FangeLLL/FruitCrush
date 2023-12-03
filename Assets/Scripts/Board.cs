@@ -58,6 +58,10 @@ public class Board : MonoBehaviour
     public float scaleNumber;
     private float scaleFactorFruit;
 
+    // Test variable
+    int specialCounter = 1;
+    bool specialSwipe = false;
+
     private void Awake()
     {
         saveData.LoadFromJson();
@@ -195,7 +199,9 @@ public class Board : MonoBehaviour
                 GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
                 backgroundTile.transform.parent = this.transform;
                 backgroundTile.name = "( " + i + ", " + j + " )";
-                allTiles[i, j] = backgroundTile;
+                backgroundTile.GetComponent<BackgroundTile>().column = i;
+                backgroundTile.GetComponent<BackgroundTile>().row = j;
+               allTiles[i, j] = backgroundTile;
                 if (arrangedTiles[i, j] != 0)
                 {
                     bool[] obstacleBools = indexLibrary.GetBoolObstacles(arrangedTiles[i, j]);
@@ -225,33 +231,6 @@ public class Board : MonoBehaviour
                 }
 
                
-            }
-        }
-    }
-
-    private void SetUp()
-    {
-      float  xOffset = width * 0.5f - 0.5f;
-      float  yOffset = height * 0.5f - 0.5f;
-
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                Vector2 tempPosition = new Vector2(i - xOffset, j - yOffset);
-                GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity) as GameObject;
-                backgroundTile.transform.parent = this.transform;
-                backgroundTile.name = "( " + i + ", " + j + " )";
-                allTiles[i, j] = backgroundTile;
-
-                int fruitToUse = UnityEngine.Random.Range(0, fruits.Length);
-                GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
-                fruit.transform.parent = this.transform;
-                fruit.name = "( " + i + ", " + j + " )";
-                fruit.GetComponent<Fruit>().column = i;
-                fruit.GetComponent<Fruit>().row = j;
-                fruit.GetComponent<Fruit>().fruitType = fruitToUse;
-                allFruits[i, j] = fruit;
             }
         }
     }
@@ -1149,34 +1128,14 @@ public class Board : MonoBehaviour
         {
             harvesterScript.targetV.x = allTiles[width-1, row].transform.position.x + 1;
 
-            for (int i = column+1; i < width; i++)
-            {
-
-                if (allFruits[i, row])
-                {
-                    DestroyController(allFruits[i, row], false);
-                    audioManager.FruitCrush();
-
-                }
-                allTiles[i, row].GetComponent<BackgroundTile>().Boom();
-
-            }
+            HorizontalDestroy(column, row, true);
         }
         else
         {
             harvester.GetComponent<Fruit>().targetV.x = allTiles[0, row].transform.position.x - 1;
 
-            for (int i = column-1; i >= 0; i--)
-            {
+            HorizontalDestroy(column, row, false);
 
-                if (allFruits[i, row])
-                {
-                    DestroyController(allFruits[i, row], false);
-                    audioManager.FruitCrush();
-                }
-                allTiles[i, row].GetComponent<BackgroundTile>().Boom();
-
-            }
         }
         allTiles[column, row].GetComponent<BackgroundTile>().Boom();
         StartCoroutine(FadeOut(harvester));
@@ -1233,4 +1192,74 @@ public class Board : MonoBehaviour
             }
         }
     }
+
+    private void HorizontalDestroy(int column, int row, bool right)
+    {
+        if (right)
+        {
+            for (int i = column + 1; i < width; i++)
+            {
+
+                if (allFruits[i, row])
+                {
+                    DestroyController(allFruits[i, row], false);
+                    audioManager.FruitCrush();
+
+                }
+                allTiles[i, row].GetComponent<BackgroundTile>().Boom();
+
+            }
+        }
+        else
+        {
+            for (int i = column - 1; i >= 0; i--)
+            {
+
+                if (allFruits[i, row])
+                {
+                    DestroyController(allFruits[i, row], false);
+                    audioManager.FruitCrush();
+                }
+                allTiles[i, row].GetComponent<BackgroundTile>().Boom();
+
+            }
+        }
+    }
+
+    private void DestroyOneTile(int column,int row)
+    {
+        DestroyController(allFruits[column, row], false);
+        audioManager.FruitCrush();
+        allTiles[column, row].GetComponent<BackgroundTile>().Boom();
+    }
+
+    // This function for test purposes.
+    public void ActivateSpecialPower(int column,int row)
+    {
+        switch (specialCounter)
+        {
+            case 1:
+                DestroyOneTile(column, row);
+                VerticalDestroy(column, row, false);
+                VerticalDestroy(column, row, true);
+                break;
+            case 2:
+                DestroyOneTile(column, row);
+                HorizontalDestroy(column, row, false);
+                HorizontalDestroy(column, row, true);
+                break;
+            case 3:
+                DestroyOneTile(column, row);
+                break;
+            case 4:
+
+                break;
+        }
+        specialCounter++;
+        if (specialCounter > 4)
+        {
+            specialCounter= 1;
+        }
+    }
+
 }

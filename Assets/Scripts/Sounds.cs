@@ -41,12 +41,14 @@ public class Sounds : MonoBehaviour
 
     private void PlaySounds()
     {
-        source.UnPause();
+        if(source != null)
+            source.UnPause();
     }
 
     private void PauseAudioSources()
     {
-        source.Pause();
+        if (source != null)
+            source.Pause();
     }
 
     public void MuteSoundEffects()

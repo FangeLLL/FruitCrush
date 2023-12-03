@@ -43,7 +43,7 @@ public class SaveData : MonoBehaviour
             //string inventoryData = System.IO.File.ReadAllText(filePath);
 
             //grid = JsonUtility.FromJson<Grid>(inventoryData);
-            Debug.Log("Loaded");
+          //  Debug.Log("Loaded");
         }
         else
             Debug.Log("There is no save files to load!");

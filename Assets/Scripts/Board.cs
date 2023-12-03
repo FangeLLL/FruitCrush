@@ -68,12 +68,12 @@ public class Board : MonoBehaviour
     {               
         userLevel = PlayerPrefs.GetInt("level", 0);
 
-        RearrangeScaleNumber();
-
         Grid gridData = saveData.gridData[userLevel];
 
         width = gridData.width;
         height = gridData.height;
+
+        RearrangeScaleNumber();
 
         // Getting avaliable fruits indexes and adding them to a list. existFruits list has indexes of avaliable fruits and this list going to be used when
         // creating new fruits.
@@ -94,28 +94,13 @@ public class Board : MonoBehaviour
         allFruits = new GameObject[width, height];
         allTiles = new GameObject[width, height];
 
-        int[,] arrangeFruits = new int[width, height];
-        int[,] arrangeTiles = new int[width, height];
-
         int[] savedTiles = gridData.allTilesTotal;
         int[] savedFruits = gridData.allFruitsTotal;
-
-        // Converting one dimensional array (json saved data) to two dimensional array. 
-
-        for (int i = 0;height> i; i++)
-        {
-            for(int j = 0; width > j; j++)
-            {
-                arrangeTiles[i, j] = savedTiles[(width * i) + j];
-                arrangeFruits[i, j] = savedFruits[(width * i) + j];
-
-            }
-        }
 
         taskController.SetTask(gridData.taskElements);
         taskController.SetMoveCount(gridData.moveCount);
 
-        SetUpWithArray(arrangeFruits,arrangeTiles);
+        SetUpWithArray(indexLibrary.Convert2DTo3D(width, height, savedFruits), indexLibrary.Convert2DTo3D(width, height, savedTiles));
     }
 
     private void Update()
@@ -183,10 +168,6 @@ public class Board : MonoBehaviour
 
     private void SetUpWithArray(int[,] arrangedFruits, int[,] arrangedTiles)
     {
-        // width = arrangedTiles.GetLength(0);
-        // height = arrangedTiles.GetLength(1);
-
-        
 
         float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
         float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;

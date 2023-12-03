@@ -65,4 +65,25 @@ public class IndexLibrary
         }
         return obstacleBools; 
     }
+    /// <summary>
+    ///  Converting one dimensional array (json saved data) to two dimensional array. 
+    /// </summary>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
+    /// <param name="sourceArray"></param>
+    /// <returns></returns>
+    public int[,] Convert2DTo3D(int width,int height,int[] sourceArray)
+    {
+        int[,] arrangedArray = new int[width,height];
+        for (int i = 0; height > i; i++)
+        {
+            for (int j = 0; width > j; j++)
+            {
+                arrangedArray[i, j] = sourceArray[(width * i) + j];
+
+            }
+        }
+        return arrangedArray;
+    } 
+
 }

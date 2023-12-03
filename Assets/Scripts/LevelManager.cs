@@ -34,54 +34,120 @@ public class LevelManager : MonoBehaviour
     public int[] taskElements;
 
     private SaveData saveData;
+    private SaveData loadData = new SaveData();
 
-    public int level=1;
+    static public int level = 1;
+    public int levelChanger = level;
+
+
+    static bool uploadLevel = false;
+
 
     private void Start()
     {
-        widthChanger = width;
-        heightChanger = height;
-        RearrangeScaleNumber();
         taskElements = new int[2];
-        saveData= GetComponent<SaveData>();
+        saveData = GetComponent<SaveData>();
         existFruits = new int[5];
 
-        allFruits = new GameObject[width, height];
-        allTiles = new GameObject[width, height];
-  
-        SetUp();
+        levelChanger = level;
+
+       
+
+        if (uploadLevel)
+        {
+            uploadLevel = false;
+            loadData.LoadFromJson();
+            int indexLevel = level;
+            indexLevel--;
+            Grid gridData = loadData.gridData[indexLevel];
+
+            if(level == gridData.level)
+            {
+                width = gridData.width;
+                height = gridData.height;
+
+                ArrangeValuesRelatedToSizes();
+
+                // Getting avaliable fruits indexes and adding them to a list. existFruits list has indexes of avaliable fruits and this list going to be used when
+                // creating new fruits.
+
+                existFruits = gridData.fruits;
+
+                for (int i = 0; i < existFruits.Length; i++)
+                {
+                    if (existFruits[i] == 1)
+                    {
+                        fruitCheckboxes[i].GetComponent<Image>().color = new UnityEngine.Color(0, 255, 0, 255);
+                    }
+                }
+
+                int[] savedTiles = gridData.allTilesTotal;
+                int[] savedFruits = gridData.allFruitsTotal;
+
+                taskElements = gridData.taskElements;
+                moveCount = gridData.moveCount;
+
+                SetUpWithArray(indexLibrary.Convert2DTo3D(width, height, savedFruits), indexLibrary.Convert2DTo3D(width, height, savedTiles));
+
+            }
+            else
+            {
+                ArrangeValuesRelatedToSizes();
+                Debug.Log("This level never saved so it will setup level randomly");
+                SetUp();
+            }
+
+        }
+        else
+        {
+           ArrangeValuesRelatedToSizes();
+            SetUp();
+        }
+
+   
     }
+
 
     private void Update()
     {
         // Changing static variables from inspector
+        level = levelChanger;
         width = widthChanger;
         height = heightChanger;
         if (Input.GetKeyDown(KeyCode.S))
         {
             SaveTheBoard(level);
         }
-     
+
     }
 
-    private void SaveTheBoard(int level)
+    private void ArrangeValuesRelatedToSizes()
     {
-        level--;
-        saveData.gridData[level] = new Grid();
+        allFruits = new GameObject[width, height];
+        allTiles = new GameObject[width, height];
+        RearrangeScaleNumber();
+        widthChanger = width;
+        heightChanger = height;
+    }
 
-        saveData.gridData[level].width = width;
-        saveData.gridData[level].height = height;
-        saveData.gridData[level].level= level+1;
-        saveData.gridData[level].moveCount= moveCount;
-        saveData.gridData[level].taskElements= taskElements;
+    private void SaveTheBoard(int saveLevel)
+    {
+        saveLevel--;
+        saveData.gridData[saveLevel] = new Grid();
+
+        saveData.gridData[saveLevel].width = width;
+        saveData.gridData[saveLevel].height = height;
+        saveData.gridData[saveLevel].level = saveLevel + 1;
+        saveData.gridData[saveLevel].moveCount = moveCount;
+        saveData.gridData[saveLevel].taskElements = taskElements;
 
         int[] arrangeFruits = new int[width * height];
         int[] arrangeTiles = new int[width * height];
-        saveData.gridData[level].fruits= existFruits;
+        saveData.gridData[saveLevel].fruits = existFruits;
 
         for (int i = 0; i < height; i++)
         {
-            for(int j = 0; j< width; j++)
+            for (int j = 0; j < width; j++)
             {
                 // If fruit does not exist then type will be -1 .
                 if (allFruits[i, j])
@@ -96,15 +162,13 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-        saveData.gridData[level].allFruitsTotal= arrangeFruits;
-        saveData.gridData[level].allTilesTotal= arrangeTiles;
+        saveData.gridData[saveLevel].allFruitsTotal = arrangeFruits;
+        saveData.gridData[saveLevel].allTilesTotal = arrangeTiles;
         saveData.SaveToJson();
     }
 
     private void SetUpWithArray(int[,] arrangedFruits, int[,] arrangedTiles)
     {
-        // width = arrangedTiles.GetLength(0);
-        // height = arrangedTiles.GetLength(1);
 
         float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
         float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
@@ -129,24 +193,25 @@ public class LevelManager : MonoBehaviour
                 GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
                 backgroundTile.transform.parent = this.transform;
                 backgroundTile.name = "( " + i + ", " + j + " )";
+                backgroundTile.GetComponent<LevelEditorBackgroundTile>().column = i;
+                backgroundTile.GetComponent<LevelEditorBackgroundTile>().row = j;
                 allTiles[i, j] = backgroundTile;
                 if (arrangedTiles[i, j] != 0)
                 {
                     bool[] obstacleBools = indexLibrary.GetBoolObstacles(arrangedTiles[i, j]);
                     if (obstacleBools[0])
                     {
-                        backgroundTile.GetComponent<BackgroundTile>().strawBale = true;
-                        backgroundTile.GetComponent<BackgroundTile>().strawBaleObj = Instantiate(obstacles[0], tempPosition, Quaternion.identity);
+                        backgroundTile.GetComponent<LevelEditorBackgroundTile>().obstacles[0] = Instantiate(obstacles[0], tempPosition, Quaternion.identity);
                     }
 
                     if (obstacleBools[1])
                     {
-                        backgroundTile.GetComponent<BackgroundTile>().wheatFarm = true;
-                        backgroundTile.GetComponent<BackgroundTile>().wheatFarmObj = Instantiate(obstacles[1], tempPosition, Quaternion.identity);
+                        backgroundTile.GetComponent<LevelEditorBackgroundTile>().obstacles[1] = Instantiate(obstacles[1], tempPosition, Quaternion.identity);
                     }
+                    backgroundTile.GetComponent<LevelEditorBackgroundTile>().tileType = arrangedTiles[i, j];
                 }
                 // If type of fruit -1 then it means fruit does not exist.
-                if (arrangedFruits[i, j] > 0)
+                if (arrangedFruits[i, j] >= 0)
                 {
                     int fruitToUse = arrangedFruits[i, j];
                     GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
@@ -212,7 +277,7 @@ public class LevelManager : MonoBehaviour
         // INSTANTIATE A NEW FRUIT AT THE POSITION OF THE DESTROYED FRUIT
         if (chosenId >= 0)
         {
-            if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().tileType!=0)
+            if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().tileType != 0)
             {
                 // Destroy strawbale
                 Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[0]);
@@ -242,7 +307,7 @@ public class LevelManager : MonoBehaviour
             }
             else
             {
-               
+
                 GameObject obstacle = Instantiate(obstacles[obstacleID], tempPosition, Quaternion.identity);
                 obstacle.transform.parent = this.transform;
                 obstacle.name = "( " + column + ", " + row + " )";
@@ -255,15 +320,15 @@ public class LevelManager : MonoBehaviour
             {
                 Destroy(allFruits[column, row]);
             }
-           StartCoroutine(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().RearrangeTileType());
-        }       
+            StartCoroutine(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().RearrangeTileType());
+        }
 
-    
+
     }
 
     public void CheckBox(int id)
     {
-        if (existFruits[id]==0)
+        if (existFruits[id] == 0)
         {
             fruitCheckboxes[id].GetComponent<Image>().color = new UnityEngine.Color(0, 255, 0, 255);
             existFruits[id] = 1;
@@ -290,7 +355,7 @@ public class LevelManager : MonoBehaviour
           
           */
 
-        chosenId= id;
+        chosenId = id;
 
     }
 
@@ -336,6 +401,12 @@ public class LevelManager : MonoBehaviour
         }
 
         scaleFactorFruit = scaleNumber / 1.2f;
+    }
+
+    public void UploadLevel()
+    {
+        uploadLevel = true;
+        RestartScene();
     }
 
 }

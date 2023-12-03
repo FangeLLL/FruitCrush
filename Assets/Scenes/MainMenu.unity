@@ -14776,7 +14776,7 @@ MonoBehaviour:
   dailyTaskManager: {fileID: 1772865876}
   starText: {fileID: 249815904}
   starShopText: {fileID: 1740485052}
-  levelBoxText: {fileID: 0}
+  levelBoxText: {fileID: 1408416232}
   playButton: {fileID: 422223102}
   starBox: {fileID: 826673488}
   livesBox: {fileID: 672404959}

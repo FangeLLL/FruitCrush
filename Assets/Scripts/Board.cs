@@ -1192,9 +1192,26 @@ public class Board : MonoBehaviour
         {
             harvesterScript.targetV.y = allTiles[column, height - 1].transform.position.y + 1;
 
+            VerticalDestroy(column, row, true);
+        }
+        else
+        {
+            harvesterScript.targetV.y = allTiles[column, 0].transform.position.y - 1;
+            VerticalDestroy(column, row, false);
+
+        }
+        allTiles[column, row].GetComponent<BackgroundTile>().Boom();
+        StartCoroutine(FadeOut(harvester));
+
+    }
+
+    private void VerticalDestroy(int column,int row,bool up)
+    {
+        if (up)
+        {
             for (int i = row + 1; i < height; i++)
             {
-                if (allFruits[column,i])
+                if (allFruits[column, i])
                 {
                     DestroyController(allFruits[column, i], false);
                     audioManager.FruitCrush();
@@ -1204,8 +1221,6 @@ public class Board : MonoBehaviour
         }
         else
         {
-            harvesterScript.targetV.y = allTiles[column, 0].transform.position.y - 1;
-
             for (int i = row - 1; i >= 0; i--)
             {
                 if (allFruits[column, i])
@@ -1217,8 +1232,5 @@ public class Board : MonoBehaviour
 
             }
         }
-        allTiles[column, row].GetComponent<BackgroundTile>().Boom();
-        StartCoroutine(FadeOut(harvester));
-
     }
 }

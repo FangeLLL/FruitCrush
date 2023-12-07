@@ -28,9 +28,13 @@ public class Fruit : MonoBehaviour
 
     public Animator animator;
 
+    [HideInInspector]
     public int swipeRight = Animator.StringToHash("isSwipeRight");
+    [HideInInspector]
     public int swipeLeft = Animator.StringToHash("isSwipeLeft");
+    [HideInInspector]
     public int swipeUp = Animator.StringToHash("isSwipeUp");
+    [HideInInspector]
     public int swipeDown = Animator.StringToHash("isSwipeDown");
 
     void Awake()
@@ -91,7 +95,7 @@ public class Fruit : MonoBehaviour
     private void OnMouseDown()
     {     
         firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        isClicked = true;
+        isClicked = true;     
     }
     
     private void OnMouseUp()
@@ -101,7 +105,7 @@ public class Fruit : MonoBehaviour
         {
             board.taskController.MovePlayed();
             board.ActivatePowerUp(gameObject);
-        }     
+        }
     }
 
     private void CalculateAngle()

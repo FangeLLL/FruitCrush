@@ -1276,9 +1276,13 @@ public class Board : MonoBehaviour
     /// <param name="row"></param>
     private void DestroyOneTile(int column, int row)
     {
-        DestroyController(allFruits[column, row], false);
+        if (allFruits[column, row])
+        {
+            DestroyController(allFruits[column, row], false);
+        }
         audioManager.FruitCrush();
         allTiles[column, row].GetComponent<BackgroundTile>().Boom();
+
     }
 
     /// <summary>
@@ -1294,16 +1298,14 @@ public class Board : MonoBehaviour
             case 1:
                 // Special Power: Vertical Destroyer
                 specialPowerController.SpecialPowerUpUsed(0);
-                DestroyOneTile(column, row);
-                VerticalDestroy(column, row, false);
-                VerticalDestroy(column, row, true);
+                DestroyOneTile(column, 0);
+                VerticalDestroy(column, 0, true);
                 break;
             case 2:
                 // Special Power: Horizontal Destroyer
                 specialPowerController.SpecialPowerUpUsed(1);
-                DestroyOneTile(column, row);
-                HorizontalDestroy(column, row, false);
-                HorizontalDestroy(column, row, true);
+                DestroyOneTile(0, row);
+                HorizontalDestroy(0, row, true);
                 break;
             case 3:
                 // Special Power: One Tile Destroyer

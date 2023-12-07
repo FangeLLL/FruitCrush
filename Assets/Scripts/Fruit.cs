@@ -87,45 +87,6 @@ public class Fruit : MonoBehaviour
         }      
     }
 
-    void Update()
-    {
-        /*
-        if (Input.GetMouseButtonDown(1))
-        {
-            // Convert the mouse position to world coordinates
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            // Check if the mouse position is within the bounds of this fruit
-            if (GetComponent<Collider2D>().OverlapPoint(mousePos))
-            {
-                // If so, destroy this fruit
-
-                if (SceneManager.GetActiveScene().name == "LevelEditor")
-                    NewDestroyFruit();
-                else
-                    board.ReplaceDestroyedFruit(column, row);
-                Destroy(gameObject);
-            }
-        }
-        */
-        /*
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            // Convert the mouse position to world coordinates
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            // Check if the mouse position is within the bounds of this fruit
-            if (GetComponent<Collider2D>().OverlapPoint(mousePos))
-            {
-                // If so, destroy this fruit
-                if (SceneManager.GetActiveScene().name == "LevelEditor")
-                    NewDestroyObstacle();
-                else
-                    return;
-            }
-        }
-        */
-    }
 
     private void OnMouseDown()
     {     
@@ -136,24 +97,12 @@ public class Fruit : MonoBehaviour
     private void OnMouseUp()
     {
         isClicked = false;
-        if (fruitType < 0 && board.taskController.moveCount > 0 && !isSwiped && board.taskController.moveCount>=1 && board.specialPowerID != 0)
+        if (fruitType < 0 && board.taskController.moveCount > 0 && !isSwiped && board.specialPowerID == 0 && board.taskController.isBoardActive)
         {
             board.taskController.MovePlayed();
             board.ActivatePowerUp(gameObject);
         }     
     }
-    
-    // IT WILL BE DELETED
-
-    /*void DestroyFruit()
-    {
-        // DESTROY THE CURRENT FRUIT
-        Destroy(gameObject);
-
-        // CALL THE METHOD IN THE BOARD SCRIPT TO REPLACE THE DESTROYED FRUIT
-        board.ReplaceDestroyedFruit(column, row);
-    }*/
-
 
     private void CalculateAngle()
     {
@@ -163,23 +112,4 @@ public class Fruit : MonoBehaviour
         board.SwipeFruits(swipeAngle, column, row);
     }
 
-    /*
-    private void NewDestroyFruit()
-    {
-        // DESTROY THE CURRENT FRUIT
-        Destroy(gameObject);
-
-        // CALL THE METHOD IN THE LevelManager SCRIPT TO REPLACE THE DESTROYED FRUIT
-        FindObjectOfType<LevelManager>().ReplaceDestroyedFruit(column, row);
-    }
-
-    private void NewDestroyObstacle()
-    {
-        // DESTROY THE CURRENT FRUIT
-        Destroy(gameObject);
-
-        // CALL THE METHOD IN THE LevelManager SCRIPT TO REPLACE THE DESTROYED FRUIT
-        FindObjectOfType<LevelManager>().ReplaceObstacle(column, row);
-    }
-    */
 }

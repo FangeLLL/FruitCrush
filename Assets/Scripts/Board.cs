@@ -60,7 +60,7 @@ public class Board : MonoBehaviour
 
     // Test variable
     public int specialPowerID = 0;
-    bool specialSwipe = false;
+    public bool specialSwipe = false;
 
     private void Awake()
     {
@@ -69,7 +69,7 @@ public class Board : MonoBehaviour
     }
 
     void Start()
-    {               
+    {
         userLevel = PlayerPrefs.GetInt("level", 0);
 
         Grid gridData = saveData.gridData[userLevel];
@@ -82,7 +82,7 @@ public class Board : MonoBehaviour
         // Getting avaliable fruits indexes and adding them to a list. existFruits list has indexes of avaliable fruits and this list going to be used when
         // creating new fruits.
 
-        for (int i = 0;i < gridData.fruits.Length; i++)
+        for (int i = 0; i < gridData.fruits.Length; i++)
         {
             if (gridData.fruits[i] == 1)
             {
@@ -117,7 +117,7 @@ public class Board : MonoBehaviour
 
             // Check if two seconds have passed
             if (timer >= waitTime)
-            {                
+            {
                 swipeHint.isHintSearching = true;
                 swipeHint.continueIteration = true;
                 timer = 0f;
@@ -129,14 +129,14 @@ public class Board : MonoBehaviour
             // Reset the timer if conditions are not met
             timer = 0f;
         }
-     
+
     }
 
     private void RearrangeScaleNumber()
     {
         int max;
 
-        if(width>=height)
+        if (width >= height)
         {
             max = width;
         }
@@ -177,12 +177,12 @@ public class Board : MonoBehaviour
         float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
         tilePrefab.transform.localScale = new Vector3(scaleNumber, scaleNumber, scaleNumber);
 
-        foreach(GameObject fruitScale in fruits)
+        foreach (GameObject fruitScale in fruits)
         {
             fruitScale.transform.localScale = new Vector3(scaleFactorFruit, scaleFactorFruit, scaleFactorFruit);
         }
 
-        foreach(GameObject powerUpScale in powerUps)
+        foreach (GameObject powerUpScale in powerUps)
         {
             powerUpScale.transform.localScale = new Vector3(scaleFactorFruit, scaleFactorFruit, scaleFactorFruit);
         }
@@ -194,14 +194,14 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                
+
                 Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, j * scaleNumber - yOffset);
                 GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
                 backgroundTile.transform.parent = this.transform;
                 backgroundTile.name = "( " + i + ", " + j + " )";
                 backgroundTile.GetComponent<BackgroundTile>().column = i;
                 backgroundTile.GetComponent<BackgroundTile>().row = j;
-               allTiles[i, j] = backgroundTile;
+                allTiles[i, j] = backgroundTile;
                 if (arrangedTiles[i, j] != 0)
                 {
                     bool[] obstacleBools = indexLibrary.GetBoolObstacles(arrangedTiles[i, j]);
@@ -210,15 +210,15 @@ public class Board : MonoBehaviour
                         backgroundTile.GetComponent<BackgroundTile>().strawBale = true;
                         backgroundTile.GetComponent<BackgroundTile>().strawBaleObj = Instantiate(strawBalePrefab, tempPosition, Quaternion.identity);
                     }
-                   
-                    if(obstacleBools[1])
+
+                    if (obstacleBools[1])
                     {
                         backgroundTile.GetComponent<BackgroundTile>().wheatFarm = true;
                         backgroundTile.GetComponent<BackgroundTile>().wheatFarmObj = Instantiate(wheatFarmPrefab, tempPosition, Quaternion.identity);
                     }
                 }
                 // If type of fruit -1 then it means fruit does not exist.
-                if (arrangedFruits[i,j]>=0)
+                if (arrangedFruits[i, j] >= 0)
                 {
                     int fruitToUse = arrangedFruits[i, j];
                     GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
@@ -230,14 +230,14 @@ public class Board : MonoBehaviour
                     allFruits[i, j] = fruit;
                 }
 
-               
+
             }
         }
     }
 
     public void SwipeFruits(float swipeAngle, int column, int row)
     {
-        if (taskController.moveCount<1 || !taskController.isBoardActive)
+        if (taskController.moveCount < 1 || !taskController.isBoardActive)
         {
             return;
         }
@@ -282,17 +282,17 @@ public class Board : MonoBehaviour
         else if (swipeAngle > 45 && swipeAngle <= 135 && row + 1 < height)
         {
             // UP SWIPE
-            if(FruitAvailable(allFruits[column, row + 1]))
+            if (FruitAvailable(allFruits[column, row + 1]))
             {
-                otherFruit = allFruits[column, row + 1];          
+                otherFruit = allFruits[column, row + 1];
             }
             else
             {
                 Debug.Log("You cant swipe up!!!");
                 audioManager.SwipeResistBorder();
                 return;
-            } 
-           
+            }
+
         }
         else if ((swipeAngle > 135 || swipeAngle <= -135) && column > 0)
         {
@@ -307,12 +307,12 @@ public class Board : MonoBehaviour
                 audioManager.SwipeResistBorder();
                 return;
             }
-                          
+
         }
         else if (swipeAngle < -45 && swipeAngle >= -135 && row > 0)
         {
             // DOWN SWIPE
-            if(FruitAvailable(allFruits[column, row - 1]))
+            if (FruitAvailable(allFruits[column, row - 1]))
             {
                 otherFruit = allFruits[column, row - 1];
             }
@@ -321,7 +321,7 @@ public class Board : MonoBehaviour
                 Debug.Log("You cant swipe down!!!");
                 audioManager.SwipeResistBorder();
                 return;
-            }          
+            }
         }
         else
         {
@@ -573,28 +573,23 @@ public class Board : MonoBehaviour
             else
             {
                 yield return new WaitForSeconds(0.1f);
-                if (CheckMatchSides(fruitScript.row, fruitScript.column) || CheckMatchSides(otherFruitScript.row, otherFruitScript.column))
-                {
-                    // Checked if this is right move
-                    succesfulMove = true;
-                }
-                else
-                {
-                    if (!fruit || !otherFruit||fruitScript.fadeout||otherFruitScript.fadeout)
-                    {
 
-                        succesfulMove = true;
-
-                    }
-                  
-                }
-            }        
+                succesfulMove = IsSuccesfulMove(fruit, otherFruit);
+            }
         }
-           
+
 
         if (succesfulMove)
         {
-            taskController.MovePlayed();
+            // If special swipe happen then its not count as move.
+            if (!specialSwipe)
+            {
+                taskController.MovePlayed();
+            }
+            else
+            {
+                specialSwipe = false;
+            }
 
         }
         else
@@ -618,27 +613,55 @@ public class Board : MonoBehaviour
 
     }
 
-    private void ChangeTwoFruit(GameObject fruit,GameObject otherFruit)
+    private bool IsSuccesfulMove(GameObject fruit, GameObject otherFruit)
+    {
+        Fruit fruitScript = fruit.GetComponent<Fruit>();
+        Fruit otherFruitScript = otherFruit.GetComponent<Fruit>();
+
+        if (specialSwipe)
+        {
+            return true;
+        }
+
+        if (CheckMatchSides(fruitScript.row, fruitScript.column) || CheckMatchSides(otherFruitScript.row, otherFruitScript.column))
+        {
+            // Checked if this is right move
+            return true;
+        }
+        else
+        {
+            if (!fruit || !otherFruit || fruitScript.fadeout || otherFruitScript.fadeout)
+            {
+
+                return true;
+
+            }
+
+        }
+        return false;
+    }
+
+    private void ChangeTwoFruit(GameObject fruit, GameObject otherFruit)
     {
 
         // Changing two fruit loc and info.
 
         Fruit fruitScript = fruit.GetComponent<Fruit>();
-        int tempRow=fruitScript.row, tempCol=fruitScript.column;
+        int tempRow = fruitScript.row, tempCol = fruitScript.column;
         Fruit otherFruitScript = otherFruit.GetComponent<Fruit>();
 
         fruitScript.targetV = allTiles[otherFruitScript.column, otherFruitScript.row].transform.position;
-        otherFruitScript.targetV = allTiles[tempCol,tempRow].transform.position;
+        otherFruitScript.targetV = allTiles[tempCol, tempRow].transform.position;
 
         fruitScript.row = otherFruitScript.row;
         fruitScript.column = otherFruitScript.column;
 
         otherFruitScript.row = tempRow;
-        otherFruitScript.column=tempCol;
-    
+        otherFruitScript.column = tempCol;
+
     }
 
-    private bool CheckMatchSides(int row,int column)
+    private bool CheckMatchSides(int row, int column)
     {
         /* Checking row of the object by starting 2 left from object. Function works like this;
          1. First if index of check exist
@@ -648,11 +671,11 @@ public class Board : MonoBehaviour
         */
 
 
-        int match =0;
+        int match = 0;
 
-        for (int k=-2; k<2;k++)
+        for (int k = -2; k < 2; k++)
         {
-            if (column+k>=0 && column+k+1<width && allFruits[column + k, row] && allFruits[column + k + 1, row])
+            if (column + k >= 0 && column + k + 1 < width && allFruits[column + k, row] && allFruits[column + k + 1, row])
             {
                 if (allFruits[column + k, row].GetComponent<Fruit>().fruitType == allFruits[column + k + 1, row].GetComponent<Fruit>().fruitType)
                 {
@@ -667,7 +690,7 @@ public class Board : MonoBehaviour
                     match = 0;
                 }
             }
-           
+
         }
 
         // There is no match so match should be zero and the function works same as row function.
@@ -690,7 +713,7 @@ public class Board : MonoBehaviour
                 {
                     match = 0;
                 }
-            }  
+            }
         }
 
 
@@ -700,11 +723,11 @@ public class Board : MonoBehaviour
 
     public IEnumerator FadeOut(GameObject obj)
     {
-               
+
         float elapsedTime = 0f;
         float fadeDuration = 0.25f;
-        Color color = obj.GetComponentInChildren<SpriteRenderer>().color;      
-       
+        Color color = obj.GetComponentInChildren<SpriteRenderer>().color;
+
         while (elapsedTime < fadeDuration)
         {
             // Calculate the new alpha value
@@ -730,8 +753,8 @@ public class Board : MonoBehaviour
             obj.GetComponentInChildren<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 0f);
             Destroy(obj);
         }
-        
-        
+
+
     }
 
     private IEnumerator FillTheGaps()
@@ -769,9 +792,9 @@ public class Board : MonoBehaviour
                 {
                     // Putting empty place index to variable
                     emptyPlaces.Enqueue(j);
-                    if ((j + 1 < height && allTiles[i, j + 1].GetComponent<BackgroundTile>().strawBale)|| (j + 2 < height && allTiles[i, j + 2].GetComponent<BackgroundTile>().strawBale))
+                    if ((j + 1 < height && allTiles[i, j + 1].GetComponent<BackgroundTile>().strawBale) || (j + 2 < height && allTiles[i, j + 2].GetComponent<BackgroundTile>().strawBale))
                     {
-                        StartCoroutine(CrossFall(i, j+1));
+                        StartCoroutine(CrossFall(i, j + 1));
                     }
                 }
                 else if (emptyPlaces.Count > 0)
@@ -826,7 +849,7 @@ public class Board : MonoBehaviour
 
     }
 
-    private void CreatePowerUp(int column,int row,int type)
+    private void CreatePowerUp(int column, int row, int type)
     {
         /*
         Power Up Type Number;
@@ -847,7 +870,7 @@ public class Board : MonoBehaviour
         float yOffset = height * 0.5f - 0.5f;
         Vector2 tempPosition = new Vector2(column - xOffset, height - yOffset);
 
-        GameObject newPowerUp = Instantiate(powerUps[(type*-1)-1], tempPosition, powerUps[(type * -1) - 1].transform.rotation);
+        GameObject newPowerUp = Instantiate(powerUps[(type * -1) - 1], tempPosition, powerUps[(type * -1) - 1].transform.rotation);
         Fruit newPowerUpScript = newPowerUp.GetComponent<Fruit>();
 
         // Set the parent and name of the new fruit
@@ -866,17 +889,17 @@ public class Board : MonoBehaviour
         allFruits[column, row] = newPowerUp;
     }
 
-    private IEnumerator CrossFall(int column,int row)
+    private IEnumerator CrossFall(int column, int row)
     {
-        GameObject fruit=null;
+        GameObject fruit = null;
         Fruit fruitScript;
         yield return new WaitForSeconds(0.5f);
-        if (column - 1 >= 0 && FruitAvailable(allFruits[column - 1, row]) && !allFruits[column, row-1])
+        if (column - 1 >= 0 && FruitAvailable(allFruits[column - 1, row]) && !allFruits[column, row - 1])
         {
             fruit = allFruits[column - 1, row];
-            allFruits[column-1, row] = null;
+            allFruits[column - 1, row] = null;
         }
-        else if(column + 1 < width && FruitAvailable(allFruits[column + 1, row]) && !allFruits[column, row - 1])
+        else if (column + 1 < width && FruitAvailable(allFruits[column + 1, row]) && !allFruits[column, row - 1])
         {
             fruit = allFruits[column + 1, row];
             allFruits[column + 1, row] = null;
@@ -888,15 +911,15 @@ public class Board : MonoBehaviour
             fruitScript = fruit.GetComponent<Fruit>();
             fruitScript.row = row - 1;
             fruitScript.column = column;
-            fruitScript.targetV= allTiles[column,row-1].transform.position; 
+            fruitScript.targetV = allTiles[column, row - 1].transform.position;
         }
-        
+
     }
-    
+
     public void ActivateMergePowerUp(GameObject fruit, GameObject otherFruit)
     {
-        Fruit fruitScript = fruit.GetComponent<Fruit>(), otherFruitScript=otherFruit.GetComponent<Fruit>();
-        if (otherFruitScript.fruitType==fruitScript.fruitType)
+        Fruit fruitScript = fruit.GetComponent<Fruit>(), otherFruitScript = otherFruit.GetComponent<Fruit>();
+        if (otherFruitScript.fruitType == fruitScript.fruitType)
         {
             // If two power up same it goes here
 
@@ -940,7 +963,7 @@ public class Board : MonoBehaviour
                             break;
                         case -3:
                             Destroy(otherFruit);
-                            if (fruitScript.row+1<height)
+                            if (fruitScript.row + 1 < height)
                             {
                                 fruitScript.row++;
                                 ActivatePowerUp(fruit);
@@ -955,7 +978,7 @@ public class Board : MonoBehaviour
                             break;
                     }
                     break;
-                    // Vertical Harvester
+                // Vertical Harvester
                 case -2:
                     switch (otherFruitScript.fruitType)
                     {
@@ -976,11 +999,11 @@ public class Board : MonoBehaviour
                             {
                                 fruitScript.column++;
                                 ActivatePowerUp(fruit);
-                            }                        
+                            }
                             break;
                     }
                     break;
-                    // TNT 
+                // TNT 
                 case -3:
                     switch (otherFruitScript.fruitType)
                     {
@@ -1018,7 +1041,7 @@ public class Board : MonoBehaviour
                     break;
             }
         }
-    
+
     }
 
     public void ActivatePowerUp(GameObject fruit)
@@ -1061,7 +1084,7 @@ public class Board : MonoBehaviour
                 break;
             // TNT power up
             case -3:
-                TNTExplosion(column,row,1);
+                TNTExplosion(column, row, 1);
                 audioManager.Pickaxe();
                 break;
 
@@ -1121,15 +1144,15 @@ public class Board : MonoBehaviour
         }
     }
 
-    private void HorizontalHarvesterMove(GameObject harvester,bool clone)
+    private void HorizontalHarvesterMove(GameObject harvester, bool clone)
     {
         harvester.GetComponent<Collider2D>().enabled = false;
-        Fruit harvesterScript=harvester.GetComponent<Fruit>();
+        Fruit harvesterScript = harvester.GetComponent<Fruit>();
         //harvesterScript.speed = 0.04f;
-        int row = harvesterScript.row,column=harvesterScript.column;
+        int row = harvesterScript.row, column = harvesterScript.column;
         if (clone)
         {
-            harvesterScript.targetV.x = allTiles[width-1, row].transform.position.x + 1;
+            harvesterScript.targetV.x = allTiles[width - 1, row].transform.position.x + 1;
 
             HorizontalDestroy(column, row, true);
         }
@@ -1175,7 +1198,7 @@ public class Board : MonoBehaviour
     /// <param name="column"></param>
     /// <param name="row"></param>
     /// <param name="up"></param>
-    private void VerticalDestroy(int column,int row,bool up)
+    private void VerticalDestroy(int column, int row, bool up)
     {
         if (up)
         {
@@ -1251,7 +1274,7 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="column"></param>
     /// <param name="row"></param>
-    private void DestroyOneTile(int column,int row)
+    private void DestroyOneTile(int column, int row)
     {
         DestroyController(allFruits[column, row], false);
         audioManager.FruitCrush();
@@ -1264,7 +1287,7 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="column"></param>
     /// <param name="row"></param>
-    public void ActivateSpecialPower(int column,int row)
+    public void ActivateSpecialPower(int column, int row)
     {
         switch (specialPowerID)
         {
@@ -1303,9 +1326,10 @@ public class Board : MonoBehaviour
     /// <param name="id"></param>
     public void SelectedSpecialPower(int id)
     {
-        if(id == specialPowerID)
+        if (id == specialPowerID)
         {
-            specialPowerID= 0;
+            specialPowerID = 0;
+            specialSwipe = false;
         }
         else
         {
@@ -1313,11 +1337,17 @@ public class Board : MonoBehaviour
         }
 
         // Disable specialSwipe Special Power
-        if (specialPowerID==4)
+        if (id != 4)
         {
-            specialSwipe= false;
+            specialSwipe = false;
         }
 
+    }
+
+    public void DisableSpecialPowers()
+    {
+        specialPowerID = 0;
+        specialSwipe = false;
     }
 
 }

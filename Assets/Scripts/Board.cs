@@ -1316,6 +1316,7 @@ public class Board : MonoBehaviour
                 specialPowerController.SpecialPowerUpUsed(3);
                 break;
         }
+        DisableSpecialPowers();
     }
 
     /// <summary>
@@ -1326,21 +1327,7 @@ public class Board : MonoBehaviour
     /// <param name="id"></param>
     public void SelectedSpecialPower(int id)
     {
-        if (id == specialPowerID)
-        {
-            specialPowerID = 0;
-            specialSwipe = false;
-        }
-        else
-        {
-            specialPowerID = id;
-        }
-
-        // Disable specialSwipe Special Power
-        if (id != 4)
-        {
-            specialSwipe = false;
-        }
+        specialPowerID = id;
 
     }
 

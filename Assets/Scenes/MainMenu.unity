@@ -14736,6 +14736,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5aa473a5d9fdf0f4ab428137a77e2f3f, type: 3}
   - {fileID: 8300000, guid: 198459daa600a43488ba26209f72f916, type: 3}
   source: {fileID: 0}
+  powerUpGainSource: {fileID: 0}
+  hoeSource: {fileID: 0}
+  harvesterSource: {fileID: 0}
 --- !u!1 &1772865867
 GameObject:
   m_ObjectHideFlags: 0

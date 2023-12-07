@@ -9,43 +9,107 @@ public class SpecialPower
     public int amount;
     public GameObject powerUp;
     public GameObject buySpecialPowerUps;
+    public GameObject countSpecialPowerUpBoxDeactive;
     public TextMeshProUGUI count;
     public bool isActivated;
 }
-public class SpecialPowerController : MonoBehaviour
+public class SpecialPowerController : PowerUpController
 {
     public Board board;
 
-    public List<SpecialPower> specialPowerUpsList;
+    public SpecialPower[] specialPowerUps;
+
+    private string amountSSaveKeyPrefix = "SpecialPowerUpAmount_";
+
+    void Start()
+    {
+        SpecialPowerUpUIUpdate();            
+    }
+
+    public void SpecialPowerUpUIUpdate()
+    {
+        for (int i = 0; i < specialPowerUps.Length; i++)
+        {
+            string amountSaveKey = amountSSaveKeyPrefix + i.ToString();
+
+            int savedAmount = PlayerPrefs.GetInt(amountSaveKey, specialPowerUps[i].amount);
+
+            specialPowerUps[i].amount = savedAmount;
+            specialPowerUps[i].count.text = savedAmount.ToString();
+
+            if (specialPowerUps[i].amount > 0)
+            {
+                specialPowerUps[i].buySpecialPowerUps.SetActive(false);
+            }
+            else
+            {
+                specialPowerUps[i].countSpecialPowerUpBoxDeactive.SetActive(false);
+                specialPowerUps[i].count.gameObject.SetActive(false);
+                specialPowerUps[i].isActivated = false;
+                specialPowerUps[i].buySpecialPowerUps.SetActive(true);
+            }
+        }
+    }
 
     public void SpecialPowerUpSelected(int index)
     {
-        if (index >= 0 && index < specialPowerUpsList.Count)
+        if (index >= 0 && index < specialPowerUps.Length)
         {
-            specialPowerUpsList[index].isActivated = !specialPowerUpsList[index].isActivated;
-            board.SelectedSpecialPower(index);
-        }
+            SpecialPower selectedSpecialPowerUp = specialPowerUps[index];
 
-        if (specialPowerUpsList[index].isActivated)
-        {
-            Debug.Log("Activated");
-        }
+            //Animation???
 
-        else
-        {
-            DeselectUI(index);
-            Debug.Log("Deactivated");
+            if (selectedSpecialPowerUp.amount > 0 || selectedSpecialPowerUp.isActivated)
+            {
+                if (!selectedSpecialPowerUp.isActivated)
+                {
+                    board.SelectedSpecialPower(index + 1);
+                    selectedSpecialPowerUp.isActivated = true;
+                    selectedSpecialPowerUp.countSpecialPowerUpBoxDeactive.SetActive(false);
+                    selectedSpecialPowerUp.count.gameObject.SetActive(false);
+                }
+                else
+                {
+                    board.DisableSpecialPowers();
+                    selectedSpecialPowerUp.isActivated = false;
+                    selectedSpecialPowerUp.countSpecialPowerUpBoxDeactive.SetActive(true);
+                    selectedSpecialPowerUp.count.gameObject.SetActive(true);
+                }
+            }
+
+            else
+            {
+                BuyPowerUpButtonTapped();
+            }
+
+            string amountSSaveKey = amountSSaveKeyPrefix + index.ToString();
+            PlayerPrefs.SetInt(amountSSaveKey, selectedSpecialPowerUp.amount);
+            PlayerPrefs.Save();
         }
     }
 
     public void SpecialPowerUpUsed(int index)
     {
-        specialPowerUpsList[index].amount--;
-        DeselectUI(index);
-    }
+        SpecialPower selectedSpecialPowerUp = specialPowerUps[index];
+        selectedSpecialPowerUp.amount--;
+        selectedSpecialPowerUp.count.text = selectedSpecialPowerUp.amount.ToString();
+        selectedSpecialPowerUp.isActivated = false;
 
-    private void DeselectUI(int index)
-    {
+        if (selectedSpecialPowerUp.amount > 0)
+        {
+            selectedSpecialPowerUp.countSpecialPowerUpBoxDeactive.SetActive(true);
+            selectedSpecialPowerUp.count.gameObject.SetActive(true);
+            selectedSpecialPowerUp.buySpecialPowerUps.SetActive(false);
+        }
+        else
+        {
+            selectedSpecialPowerUp.countSpecialPowerUpBoxDeactive.SetActive(false);
+            selectedSpecialPowerUp.count.gameObject.SetActive(false);
+            selectedSpecialPowerUp.buySpecialPowerUps.SetActive(true);
+        }
 
+        string amountSSaveKey = amountSSaveKeyPrefix + index.ToString();
+        PlayerPrefs.SetInt(amountSSaveKey, selectedSpecialPowerUp.amount);
+        PlayerPrefs.Save();
     }
 }

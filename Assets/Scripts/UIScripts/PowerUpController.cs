@@ -153,7 +153,7 @@ public class PowerUpController : MonoBehaviour
         }
     }
 
-    void BuyPowerUpButtonTapped()
+    public void BuyPowerUpButtonTapped()
     {
         if (!shopBackground.activeSelf)
         {

@@ -1509,8 +1509,11 @@ MonoBehaviour:
   - {fileID: 7148421088010075250, guid: c7052b1bc5e43864db4d03c6a55e51c3, type: 3}
   - {fileID: 7148421088010075250, guid: 00ad14dbf5faad7488ad12c64a277e04, type: 3}
   - {fileID: 7148421088010075250, guid: 3319a208155756443a292e419ac5c1a9, type: 3}
-  strawBalePrefab: {fileID: 3330133265949295339, guid: 6e55f47fa5c0a774683277fda450e2a5, type: 3}
-  wheatFarmPrefab: {fileID: 6852588376716934326, guid: ad1b1ae42f3cc564d9f5736dfad49c04, type: 3}
+  obstaclePrefabs:
+  - {fileID: 3330133265949295339, guid: 6e55f47fa5c0a774683277fda450e2a5, type: 3}
+  - {fileID: 6852588376716934326, guid: ad1b1ae42f3cc564d9f5736dfad49c04, type: 3}
+  - {fileID: 3330133265949295339, guid: fe41b404371a0c94c893126b94b8006f, type: 3}
+  - {fileID: 3330133265949295339, guid: 2a978f398e0f34047aeaa9ec3f36345a, type: 3}
   tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
   hintBool: 0
   userLevel: 0
@@ -17058,6 +17061,9 @@ MonoBehaviour:
     fruits: 
     allFruitsTotal: 
     allTilesTotal: 
+    tilesIndexZero: 
+    tilesIndexOne: 
+    tilesIndexTwo: 
     moveCount: 0
     taskElements: 
   - level: 0
@@ -17066,6 +17072,9 @@ MonoBehaviour:
     fruits: 
     allFruitsTotal: 
     allTilesTotal: 
+    tilesIndexZero: 
+    tilesIndexOne: 
+    tilesIndexTwo: 
     moveCount: 0
     taskElements: 
   - level: 0
@@ -17074,6 +17083,9 @@ MonoBehaviour:
     fruits: 
     allFruitsTotal: 
     allTilesTotal: 
+    tilesIndexZero: 
+    tilesIndexOne: 
+    tilesIndexTwo: 
     moveCount: 0
     taskElements: 
   - level: 0
@@ -17082,6 +17094,9 @@ MonoBehaviour:
     fruits: 
     allFruitsTotal: 
     allTilesTotal: 
+    tilesIndexZero: 
+    tilesIndexOne: 
+    tilesIndexTwo: 
     moveCount: 0
     taskElements: 
   - level: 0
@@ -17090,6 +17105,9 @@ MonoBehaviour:
     fruits: 
     allFruitsTotal: 
     allTilesTotal: 
+    tilesIndexZero: 
+    tilesIndexOne: 
+    tilesIndexTwo: 
     moveCount: 0
     taskElements: 
   saveFilePath: 

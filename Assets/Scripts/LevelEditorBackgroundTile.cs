@@ -8,10 +8,9 @@ public class LevelEditorBackgroundTile : MonoBehaviour
 {
     // Start is called before the first frame update
     private LevelManager levelManager;
-    public int tileType = 0;
     public int row, column;
-    public GameObject[] obstacles= new GameObject[2];
-    IndexLibrary indexLibrary = new IndexLibrary();
+    public GameObject[] obstacles= new GameObject[3];
+   // IndexLibrary indexLibrary = new IndexLibrary();
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +35,7 @@ public class LevelEditorBackgroundTile : MonoBehaviour
             }
         }
     }
-
+    /*
     public IEnumerator RearrangeTileType()
     {
         bool[] obstaclesBool= new bool[obstacles.Length];
@@ -54,6 +53,6 @@ public class LevelEditorBackgroundTile : MonoBehaviour
                 obstaclesBool[i] = false;
             }
         }
-        tileType = indexLibrary.TileType(obstaclesBool);
     }
+    */
 }

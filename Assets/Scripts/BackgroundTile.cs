@@ -78,20 +78,16 @@ public class BackgroundTile : MonoBehaviour
     /// </summary>
     public void DetectVisibleOne()
     {
-        int tempHierarchy = -1;
         int tempIndex=-1;
+
         for(int i=0;i<obstacles.Length;i++)
         {
             // Checking if obstacle exist and after if its health bigger then zero because when obstacles destroy they will destroy by fadeout function and it
             // takes a little time to disappear so system must check its health.
             if (obstacles[i] && obstacles[i].GetComponent<ObstacleScript>().health>0)
             {
-                int temp = obstacles[i].GetComponent<ObstacleScript>().hierarchy;
-                if (temp > tempHierarchy)
-                {
-                    tempHierarchy = temp;
-                    tempIndex = i;
-                }
+                tempIndex = i;
+                i = obstacles.Length;
             }
         }
        

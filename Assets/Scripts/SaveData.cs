@@ -73,6 +73,9 @@ public class Grid
     // for these arrays is (width x height) .
     public int[] allFruitsTotal;
     public int[] allTilesTotal;
+    public int[] tilesIndexZero;
+    public int[] tilesIndexOne;
+    public int[] tilesIndexTwo;
     public int moveCount;
     public int[] taskElements;
 }

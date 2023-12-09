@@ -51,7 +51,7 @@ public class LevelManager : MonoBehaviour
 
         levelChanger = level;
 
-       
+
 
         if (uploadLevel)
         {
@@ -61,7 +61,7 @@ public class LevelManager : MonoBehaviour
             indexLevel--;
             Grid gridData = loadData.gridData[indexLevel];
 
-            if(level == gridData.level)
+            if (level == gridData.level)
             {
                 width = gridData.width;
                 height = gridData.height;
@@ -83,11 +83,14 @@ public class LevelManager : MonoBehaviour
 
                 int[] savedTiles = gridData.allTilesTotal;
                 int[] savedFruits = gridData.allFruitsTotal;
+                int[] savedTilesZero = gridData.tilesIndexZero;
+                int[] savedTilesOne = gridData.tilesIndexOne;
+                int[] savedTilesTwo = gridData.tilesIndexTwo;
 
                 taskElements = gridData.taskElements;
                 moveCount = gridData.moveCount;
 
-                SetUpWithArray(indexLibrary.Convert2DTo3D(width, height, savedFruits), indexLibrary.Convert2DTo3D(width, height, savedTiles));
+                SetUpWithArray(indexLibrary.Convert2DTo3D(width, height, savedFruits), indexLibrary.Convert2DTo3D(width, height, savedTiles), indexLibrary.Convert2DTo3D(width, height, savedTilesZero), indexLibrary.Convert2DTo3D(width, height, savedTilesOne), indexLibrary.Convert2DTo3D(width, height, savedTilesTwo));
 
             }
             else
@@ -100,13 +103,12 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-           ArrangeValuesRelatedToSizes();
+            ArrangeValuesRelatedToSizes();
             SetUp();
         }
 
-   
-    }
 
+    }
 
     private void Update()
     {
@@ -143,6 +145,11 @@ public class LevelManager : MonoBehaviour
 
         int[] arrangeFruits = new int[width * height];
         int[] arrangeTiles = new int[width * height];
+
+        int[] arrangeTilesIndexZero = new int[width * height];
+        int[] arrangeTilesIndexOne = new int[width * height];
+        int[] arrangeTilesIndexTwo = new int[width * height];
+
         saveData.gridData[saveLevel].fruits = existFruits;
 
         for (int i = 0; i < height; i++)
@@ -158,16 +165,63 @@ public class LevelManager : MonoBehaviour
                 {
                     arrangeFruits[(width * i) + j] = -1;
                 }
-                arrangeTiles[(width * i) + j] = allTiles[i, j].GetComponent<LevelEditorBackgroundTile>().tileType;
+
+                // If tile does not exist then type will be 0.
+
+                if (allTiles[i, j])
+                {
+                    arrangeTiles[(width * i) + j] = 1;
+
+
+                    // Checking if the tile has obstacle box. And if it has it then placing obstacle id to proper data place.
+                    if (allTiles[i, j].GetComponent<LevelEditorBackgroundTile>().obstacles[0])
+                    {
+                        arrangeTilesIndexZero[(width * i) + j] = allTiles[i, j].GetComponent<LevelEditorBackgroundTile>().obstacles[0].
+                            GetComponent<ObstacleScript>().id;
+                    }
+                    else
+                    {
+                        arrangeTilesIndexZero[(width * i) + j] = -1;
+                    }
+                    // Checking if the tile has obstacle wheatfarm (or something like that).
+                    if (allTiles[i, j].GetComponent<LevelEditorBackgroundTile>().obstacles[1])
+                    {
+                        arrangeTilesIndexOne[(width * i) + j] = allTiles[i, j].GetComponent<LevelEditorBackgroundTile>().obstacles[1].
+                            GetComponent<ObstacleScript>().id;
+                    }
+                    else
+                    {
+                        arrangeTilesIndexOne[(width * i) + j] = -1;
+                    }
+                    // Spare place.
+                    if (allTiles[i, j].GetComponent<LevelEditorBackgroundTile>().obstacles[2])
+                    {
+                        arrangeTilesIndexTwo[(width * i) + j] = allTiles[i, j].GetComponent<LevelEditorBackgroundTile>().obstacles[2].
+                            GetComponent<ObstacleScript>().id;
+                    }
+                    else
+                    {
+                        arrangeTilesIndexTwo[(width * i) + j] = -1;
+                    }
+
+                }
+                else
+                {
+                    arrangeTiles[(width * i) + j] = 0;
+                }
+
             }
         }
 
         saveData.gridData[saveLevel].allFruitsTotal = arrangeFruits;
         saveData.gridData[saveLevel].allTilesTotal = arrangeTiles;
+        saveData.gridData[saveLevel].tilesIndexZero = arrangeTilesIndexZero;
+        saveData.gridData[saveLevel].tilesIndexOne = arrangeTilesIndexOne;
+        saveData.gridData[saveLevel].tilesIndexTwo = arrangeTilesIndexTwo;
         saveData.SaveToJson();
     }
 
-    private void SetUpWithArray(int[,] arrangedFruits, int[,] arrangedTiles)
+    private void SetUpWithArray(int[,] arrangedFruits, int[,] arrangedTiles, int[,] arrangedTilesZero, int[,] arrangedTilesOne, int[,] arrangedTilesTwo)
     {
 
         float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
@@ -188,42 +242,45 @@ public class LevelManager : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-
-                Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, j * scaleNumber - yOffset);
-                GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
-                backgroundTile.transform.parent = this.transform;
-                backgroundTile.name = "( " + i + ", " + j + " )";
-                backgroundTile.GetComponent<LevelEditorBackgroundTile>().column = i;
-                backgroundTile.GetComponent<LevelEditorBackgroundTile>().row = j;
-                allTiles[i, j] = backgroundTile;
-                if (arrangedTiles[i, j] != 0)
+                if (arrangedTiles[i, j] == 1)
                 {
-                    bool[] obstacleBools = indexLibrary.GetBoolObstacles(arrangedTiles[i, j]);
-                    if (obstacleBools[0])
+                    Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, j * scaleNumber - yOffset);
+                    GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
+                    backgroundTile.transform.parent = this.transform;
+                    backgroundTile.name = "( " + i + ", " + j + " )";
+                    backgroundTile.GetComponent<LevelEditorBackgroundTile>().column = i;
+                    backgroundTile.GetComponent<LevelEditorBackgroundTile>().row = j;
+                    allTiles[i, j] = backgroundTile;
+
+                    if (arrangedTilesZero[i, j] != -1)
                     {
-                        backgroundTile.GetComponent<LevelEditorBackgroundTile>().obstacles[0] = Instantiate(obstacles[0], tempPosition, Quaternion.identity);
+                        backgroundTile.GetComponent<LevelEditorBackgroundTile>().obstacles[0] = Instantiate(obstacles[arrangedTilesZero[i, j]], tempPosition, Quaternion.identity);
                     }
 
-                    if (obstacleBools[1])
+                    if (arrangedTilesOne[i, j] != -1)
                     {
-                        backgroundTile.GetComponent<LevelEditorBackgroundTile>().obstacles[1] = Instantiate(obstacles[1], tempPosition, Quaternion.identity);
+                        backgroundTile.GetComponent<LevelEditorBackgroundTile>().obstacles[1] = Instantiate(obstacles[arrangedTilesOne[i, j]], tempPosition, Quaternion.identity);
                     }
-                    backgroundTile.GetComponent<LevelEditorBackgroundTile>().tileType = arrangedTiles[i, j];
-                }
-                // If type of fruit -1 then it means fruit does not exist.
-                if (arrangedFruits[i, j] >= 0)
-                {
-                    int fruitToUse = arrangedFruits[i, j];
-                    GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
-                    fruit.transform.parent = this.transform;
-                    fruit.name = "( " + i + ", " + j + " )";
-                    fruit.GetComponent<Fruit>().column = i;
-                    fruit.GetComponent<Fruit>().row = j;
-                    fruit.GetComponent<Fruit>().fruitType = fruitToUse;
-                    allFruits[i, j] = fruit;
-                }
 
+                    if (arrangedTilesTwo[i, j] != -1)
+                    {
+                        backgroundTile.GetComponent<LevelEditorBackgroundTile>().obstacles[2] = Instantiate(obstacles[arrangedTilesTwo[i, j]], tempPosition, Quaternion.identity);
+                    }
 
+                    // If type of fruit -1 then it means fruit does not exist.
+                    if (arrangedFruits[i, j] >= 0)
+                    {
+                        int fruitToUse = arrangedFruits[i, j];
+                        GameObject fruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
+                        fruit.transform.parent = this.transform;
+                        fruit.name = "( " + i + ", " + j + " )";
+                        fruit.GetComponent<Fruit>().column = i;
+                        fruit.GetComponent<Fruit>().row = j;
+                        fruit.GetComponent<Fruit>().fruitType = fruitToUse;
+                        allFruits[i, j] = fruit;
+                    }
+
+                }
             }
         }
     }
@@ -277,11 +334,10 @@ public class LevelManager : MonoBehaviour
         // INSTANTIATE A NEW FRUIT AT THE POSITION OF THE DESTROYED FRUIT
         if (chosenId >= 0)
         {
-            if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().tileType != 0)
+            if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[0])
             {
-                // Destroy strawbale
+                // Destroy box
                 Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[0]);
-                StartCoroutine(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().RearrangeTileType());
             }
             GameObject fruit = Instantiate(fruits[chosenId], tempPosition, Quaternion.identity);
             fruit.transform.parent = this.transform;
@@ -299,28 +355,31 @@ public class LevelManager : MonoBehaviour
         {
             // OBSTACLE IDS START FROM -1 SO SYSTEM GET NEGATIVE OF IT AND MINUS 1
             int obstacleID = (-chosenId) - 1;
+            //  GETTING CHOSEN OBSTACLEN PREFAB INDEX LOCATION ON THE TILE OBSTACLE VARIABLE.
+            int placeOfObstacle = obstacles[obstacleID].GetComponent<ObstacleScript>().indexOfPlace;
+            // IF THERE IS A OBSTACLE ALREADY EXÝST IN THE CURRENT PLACE THEN DESTROY THE OBSTACLE BUT IF DOES NOT EXÝST THEN CREATE THE OBSTACLE
 
-            // IF OBSTACLE ALREADY EXÝST THEN DESTROY THE OBSTACLE BUT IF DOES NOT EXÝST THEN CREATE THE OBSTACLE
-            if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[obstacleID])
+            if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle])
             {
-                Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[obstacleID]);
+                Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle]);
             }
             else
             {
-
                 GameObject obstacle = Instantiate(obstacles[obstacleID], tempPosition, Quaternion.identity);
                 obstacle.transform.parent = this.transform;
                 obstacle.name = "( " + column + ", " + row + " )";
                 allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[obstacleID] = obstacle;
             }
 
-            // IF OBSTACLE IS STRAWBALE THEN DESTROY FRUIT
+            // IF OBSTACLE INDEX OF PLACE IS 0 THEN IT MEANS IT IS A BOX TYPE OBSTACLE SO SYSTEM MUST DESTROY FRUIT IF FRUIT EXIST.
 
-            if (chosenId == -1)
+            if (placeOfObstacle == 0)
             {
-                Destroy(allFruits[column, row]);
+                if(allFruits[column, row])
+                {
+                    Destroy(allFruits[column, row]);
+                }
             }
-            StartCoroutine(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().RearrangeTileType());
         }
 
 

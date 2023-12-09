@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class IndexLibrary
 {
+    /*
     bool[] obstacleBools= new bool[2];
     public int TileType(bool[] obstacles)
     {
-        /*
+        
          
         Index:
 
@@ -21,7 +22,7 @@ public class IndexLibrary
         2 - Wheat Farm
         3 - Strawbale and Wheat Farm
           
-         */
+         
 
         if (obstacles[0] && obstacles[1])
         {
@@ -65,6 +66,7 @@ public class IndexLibrary
         }
         return obstacleBools; 
     }
+    */
     /// <summary>
     ///  Converting one dimensional array (json saved data) to two dimensional array. 
     /// </summary>

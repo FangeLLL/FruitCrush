@@ -35,24 +35,5 @@ public class LevelEditorBackgroundTile : MonoBehaviour
             }
         }
     }
-    /*
-    public IEnumerator RearrangeTileType()
-    {
-        bool[] obstaclesBool= new bool[obstacles.Length];
-        yield return new WaitForSeconds(0.1f);
-
-        for (int i = 0; i < obstacles.Length; i++)
-        {
-          
-            if (obstacles[i])
-            {
-                obstaclesBool[i] = true;
-            }
-            else
-            {
-                obstaclesBool[i] = false;
-            }
-        }
-    }
-    */
+    
 }

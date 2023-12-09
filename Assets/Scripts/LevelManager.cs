@@ -45,9 +45,9 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        taskElements = new int[2];
+        taskElements = new int[obstacles.Length];
         saveData = GetComponent<SaveData>();
-        existFruits = new int[5];
+        existFruits = new int[fruits.Length];
 
         levelChanger = level;
 
@@ -357,19 +357,22 @@ public class LevelManager : MonoBehaviour
             int obstacleID = (-chosenId) - 1;
             //  GETTING CHOSEN OBSTACLEN PREFAB INDEX LOCATION ON THE TILE OBSTACLE VARIABLE.
             int placeOfObstacle = obstacles[obstacleID].GetComponent<ObstacleScript>().indexOfPlace;
+            int currentObstacleId = -1;
             // IF THERE IS A OBSTACLE ALREADY EXÝST IN THE CURRENT PLACE THEN DESTROY THE OBSTACLE BUT IF DOES NOT EXÝST THEN CREATE THE OBSTACLE
-
             if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle])
             {
+                currentObstacleId = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().id;
                 Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle]);
             }
-            else
+
+            // IF CHOSEN OBSTACLE ALREADY CRATED IN THAT TILE THEN IT MEANS USER WANTED TO DESTROY IT.
+            if(obstacleID != currentObstacleId)
             {
                 GameObject obstacle = Instantiate(obstacles[obstacleID], tempPosition, Quaternion.identity);
                 obstacle.transform.parent = this.transform;
                 obstacle.name = "( " + column + ", " + row + " )";
-                allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[obstacleID] = obstacle;
-            }
+                allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle] = obstacle;
+            }      
 
             // IF OBSTACLE INDEX OF PLACE IS 0 THEN IT MEANS IT IS A BOX TYPE OBSTACLE SO SYSTEM MUST DESTROY FRUIT IF FRUIT EXIST.
 

@@ -146,5 +146,5 @@ MonoBehaviour:
   health: 1
   indexOfPlace: 0
   boxObstacle: 1
-  indestructible: 1
+  indestructible: 0
   id: 4

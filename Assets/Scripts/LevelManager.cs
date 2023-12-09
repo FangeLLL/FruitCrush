@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -168,7 +167,7 @@ public class LevelManager : MonoBehaviour
 
                 // If tile does not exist then type will be 0.
 
-                if (allTiles[i, j])
+                if (allTiles[i, j].GetComponent<LevelEditorBackgroundTile>().active)
                 {
                     arrangeTiles[(width * i) + j] = 1;
 
@@ -242,15 +241,16 @@ public class LevelManager : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
+                Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, j * scaleNumber - yOffset);
+                GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
+                backgroundTile.transform.parent = this.transform;
+                backgroundTile.name = "( " + i + ", " + j + " )";
+                backgroundTile.GetComponent<LevelEditorBackgroundTile>().column = i;
+                backgroundTile.GetComponent<LevelEditorBackgroundTile>().row = j;
+                allTiles[i, j] = backgroundTile;
+
                 if (arrangedTiles[i, j] == 1)
-                {
-                    Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, j * scaleNumber - yOffset);
-                    GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
-                    backgroundTile.transform.parent = this.transform;
-                    backgroundTile.name = "( " + i + ", " + j + " )";
-                    backgroundTile.GetComponent<LevelEditorBackgroundTile>().column = i;
-                    backgroundTile.GetComponent<LevelEditorBackgroundTile>().row = j;
-                    allTiles[i, j] = backgroundTile;
+                {       
 
                     if (arrangedTilesZero[i, j] != -1)
                     {
@@ -280,6 +280,13 @@ public class LevelManager : MonoBehaviour
                         allFruits[i, j] = fruit;
                     }
 
+                }
+                else
+                {
+                    backgroundTile.GetComponent<LevelEditorBackgroundTile>().active = false;
+                    Color color = backgroundTile.GetComponent<SpriteRenderer>().color;
+                    color.a = 0.5f;
+                    backgroundTile.GetComponent<SpriteRenderer>().color = color;
                 }
             }
         }
@@ -327,64 +334,108 @@ public class LevelManager : MonoBehaviour
 
     public void ReplaceObject(int column, int row)
     {
-        float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
-        float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
-        Vector2 tempPosition = new Vector2(column * scaleNumber - xOffset, row * scaleNumber - yOffset);
+        if (allTiles[column,row].GetComponent<LevelEditorBackgroundTile>().active) {
+            float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
+            float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
+            Vector2 tempPosition = new Vector2(column * scaleNumber - xOffset, row * scaleNumber - yOffset);
 
-        // INSTANTIATE A NEW FRUIT AT THE POSITION OF THE DESTROYED FRUIT
-        if (chosenId >= 0)
-        {
-            if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[0])
+            // INSTANTIATE A NEW FRUIT AT THE POSITION OF THE DESTROYED FRUIT
+            if (chosenId >= 0)
             {
-                // Destroy box
-                Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[0]);
-            }
-            GameObject fruit = Instantiate(fruits[chosenId], tempPosition, Quaternion.identity);
-            fruit.transform.parent = this.transform;
-            fruit.name = "( " + column + ", " + row + " )";
-
-            // SET THE COLUMN AND ROW OF THE NEW FRUIT
-            fruit.GetComponent<Fruit>().column = column;
-            fruit.GetComponent<Fruit>().row = row;
-            fruit.GetComponent<Fruit>().fruitType = chosenId;
-            // ADD THE NEW FRUIT TO THE ALLFRUITS ARRAY
-            Destroy(allFruits[column, row]);
-            allFruits[column, row] = fruit;
-        }
-        else
-        {
-            // OBSTACLE IDS START FROM -1 SO SYSTEM GET NEGATIVE OF IT AND MINUS 1
-            int obstacleID = (-chosenId) - 1;
-            //  GETTING CHOSEN OBSTACLEN PREFAB INDEX LOCATION ON THE TILE OBSTACLE VARIABLE.
-            int placeOfObstacle = obstacles[obstacleID].GetComponent<ObstacleScript>().indexOfPlace;
-            int currentObstacleId = -1;
-            // IF THERE IS A OBSTACLE ALREADY EXÝST IN THE CURRENT PLACE THEN DESTROY THE OBSTACLE BUT IF DOES NOT EXÝST THEN CREATE THE OBSTACLE
-            if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle])
-            {
-                currentObstacleId = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().id;
-                Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle]);
-            }
-
-            // IF CHOSEN OBSTACLE ALREADY CRATED IN THAT TILE THEN IT MEANS USER WANTED TO DESTROY IT.
-            if(obstacleID != currentObstacleId)
-            {
-                GameObject obstacle = Instantiate(obstacles[obstacleID], tempPosition, Quaternion.identity);
-                obstacle.transform.parent = this.transform;
-                obstacle.name = "( " + column + ", " + row + " )";
-                allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle] = obstacle;
-            }      
-
-            // IF OBSTACLE INDEX OF PLACE IS 0 THEN IT MEANS IT IS A BOX TYPE OBSTACLE SO SYSTEM MUST DESTROY FRUIT IF FRUIT EXIST.
-
-            if (placeOfObstacle == 0)
-            {
-                if(allFruits[column, row])
+                if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[0])
                 {
-                    Destroy(allFruits[column, row]);
+                    // Destroy box
+                    Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[0]);
+                }
+                GameObject fruit = Instantiate(fruits[chosenId], tempPosition, Quaternion.identity);
+                fruit.transform.parent = this.transform;
+                fruit.name = "( " + column + ", " + row + " )";
+
+                // SET THE COLUMN AND ROW OF THE NEW FRUIT
+                fruit.GetComponent<Fruit>().column = column;
+                fruit.GetComponent<Fruit>().row = row;
+                fruit.GetComponent<Fruit>().fruitType = chosenId;
+                // ADD THE NEW FRUIT TO THE ALLFRUITS ARRAY
+                Destroy(allFruits[column, row]);
+                allFruits[column, row] = fruit;
+            }
+            else
+            {
+                // OBSTACLE IDS START FROM -1 SO SYSTEM GET NEGATIVE OF IT AND MINUS 1
+                int obstacleID = (-chosenId) - 1;
+                //  GETTING CHOSEN OBSTACLEN PREFAB INDEX LOCATION ON THE TILE OBSTACLE VARIABLE.
+                int placeOfObstacle = obstacles[obstacleID].GetComponent<ObstacleScript>().indexOfPlace;
+                int currentObstacleId = -1;
+                // IF THERE IS A OBSTACLE ALREADY EXÝST IN THE CURRENT PLACE THEN DESTROY THE OBSTACLE BUT IF DOES NOT EXÝST THEN CREATE THE OBSTACLE
+                if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle])
+                {
+                    currentObstacleId = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().id;
+                    Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle]);
+                }
+
+                // IF CHOSEN OBSTACLE ALREADY CRATED IN THAT TILE THEN IT MEANS USER WANTED TO DESTROY IT.
+                if (obstacleID != currentObstacleId)
+                {
+                    GameObject obstacle = Instantiate(obstacles[obstacleID], tempPosition, Quaternion.identity);
+                    obstacle.transform.parent = this.transform;
+                    obstacle.name = "( " + column + ", " + row + " )";
+                    allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle] = obstacle;
+                }
+
+                // IF OBSTACLE INDEX OF PLACE IS 0 THEN IT MEANS IT IS A BOX TYPE OBSTACLE SO SYSTEM MUST DESTROY FRUIT IF FRUIT EXIST.
+
+                if (placeOfObstacle == 0)
+                {
+                    if (allFruits[column, row])
+                    {
+                        Destroy(allFruits[column, row]);
+                    }
                 }
             }
         }
+        else
+        {
+            Debug.Log("This tile deactivated please activate this tile before putting something in.");
+        }
 
+
+    }
+
+    public void DeactivateTile(int column,int row)
+    {
+        // If tile is active then system must deactivate and if its deactive then it must activate it.
+        if(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().active)
+        {
+            // Destroy if there is a fruit.
+            if (allFruits[column, row])
+            {
+                Destroy(allFruits[column, row]);
+            }
+
+            // Destroying tile's obstacles.
+            for (int i = 0; i < 3; i++)
+            {
+                if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[i])
+                {
+                    Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[i]);
+                }
+            }
+
+            allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().active = false;
+            Color color = allTiles[column, row].GetComponent<SpriteRenderer>().color;
+            color.a = 0.5f;
+            allTiles[column, row].GetComponent<SpriteRenderer>().color = color;
+        }
+        else
+        {
+
+
+            allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().active = true;
+            Color color = allTiles[column, row].GetComponent<SpriteRenderer>().color;
+            color.a = 1;
+            allTiles[column, row].GetComponent<SpriteRenderer>().color = color;
+
+        }
 
     }
 

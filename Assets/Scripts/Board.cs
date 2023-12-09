@@ -802,8 +802,13 @@ public class Board : MonoBehaviour
 
         for (int j = 0; j < height; j++)
         {
-            if (!allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
+            if (!allTiles[i, j] || allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
             {
+                emptyPlaces.Clear();
+            }
+            else
+            {
+
                 if (!allFruits[i, j])
                 {
                     // Putting empty place index to variable
@@ -827,10 +832,6 @@ public class Board : MonoBehaviour
                     fruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
                     emptyPlaces.Enqueue(j);
                 }
-            }
-            else
-            {
-                emptyPlaces.Clear();
             }
         }
 
@@ -1153,7 +1154,10 @@ public class Board : MonoBehaviour
                         DestroyController(allFruits[i, j], false);
                         audioManager.FruitCrush();
                     }
-                    allTiles[i, j].GetComponent<BackgroundTile>().Boom();
+                    if (allTiles[i, j])
+                    {
+                        allTiles[i, j].GetComponent<BackgroundTile>().Boom();
+                    }
 
                 }
             }
@@ -1179,7 +1183,10 @@ public class Board : MonoBehaviour
             HorizontalDestroy(column, row, false);
 
         }
-        allTiles[column, row].GetComponent<BackgroundTile>().Boom();
+        if (allTiles[column, row])
+        {
+            allTiles[column, row].GetComponent<BackgroundTile>().Boom();
+        }
         StartCoroutine(FadeOut(harvester));
 
     }
@@ -1201,7 +1208,10 @@ public class Board : MonoBehaviour
             VerticalDestroy(column, row, false);
 
         }
-        allTiles[column, row].GetComponent<BackgroundTile>().Boom();
+        if (allTiles[column, row])
+        {
+            allTiles[column, row].GetComponent<BackgroundTile>().Boom();
+        }
         StartCoroutine(FadeOut(harvester));
 
     }
@@ -1225,7 +1235,10 @@ public class Board : MonoBehaviour
                     DestroyController(allFruits[column, i], false);
                     audioManager.FruitCrush();
                 }
-                allTiles[column, i].GetComponent<BackgroundTile>().Boom();
+                if (allTiles[column, i])
+                {
+                    allTiles[column, i].GetComponent<BackgroundTile>().Boom();
+                }
             }
         }
         else
@@ -1237,8 +1250,10 @@ public class Board : MonoBehaviour
                     DestroyController(allFruits[column, i], false);
                     audioManager.FruitCrush();
                 }
-                allTiles[column, i].GetComponent<BackgroundTile>().Boom();
-
+                if (allTiles[column, i])
+                {
+                    allTiles[column, i].GetComponent<BackgroundTile>().Boom();
+                }
             }
         }
     }
@@ -1264,7 +1279,10 @@ public class Board : MonoBehaviour
                     audioManager.FruitCrush();
 
                 }
-                allTiles[i, row].GetComponent<BackgroundTile>().Boom();
+                if (allTiles[i, row])
+                {
+                    allTiles[i, row].GetComponent<BackgroundTile>().Boom();
+                }
 
             }
         }
@@ -1278,8 +1296,10 @@ public class Board : MonoBehaviour
                     DestroyController(allFruits[i, row], false);
                     audioManager.FruitCrush();
                 }
-                allTiles[i, row].GetComponent<BackgroundTile>().Boom();
-
+                if (allTiles[i, row])
+                {
+                    allTiles[i, row].GetComponent<BackgroundTile>().Boom();
+                }
             }
         }
     }
@@ -1297,7 +1317,10 @@ public class Board : MonoBehaviour
             DestroyController(allFruits[column, row], false);
         }
         audioManager.FruitCrush();
-        allTiles[column, row].GetComponent<BackgroundTile>().Boom();
+        if (allTiles[column, row])
+        {
+            allTiles[column, row].GetComponent<BackgroundTile>().Boom();
+        }
 
     }
 

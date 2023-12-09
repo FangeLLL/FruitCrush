@@ -195,7 +195,7 @@ MonoBehaviour:
   tilePrefab: {fileID: 7810862353112231653, guid: 0a7f3b9ac7dc62d43ba82706dc39b9f9, type: 3}
   moveCount: 0
   taskElements: 
-  levelChanger: 1
+  levelChanger: 2
 --- !u!114 &6254092
 MonoBehaviour:
   m_ObjectHideFlags: 0

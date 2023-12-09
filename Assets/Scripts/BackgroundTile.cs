@@ -39,7 +39,7 @@ public class BackgroundTile : MonoBehaviour
 
         for(int i=-1; i<2; i+=2)
         {
-            if (column + i<board.width && column + i>=0)
+            if (column + i<board.width && column + i>=0 && board.allTiles[column + i, row])
             {
                 if (board.allTiles[column + i, row].GetComponent<BackgroundTile>().isCurrentObstacleBox)
                 {
@@ -51,7 +51,7 @@ public class BackgroundTile : MonoBehaviour
 
         for (int i = -1; i < 2; i += 2)
         {
-            if (row + i < board.height && row + i >= 0)
+            if (row + i < board.height && row + i >= 0 && board.allTiles[column, row + i])
             {
                 if (board.allTiles[column, row + i].GetComponent<BackgroundTile>().isCurrentObstacleBox)
                 {

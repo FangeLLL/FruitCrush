@@ -1314,16 +1314,15 @@ public class Board : MonoBehaviour
                 break;
             case 4:
                 // Special Power: Super Swipe
-                specialSwipe = true;
                 specialPowerController.SpecialPowerUpUsed(3);
                 break;
         }
-        DisableSpecialPowers();
+        specialPowerID = 0;
     }
 
     /// <summary>
     /// This function will call from Special Power Controller script and related to Special Power buttons. specialPowerID represent selected special power.
-    /// If called by same id then it will be disabled.
+    /// According to ability some of the arrangment wll be made.
     /// By Bertuð Abalý
     /// </summary>
     /// <param name="id"></param>
@@ -1331,6 +1330,14 @@ public class Board : MonoBehaviour
     {
         specialPowerID = id;
 
+
+        switch (specialPowerID)
+        {
+            // Special Power: Super Swipe
+            case 4:
+                specialSwipe = true;
+                break;
+        }
     }
 
     public void DisableSpecialPowers()

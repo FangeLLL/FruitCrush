@@ -207,15 +207,14 @@ public class Board : MonoBehaviour
                     bool[] obstacleBools = indexLibrary.GetBoolObstacles(arrangedTiles[i, j]);
                     if (obstacleBools[0])
                     {
-                        backgroundTile.GetComponent<BackgroundTile>().strawBale = true;
-                        backgroundTile.GetComponent<BackgroundTile>().strawBaleObj = Instantiate(strawBalePrefab, tempPosition, Quaternion.identity);
+                        backgroundTile.GetComponent<BackgroundTile>().obstacles[0] = Instantiate(strawBalePrefab, tempPosition, Quaternion.identity);
                     }
 
                     if (obstacleBools[1])
                     {
-                        backgroundTile.GetComponent<BackgroundTile>().wheatFarm = true;
-                        backgroundTile.GetComponent<BackgroundTile>().wheatFarmObj = Instantiate(wheatFarmPrefab, tempPosition, Quaternion.identity);
+                        backgroundTile.GetComponent<BackgroundTile>().obstacles[1] = Instantiate(wheatFarmPrefab, tempPosition, Quaternion.identity);
                     }
+                    backgroundTile.GetComponent<BackgroundTile>().DetectVisibleOne();
                 }
                 // If type of fruit -1 then it means fruit does not exist.
                 if (arrangedFruits[i, j] >= 0)
@@ -786,13 +785,13 @@ public class Board : MonoBehaviour
 
         for (int j = 0; j < height; j++)
         {
-            if (!allTiles[i, j].GetComponent<BackgroundTile>().strawBale)
+            if (!allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
             {
                 if (!allFruits[i, j])
                 {
                     // Putting empty place index to variable
                     emptyPlaces.Enqueue(j);
-                    if ((j + 1 < height && allTiles[i, j + 1].GetComponent<BackgroundTile>().strawBale) || (j + 2 < height && allTiles[i, j + 2].GetComponent<BackgroundTile>().strawBale))
+                    if ((j + 1 < height && allTiles[i, j + 1].GetComponent<BackgroundTile>().isCurrentObstacleBox) || (j + 2 < height && allTiles[i, j + 2].GetComponent<BackgroundTile>().isCurrentObstacleBox))
                     {
                         StartCoroutine(CrossFall(i, j + 1));
                     }

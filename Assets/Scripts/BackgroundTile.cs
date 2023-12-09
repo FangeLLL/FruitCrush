@@ -5,21 +5,18 @@ using UnityEngine;
 public class BackgroundTile : MonoBehaviour
 {
 
-    public bool strawBale=false, wheatFarm=false;
     private Board board;
-    private TaskController taskController;
-    public GameObject strawBaleObj;
-    public GameObject wheatFarmObj;
-    AudioManager audioManager;
+ 
     public int tileType=0;
     public int row, column;
+    public GameObject[] obstacles = new GameObject[3];
+    public int indexOfVisibleOne=-1;
+    public bool isCurrentObstacleBox=false;
 
     // Start is called before the first frame update
     void Start()
     {
         board = FindObjectOfType<Board>();
-        taskController = FindObjectOfType<TaskController>();
-        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();        
     }
 
     private void Update()
@@ -44,9 +41,9 @@ public class BackgroundTile : MonoBehaviour
         {
             if (column + i<board.width && column + i>=0)
             {
-                if (board.allTiles[column + i, row].GetComponent<BackgroundTile>().strawBale)
+                if (board.allTiles[column + i, row].GetComponent<BackgroundTile>().isCurrentObstacleBox)
                 {
-                    board.allTiles[column + i, row].GetComponent<BackgroundTile>().BoxExplode();
+                    board.allTiles[column + i, row].GetComponent<BackgroundTile>().Boom();
                 }
             }
             
@@ -56,9 +53,9 @@ public class BackgroundTile : MonoBehaviour
         {
             if (row + i < board.height && row + i >= 0)
             {
-                if (board.allTiles[column, row + i].GetComponent<BackgroundTile>().strawBale)
+                if (board.allTiles[column, row + i].GetComponent<BackgroundTile>().isCurrentObstacleBox)
                 {
-                    board.allTiles[column, row + i].GetComponent<BackgroundTile>().BoxExplode();
+                    board.allTiles[column, row + i].GetComponent<BackgroundTile>().Boom();
                 }
             }      
         }
@@ -66,33 +63,50 @@ public class BackgroundTile : MonoBehaviour
         Boom();
 
     }
-
-    public void BoxExplode()
-    {
-        if (strawBale)
-        {
-            strawBale = false;
-            audioManager.StrawBaleBreak();
-            StartCoroutine(board.FadeOut(strawBaleObj));
-            taskController.TaskProgress(0);
-
-        }
-    }
-
+ 
     public void Boom()
     {
-        if (strawBale)
+        if (indexOfVisibleOne>=0)
         {
-           BoxExplode();
-
-        }else if (wheatFarm) {
-            wheatFarm = false;
-            audioManager.MarbleBreak();
-            StartCoroutine(board.FadeOut(wheatFarmObj));
-            taskController.TaskProgress(1);
+            obstacles[indexOfVisibleOne].GetComponent<ObstacleScript>().TakeDamage();
+            DetectVisibleOne();
         }
-
     }
 
+    /// <summary>
+    /// If one of the obstacle of tile has been destroyed then detect the current visible one.   
+    /// </summary>
+    public void DetectVisibleOne()
+    {
+        int tempHierarchy = -1;
+        int tempIndex=-1;
+        for(int i=0;i<obstacles.Length;i++)
+        {
+            // Checking if obstacle exist and after if its health bigger then zero because when obstacles destroy they will destroy by fadeout function and it
+            // takes a little time to disappear so system must check its health.
+            if (obstacles[i] && obstacles[i].GetComponent<ObstacleScript>().health>0)
+            {
+                int temp = obstacles[i].GetComponent<ObstacleScript>().hierarchy;
+                if (temp > tempHierarchy)
+                {
+                    tempHierarchy = temp;
+                    tempIndex = i;
+                }
+            }
+        }
+       
+        indexOfVisibleOne = tempIndex;
+        // If there is no obstacle left then isCurrentObstacleBox variable needs to be false.
+        if (indexOfVisibleOne >= 0)
+        {
+            isCurrentObstacleBox = obstacles[indexOfVisibleOne].GetComponent<ObstacleScript>().boxObstacle;
+
+        }
+        else
+        {
+            isCurrentObstacleBox = false;
+
+        }
+    }
    
 }

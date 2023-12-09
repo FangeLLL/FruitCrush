@@ -813,10 +813,22 @@ public class Board : MonoBehaviour
                 {
                     // Putting empty place index to variable
                     emptyPlaces.Enqueue(j);
-                    if ((j + 1 < height && allTiles[i, j + 1].GetComponent<BackgroundTile>().isCurrentObstacleBox) || (j + 2 < height && allTiles[i, j + 2].GetComponent<BackgroundTile>().isCurrentObstacleBox))
+
+                    // THESE CODES CAN BE IMPROVE PLEASE CHECK THE ALGO
+                    if((j + 1 < height && !allTiles[i, j + 1]) || (j + 2 < height && !allTiles[i, j + 2]))
                     {
                         StartCoroutine(CrossFall(i, j + 1));
+
                     }
+                    else
+                    {
+                        if ((j + 1 < height && allTiles[i, j + 1] && allTiles[i, j + 1].GetComponent<BackgroundTile>().isCurrentObstacleBox) || (j + 2 < height && allTiles[i, j + 2] && allTiles[i, j + 2].GetComponent<BackgroundTile>().isCurrentObstacleBox))
+                        {
+                            StartCoroutine(CrossFall(i, j + 1));
+
+                        }
+                    }
+                   
                 }
                 else if (emptyPlaces.Count > 0)
                 {

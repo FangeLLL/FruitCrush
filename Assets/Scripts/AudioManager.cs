@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : Sounds
 {
     [SerializeField] private AudioSource powerUpGainSource;
     [SerializeField] private AudioSource hoeSource;
     [SerializeField] private AudioSource harvesterSource;
+    private string mainMenu = "MainMenu";
     private void Awake()
     {
         source = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioSource>();        
@@ -14,18 +17,22 @@ public class AudioManager : Sounds
 
     private void Update()
     {
-        if(source.mute)
+        if(!SceneManager.GetSceneByName(mainMenu).isLoaded)
         {
-            powerUpGainSource.mute = true;
-            hoeSource.mute=true;
-            harvesterSource.mute=true;
+            if(source.mute)
+            {
+                powerUpGainSource.mute = true;
+                hoeSource.mute=true;
+                harvesterSource.mute=true;
+            }
+            else
+            {
+                powerUpGainSource.mute = false;
+                hoeSource.mute=false;
+                harvesterSource.mute=false;
+            }
         }
-        else
-        {
-            powerUpGainSource.mute = false;
-            hoeSource.mute=false;
-            harvesterSource.mute=false;
-        }
+        
     }
 
     public void Swipe()

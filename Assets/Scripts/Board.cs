@@ -128,10 +128,14 @@ public class Board : MonoBehaviour
             // Check if two seconds have passed
             if (timer >= waitTime)
             {
-                swipeHint.isHintSearching = true;
-                swipeHint.continueIteration = true;
-                timer = 0f;
-                exitUpdate = true;
+                if (!swipeHint.oneHintActive)
+                {
+                    swipeHint.isHintSearching = true;
+                    swipeHint.continueIteration = true;
+                    timer = 0f;
+                    exitUpdate = true;
+                }
+                
             }
         }
         else

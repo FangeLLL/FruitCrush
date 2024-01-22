@@ -614,6 +614,7 @@ public class Board : MonoBehaviour
         }
         else
         {
+            swipeHint.oneHintActive = false;
             audioManager.SwipeResist();
             ChangeTwoFruit(fruit, otherFruit);
             yield return new WaitForSeconds(0.3f);

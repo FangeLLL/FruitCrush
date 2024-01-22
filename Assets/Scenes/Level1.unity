@@ -16953,6 +16953,7 @@ MonoBehaviour:
     buyPowerUps: {fileID: 565100019}
     count: {fileID: 538543596}
     isActivated: 0
+  shopController: {fileID: 0}
   activeSprite: {fileID: 21300000, guid: ddb144813a39a954fbd3c0aa99673da9, type: 3}
   deactiveSprite: {fileID: 21300000, guid: 2bf985885b647a74a83fd034ef0e4795, type: 3}
   shopBackground: {fileID: 486624026}
@@ -17124,6 +17125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerUps: []
+  shopController: {fileID: 1772865878}
   activeSprite: {fileID: 0}
   deactiveSprite: {fileID: 0}
   shopBackground: {fileID: 486624026}

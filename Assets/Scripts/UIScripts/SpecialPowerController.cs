@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class SpecialPower
@@ -67,6 +68,14 @@ public class SpecialPowerController : PowerUpController
                     selectedSpecialPowerUp.isActivated = true;
                     selectedSpecialPowerUp.countSpecialPowerUpBoxDeactive.SetActive(false);
                     selectedSpecialPowerUp.count.gameObject.SetActive(false);
+
+                    for (int i = 0; i < specialPowerUps.Length; i++)
+                    {
+                        if (i != index)
+                        {
+                            specialPowerUps[i].powerUp.GetComponent<Button>().interactable = false;
+                        }
+                    }
                 }
                 else
                 {
@@ -74,6 +83,14 @@ public class SpecialPowerController : PowerUpController
                     selectedSpecialPowerUp.isActivated = false;
                     selectedSpecialPowerUp.countSpecialPowerUpBoxDeactive.SetActive(true);
                     selectedSpecialPowerUp.count.gameObject.SetActive(true);
+
+                    for (int i = 0; i < specialPowerUps.Length; i++)
+                    {
+                        if (i != index)
+                        {
+                            specialPowerUps[i].powerUp.GetComponent<Button>().interactable = true;
+                        }
+                    }
                 }
             }
 
@@ -106,6 +123,14 @@ public class SpecialPowerController : PowerUpController
             selectedSpecialPowerUp.countSpecialPowerUpBoxDeactive.SetActive(false);
             selectedSpecialPowerUp.count.gameObject.SetActive(false);
             selectedSpecialPowerUp.buySpecialPowerUps.SetActive(true);
+        }
+
+        for (int i = 0; i < specialPowerUps.Length; i++)
+        {
+            if (i != index)
+            {
+                specialPowerUps[i].powerUp.GetComponent<Button>().interactable = true;
+            }
         }
 
         string amountSSaveKey = amountSSaveKeyPrefix + index.ToString();

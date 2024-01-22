@@ -15,53 +15,54 @@ public class UIManager : Sounds
     public ShopController shopController;
     public AudioManager audioManager;
 
-    public GameObject congratText;
-    public GameObject failedText;
-    public GameObject finishBackground1;
-    public GameObject finishBackground2;
-    public GameObject settingsIcon;
-    public GameObject settingsIconShadow;
-    public GameObject soundIcon;
-    public GameObject soundDisableIcon;
-    public GameObject musicIcon;
-    public GameObject musicDisableIcon;
-    public GameObject exitGameIcon;
-    public GameObject settingsGray;
-    public GameObject gameFinishBoxTrue;
-    public GameObject gameFinishBoxFalse;
-    public GameObject gameFinishBoxLevel;
-    public GameObject gameFinishBoxStar;
-    public GameObject starGlow;
-    public GameObject gameFinishBoxMoveCount1;
-    public GameObject gameFinishBoxMoveCount2;
-    public GameObject gameFinishBoxTarget1OG;
-    public GameObject gameFinishBoxTarget2;
-    public GameObject gameFinishBoxMoveBox;
-    public GameObject gameFinishBoxPowerUpsBox;
-    public GameObject starBox;
-    public GameObject livesBox;
-    public GameObject quitButton;
-    public GameObject quitButton2;
-    public GameObject continueButton;
-    public GameObject continueWithButton;
-    public GameObject retryButton;
-    public GameObject shopBackground;
-    public GameObject shopTopUI;
-    public GameObject shopCloseButton;
-    public GameObject outOfLivesBox;
-    public GameObject outOfLivesBoxQuitButton;
-    public GameObject refillButton;
-    public GameObject quitLevelBox;
-    public GameObject quitLevelBoxCloseButton;
-    public GameObject quitLevelButton;
+    [SerializeField] private GameObject congratText;
+    [SerializeField] private GameObject failedText;
+    [SerializeField] private GameObject finishBackground1;
+    [SerializeField] private GameObject finishBackground2;
+    [SerializeField] private GameObject settingsIcon;
+    [SerializeField] private GameObject settingsIconShadow;
+    [SerializeField] private GameObject soundIcon;
+    [SerializeField] private GameObject soundDisableIcon;
+    [SerializeField] private GameObject musicIcon;
+    [SerializeField] private GameObject musicDisableIcon;
+    [SerializeField] private GameObject exitGameIcon;
+    [SerializeField] private GameObject settingsGray;
+    [SerializeField] private GameObject gameFinishBoxTrue;
+    [SerializeField] private GameObject gameFinishBoxFalse;
+    [SerializeField] private GameObject gameFinishBoxLevel;
+    [SerializeField] private GameObject gameFinishBoxStar;
+    [SerializeField] private GameObject starGlow;
+    [SerializeField] private GameObject gameFinishBoxMoveCount1;
+    [SerializeField] private GameObject gameFinishBoxMoveCount2;
+    [SerializeField] private GameObject gameFinishBoxTarget1OG;
+    [SerializeField] private GameObject gameFinishBoxTarget2;
+    [SerializeField] private GameObject gameFinishBoxMoveBox;
+    [SerializeField] private GameObject gameFinishBoxPowerUpsBox;
+    [SerializeField] private GameObject starBox;
+    [SerializeField] private GameObject livesBox;
+    [SerializeField] private GameObject quitButton;
+    [SerializeField] private GameObject quitButton2;
+    [SerializeField] private GameObject continueButton;
+    [SerializeField] private GameObject continueWithButton;
+    [SerializeField] private GameObject retryButton;
+    [SerializeField] private GameObject shopBackground;
+    [SerializeField] private GameObject shopTopUI;
+    [SerializeField] private GameObject shopCloseButton;
+    [SerializeField] private GameObject outOfLivesBox;
+    [SerializeField] private GameObject outOfLivesBoxQuitButton;
+    [SerializeField] private GameObject refillButton;
+    [SerializeField] private GameObject quitLevelBox;
+    [SerializeField] private GameObject quitLevelBoxCloseButton;
+    [SerializeField] private GameObject quitLevelButton;
 
-    public TextMeshProUGUI movePriceText;
-    public TextMeshProUGUI refillPriceText;
-    public TextMeshProUGUI levelText;
+    [SerializeField] private TextMeshProUGUI movePriceText;
+    [SerializeField] private TextMeshProUGUI refillPriceText;
+    [SerializeField] private TextMeshProUGUI levelText;
 
     public bool isSoundOn;
     public bool isMusicOn;
     bool onetimeBool = true;
+    [SerializeField] private bool isHapticSupported;
 
     string gameFinishTrigger = "GameFinishTrigger";
     string gameFinishTriggerReverse = "GameFinishTriggerReverse";
@@ -85,6 +86,8 @@ public class UIManager : Sounds
 
     private void Start()
     {
+        isHapticSupported = SystemInfo.supportsVibration;
+            
         int soundSetting = PlayerPrefs.GetInt("SoundSetting", 1);
         isSoundOn = soundSetting == 1;
 

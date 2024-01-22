@@ -20,6 +20,7 @@ public class PowerUps
 public class PowerUpController : MonoBehaviour
 {
     public PowerUps[] powerUps;
+    public ShopController shopController;
 
     public Sprite activeSprite;
     public Sprite deactiveSprite;
@@ -157,9 +158,20 @@ public class PowerUpController : MonoBehaviour
     {
         if (!shopBackground.activeSelf)
         {
-            starShopText.text = starText.text;
-            shopBackground.SetActive(true);
-            shopTopUI.GetComponent<Animator>().SetTrigger("ShopOpen");
+            StartCoroutine(ShopOpenEnum());
+        }
+    }
+
+    IEnumerator ShopOpenEnum()
+    {
+        starShopText.text = starText.text;
+        shopBackground.SetActive(true);
+        shopTopUI.GetComponent<Animator>().SetTrigger("ShopOpen");
+
+        for (int i = 0; i < shopController.shopItems.Length; i++)
+        {
+            shopController.shopItems[i].item.GetComponent<Animator>().SetTrigger("ShopOpen");
+            yield return new WaitForSeconds(0.01f);
         }
     }
 }

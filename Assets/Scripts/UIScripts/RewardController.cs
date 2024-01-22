@@ -124,6 +124,7 @@ public class RewardController : MonoBehaviour
 
         rewardGray.SetActive(true);
         rewardGray.GetComponent<Animator>().SetTrigger("RewardDisplayTrigger");
+        rewardGray.GetComponent<Button>().interactable = false;
 
         rewardText.SetActive(true);
         tapToClaimText.SetActive(true);
@@ -139,12 +140,14 @@ public class RewardController : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
+        rewardGray.GetComponent<Button>().interactable = true;
         tapToClaimText.GetComponent<Animator>().SetTrigger("RewardDisplayTrigger");
     }
 
     public void RewardGrayTap()
     {
         StartCoroutine(DisplayAnimationReverse());
+        rewardGray.GetComponent<Button>().interactable = false;
 
         for (int i = 0; i < rewardUI.Length; i++)
         {

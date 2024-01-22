@@ -48,10 +48,13 @@ public class MainMenuController : Sounds
     public bool isSoundOn;
     public bool isMusicOn;
     public bool isHintOn;
+    [SerializeField] private bool isHapticSupported;
 
     private void Start()
     {
         StartCoroutine(ActivateUICoroutine());
+
+        isHapticSupported = SystemInfo.supportsVibration;
 
         int soundSetting = PlayerPrefs.GetInt("SoundSetting", 1);
         isSoundOn = soundSetting == 1;

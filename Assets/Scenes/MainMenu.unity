@@ -14827,6 +14827,7 @@ MonoBehaviour:
   isSoundOn: 0
   isMusicOn: 0
   isHintOn: 0
+  isHapticSupported: 0
 --- !u!114 &1772865871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14861,6 +14862,7 @@ MonoBehaviour:
     buyPowerUps: {fileID: 1380275520}
     count: {fileID: 735163962}
     isActivated: 0
+  shopController: {fileID: 0}
   activeSprite: {fileID: 21300000, guid: ddb144813a39a954fbd3c0aa99673da9, type: 3}
   deactiveSprite: {fileID: 21300000, guid: 2bf985885b647a74a83fd034ef0e4795, type: 3}
   shopBackground: {fileID: 123667230}
@@ -17685,7 +17687,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
     m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
-    m_DisabledColor: {r: 1, g: 1, b: 1, a: 0.5019608}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:

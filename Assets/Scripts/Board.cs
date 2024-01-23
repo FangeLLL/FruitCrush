@@ -747,6 +747,11 @@ public class Board : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Object will be fade away slowly before destroye.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public IEnumerator FadeOut(GameObject obj)
     {
 
@@ -783,6 +788,10 @@ public class Board : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// General filling function. Every column has their FillTheColumn function and this function calls them in a for loop.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator FillTheGaps()
     {
         yield return null;

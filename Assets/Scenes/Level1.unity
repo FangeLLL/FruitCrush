@@ -17429,8 +17429,8 @@ MonoBehaviour:
   lives: 0
   livesText: {fileID: 267999526}
   livesStatusText: {fileID: 548248858}
-  infiniteHealth: {fileID: 0}
-  infiniteHealthStatusText: {fileID: 0}
+  infiniteHealth: {fileID: 641233348}
+  infiniteHealthStatusText: {fileID: 957194474}
 --- !u!95 &1774749133
 Animator:
   serializedVersion: 5

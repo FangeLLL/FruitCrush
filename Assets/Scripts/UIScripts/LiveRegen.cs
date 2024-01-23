@@ -20,15 +20,14 @@ public class LiveRegen : MonoBehaviour
 
     private bool isInfiniteHealthActive = false;  // Initialize as false
     private float remainingInfiniteHealthTime;
-    private float infiniteHealthDuration = 10f;
+    private float infiniteHealthDuration = 300f;
 
 
     private void Start()
     {
         timeToRegen = 1800;
         lives = PlayerPrefs.GetInt("Lives", 5);
-        isInfiniteHealthActive = PlayerPrefs.GetInt("InfiniteHealthActive", 0) == 1;
-        isInfiniteHealthActive = true;
+        isInfiniteHealthActive = PlayerPrefs.GetInt("InfiniteHealthActive", 1) == 1;
 
         if (isInfiniteHealthActive)
         {
@@ -218,13 +217,17 @@ public class LiveRegen : MonoBehaviour
         PlayerPrefs.SetInt("Lives", lives);
 
         remainingInfiniteHealthTime = PlayerPrefs.GetFloat("RemainingInfiniteHealthTime", infiniteHealthDuration);
-
+        remainingInfiniteHealthTime -= offlineTimeToRegen;
+        if (remainingInfiniteHealthTime < 0)
+        {
+            remainingInfiniteHealthTime = 0;
+        }
         StartCoroutine(StartInfiniteHealthCountdownCoroutine());
     }
 
     private IEnumerator StartInfiniteHealthCountdownCoroutine()
     {
-        while (remainingInfiniteHealthTime > 0)
+        while (remainingInfiniteHealthTime >= -1)
         {
             remainingInfiniteHealthTime -= 1;
             PlayerPrefs.SetFloat("RemainingInfiniteHealthTime", remainingInfiniteHealthTime);

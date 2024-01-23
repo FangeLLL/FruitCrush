@@ -15,13 +15,37 @@ public class LiveRegen : MonoBehaviour
 
     public TextMeshProUGUI livesText;
     public TextMeshProUGUI livesStatusText;
+    public GameObject infiniteHealth;
+    public TextMeshProUGUI infiniteHealthStatusText;
+
+    private bool isInfiniteHealthActive = false;  // Initialize as false
+    private float remainingInfiniteHealthTime;
+    private float infiniteHealthDuration = 10f;
+
 
     private void Start()
     {
         timeToRegen = 1800;
         lives = PlayerPrefs.GetInt("Lives", 5);
+        isInfiniteHealthActive = PlayerPrefs.GetInt("InfiniteHealthActive", 0) == 1;
+        isInfiniteHealthActive = true;
+
+        if (isInfiniteHealthActive)
+        {
+            StartInfiniteHealthCountdown();
+            lives = 5;
+        }
+        else
+        {
+            livesText.gameObject.SetActive(true);
+            livesStatusText.gameObject.SetActive(true);
+            infiniteHealth.SetActive(false);
+            infiniteHealthStatusText.gameObject.SetActive(false);
+        }
+
         livesText.text = lives.ToString();
         nextLiveRemainingTime = PlayerPrefs.GetInt("NLRT", timeToRegen);
+
 
         if (lives == 5)
         {
@@ -37,7 +61,6 @@ public class LiveRegen : MonoBehaviour
         {
             CalculateOfflineTime();
         }
-
     }
 
     void CalculateOfflineTime()
@@ -179,6 +202,51 @@ public class LiveRegen : MonoBehaviour
                 double time = offlineDuration.TotalSeconds;
                 offlineTimeToRegen = (int)time;
             }
+        }
+    }
+
+    private void StartInfiniteHealthCountdown()
+    {
+        livesText.gameObject.SetActive(false);
+        livesStatusText.gameObject.SetActive(false);
+        infiniteHealth.SetActive(true);
+        infiniteHealthStatusText.gameObject.SetActive(true);
+
+        lives = 5;
+        livesText.text = lives.ToString();
+
+        PlayerPrefs.SetInt("Lives", lives);
+
+        remainingInfiniteHealthTime = PlayerPrefs.GetFloat("RemainingInfiniteHealthTime", infiniteHealthDuration);
+
+        StartCoroutine(StartInfiniteHealthCountdownCoroutine());
+    }
+
+    private IEnumerator StartInfiniteHealthCountdownCoroutine()
+    {
+        while (remainingInfiniteHealthTime > 0)
+        {
+            remainingInfiniteHealthTime -= 1;
+            PlayerPrefs.SetFloat("RemainingInfiniteHealthTime", remainingInfiniteHealthTime);
+
+            if (remainingInfiniteHealthTime >= 0)
+            {
+                infiniteHealthStatusText.text = FormatTime((int)remainingInfiniteHealthTime);
+            }
+            else
+            {
+                infiniteHealthStatusText.gameObject.SetActive(false);
+                infiniteHealth.SetActive(false);
+                isInfiniteHealthActive = false;
+                PlayerPrefs.SetInt("InfiniteHealthActive", 0);
+                livesText.gameObject.SetActive(true);
+                livesStatusText.gameObject.SetActive(true);
+                infiniteHealth.SetActive(false);
+                infiniteHealthStatusText.gameObject.SetActive(false);
+                yield break;
+            }
+
+            yield return new WaitForSeconds(1);
         }
     }
 }

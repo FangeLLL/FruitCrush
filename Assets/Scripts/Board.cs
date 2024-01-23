@@ -636,6 +636,11 @@ public class Board : MonoBehaviour
 
     private bool IsSuccesfulMove(GameObject fruit, GameObject otherFruit)
     {
+        if (!fruit || !otherFruit)
+        {
+            return true;
+        }
+
         Fruit fruitScript = fruit.GetComponent<Fruit>();
         Fruit otherFruitScript = otherFruit.GetComponent<Fruit>();
 

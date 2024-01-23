@@ -15,7 +15,8 @@ public class DailyTaskManager : MonoBehaviour
         CrushFruits,
         FirstTry,
         MakeMoves,
-        CreateSpecialFruits
+        CreateSpecialFruits,
+        ComboTwoSpecialFruits
     }
 
     [Serializable]

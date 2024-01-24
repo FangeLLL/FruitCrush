@@ -1314,19 +1314,24 @@ public class Board : MonoBehaviour
     /// <param name="clone"></param>
     private void HorizontalHarvesterMove(GameObject harvester, bool clone)
     {
+        float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
+      //  float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
+
+       // Vector2 tempPosition = new Vector2((width-1) * scaleNumber - xOffset, (height-1) * scaleNumber - yOffset);
+
         harvester.GetComponent<Collider2D>().enabled = false;
         Fruit harvesterScript = harvester.GetComponent<Fruit>();
         //harvesterScript.speed = 0.04f;
         int row = harvesterScript.row, column = harvesterScript.column;
         if (clone)
         {
-            harvesterScript.targetV.x = allTiles[width - 1, row].transform.position.x + 1;
+            harvesterScript.targetV.x = ((width - 1) * scaleNumber - xOffset)+1;
 
             HorizontalDestroy(column, row, true);
         }
         else
         {
-            harvester.GetComponent<Fruit>().targetV.x = allTiles[0, row].transform.position.x - 1;
+            harvesterScript.targetV.x = -xOffset - 1;
 
             HorizontalDestroy(column, row, false);
 
@@ -1346,17 +1351,22 @@ public class Board : MonoBehaviour
     /// <param name="clone"></param>
     public void VerticalHarvesterMove(GameObject harvester, bool clone)
     {
+        float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
         harvester.GetComponent<Collider2D>().enabled = false;
         Fruit harvesterScript = harvester.GetComponent<Fruit>();
         int row = harvesterScript.row, column = harvesterScript.column;
         if (clone)
         {
-            harvesterScript.targetV.y = allTiles[column, 0].transform.position.y - 1;
+            //  harvesterScript.targetV.y = allTiles[column, 0].transform.position.y - 1;
+            harvesterScript.targetV.y = (height - 1) * scaleNumber - yOffset - 1;
+
             VerticalDestroy(column, row, false);
         }
         else
         {
-            harvesterScript.targetV.y = allTiles[column, height - 1].transform.position.y + 1;
+        //    harvesterScript.targetV.y = allTiles[column, height - 1].transform.position.y + 1;
+            harvesterScript.targetV.y =  - yOffset - 1;
+
             VerticalDestroy(column, row, true);        
 
         }

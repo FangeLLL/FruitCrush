@@ -146,6 +146,9 @@ public class Board : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Arranging the general scale variable of prefabs according to size of board.
+    /// </summary>
     private void RearrangeScaleNumber()
     {
         int max;
@@ -184,12 +187,22 @@ public class Board : MonoBehaviour
         scaleFactorFruit = scaleNumber / 1.2f;
     }
 
+    /// <summary>
+    /// According to level save data it creates the board and change the scale of prefabs (fruits, powerups and tiles).
+    /// </summary>
+    /// <param name="arrangedFruits"></param>
+    /// <param name="arrangedTiles"></param>
+    /// <param name="arrangedTilesZero"></param>
+    /// <param name="arrangedTilesOne"></param>
+    /// <param name="arrangedTilesTwo"></param>
     private void SetUpWithArray(int[,] arrangedFruits, int[,] arrangedTiles, int[,] arrangedTilesZero, int[,] arrangedTilesOne, int[,] arrangedTilesTwo)
     {
 
         float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
         float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
         tilePrefab.transform.localScale = new Vector3(scaleNumber, scaleNumber, scaleNumber);
+
+        // Changing scales of prefabs.
 
         foreach (GameObject fruitScale in fruits)
         {
@@ -206,10 +219,13 @@ public class Board : MonoBehaviour
             obstaclePrefab.transform.localScale = new Vector3(scaleNumber, scaleNumber, scaleNumber);
         }
 
+        // Putting and creating fruits and tiles in cells.
+
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
             {
+                // If tiles value 0 then it means it is missing (not existing) tile.
                 if (arrangedTiles[i, j] == 1)
                 {
                     Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, j * scaleNumber - yOffset);
@@ -219,6 +235,13 @@ public class Board : MonoBehaviour
                     backgroundTile.GetComponent<BackgroundTile>().column = i;
                     backgroundTile.GetComponent<BackgroundTile>().row = j;
                     allTiles[i, j] = backgroundTile;
+
+                    // arrangedTilesZero, one and two represents obstacles that inside of each other. For example, if we put wheatfarm inside of
+                    // strawbale then we must put strawbale to arrangedTilesZero and wheatfarm to arrangedTilesOne so basically arrangedTilesZero will 
+                    // be front and arrangedTilesOne will be in back and they will break according to this order.
+
+                    // For, trying to make more standart mostly of transparent and filliable obstacles will be put arrangedTilesOne and obstacles that
+                    // blocking fruits and other stuff (Block obstacles) will be put arrangedTilesZero.
 
                     if (arrangedTilesZero[i, j] != -1)
                     {
@@ -235,9 +258,11 @@ public class Board : MonoBehaviour
                         backgroundTile.GetComponent<BackgroundTile>().obstacles[2] = Instantiate(obstaclePrefabs[arrangedTilesTwo[i, j]], tempPosition, Quaternion.identity);
                     }
 
+                    // After creating obstacles tile needs to check which obstacle will be break first.
+
                     backgroundTile.GetComponent<BackgroundTile>().DetectVisibleOne();
 
-                    // If type of fruit -1 then it means fruit does not exist.
+                    // If type of fruit -1 then it means fruit does not exist in this cell.
                     if (arrangedFruits[i, j] >= 0)
                     {
                         int fruitToUse = arrangedFruits[i, j];
@@ -255,6 +280,13 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// In swipe action this function will call from the swiped object script. This functions checks if swipe is possible. If it is possible then calls
+    /// checkMove function for if the move is valid. Which is not then it revert it with inside of that function. 
+    /// </summary>
+    /// <param name="swipeAngle"></param>
+    /// <param name="column"></param>
+    /// <param name="row"></param>
     public void SwipeFruits(float swipeAngle, int column, int row)
     {
         if (taskController.moveCount < 1 || !taskController.isBoardActive)
@@ -376,14 +408,20 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// After move played or some match happend then this function called by other function or itself depends on situation.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator CheckAndDestroyMatches()
     {
+        // List of fruits going to be popped.
         List<GameObject> fruitsCheck = new List<GameObject>();
         checkingMatch = true;
         yield return null;
         popped = false;
         hintBool = false;
 
+        // For, achivement progress it contains type of fruits popped count.  
         int[] typeFruits = new int[fruits.Length];
 
         // Check for matches in columns
@@ -411,6 +449,8 @@ public class Board : MonoBehaviour
                         k++;
                     }
                     same = true;
+                    // If there is a more than 2 dual matches then it adds the fruits to main pop list. There is no need to check if there is a same
+                    // fruits inside in main list because this is first filling of main list.
                     if (k < 3)
                     {
                         fruitsCheckTemp.Clear();
@@ -422,7 +462,7 @@ public class Board : MonoBehaviour
                     }
                     k = 0;
 
-                    //Row
+                    // Same goes for ROW
                     while (same)
                     {
                         if (i + k + 1 >= width || !FruitAvailable(allFruits[i + k + 1, j]) || allFruits[i + k, j].GetComponent<Fruit>().fruitType != allFruits[i + k + 1, j].GetComponent<Fruit>().fruitType)
@@ -439,10 +479,13 @@ public class Board : MonoBehaviour
                     else
                     {
                         rowPopped = true;
+                        // It adds the fruits to main pop list (adding the just diffirent ones). 
                         fruitsCheck.AddRange(fruitsCheckTemp.Except(fruitsCheck).ToList());
                     }
 
                     int type;
+
+                    // Checking Square match
 
                     if (j + 1 < height && FruitAvailable(allFruits[i, j]) && FruitAvailable(allFruits[i, j + 1]) && (type = allFruits[i, j].GetComponent<Fruit>().fruitType) == allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
                     {
@@ -477,7 +520,7 @@ public class Board : MonoBehaviour
                         }
                         if (fruitsCheck.Count > 3)
                         {
-                            // Creating Power Up
+                            // Creating Power Up according to shape of match.
 
                             GameObject fruitToChange = fruitsCheck[UnityEngine.Random.Range(0, fruitsCheck.Count)];
                             int row = fruitToChange.GetComponent<Fruit>().row;
@@ -538,6 +581,11 @@ public class Board : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Basically checks if fruits exist and not in a move to somewhere.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     private bool FruitAvailable(GameObject obj)
     {
         if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.5f)
@@ -550,6 +598,12 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks if the played move possible if not it reverts move.
+    /// </summary>
+    /// <param name="fruit"></param>
+    /// <param name="otherFruit"></param>
+    /// <returns></returns>
     private IEnumerator CheckMove(GameObject fruit, GameObject otherFruit)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>();
@@ -634,6 +688,12 @@ public class Board : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// It returns moves succesfullnes.
+    /// </summary>
+    /// <param name="fruit"></param>
+    /// <param name="otherFruit"></param>
+    /// <returns></returns>
     private bool IsSuccesfulMove(GameObject fruit, GameObject otherFruit)
     {
         if (!fruit || !otherFruit)
@@ -667,10 +727,13 @@ public class Board : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Changing two fruit loc and info. 
+    /// </summary>
+    /// <param name="fruit"></param>
+    /// <param name="otherFruit"></param>
     private void ChangeTwoFruit(GameObject fruit, GameObject otherFruit)
     {
-
-        // Changing two fruit loc and info.
 
         Fruit fruitScript = fruit.GetComponent<Fruit>();
         int tempRow = fruitScript.row, tempCol = fruitScript.column;
@@ -687,6 +750,14 @@ public class Board : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// After move played if fruits didnt popped then it means either this was not possible move or CheckAndDestroyMatches function didnt catch the 
+    /// match yet. So, this function checks if the move is valid move. Simply does the CheckAndDestroyMatches job but much faster and just for that 
+    /// location
+    /// </summary>
+    /// <param name="row"></param>
+    /// <param name="column"></param>
+    /// <returns></returns>
     private bool CheckMatchSides(int row, int column)
     {
         /* Checking row of the object by starting 2 left from object. Function works like this;
@@ -813,6 +884,13 @@ public class Board : MonoBehaviour
         StartCoroutine(FillTheGaps());
     }
 
+    /// <summary>
+    /// Filling the specifing column. Adding empty places to queue and making fall fruits that floating. After all empty places on top then creating
+    /// fruits and making fall to empty places. Also, if there is a missing tile or block obstacle top of empty place then empty place queue resets and 
+    /// CrossFall function will be call to fill that empty place.
+    /// </summary>
+    /// <param name="i"></param>
+    /// <returns></returns>
     public IEnumerator FillTheColumn(int i)
     {
         fillingColumn[i] = true;
@@ -897,6 +975,12 @@ public class Board : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Powerups same as fruits but just their type is negative numbers so that when they popped they will act like powerup according to their type.
+    /// </summary>
+    /// <param name="column"></param>
+    /// <param name="row"></param>
+    /// <param name="type"></param>
     private void CreatePowerUp(int column, int row, int type)
     {
         /*
@@ -921,11 +1005,11 @@ public class Board : MonoBehaviour
         GameObject newPowerUp = Instantiate(powerUps[(type * -1) - 1], tempPosition, powerUps[(type * -1) - 1].transform.rotation);
         Fruit newPowerUpScript = newPowerUp.GetComponent<Fruit>();
 
-        // Set the parent and name of the new fruit
+        // Set the parent and name of the new powerup
         newPowerUp.transform.parent = this.transform;
         newPowerUp.name = "( " + column + ", " + row + " )";
 
-        // Set the column and row of the new fruit
+        // Set the column and row of the new powerup
         newPowerUpScript.column = column;
         newPowerUpScript.row = row;
         newPowerUpScript.fruitType = type;
@@ -933,10 +1017,17 @@ public class Board : MonoBehaviour
         newPowerUpScript.targetV = allTiles[column, row].transform.position;
 
 
-        // Add the new fruit to the allFruits array
+        // Add the new powerup to the allFruits array
         allFruits[column, row] = newPowerUp;
     }
 
+    /// <summary>
+    /// If the empty place that has an obstacle or missing tile on top of itself then this fuction steals a fruit from other column. First checks left
+    /// column if not possible than checks right column for stealing fruit.
+    /// </summary>
+    /// <param name="column"></param>
+    /// <param name="row"></param>
+    /// <returns></returns>
     private IEnumerator CrossFall(int column, int row)
     {
         GameObject fruit = null;
@@ -964,6 +1055,12 @@ public class Board : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// If one powerup swiped with other powerup than there will be a merge and this function will be called. It will call necessary functions 
+    /// according to types of this two powerups.
+    /// </summary>
+    /// <param name="fruit"></param>
+    /// <param name="otherFruit"></param>
     public void ActivateMergePowerUp(GameObject fruit, GameObject otherFruit)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>(), otherFruitScript = otherFruit.GetComponent<Fruit>();
@@ -1092,6 +1189,10 @@ public class Board : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Activating powerup according to type.
+    /// </summary>
+    /// <param name="fruit"></param>
     public void ActivatePowerUp(GameObject fruit)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>();
@@ -1139,9 +1240,14 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Destroying objects in a control. If object already fading out there is no need to destroy it. If explosion is true then it will destroy nearby
+    /// block obstacles.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="explosion"></param>
     private void DestroyController(GameObject obj, bool explosion)
     {
-        // If fruit type 
 
         if (obj.GetComponent<Fruit>().fadeout)
         {
@@ -1170,6 +1276,12 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Explosing depends on tnt power. It used from normal tnt and merged tnt. 
+    /// </summary>
+    /// <param name="column"></param>
+    /// <param name="row"></param>
+    /// <param name="range"></param>
     private void TNTExplosion(int column, int row, int range)
     {
         allFruits[column, row].GetComponent<Fruit>().fadeout = true;
@@ -1195,6 +1307,11 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Horizontal Harvester move left and right so clone goes right and real one goes left. 
+    /// </summary>
+    /// <param name="harvester"></param>
+    /// <param name="clone"></param>
     private void HorizontalHarvesterMove(GameObject harvester, bool clone)
     {
         harvester.GetComponent<Collider2D>().enabled = false;
@@ -1222,21 +1339,25 @@ public class Board : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Vertical Harvester move up and down so clone goes down and real one goes up. 
+    /// </summary>
+    /// <param name="harvester"></param>
+    /// <param name="clone"></param>
     public void VerticalHarvesterMove(GameObject harvester, bool clone)
     {
         harvester.GetComponent<Collider2D>().enabled = false;
         Fruit harvesterScript = harvester.GetComponent<Fruit>();
         int row = harvesterScript.row, column = harvesterScript.column;
-        if (!clone)
-        {
-            harvesterScript.targetV.y = allTiles[column, height - 1].transform.position.y + 1;
-
-            VerticalDestroy(column, row, true);
-        }
-        else
+        if (clone)
         {
             harvesterScript.targetV.y = allTiles[column, 0].transform.position.y - 1;
             VerticalDestroy(column, row, false);
+        }
+        else
+        {
+            harvesterScript.targetV.y = allTiles[column, height - 1].transform.position.y + 1;
+            VerticalDestroy(column, row, true);        
 
         }
         if (allTiles[column, row])

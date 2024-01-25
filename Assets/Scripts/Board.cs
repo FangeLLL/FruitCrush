@@ -57,6 +57,8 @@ public class Board : MonoBehaviour
     public float scaleNumber;
     private float scaleFactorFruit;
 
+    private int[] columnsFallIndexY;
+
     // Test variable
     public int specialPowerID = 0;
     public bool specialSwipe = false;
@@ -75,6 +77,9 @@ public class Board : MonoBehaviour
 
         width = gridData.width;
         height = gridData.height;
+
+        // Some of columns falling point can be diffirent because of missing tiles in that column. 
+        columnsFallIndexY = new int[width];
 
         RearrangeScaleNumber();
 
@@ -223,11 +228,16 @@ public class Board : MonoBehaviour
 
         for (int i = 0; i < width; i++)
         {
+            // Start with -1 because it is possible that one of the columns does not exist because of shape of board.
+            int fallPoint = -1;
             for (int j = 0; j < height; j++)
             {
                 // If tiles value 0 then it means it is missing (not existing) tile.
                 if (arrangedTiles[i, j] == 1)
                 {
+                    // If tile exist than updating fallpoint.
+                    fallPoint = j;
+
                     Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, j * scaleNumber - yOffset);
                     GameObject backgroundTile = Instantiate(tilePrefab, tempPosition, Quaternion.identity);
                     backgroundTile.transform.parent = this.transform;
@@ -277,6 +287,8 @@ public class Board : MonoBehaviour
 
                 }
             }
+            // Inserting fallPoint to array
+            columnsFallIndexY[i] = fallPoint;
         }
     }
 
@@ -897,7 +909,7 @@ public class Board : MonoBehaviour
 
         Queue<int> emptyPlaces = new Queue<int>();
 
-        for (int j = 0; j < height; j++)
+        for (int j = 0; j <= columnsFallIndexY[i]; j++)
         {
             if (!allTiles[i, j] || allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
             {
@@ -949,7 +961,7 @@ public class Board : MonoBehaviour
             float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
             float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
             int emptyRowIndex = emptyPlaces.Dequeue();
-            Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, height * scaleNumber - yOffset);
+            Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, columnsFallIndexY[i]+1 * scaleNumber - yOffset);
 
             // Instantiate a new fruit at the position of the destroyed fruit. Fruit that going to be created must be from existFruits variable. existFruits
             // list contains indexes of avaliable fruits.
@@ -1381,7 +1393,6 @@ public class Board : MonoBehaviour
     /// <summary>
     /// Destroy one side of vertical from the point. If up boolean true then it destroy up of the point and if not down. This function
     /// currently used by vertical special power and vertical harvester.
-    /// By Bertuð Abalý
     /// </summary>
     /// <param name="column"></param>
     /// <param name="row"></param>
@@ -1423,7 +1434,6 @@ public class Board : MonoBehaviour
     /// <summary>
     /// Destroy one side of horizontal from the point. If right boolean true then it destroy right side of the point and if not left side. This function
     /// currently used by horizontal special power and horizontal harvester.
-    /// By Bertuð Abalý
     /// </summary>
     /// <param name="column"></param>
     /// <param name="row"></param>
@@ -1468,7 +1478,6 @@ public class Board : MonoBehaviour
 
     /// <summary>
     /// Destroy just one tile.
-    /// By Bertuð Abalý
     /// </summary>
     /// <param name="column"></param>
     /// <param name="row"></param>
@@ -1488,7 +1497,6 @@ public class Board : MonoBehaviour
 
     /// <summary>
     /// This function activate selected special power. 
-    /// By Bertuð Abalý
     /// </summary>
     /// <param name="column"></param>
     /// <param name="row"></param>
@@ -1524,7 +1532,6 @@ public class Board : MonoBehaviour
     /// <summary>
     /// This function will call from Special Power Controller script and related to Special Power buttons. specialPowerID represent selected special power.
     /// According to ability some of the arrangment wll be made.
-    /// By Bertuð Abalý
     /// </summary>
     /// <param name="id"></param>
     public void SelectedSpecialPower(int id)

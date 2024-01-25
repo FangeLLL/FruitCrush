@@ -147,4 +147,5 @@ MonoBehaviour:
   indexOfPlace: 0
   boxObstacle: 1
   indestructible: 0
+  obstacleHitSound: StrawBaleBreak
   id: 2

@@ -10,6 +10,7 @@ public class ObstacleScript : MonoBehaviour
     public bool boxObstacle=false;
     public bool indestructible = false;
 
+    public string obstacleHitSound;
     private Board board;
     private TaskController taskController;
     AudioManager audioManager;
@@ -40,29 +41,14 @@ public class ObstacleScript : MonoBehaviour
     {     
         if(indestructible)
         {
-            // This sound code will rearrange.
-            switch (id)
-            {
-                case 4:
-                    audioManager.StrawBaleBreak();
-                    break;
-            }
+            audioManager.SoundController(obstacleHitSound);
             // taskController.TaskProgress(taskIndex);
             Debug.Log("Player got apple");
         }
         else
         {
             health--;
-            // This sound code will rearrange.
-            switch (id)
-            {
-                case 0:
-                    audioManager.StrawBaleBreak();
-                    break;
-                case 1:
-                    audioManager.MarbleBreak();
-                    break;
-            }
+            audioManager.SoundController(obstacleHitSound);
             if (health <= 0)
             {
                 StartCoroutine(board.FadeOut(gameObject));

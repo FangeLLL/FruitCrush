@@ -63,6 +63,8 @@ public class Board : MonoBehaviour
     public int specialPowerID = 0;
     public bool specialSwipe = false;
 
+    public bool hintStop = false;
+
     private void Awake()
     {
         saveData.LoadFromJson();
@@ -671,6 +673,7 @@ public class Board : MonoBehaviour
             if (!specialSwipe)
             {
                 taskController.MovePlayed();
+                hintStop = true;
             }
             else
             {
@@ -1526,6 +1529,7 @@ public class Board : MonoBehaviour
                 specialPowerController.SpecialPowerUpUsed(3);
                 break;
         }
+        hintStop = true;
         specialPowerID = 0;
     }
 

@@ -147,4 +147,5 @@ MonoBehaviour:
   indexOfPlace: 1
   boxObstacle: 0
   indestructible: 0
+  obstacleHitSound: MarbleBreak
   id: 1

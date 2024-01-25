@@ -104,6 +104,7 @@ public class Fruit : MonoBehaviour
         if (fruitType < 0 && board.taskController.moveCount > 0 && !isSwiped && board.specialPowerID == 0 && board.taskController.isBoardActive)
         {
             board.taskController.MovePlayed();
+            board.hintStop = true;
             board.ActivatePowerUp(gameObject);
         }
     }

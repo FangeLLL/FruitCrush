@@ -34,7 +34,26 @@ public class AudioManager : Sounds
         }
         
     }
-
+    
+    public void SoundController(string sound)
+    {
+        switch (sound)
+        {
+            case "StrawBaleBreak":
+                StrawBaleBreak();
+                break;
+            case "BoxBreak":
+                BoxBreak();
+                break;
+            case "GrassBreak":
+                GrassBreak();
+                break;
+            case "MarbleBreak":
+                MarbleBreak();
+                break;
+        }
+    }
+    
     public void Swipe()
     {
         source.clip = sounds[0];

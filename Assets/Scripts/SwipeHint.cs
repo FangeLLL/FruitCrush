@@ -146,41 +146,48 @@ public class SwipeHint : MonoBehaviour
             {
                 for (int j = 0; j < board.height; j++) // ROW
                 {
-                    if (j + 1 < board.height && board.allFruits[i, j] && board.allFruits[i, j + 1])
+
+
+                    
+                    if (board.allFruits[i, j])
                     {
+                        Debug.Log(j);
                         int type = board.allFruits[i, j].GetComponent<Fruit>().fruitType;
 
-
-                        // FOR SWIPE DOWN
-
-                        /*   X    
-                         *   ||   
-                         *   \/   
-                         * -- --      
-                         *     
-                         *   
-                         */
-
-                        if (i + 4 < board.width)
+                        if (j + 1 < board.height && board.allFruits[i, j + 1])
                         {
-                            if (board.allFruits[i + 1, j] &&
-                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i + 2, j] &&
-                                board.allFruits[i + 3, j] &&
-                                type == board.allFruits[i + 3, j].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i + 4, j] &&
-                                type == board.allFruits[i + 4, j].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i + 2, j + 1] &&
-                                type == board.allFruits[i + 2, j + 1].GetComponent<Fruit>().fruitType)
+                            // FOR SWIPE DOWN
+
+                            /*   X    
+                             *   ||   
+                             *   \/   
+                             * -- --      
+                             *     
+                             *   
+                             */
+
+                            if (i + 4 < board.width)
                             {
-                                fruit = board.allFruits[i + 2, j + 1].GetComponent<Fruit>();
-                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
-                                yield return new WaitForSeconds(0.1f);
-                                continueIteration = false;
-                                StopCoroutines();
-                                break;
+                                if (board.allFruits[i + 1, j] && board.allFruits[i, j] &&
+                                    type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
+                                    board.allFruits[i + 2, j] &&
+                                    board.allFruits[i + 3, j] &&
+                                    type == board.allFruits[i + 3, j].GetComponent<Fruit>().fruitType &&
+                                    board.allFruits[i + 4, j] &&
+                                    type == board.allFruits[i + 4, j].GetComponent<Fruit>().fruitType &&
+                                    board.allFruits[i + 2, j + 1] &&
+                                    type == board.allFruits[i + 2, j + 1].GetComponent<Fruit>().fruitType)
+                                {
+                                    fruit = board.allFruits[i + 2, j + 1].GetComponent<Fruit>();
+                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                    yield return new WaitForSeconds(0.1f);
+                                    continueIteration = false;
+                                    StopCoroutines();
+                                    break;
+                                }
                             }
                         }
+                        
 
                         // FOR SWIPE UP
 
@@ -195,6 +202,7 @@ public class SwipeHint : MonoBehaviour
 
                         if (i + 4 < board.width)
                         {
+                            Debug.Log("5 MATCH");
                             if (board.allFruits[i + 1, j] &&
                                 type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
                                 board.allFruits[i + 2, j] &&
@@ -205,7 +213,8 @@ public class SwipeHint : MonoBehaviour
                                 board.allFruits[i + 2, j - 1] &&
                                 type == board.allFruits[i + 2, j - 1].GetComponent<Fruit>().fruitType)
                             {
-                                fruit = board.allFruits[i + 2, j + 1].GetComponent<Fruit>();
+                                Debug.Log("5 MATCH GO");
+                                fruit = board.allFruits[i + 2, j - 1].GetComponent<Fruit>();
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
@@ -291,15 +300,8 @@ public class SwipeHint : MonoBehaviour
     }
 
 
-    // X FOR FRUIT
-    /*   X     X      |    |
-     *   ||   ||      |    |
-     *   \/   \/    --      --
-     * --      --     /\   /\
-     *   |    |       ||   ||
-     *   |    |       X    X
-     */
 
+    // X FOR FRUIT
     private IEnumerator LShapeIteration()
     {
         for (int i = 0; i < board.width; i++) // COLUMN
@@ -312,7 +314,7 @@ public class SwipeHint : MonoBehaviour
             {
                 for (int j = 0; j < board.height; j++) // ROW
                 {
-                    if (j + 1 < board.height && board.allFruits[i, j] && board.allFruits[i, j + 1])
+                    if (board.allFruits[i, j])
                     {
                         int type = board.allFruits[i, j].GetComponent<Fruit>().fruitType;
 
@@ -327,7 +329,7 @@ public class SwipeHint : MonoBehaviour
 
                         if (j + 3 < board.height && i - 2 >= 0)
                         {
-                            if (i - 2 >= 0 && board.allFruits[i, j + 1] &&
+                            if (board.allFruits[i, j + 1] &&
                                 type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType && board.allFruits[i, j + 2] &&
                                 board.allFruits[i - 1, j + 2] &&
                                 type == board.allFruits[i - 1, j + 2].GetComponent<Fruit>().fruitType &&
@@ -346,6 +348,36 @@ public class SwipeHint : MonoBehaviour
                             }
                         }
 
+                        // FOR SWIPE LEFT
+                        /*       
+                         *       
+                         * --   <= X   
+                         *   |    
+                         *   | 
+                         */
+
+                        if (j + 2 < board.height && i - 2 >= 0 && i + 1 < board.width)
+                        {
+                            if (board.allFruits[i, j + 1] &&
+                                type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType && 
+                                board.allFruits[i, j + 2] &&
+                                board.allFruits[i - 1, j + 2] &&
+                                type == board.allFruits[i - 1, j + 2].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i - 2, j + 2] &&
+                                type == board.allFruits[i - 2, j + 2].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 1, j + 2] &&
+                                type == board.allFruits[i + 1, j + 2].GetComponent<Fruit>().fruitType
+                                )
+                            {
+                                fruit = board.allFruits[i + 1, j + 2].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
                         // FOR SWIPE DOWN
 
                         /*   X    
@@ -356,9 +388,10 @@ public class SwipeHint : MonoBehaviour
                          *   | 
                          */
 
-                        if (j + 3 < board.height && i + 2 >= 0)
+                        if (j + 3 < board.height && i + 2 < board.width)
                         {
-                            if (i + 2 < board.width && board.allFruits[i, j + 1] &&
+
+                            if (board.allFruits[i, j + 1] &&
                                 type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType && board.allFruits[i, j + 2] &&
                                 board.allFruits[i + 1, j + 2] &&
                                 type == board.allFruits[i + 1, j + 2].GetComponent<Fruit>().fruitType &&
@@ -370,6 +403,35 @@ public class SwipeHint : MonoBehaviour
                             {
                                 fruit = board.allFruits[i, j + 3].GetComponent<Fruit>();
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE RIGHT
+                        /*       
+                         *       
+                         *  X =>   --     
+                         *        |    
+                         *        | 
+                         */
+
+                        if (j + 2 < board.height && i + 2 < board.width && i - 1 >= 0)
+                        {
+                            if (board.allFruits[i, j + 1] &&
+                                type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType && board.allFruits[i, j + 2] &&
+                                board.allFruits[i + 1, j + 2] &&
+                                type == board.allFruits[i + 1, j + 2].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 2, j + 2] &&
+                                type == board.allFruits[i + 2, j + 2].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i - 1, j + 2] &&
+                                type == board.allFruits[i - 1, j + 2].GetComponent<Fruit>().fruitType
+                                )
+                            {
+                                fruit = board.allFruits[i - 1, j + 2].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 StopCoroutines();
@@ -390,7 +452,7 @@ public class SwipeHint : MonoBehaviour
 
                         if (j + 3 < board.height && i - 2 >= 0)
                         {
-                            if (i - 2 >= 0 && board.allFruits[i, j + 1] && board.allFruits[i, j + 2] &&
+                            if (board.allFruits[i, j + 1] && board.allFruits[i, j + 2] &&
                                 type == board.allFruits[i, j + 2].GetComponent<Fruit>().fruitType &&
                                 board.allFruits[i, j + 3] &&
                                 type == board.allFruits[i, j + 3].GetComponent<Fruit>().fruitType &&
@@ -402,6 +464,35 @@ public class SwipeHint : MonoBehaviour
                             {
                                 fruit = board.allFruits[i, j].GetComponent<Fruit>();
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE LEFT
+
+                        /*     | 
+                         *     |
+                         *   __  <= X
+                         *      
+                         */
+
+                        if (j + 2 < board.height && i + 3 < board.width)
+                        {
+                            if (board.allFruits[i + 1, j] &&
+                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 2, j] &&
+                                board.allFruits[i + 2, j + 1] &&
+                                type == board.allFruits[i + 2, j +1].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 2, j + 2] &&
+                                type == board.allFruits[i + 2, j + 2].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 3, j] &&
+                                type == board.allFruits[i + 3, j].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i + 3, j].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 StopCoroutines();
@@ -422,18 +513,47 @@ public class SwipeHint : MonoBehaviour
 
                         if (j + 3 < board.height && i + 2 < board.width)
                         {
-                            if (i + 2 < board.width && board.allFruits[i, j + 1] && board.allFruits[i, j + 2] &&
-                                type == board.allFruits[i, j + 2].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i, j + 3] &&
-                                type == board.allFruits[i, j + 3].GetComponent<Fruit>().fruitType &&
+                            if (board.allFruits[i, j+1] &&
+                                board.allFruits[i, j+2] &&
+                                type == board.allFruits[i, j+2].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i, j+3] &&
+                                type == board.allFruits[i, j+3].GetComponent<Fruit>().fruitType &&
                                 board.allFruits[i + 1, j + 1] &&
-                                type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType &&
+                                type == board.allFruits[i +1, j + 1].GetComponent<Fruit>().fruitType &&
                                 board.allFruits[i + 2, j + 1] &&
-                                type == board.allFruits[i + 2, j + 1].GetComponent<Fruit>().fruitType
-                                )
+                                type == board.allFruits[i + 2, j + 1].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i, j].GetComponent<Fruit>();
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE RIGHT
+
+                        /*        | 
+                         *        |
+                         *    X=>  __  
+                         *      
+                         */
+
+                        if (j + 2 < board.height && i + 2 < board.width && i - 1 >= 0)
+                        {
+                            if (board.allFruits[i + 1, j] &&
+                                board.allFruits[i + 1, j + 1] &&
+                                type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 1, j + 2] &&
+                                type == board.allFruits[i + 1, j + 2].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 2, j] &&
+                                type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 3, j] &&
+                                type == board.allFruits[i + 3, j].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i, j].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 StopCoroutines();
@@ -633,7 +753,7 @@ public class SwipeHint : MonoBehaviour
             {
                 for (int j = 0; j < board.height; j++) // ROW
                 {
-                    if (j + 1 < board.height && board.allFruits[i, j] && board.allFruits[i, j + 1])
+                    if (board.allFruits[i, j])
                     {
                         int type = board.allFruits[i, j].GetComponent<Fruit>().fruitType;
 
@@ -666,7 +786,7 @@ public class SwipeHint : MonoBehaviour
                             }
                         }
 
-                        // FOR SWIPE DOWN
+                        // FOR SWIPE UP
 
                         /*      
                          *      
@@ -738,7 +858,7 @@ public class SwipeHint : MonoBehaviour
                          *   
                          */
 
-                        if (j -1 >=0 && i + 3 < board.width)
+                        if (j - 1 >= 0 && i + 3 < board.width)
                         {
                             if (board.allFruits[i + 1, j] &&
                                 board.allFruits[i + 2, j] &&
@@ -1166,14 +1286,12 @@ public class SwipeHint : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         if (continueIteration)
         {
-            StartCoroutine(ColumnIteration());
+            StartCoroutine(ThreeMatchIteration());
         }
     }
 
-    private IEnumerator ColumnIteration()
+    private IEnumerator ThreeMatchIteration()
     {
-        // Loop through the entire board
-
         for (int i = 0; i < board.width; i++) // COLUMN
         {
             if (!continueIteration)
@@ -1184,213 +1302,470 @@ public class SwipeHint : MonoBehaviour
             {
                 for (int j = 0; j < board.height; j++) // ROW
                 {
-
-                    // WE CHECK IF THE GRID ABOVE DOES EXIST
-                    if (j + 1 < board.height && board.allFruits[i, j] && board.allFruits[i, j + 1])
+                    if (board.allFruits[i, j])
                     {
                         int type = board.allFruits[i, j].GetComponent<Fruit>().fruitType;
 
-                        // WE CHECK THE ONE ABOVE THE OBJECT WE ARE REPEATING
-                        if (type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
+                        // FOR SWIPE DOWN
+
+                        /*   X    
+                         *   ||   
+                         *   \/   
+                         *  -  -      
+                         *     
+                         *   
+                         */
+
+                        if (j + 1 < board.height && i + 2 < board.width)
                         {
-                            if (j + 2 < board.height)
+                            if (board.allFruits[i + 1, j] &&
+                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 2, j] &&
+                                board.allFruits[i + 2, j + 1] &&
+                                type == board.allFruits[i + 2, j + 1].GetComponent<Fruit>().fruitType)
                             {
-                                if (i - 1 >= 0 && board.allFruits[i - 1, j + 2] && type == board.allFruits[i - 1, j + 2].GetComponent<Fruit>().fruitType && board.allFruits[i, j + 2])
-                                {
-                                    //    Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j + 2));
-                                    fruit = board.allFruits[i - 1, j + 2].GetComponent<Fruit>();
-                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
-                                    yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;
-                                    StopCoroutines();
-                                    break;
-                                }
-                                else if (i + 1 < board.width && board.allFruits[i + 1, j + 2] && type == board.allFruits[i + 1, j + 2].GetComponent<Fruit>().fruitType && board.allFruits[i, j + 2])
-                                {
-                                    //    Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j + 2));
-                                    fruit = board.allFruits[i + 1, j + 2].GetComponent<Fruit>();
-                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
-                                    yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;
-                                    StopCoroutines();
-                                    break;
-                                }
+                                fruit = board.allFruits[i + 2, j + 1].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
                             }
-
-                            if (j + 3 < board.height)
-                            {
-                                if (board.allFruits[i, j + 3] && type == board.allFruits[i, j + 3].GetComponent<Fruit>().fruitType && board.allFruits[i, j + 2])
-                                {
-                                    //    Debug.Log("Possible Move - Column: " + (i) + ", Row: " + (j + 3));
-                                    fruit = board.allFruits[i, j + 3].GetComponent<Fruit>();
-                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
-                                    yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;
-                                    StopCoroutines();
-                                    break;
-                                }
-                            }
-
-                            if (j - 2 >= 0)
-                            {
-                                if (board.allFruits[i, j - 2] && type == board.allFruits[i, j - 2].GetComponent<Fruit>().fruitType && board.allFruits[i, j - 1])
-                                {
-                                    //     Debug.Log("Possible Move - Column: " + (i) + ", Row: " + (j - 2));
-                                    fruit = board.allFruits[i, j - 2].GetComponent<Fruit>();
-                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
-                                    yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;
-                                    StopCoroutines();
-                                    break;
-                                }
-                            }
-
-
-                            if (j - 1 >= 0)
-                            {
-                                if (i - 1 >= 0 && board.allFruits[i - 1, j - 1] && type == board.allFruits[i - 1, j - 1].GetComponent<Fruit>().fruitType && board.allFruits[i, j - 1])
-                                {
-                                    //    Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j - 1));
-                                    fruit = board.allFruits[i - 1, j - 1].GetComponent<Fruit>();
-                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
-                                    yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;
-                                    StopCoroutines();
-                                    break;
-                                }
-                                else if (i + 1 < board.width && board.allFruits[i + 1, j - 1] && type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType && board.allFruits[i, j - 1])
-                                {
-                                    //   Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j - 1));
-                                    fruit = board.allFruits[i + 1, j - 1].GetComponent<Fruit>();
-                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
-                                    yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;
-                                    StopCoroutines();
-                                    break;
-                                }
-                            }
-                            j++;
-
                         }
+
+                        // FOR SWIPE UP
+
+                        /*      
+                         *      
+                         *      
+                         *  -  -      
+                         *   /\
+                         *   ||
+                         *   X
+                         *   
+                         */
+
+                        if (j - 1 >= 0 && i + 2 < board.width)
+                        {
+                            if (board.allFruits[i + 1, j] &&
+                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 2, j] &&
+                                board.allFruits[i + 2, j - 1] &&
+                                type == board.allFruits[i + 2, j - 1].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i + 2, j - 1].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE DOWN
+
+                        /*    
+                         *    X
+                         *    ||
+                         *    \/      
+                         *      --      
+                         *   
+                         *   
+                         */
+
+                        if (j + 1 < board.height && i + 2 < board.width)
+                        {
+                            if (board.allFruits[i + 1, j] &&
+                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 2, j] &&
+                                type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i, j + 1] &&
+                                type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE UP
+
+                        /*    
+                         *          
+                         *      --      
+                         *    /\
+                         *    ||
+                         *    X
+                         *   
+                         */
+
+                        if (j - 1 >= 0 && i + 2 < board.width)
+                        {
+                            if (board.allFruits[i + 1, j] &&
+                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 2, j] &&
+                                type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i, j - 1] &&
+                                type == board.allFruits[i, j - 1].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i, j - 1].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE RIGHT
+
+                        /*    
+                         *          
+                         *  X =>  --      
+                         *  
+                         */
+
+                        if (i + 2 < board.width && i - 1 >= 0)
+                        {
+                            if (board.allFruits[i + 1, j] &&
+                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 2, j] &&
+                                type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i - 1, j] &&
+                                type == board.allFruits[i - 1, j].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i-1, j].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE DOWN
+
+                        /*    
+                         *     X
+                         *     ||
+                         *     \/        
+                         *   --        
+                         */
+
+                        if (i + 2 < board.width && j + 1 < board.height)
+                        {
+                            if (board.allFruits[i + 1, j] &&
+                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 2, j] &&
+                                board.allFruits[i + 2, j + 1] &&
+                                type == board.allFruits[i + 2, j + 1].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i + 2, j + 1].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE UP
+
+                        /*                  
+                         *   -- 
+                         *     X
+                         *     /\
+                         *     ||
+                         *   
+                         */
+
+                        if (i + 2 < board.width && j - 1 >= 0)
+                        {
+                            if (board.allFruits[i + 1, j] &&
+                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 2, j] &&
+                                board.allFruits[i + 2, j - 1] &&
+                                type == board.allFruits[i + 2, j - 1].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i + 2, j - 1].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE LEFT
+
+                        /*    
+                         *     
+                         *     
+                         *             
+                         *   -- <= X
+                         *      
+                         *   
+                         */
+
+                        if (i + 2 < board.width)
+                        {
+                            if (board.allFruits[i + 1, j] &&
+                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 2, j] &&
+                                board.allFruits[i + 3, j] &&
+                                type == board.allFruits[i + 3, j].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i + 3, j].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE RIGHT
+
+                        /*    
+                         *          
+                         *      |         
+                         * X => 
+                         *      |
+                         *    
+                         *   
+                         */
+
+                        if (j + 2 < board.height && i - 1 >= 0)
+                        {
+                            if (board.allFruits[i, j + 1] &&
+                                board.allFruits[i, j + 2] &&
+                                type == board.allFruits[i, j + 2].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i - 1, j + 1] &&
+                                type == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i - 1, j + 1].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE LEFT
+
+                        /*    
+                         *          
+                         *     |     
+                         *       <= X
+                         *     |
+                         *    
+                         *   
+                         */
+
+                        if (j + 2 < board.height && i + 1 < board.width)
+                        {
+                            if (board.allFruits[i, j + 1] &&
+                                board.allFruits[i, j + 2] &&
+                                type == board.allFruits[i, j + 2].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 1, j + 1] &&
+                                type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE RIGHT
+
+                        /*    
+                         *          
+                         *           
+                         * X =>      
+                         *      |
+                         *      |
+                         *    
+                         *   
+                         */
+
+                        if (j + 2 < board.height && i - 1 >= 0)
+                        {
+                            if (board.allFruits[i, j + 1] &&
+                                type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i, j + 2] &&
+                                board.allFruits[i - 1, j + 2] &&
+                                type == board.allFruits[i - 1, j + 2].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i - 1, j + 2].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE LEFT
+
+                        /*    
+                         *          
+                         *           
+                         *        <= X
+                         *      |
+                         *      |
+                         *    
+                         *   
+                         */
+
+                        if (j + 2 < board.height && i + 1 < board.width)
+                        {
+                            if (board.allFruits[i, j + 1] &&
+                                type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i, j + 2] &&
+                                board.allFruits[i + 1, j + 2] &&
+                                type == board.allFruits[i + 1, j + 2].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i + 1, j + 2].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE DOWN
+
+                        /*    
+                         *      X
+                         *      
+                         *      ||
+                         *      \/   
+                         *      
+                         *      |
+                         *      |
+                         *    
+                         *   
+                         */
+
+                        if (j + 3 < board.height)
+                        {
+                            if (board.allFruits[i, j + 1] &&
+                                type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i, j + 2] &&
+                                board.allFruits[i, j + 3] &&
+                                type == board.allFruits[i, j + 3].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i, j + 3].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE RIGHT
+
+                        /*    
+                         *          
+                         *           
+                         *       |
+                         *       |
+                         *  X =>
+                         *    
+                         *   
+                         */
+
+                        if (j + 2 < board.height && i - 1 >= 0)
+                        {
+                            if (board.allFruits[i, j + 1] &&
+                                type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i, j + 2] &&
+                                type == board.allFruits[i, j + 2].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i - 1, j] &&
+                                type == board.allFruits[i - 1, j].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i - 1, j].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE LEFT
+
+                        /*    
+                         *          
+                         *           
+                         *       |
+                         *       |
+                         *         <= X
+                         *    
+                         *   
+                         */
+
+                        if (j + 2 < board.height && i + 1 < board.width)
+                        {
+                            if (board.allFruits[i, j + 1] &&
+                                type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i, j + 2] &&
+                                type == board.allFruits[i, j + 2].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 1, j] &&
+                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i + 1, j].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
+                        // FOR SWIPE UP
+
+                        /*     
+                         *      
+                         *      |
+                         *      |
+                         *    
+                         *      /\
+                         *      ||
+                         *      X
+                         *   
+                         */
+
+                        if (j + 2 < board.height)
+                        {
+                            if (board.allFruits[i, j + 1] &&
+                                board.allFruits[i, j + 2] &&
+                                type == board.allFruits[i, j + 2].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i, j + 3] &&
+                                type == board.allFruits[i, j + 3].GetComponent<Fruit>().fruitType)
+                            {
+                                fruit = board.allFruits[i, j].GetComponent<Fruit>();
+                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                yield return new WaitForSeconds(0.1f);
+                                continueIteration = false;
+                                StopCoroutines();
+                                break;
+                            }
+                        }
+
                     }
                 }
             }
-
         }
-        yield return new WaitForSeconds(0.1f);
-        if (continueIteration)
-        {
-            StartCoroutine(RowIteration());
-        }
-    }
-
-    private IEnumerator RowIteration()
-    {
-        // Loop through the entire board, starting from the top-right corner
-        for (int j = board.height - 1; j >= 0; j--) // ROW (start from the last row)
-        {
-            if (!continueIteration)
-            {
-                break;
-            }
-            else
-            {
-                for (int i = board.width - 1; i >= 0; i--) // COLUMN (start from the last column)
-                {
-                    // WE CHECK IF THE GRID TO THE LEFT DOES EXIST
-                    if (i - 1 >= 0 && board.allFruits[i, j] && board.allFruits[i - 1, j])
-                    {
-                        int type = board.allFruits[i, j].GetComponent<Fruit>().fruitType;
-
-                        // WE CHECK THE ONE TO THE LEFT OF THE OBJECT WE ARE REPEATING
-                        if (type == board.allFruits[i - 1, j].GetComponent<Fruit>().fruitType)
-                        {
-                            if (i - 2 >= 0)
-                            {
-                                if (j - 1 >= 0 && board.allFruits[i - 2, j - 1] && type == board.allFruits[i - 2, j - 1].GetComponent<Fruit>().fruitType && board.allFruits[i - 2, j])
-                                {
-                                    //    Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j - 1));
-                                    fruit = board.allFruits[i - 2, j - 1].GetComponent<Fruit>();
-                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
-                                    yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;
-                                    StopCoroutines();
-                                    break;
-                                }
-                                else if (j + 1 < board.height && board.allFruits[i - 2, j + 1] && type == board.allFruits[i - 2, j + 1].GetComponent<Fruit>().fruitType && board.allFruits[i - 2, j])
-                                {
-                                    //    Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j + 1));
-                                    fruit = board.allFruits[i - 2, j + 1].GetComponent<Fruit>();
-                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
-                                    yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;
-                                    StopCoroutines();
-                                    break;
-                                }
-                            }
-
-
-                            if (i - 3 >= 0)
-                            {
-                                if (board.allFruits[i - 3, j] && type == board.allFruits[i - 3, j].GetComponent<Fruit>().fruitType && board.allFruits[i - 2, j])
-                                {
-                                    //   Debug.Log("Possible Move - Column: " + (i - 3) + ", Row: " + (j));
-                                    fruit = board.allFruits[i - 3, j].GetComponent<Fruit>();
-                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
-                                    yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;
-                                    StopCoroutines();
-                                    break;
-                                }
-                            }
-
-                            if (i + 2 < board.width)
-                            {
-                                if (board.allFruits[i + 2, j] && type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
-                                {
-                                    //     Debug.Log("Possible Move - Column: " + (i + 2) + ", Row: " + (j));
-                                    fruit = board.allFruits[i + 2, j].GetComponent<Fruit>();
-                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
-                                    yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;
-                                    StopCoroutines();
-                                    break;
-                                }
-                            }
-
-
-
-                            if (i + 1 < board.width)
-                            {
-                                if (j - 1 >= 0 && board.allFruits[i + 1, j - 1] && type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
-                                {
-                                    //    Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j - 1));
-                                    fruit = board.allFruits[i + 1, j - 1].GetComponent<Fruit>();
-                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
-                                    yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;
-                                    StopCoroutines();
-                                    break;
-                                }
-                                else if (j + 1 < board.height && board.allFruits[i + 1, j + 1] && type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
-                                {
-                                    //     Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j + 1));
-                                    fruit = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
-                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
-                                    yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;
-                                    StopCoroutines();
-                                    break;
-                                }
-                            }
-                            i--;
-                        }
-                    }
-                }
-            }
-
-        }
-        //yield return new WaitForSeconds(0.1f);
         StopCoroutines();
     }
 

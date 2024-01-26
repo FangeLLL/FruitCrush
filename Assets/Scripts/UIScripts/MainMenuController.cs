@@ -7,41 +7,41 @@ using UnityEngine.UI;
 
 public class MainMenuController : Sounds
 {
-    public LiveRegen liveRegen;
+    [SerializeField] private LiveRegen liveRegen;
     public LevelController levelController;
     public ResourceController resourceController;
     public ShopController shopController;
     public DailyTaskManager dailyTaskManager;
     public AudioManager audioManager;
 
-    public TextMeshProUGUI starText;
-    public TextMeshProUGUI starShopText;
-    public TextMeshProUGUI levelBoxText;
+    [SerializeField] private TextMeshProUGUI starText;
+    [SerializeField] private TextMeshProUGUI starShopText;
+    [SerializeField] private TextMeshProUGUI levelBoxText;
 
-    public GameObject playButton;
-    public GameObject starBox;
-    public GameObject livesBox;
-    public GameObject settingsIcon;
-    public GameObject tasksIcon;
-    public GameObject grayBack;
-    public GameObject shopBackground;
-    public GameObject shopTopUI;
-    public GameObject shopCloseButton;
-    public GameObject outOfLivesBox;
-    public GameObject outOfLivesBoxQuitButton;
-    public GameObject refillButton;
-    public GameObject playBox;
-    public GameObject playBoxQuitButton;
-    public GameObject playBoxPlayButton;
-    public GameObject levelBox;
-    public GameObject MenuBackground;
-    public GameObject settingsMenu;
-    public GameObject settingsCloseButton;
-    public GameObject tasksMenu;
-    public GameObject tasksCloseButton;
-    public GameObject musicToggleBlock;
-    public GameObject soundToggleBlock;
-    public GameObject hintToggleBlock;
+    [SerializeField] private GameObject playButton;
+    [SerializeField] private GameObject starBox;
+    [SerializeField] private GameObject livesBox;
+    [SerializeField] private GameObject settingsIcon;
+    [SerializeField] private GameObject tasksIcon;
+    [SerializeField] private GameObject grayBack;
+    [SerializeField] private GameObject shopBackground;
+    [SerializeField] private GameObject shopTopUI;
+    [SerializeField] private GameObject shopCloseButton;
+    [SerializeField] private GameObject outOfLivesBox;
+    [SerializeField] private GameObject outOfLivesBoxQuitButton;
+    [SerializeField] private GameObject refillButton;
+    [SerializeField] private GameObject playBox;
+    [SerializeField] private GameObject playBoxQuitButton;
+    [SerializeField] private GameObject playBoxPlayButton;
+    [SerializeField] private GameObject levelBox;
+    [SerializeField] private GameObject MenuBackground;
+    [SerializeField] private GameObject settingsMenu;
+    [SerializeField] private GameObject settingsCloseButton;
+    [SerializeField] private GameObject tasksMenu;
+    [SerializeField] private GameObject tasksCloseButton;
+    [SerializeField] private GameObject musicToggleBlock;
+    [SerializeField] private GameObject soundToggleBlock;
+    [SerializeField] private GameObject hintToggleBlock;
 
     int refillPrice = 1000;
 

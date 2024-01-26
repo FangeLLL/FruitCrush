@@ -20,7 +20,7 @@ public class LiveRegen : MonoBehaviour
 
     private bool isInfiniteHealthActive = false;  // Initialize as false
     private float remainingInfiniteHealthTime;
-    private float infiniteHealthDuration = 300f;
+    private float infiniteHealthDuration = 30000f;
 
 
     private void Start()
@@ -136,11 +136,24 @@ public class LiveRegen : MonoBehaviour
         }
     }
 
-    string FormatTime(int seconds)
+    string FormatTime(float seconds)
     {
-        int minutes = seconds / 60;
-        int remainingSeconds = seconds % 60;
-        return string.Format("{0:00}:{1:00}", minutes, remainingSeconds);
+        if (seconds >= 3600) // 1 hour or more
+        {
+            int hours = (int)(seconds / 3600);
+            return string.Format("{0}h", hours);
+        }
+        else if (seconds >= 60) // 1 minute or more
+        {
+            int minutes = (int)(seconds / 60);
+            int remainingSeconds = (int)(seconds % 60);
+            return string.Format("{0}m {1}s", minutes, remainingSeconds);
+        }
+        else // less than 1 minute
+        {
+            int remainingSeconds = (int)seconds;
+            return string.Format("{0}s", remainingSeconds);
+        }
     }
 
     void SaveLives()
@@ -234,7 +247,7 @@ public class LiveRegen : MonoBehaviour
 
             if (remainingInfiniteHealthTime >= 0)
             {
-                infiniteHealthStatusText.text = FormatTime((int)remainingInfiniteHealthTime);
+                infiniteHealthStatusText.text = FormatTime(remainingInfiniteHealthTime);
             }
             else
             {

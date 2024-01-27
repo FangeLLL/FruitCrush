@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -91,6 +92,8 @@ public class PowerUpController : MonoBehaviour
                 powerUps[i].buyPowerUps.SetActive(true);
             }
 
+            PlayerPrefs.SetInt(amountSaveKey, powerUps[i].amount);
+            PlayerPrefs.Save();
         }
     }
 

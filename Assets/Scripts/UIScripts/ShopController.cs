@@ -18,10 +18,18 @@ public class ShopController : MonoBehaviour
     public ShopItems[] shopItems;
 
     public ResourceController resourceController;
+    public LiveRegen liveRegen;
 
     public void ShopItemBought(int shopItemIndex)
     {
         resourceController.StarReward(shopItems[shopItemIndex].rewardedStar);
-        shopItems[shopItemIndex].item.transform.GetChild(1).GetComponent<Animator>().SetTrigger("Tapped");
+        resourceController.PowerUp1Rewards(shopItems[shopItemIndex].rewardedPowerUp1);
+        resourceController.PowerUp2Rewards(shopItems[shopItemIndex].rewardedPowerUp2);
+        if (shopItems[shopItemIndex].rewardedLife > 0)
+        {
+            liveRegen.rewardTime = shopItems[shopItemIndex].rewardedLife;
+            liveRegen.InfiniteHealthObtained();
+        }
+        //shopItems[shopItemIndex].item.transform.GetChild(1).GetComponent<Animator>().SetTrigger("Tapped");
     }
 }

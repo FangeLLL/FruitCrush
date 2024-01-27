@@ -292,7 +292,7 @@ public class MainMenuController : Sounds
 
         for (int i = 0; i < shopController.shopItems.Length; i++)
         {
-            shopController.shopItems[i].item.GetComponent<Animator>().SetTrigger("ShopOpen");
+            //shopController.shopItems[i].item.GetComponent<Animator>().SetTrigger("ShopOpen");
             yield return new WaitForSeconds(0.01f);
         }
     }

@@ -50,7 +50,7 @@ public class LevelManager : MonoBehaviour
 
         levelChanger = level;
 
-
+        moveCount = 20;
 
         if (uploadLevel)
         {

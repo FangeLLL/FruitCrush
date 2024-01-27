@@ -56,6 +56,8 @@ public class Board : MonoBehaviour
     public int specialPowerID = 0;
     public bool specialSwipe = false;
 
+    private bool shuffling = false;
+
     private void Awake()
     {
         saveData.LoadFromJson();
@@ -902,15 +904,18 @@ public class Board : MonoBehaviour
     private IEnumerator FillTheGaps()
     {
         yield return null;
-        for (int i = 0; i < width; i++)
+        if (!shuffling)
         {
-            // Starting from (0,0) location and its checks every column. It starts from botton to up and takes every empty place index and put it to queue
-            // variable (emptyPlaces). 
-            if (!fillingColumn[i])
+            for (int i = 0; i < width; i++)
             {
-                StartCoroutine(FillTheColumn(i));
-            }
+                // Starting from (0,0) location and its checks every column. It starts from botton to up and takes every empty place index and put it to queue
+                // variable (emptyPlaces). 
+                if (!fillingColumn[i])
+                {
+                    StartCoroutine(FillTheColumn(i));
+                }
 
+            }
         }
         yield return new WaitForSeconds(0.2f);
         if (!checkingMatch)
@@ -1598,6 +1603,9 @@ public class Board : MonoBehaviour
         hintBool = false;
     }
 
+    /// <summary>
+    /// Checking if user selected starter powerup and if selected then put powerups randomly selected fruits instead. 
+    /// </summary>
     private void CheckForStarterPowerUps()
     {
         /* 
@@ -1610,16 +1618,13 @@ public class Board : MonoBehaviour
 
         for (int i = 0; i < 2; i++)
         {
-            Debug.Log(powerUpController.powerUps[i].isActivated);
 
             if (powerUpController.powerUps[i].isActivated) {
                 int column, row;
-                Debug.Log("PowerUp active");
                 column = Random.Range(0, width);
                 row = Random.Range(0, height);
                 while (!allFruits[column,row] )
                 {
-                    Debug.Log("Searching for powerUp");
                     column = Random.Range(0, width);
                     row = Random.Range(0, height);
                 }
@@ -1638,5 +1643,50 @@ public class Board : MonoBehaviour
                 }
             }
         }
+    }
+
+    public IEnumerator Shuffle()
+    {
+        shuffling = true;
+
+        for(int i = 0;i < width; i++)
+        {
+            for(int j = 0; j < height; j++)
+            {
+                if (allFruits[i, j] && allFruits[i,j].GetComponent<Fruit>().fruitType>=0)
+                {
+                    DestroyController(allFruits[i,j],false);
+                }
+            }
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (allTiles[i,j] && !allFruits[i, j] && !allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
+                {
+                    int fruitToUse = existFruits[Random.Range(0, existFruits.Count)];
+                    GameObject newFruit = Instantiate(fruits[fruitToUse], allTiles[i, j].transform.position, Quaternion.identity);
+                    Fruit newFruitScript = newFruit.GetComponent<Fruit>();
+
+                    // Set the parent and name of the new fruit
+                 //   newFruit.transform.parent = this.transform;
+                    newFruit.name = "( " + i + ", " + j + " )";
+
+                    newFruitScript.targetV = allTiles[i, j].transform.position;
+
+                    // Set the column and row of the new fruit
+                    newFruitScript.column = i;
+                    newFruitScript.row = j;
+                    newFruitScript.fruitType = fruitToUse;
+
+                }
+            }
+        }
+        shuffling = false;
+        StopHint();
     }
 }

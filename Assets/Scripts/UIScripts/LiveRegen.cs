@@ -272,6 +272,8 @@ public class LiveRegen : MonoBehaviour
     {
         isInfiniteHealthActive = true;
         PlayerPrefs.SetInt("InfiniteHealthActive", 1);
+        livesText.gameObject.SetActive(false);
+        livesStatusText.gameObject.SetActive(false);
         StartInfiniteHealthCountdown();
     }
 }

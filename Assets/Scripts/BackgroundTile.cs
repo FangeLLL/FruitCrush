@@ -27,7 +27,7 @@ public class BackgroundTile : MonoBehaviour
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             // Check if the mouse position is within the bounds of this fruit
-            if (GetComponent<Collider2D>().OverlapPoint(mousePos))
+            if (GetComponent<Collider2D>().OverlapPoint(mousePos) && !board.specialSwipe)
             {
                 board.ActivateSpecialPower(column, row);
             }

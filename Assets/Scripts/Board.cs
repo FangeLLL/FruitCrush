@@ -744,6 +744,8 @@ public class Board : MonoBehaviour
 
         if (specialSwipe)
         {
+            ActivateSpecialPower(fruitScript.column, fruitScript.row);
+
             return true;
         }
 
@@ -756,7 +758,6 @@ public class Board : MonoBehaviour
         {
             if (!fruit || !otherFruit || fruitScript.fadeout || otherFruitScript.fadeout)
             {
-
                 return true;
 
             }
@@ -1645,6 +1646,10 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Shuffle Function
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator Shuffle()
     {
         shuffling = true;

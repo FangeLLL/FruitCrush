@@ -954,17 +954,16 @@ public class Board : MonoBehaviour
                     emptyPlaces.Enqueue(j);
 
                     // THESE CODES CAN BE IMPROVE PLEASE CHECK THE ALGO
-                    if((j + 1 < height && !allTiles[i, j + 1]) || (j + 2 < height && !allTiles[i, j + 2]))
+                    
+                    if(((j + 1 < height && !allTiles[i, j + 1])) && columnsFallIndexY[i]!=j)
                     {
-                        StartCoroutine(CrossFall(i, j + 1));
-
+                        CrossFall(i, j + 1);
                     }
                     else
                     {
-                        if ((j + 1 < height && allTiles[i, j + 1] && allTiles[i, j + 1].GetComponent<BackgroundTile>().isCurrentObstacleBox) || (j + 2 < height && allTiles[i, j + 2] && allTiles[i, j + 2].GetComponent<BackgroundTile>().isCurrentObstacleBox))
+                        if ((j + 1 < height && allTiles[i, j + 1] && allTiles[i, j + 1].GetComponent<BackgroundTile>().isCurrentObstacleBox))
                         {
-                            StartCoroutine(CrossFall(i, j + 1));
-
+                            CrossFall(i, j + 1);
                         }
                     }
                    
@@ -991,27 +990,31 @@ public class Board : MonoBehaviour
             float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
             float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
             int emptyRowIndex = emptyPlaces.Dequeue();
-            Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, columnsFallIndexY[i]+1 * scaleNumber - yOffset);
+            // If this place did not filled then create object for it.
+            if (!allFruits[i, emptyRowIndex]) {
 
-            // Instantiate a new fruit at the position of the destroyed fruit. Fruit that going to be created must be from existFruits variable. existFruits
-            // list contains indexes of avaliable fruits.
-            int fruitToUse = existFruits[UnityEngine.Random.Range(0, existFruits.Count)];
-            GameObject newFruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
-            Fruit newFruitScript = newFruit.GetComponent<Fruit>();
+                Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, (columnsFallIndexY[i] + 1) * scaleNumber - yOffset);
 
-            // Set the parent and name of the new fruit
-            newFruit.transform.parent = this.transform;
-            newFruit.name = "( " + i + ", " + emptyRowIndex + " )";
+                // Instantiate a new fruit at the position of the destroyed fruit. Fruit that going to be created must be from existFruits variable. existFruits
+                // list contains indexes of avaliable fruits.
+                int fruitToUse = existFruits[UnityEngine.Random.Range(0, existFruits.Count)];
+                GameObject newFruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
+                Fruit newFruitScript = newFruit.GetComponent<Fruit>();
 
-            // Set the column and row of the new fruit
-            newFruitScript.column = i;
-            newFruitScript.row = emptyRowIndex;
-            newFruitScript.fruitType = fruitToUse;
-            newFruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
+                // Set the parent and name of the new fruit
+                newFruit.transform.parent = this.transform;
+                newFruit.name = "( " + i + ", " + emptyRowIndex + " )";
 
-            audioManager.FruitFall();
-            // Add the new fruit to the allFruits array
-            yield return new WaitForSeconds(0.1f);
+                // Set the column and row of the new fruit
+                newFruitScript.column = i;
+                newFruitScript.row = emptyRowIndex;
+                newFruitScript.fruitType = fruitToUse;
+                newFruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
+
+                audioManager.FruitFall();
+                // Add the new fruit to the allFruits array
+                yield return new WaitForSeconds(0.1f);
+            }
         }
         fillingColumn[i] = false;
 
@@ -1070,11 +1073,11 @@ public class Board : MonoBehaviour
     /// <param name="column"></param>
     /// <param name="row"></param>
     /// <returns></returns>
-    private IEnumerator CrossFall(int column, int row)
+    private void CrossFall(int column, int row)
     {
         GameObject fruit = null;
         Fruit fruitScript;
-        yield return new WaitForSeconds(0.5f);
+      //  yield return new WaitForSeconds(0.1f);
         if (column - 1 >= 0 && FruitAvailable(allFruits[column - 1, row]) && !allFruits[column, row - 1])
         {
             fruit = allFruits[column - 1, row];

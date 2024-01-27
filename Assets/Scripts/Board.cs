@@ -588,8 +588,22 @@ public class Board : MonoBehaviour
 
         if (!popped)
         {
-            exitUpdate = false;
-            hintBool = true;
+            bool allFruitsStopped = true;
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    if (allFruits[i, j] && Vector2.Distance(allFruits[i, j].GetComponent<Fruit>().targetV, allFruits[i, j].transform.position) > 0.5f)
+                    {
+                        allFruitsStopped = false;
+                    }
+                }
+            }
+            if(allFruitsStopped)
+            {
+                exitUpdate = false;
+                hintBool = true;
+            } 
         }
         checkingMatch = false;
 

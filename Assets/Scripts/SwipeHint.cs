@@ -10,7 +10,6 @@ public class SwipeHint : MonoBehaviour
     public Fruit fruit2;
     public float hintThreshold = 3f; // Adjust this threshold as needed
 
-    public bool isHintSearching;
     public bool continueIteration = true;
     public bool oneHintActive;
 
@@ -46,27 +45,27 @@ public class SwipeHint : MonoBehaviour
             Debug.Log("HINT STOPPED");
         }*/
 
-        if(board.hintBool && !oneHintActive && !hasCoroutineStarted)
+        if(board.hintBool && !oneHintActive)
         {
+            oneHintActive = true;
             Debug.Log("START WAIT");
             StartCoroutine(WaitForHint());
-            hasCoroutineStarted = true;
-            oneHintActive = true;
+           // hasCoroutineStarted = true;
         }
 
     }
 
     private IEnumerator WaitForHint()
     {
-        yield return new WaitForSeconds(3);
-        if (board.hintBool)
-        {
-            continueIteration = true;
-            Debug.Log("START HINT");
-            StartCoroutine(PowerUpsIteration());
-        }
-        
-
+        yield return new WaitForSeconds(1);
+        Debug.Log("1");
+        yield return new WaitForSeconds(1);
+        Debug.Log("2");
+        yield return new WaitForSeconds(1);
+        Debug.Log("3");
+        continueIteration = true;
+        Debug.Log("START HINT");
+        StartCoroutine(PowerUpsIteration());
 
     }
 
@@ -1800,9 +1799,21 @@ public class SwipeHint : MonoBehaviour
 
     public void StopCoroutines()
     {
+      
+        //board.isRunning = false;
+    }
+
+    public void StopHintCoroutines()
+    {
+        Debug.Log("STOPPED");
+        fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, false);
+        fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, false);
+        fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, false);
+        fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, false);
+
         StopAllCoroutines();
         continueIteration = false;
-        oneHintActive = true;
+        oneHintActive = false;
         //board.isRunning = false;
     }
 

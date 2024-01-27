@@ -24,7 +24,7 @@ public class Fruit : MonoBehaviour
 
     private Board board;
 
-    public bool isClicked,isSwiped=false;
+    public bool isClicked,isSwiped=false,isMoving=false;
 
     public Animator animator;
 
@@ -68,7 +68,14 @@ public class Fruit : MonoBehaviour
 
             }
 
-
+            if(Vector2.Distance(targetV, transform.position) > 0.1f)
+            {
+                isMoving = true;
+            }
+            else
+            {
+                isMoving = false;
+            }
 
             if (isClicked)
             {
@@ -96,7 +103,7 @@ public class Fruit : MonoBehaviour
         if (fruitType < 0 && board.taskController.moveCount > 0 && !isSwiped && board.specialPowerID == 0 && board.taskController.isBoardActive)
         {
             board.taskController.MovePlayed();
-            board.hintStop = true;
+            board.StopHint();
             board.ActivatePowerUp(gameObject);
         }
     }

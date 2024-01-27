@@ -64,8 +64,6 @@ public class Board : MonoBehaviour
     public int specialPowerID = 0;
     public bool specialSwipe = false;
 
-    public bool hintStop = false;
-
     private void Awake()
     {
         saveData.LoadFromJson();
@@ -310,7 +308,7 @@ public class Board : MonoBehaviour
         }
 
         //StopCoroutine(GiveHint());
-        swipeHint.isHintSearching = false;
+        StopHint();
 
         if (swipeHint.fruit != null)
         {
@@ -596,9 +594,10 @@ public class Board : MonoBehaviour
             {
                 for (int j = 0; j < height; j++)
                 {
-                    if (allFruits[i, j] && Vector2.Distance(allFruits[i, j].GetComponent<Fruit>().targetV, allFruits[i, j].transform.position) > 0.5f)
+                    if (allFruits[i, j] && allFruits[i, j].GetComponent<Fruit>().isMoving)
                     {
                         allFruitsStopped = false;
+
                         j = height;
                         i = width;
                     }
@@ -607,23 +606,17 @@ public class Board : MonoBehaviour
             if (allFruitsStopped)
             {
                 hintBool = true;
-                swipeHint.hasCoroutineStarted = false;
             }
             else
             {
-                if(hintBool)
-                    swipeHint.StopCoroutines();
-                hintBool = false;
-                swipeHint.hasCoroutineStarted = false;
+
+                StopHint();
                 
             }
         }
         else
         {
-            if (hintBool)
-                swipeHint.StopCoroutines();
-            hintBool = false;
-            swipeHint.hasCoroutineStarted = false;
+            
         }
         checkingMatch = false;
 
@@ -707,7 +700,6 @@ public class Board : MonoBehaviour
             if (!specialSwipe)
             {
                 taskController.MovePlayed();
-                hintStop = true;
             }
             else
             {
@@ -1564,7 +1556,7 @@ public class Board : MonoBehaviour
                 specialPowerController.SpecialPowerUpUsed(3);
                 break;
         }
-        hintStop = true;
+        StopHint();
         specialPowerID = 0;
     }
 
@@ -1592,5 +1584,18 @@ public class Board : MonoBehaviour
         specialPowerID = 0;
         specialSwipe = false;
     }
+    /// <summary>
+    /// THIS FUNCTION NEEDS TO BE OPTIMIZED
+    /// </summary>
+    public void StopHint()
+    {
+        
+        if (swipeHint.oneHintActive)
+        {
+            swipeHint.StopHintCoroutines();
 
+        }
+
+        hintBool = false;
+    }
 }

@@ -1,17 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.Jobs;
-using Unity.Properties;
-using Unity.VisualScripting;
-using UnityEditor.Search;
 using UnityEngine;
-using UnityEngine.Audio;
-using UnityEngine.SceneManagement;
-using UnityEngine.U2D.IK;
-using static UnityEngine.GraphicsBuffer;
+
 
 public class Board : MonoBehaviour
 {
@@ -24,6 +15,7 @@ public class Board : MonoBehaviour
     [SerializeField]
     public AchievementManager achievementManager;
     public TaskController taskController;
+    public PowerUpController powerUpController;
     public SwipeHint swipeHint;
     public SaveData saveData;
     public SpecialPowerController specialPowerController;
@@ -291,6 +283,8 @@ public class Board : MonoBehaviour
             // Inserting fallPoint to array
             columnsFallIndexY[i] = fallPoint;
         }
+
+        CheckForStarterPowerUps();
     }
 
     /// <summary>
@@ -616,7 +610,7 @@ public class Board : MonoBehaviour
         }
         else
         {
-            
+            StopHint();
         }
         checkingMatch = false;
 
@@ -1031,7 +1025,7 @@ public class Board : MonoBehaviour
         /*
         Power Up Type Number;
         
-        -1 : Horizantal Harvester
+        -1 : Horizontal Harvester
         -2 : Vertical Harvester
         -3 : TNT
          */
@@ -1602,5 +1596,47 @@ public class Board : MonoBehaviour
         }
 
         hintBool = false;
+    }
+
+    private void CheckForStarterPowerUps()
+    {
+        /* 
+         powerUpController powerUps Indexes
+        0 - Harvester
+        1 - TNT
+
+         */
+
+
+        for (int i = 0; i < 2; i++)
+        {
+            Debug.Log(powerUpController.powerUps[i].isActivated);
+
+            if (powerUpController.powerUps[i].isActivated) {
+                int column, row;
+                Debug.Log("PowerUp active");
+                column = Random.Range(0, width);
+                row = Random.Range(0, height);
+                while (!allFruits[column,row] )
+                {
+                    Debug.Log("Searching for powerUp");
+                    column = Random.Range(0, width);
+                    row = Random.Range(0, height);
+                }
+
+                Destroy(allFruits[column,row]);
+
+                if (i == 0)
+                {
+                    // Harvester creation randomly horizontal or vertical
+                    CreatePowerUp(column, row,-Random.Range(1,3));
+                }
+                else
+                {
+                    // Tnt or other powerUps. Tnt = -3 that why -i-2.
+                    CreatePowerUp(column, row, -i - 2);
+                }
+            }
+        }
     }
 }

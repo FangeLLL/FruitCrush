@@ -1627,6 +1627,7 @@ MonoBehaviour:
   height: 10
   achievementManager: {fileID: 1772865870}
   taskController: {fileID: 1772865872}
+  powerUpController: {fileID: 1772865875}
   swipeHint: {fileID: 160705529}
   saveData: {fileID: 1772865879}
   specialPowerController: {fileID: 1772865880}
@@ -1654,7 +1655,6 @@ MonoBehaviour:
   scaleNumber: 0
   specialPowerID: 0
   specialSwipe: 0
-  hintStop: 0
 --- !u!114 &160705529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1670,9 +1670,9 @@ MonoBehaviour:
   fruit: {fileID: 8183136484916695726, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
   fruit2: {fileID: 8183136484916695726, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
   hintThreshold: 1
-  isHintSearching: 0
   continueIteration: 1
   oneHintActive: 0
+  hasCoroutineStarted: 0
 --- !u!1 &181140291
 GameObject:
   m_ObjectHideFlags: 0

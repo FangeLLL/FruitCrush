@@ -29,7 +29,7 @@ public class LevelManager : MonoBehaviour
     public GameObject[,] allFruits;
     public GameObject[,] allTiles;
 
-    public int moveCount;
+    public int moveCount = 20;
     public int[] taskElements;
 
     private SaveData saveData;

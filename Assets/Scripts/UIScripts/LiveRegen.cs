@@ -22,6 +22,8 @@ public class LiveRegen : MonoBehaviour
     private float remainingInfiniteHealthTime;
     private float infiniteHealthDuration = 3000f;
 
+    public float rewardTime;
+
 
     private void Start()
     {
@@ -229,7 +231,7 @@ public class LiveRegen : MonoBehaviour
 
         PlayerPrefs.SetInt("Lives", lives);
 
-        remainingInfiniteHealthTime = PlayerPrefs.GetFloat("RemainingInfiniteHealthTime", infiniteHealthDuration);
+        remainingInfiniteHealthTime = PlayerPrefs.GetFloat("RemainingInfiniteHealthTime", infiniteHealthDuration) + rewardTime;
         remainingInfiniteHealthTime -= offlineTimeToRegen;
         if (remainingInfiniteHealthTime < 0)
         {
@@ -264,5 +266,14 @@ public class LiveRegen : MonoBehaviour
 
             yield return new WaitForSeconds(1);
         }
+    }
+
+    public void InfiniteHealthObtained()
+    {
+        isInfiniteHealthActive = true;
+        PlayerPrefs.SetInt("InfiniteHealthActive", 1);
+        livesText.gameObject.SetActive(false);
+        livesStatusText.gameObject.SetActive(false);
+        StartInfiniteHealthCountdown();
     }
 }

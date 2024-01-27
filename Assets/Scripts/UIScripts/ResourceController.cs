@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 
@@ -46,12 +48,27 @@ public class ResourceController : MonoBehaviour
     public void PowerUp1Rewards(int rewardValue)
     {
         powerUpController.powerUps[0].amount += rewardValue;
+        
+        string amountSaveKey = "PowerUpAmount_" + 0.ToString();
+
+        PowerUps selectedPowerUp = powerUpController.powerUps[0];
+        PlayerPrefs.SetInt(amountSaveKey, selectedPowerUp.amount);
+        PlayerPrefs.Save();
+        
+
         powerUpController.PowerUpUIUpdate();
     }
 
     public void PowerUp2Rewards(int rewardValue)
     {
         powerUpController.powerUps[1].amount += rewardValue;
+        
+        string amountSaveKey = "PowerUpAmount_" + 1.ToString();
+
+        PowerUps selectedPowerUp = powerUpController.powerUps[1];
+        PlayerPrefs.SetInt(amountSaveKey, selectedPowerUp.amount);
+        PlayerPrefs.Save();
+        
         powerUpController.PowerUpUIUpdate();
     }
 }

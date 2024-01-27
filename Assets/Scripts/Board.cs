@@ -6,6 +6,7 @@ using Unity.Collections.LowLevel.Unsafe;
 using Unity.Jobs;
 using Unity.Properties;
 using Unity.VisualScripting;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -124,7 +125,7 @@ public class Board : MonoBehaviour
 
     }
 
-    private void Update()
+    /*private void Update()
     {
         // Check if the conditions are met
         if (hintBool && !exitUpdate)
@@ -151,7 +152,7 @@ public class Board : MonoBehaviour
             timer = 0f;
         }
 
-    }
+    }*/
 
     /// <summary>
     /// Arranging the general scale variable of prefabs according to size of board.
@@ -565,6 +566,8 @@ public class Board : MonoBehaviour
                         fruitsCheck.Clear();
 
                         popped = true;
+                        swipeHint.oneHintActive = false;
+                        //swipeHint.StopCoroutines();
 
                         // SWIPE HINT ANIMATION STOP
 
@@ -596,14 +599,31 @@ public class Board : MonoBehaviour
                     if (allFruits[i, j] && Vector2.Distance(allFruits[i, j].GetComponent<Fruit>().targetV, allFruits[i, j].transform.position) > 0.5f)
                     {
                         allFruitsStopped = false;
+                        j = height;
+                        i = width;
                     }
                 }
             }
-            if(allFruitsStopped)
+            if (allFruitsStopped)
             {
-                exitUpdate = false;
                 hintBool = true;
-            } 
+                swipeHint.hasCoroutineStarted = false;
+            }
+            else
+            {
+                if(hintBool)
+                    swipeHint.StopCoroutines();
+                hintBool = false;
+                swipeHint.hasCoroutineStarted = false;
+                
+            }
+        }
+        else
+        {
+            if (hintBool)
+                swipeHint.StopCoroutines();
+            hintBool = false;
+            swipeHint.hasCoroutineStarted = false;
         }
         checkingMatch = false;
 
@@ -697,10 +717,11 @@ public class Board : MonoBehaviour
         }
         else
         {
-            swipeHint.oneHintActive = false;
+            //swipeHint.oneHintActive = false;
             audioManager.SwipeResist();
             ChangeTwoFruit(fruit, otherFruit);
             yield return new WaitForSeconds(0.3f);
+            swipeHint.oneHintActive = false;
         }
 
         if (fruit)

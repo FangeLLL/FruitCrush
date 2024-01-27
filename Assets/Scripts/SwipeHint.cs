@@ -48,8 +48,10 @@ public class SwipeHint : MonoBehaviour
 
         if(board.hintBool && !oneHintActive && !hasCoroutineStarted)
         {
+            Debug.Log("START WAIT");
             StartCoroutine(WaitForHint());
             hasCoroutineStarted = true;
+            oneHintActive = true;
         }
 
     }
@@ -57,9 +59,15 @@ public class SwipeHint : MonoBehaviour
     private IEnumerator WaitForHint()
     {
         yield return new WaitForSeconds(3);
-        continueIteration = true;
-        StartCoroutine(PowerUpsIteration());
+        if (board.hintBool)
+        {
+            continueIteration = true;
+            Debug.Log("START HINT");
+            StartCoroutine(PowerUpsIteration());
+        }
         
+
+
     }
 
     #region Iteration

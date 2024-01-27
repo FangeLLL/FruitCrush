@@ -540,7 +540,7 @@ public class SwipeHint : MonoBehaviour
                          *      
                          */
 
-                        if (j + 2 < board.height && i + 2 < board.width && i - 1 >= 0)
+                        if (j + 2 < board.height && i + 3 < board.width && i - 1 >= 0)
                         {
                             if (board.allFruits[i + 1, j] &&
                                 board.allFruits[i + 1, j + 1] &&
@@ -1745,7 +1745,7 @@ public class SwipeHint : MonoBehaviour
                          *   
                          */
 
-                        if (j + 2 < board.height)
+                        if (j + 3 < board.height)
                         {
                             if (board.allFruits[i, j + 1] &&
                                 board.allFruits[i, j + 2] &&

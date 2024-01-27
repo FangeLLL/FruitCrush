@@ -1578,14 +1578,16 @@ public class Board : MonoBehaviour
                 break;
         }
     }
-
+    /// <summary>
+    /// Disabling special power.
+    /// </summary>
     public void DisableSpecialPowers()
     {
         specialPowerID = 0;
         specialSwipe = false;
     }
     /// <summary>
-    /// THIS FUNCTION NEEDS TO BE OPTIMIZED
+    /// Stopping hint system.
     /// </summary>
     public void StopHint()
     {

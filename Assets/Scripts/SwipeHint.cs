@@ -1740,10 +1740,14 @@ public class SwipeHint : MonoBehaviour
     public void StopHintCoroutines()
     {
         Debug.Log("STOPPED");
-        fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, false);
-        fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, false);
-        fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, false);
-        fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, false);
+        if (fruit)
+        {
+            fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, false);
+            fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, false);
+            fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, false);
+            fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, false);
+        }
+      
 
         StopAllCoroutines();
         continueIteration = false;

@@ -24,7 +24,7 @@ public class Fruit : MonoBehaviour
 
     private Board board;
 
-    public bool isClicked,isSwiped=false;
+    public bool isClicked,isSwiped=false,isMoving=false;
 
     public Animator animator;
 
@@ -37,11 +37,15 @@ public class Fruit : MonoBehaviour
     [HideInInspector]
     public int swipeDown = Animator.StringToHash("isSwipeDown");
 
+    float speed;
+
     void Awake()
     {
         board = FindObjectOfType<Board>();
         targetV.x = transform.position.x;
         targetV.y = transform.position.y;
+
+        speed = 6f;
     }
 
     void FixedUpdate()
@@ -50,32 +54,27 @@ public class Fruit : MonoBehaviour
         {
             board.allFruits[column, row] = this.gameObject;
 
-            // For Moving Left or Right Sides
-            if (Mathf.Abs(targetV.x - transform.position.x) > .1)
+          
+            if (isSwiped)
             {
-                // MOVE TOWARDS THE TARGET
-                tempPosition = new Vector2(targetV.x, transform.position.y);
-                transform.position = Vector2.Lerp(transform.position, tempPosition, 0.2f);
+                // Swipe movement
+                transform.position = Vector2.Lerp(transform.position, targetV, 7f * Time.deltaTime);
+
             }
             else
             {
-                // DIRECTLY SET THE POSITION
-                tempPosition = new Vector2(targetV.x, transform.position.y);
-                transform.position = tempPosition;
+                // Other movement
+                transform.position = Vector2.Lerp(transform.position, targetV, 6f * Time.deltaTime);
+
             }
 
-            //  For Moving Up or Down Sides
-            if (Mathf.Abs(targetV.y - transform.position.y) > .1)
+            if(Vector2.Distance(targetV, transform.position) > 0.1f)
             {
-                // MOVE TOWARDS THE TARGET
-                tempPosition = new Vector2(transform.position.x, targetV.y);
-                transform.position = Vector2.Lerp(transform.position, tempPosition, 0.2f);
+                isMoving = true;
             }
             else
             {
-                // DIRECTLY SET THE POSITION
-                tempPosition = new Vector2(transform.position.x, targetV.y);
-                transform.position = tempPosition;
+                isMoving = false;
             }
 
             if (isClicked)
@@ -104,7 +103,7 @@ public class Fruit : MonoBehaviour
         if (fruitType < 0 && board.taskController.moveCount > 0 && !isSwiped && board.specialPowerID == 0 && board.taskController.isBoardActive)
         {
             board.taskController.MovePlayed();
-            board.hintStop = true;
+            board.StopHint();
             board.ActivatePowerUp(gameObject);
         }
     }

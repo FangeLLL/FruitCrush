@@ -10,9 +10,11 @@ public class SwipeHint : MonoBehaviour
     public Fruit fruit2;
     public float hintThreshold = 3f; // Adjust this threshold as needed
 
-    public bool isHintSearching;
     public bool continueIteration = true;
     public bool oneHintActive;
+
+    // Add a flag to track whether the coroutine has been started
+    public bool hasCoroutineStarted = false;
 
     List<Vector2Int> possibleMoves = new List<Vector2Int>();
 
@@ -23,7 +25,7 @@ public class SwipeHint : MonoBehaviour
 
     private void Update()
     {
-        if (board.hintBool && !board.exitUpdate)
+        /*if (board.hintBool && !board.exitUpdate)
         {
             if (isHintSearching)
             {
@@ -41,7 +43,29 @@ public class SwipeHint : MonoBehaviour
             StopAllCoroutines();
             oneHintActive = false;
             Debug.Log("HINT STOPPED");
+        }*/
+
+        if(board.hintBool && !oneHintActive)
+        {
+            oneHintActive = true;
+            Debug.Log("START WAIT");
+            StartCoroutine(WaitForHint());
+           // hasCoroutineStarted = true;
         }
+
+    }
+
+    private IEnumerator WaitForHint()
+    {
+        yield return new WaitForSeconds(1);
+        Debug.Log("1");
+        yield return new WaitForSeconds(1);
+        Debug.Log("2");
+        yield return new WaitForSeconds(1);
+        Debug.Log("3");
+        continueIteration = true;
+        Debug.Log("START HINT");
+        StartCoroutine(PowerUpsIteration());
 
     }
 
@@ -50,7 +74,6 @@ public class SwipeHint : MonoBehaviour
     // THIS IS FOR POWER UPS HINT
     private IEnumerator PowerUpsIteration()
     {
-        oneHintActive = true;
         for (int i = 0; i < board.width; i++) // COLUMN
         {
             if (!continueIteration)
@@ -79,7 +102,6 @@ public class SwipeHint : MonoBehaviour
                                     //fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                     yield return new WaitForSeconds(0.1f);
                                     continueIteration = false;
-                                    StopCoroutines();
                                     break;
                                 }
 
@@ -91,7 +113,6 @@ public class SwipeHint : MonoBehaviour
                                     //fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                     yield return new WaitForSeconds(0.1f);
                                     continueIteration = false;
-                                    StopCoroutines();
                                     break;
                                 }
 
@@ -101,7 +122,6 @@ public class SwipeHint : MonoBehaviour
                                     fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                     yield return new WaitForSeconds(0.1f);
                                     continueIteration = false;
-                                    StopCoroutines();
                                     break;
                                 }
 
@@ -111,7 +131,6 @@ public class SwipeHint : MonoBehaviour
                                     fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                     yield return new WaitForSeconds(0.1f);
                                     continueIteration = false;
-                                    StopCoroutines();
                                     break;
                                 }
                             }
@@ -151,7 +170,6 @@ public class SwipeHint : MonoBehaviour
                     
                     if (board.allFruits[i, j])
                     {
-                        Debug.Log(j);
                         int type = board.allFruits[i, j].GetComponent<Fruit>().fruitType;
 
                         if (j + 1 < board.height && board.allFruits[i, j + 1])
@@ -182,7 +200,6 @@ public class SwipeHint : MonoBehaviour
                                     fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
                                     yield return new WaitForSeconds(0.1f);
                                     continueIteration = false;
-                                    StopCoroutines();
                                     break;
                                 }
                             }
@@ -218,7 +235,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -250,7 +266,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -282,7 +297,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -343,7 +357,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -373,7 +386,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -405,7 +417,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -434,7 +445,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -466,7 +476,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -495,7 +504,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -527,7 +535,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -540,7 +547,7 @@ public class SwipeHint : MonoBehaviour
                          *      
                          */
 
-                        if (j + 2 < board.height && i + 2 < board.width && i - 1 >= 0)
+                        if (j + 2 < board.height && i + 3 < board.width && i - 1 >= 0)
                         {
                             if (board.allFruits[i + 1, j] &&
                                 board.allFruits[i + 1, j + 1] &&
@@ -556,7 +563,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -603,7 +609,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -633,7 +638,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -661,7 +665,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -692,7 +695,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -725,7 +727,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -781,7 +782,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -812,7 +812,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -842,7 +841,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -872,7 +870,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -903,7 +900,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -934,7 +930,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -965,7 +960,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -996,7 +990,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1042,7 +1035,6 @@ public class SwipeHint : MonoBehaviour
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
-                                        StopCoroutines();
                                         break;
                                     }
                                     if ((i - 1 >= 0) && (j - 1 >= 0) && board.allFruits[i - 1, j - 1] && type == board.allFruits[i - 1, j - 1].GetComponent<Fruit>().fruitType && board.allFruits[i - 1, j])
@@ -1052,7 +1044,6 @@ public class SwipeHint : MonoBehaviour
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
-                                        StopCoroutines();
                                         break;
                                     }
                                 }
@@ -1065,7 +1056,6 @@ public class SwipeHint : MonoBehaviour
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
-                                        StopCoroutines();
                                         break;
                                     }
                                     if ((i + 1 < board.width) && (j - 1 >= 0) && board.allFruits[i + 1, j - 1] && type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
@@ -1075,7 +1065,6 @@ public class SwipeHint : MonoBehaviour
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
-                                        StopCoroutines();
                                         break;
                                     }
                                 }
@@ -1100,7 +1089,6 @@ public class SwipeHint : MonoBehaviour
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
-                                        StopCoroutines();
                                         break;
                                     }
                                     if ((i - 1 >= 0) && (j + 1 < board.height) && board.allFruits[i - 1, j + 1] && type2 == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType && board.allFruits[i - 1, j])
@@ -1110,7 +1098,6 @@ public class SwipeHint : MonoBehaviour
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
-                                        StopCoroutines();
                                         break;
                                     }
                                 }
@@ -1123,7 +1110,6 @@ public class SwipeHint : MonoBehaviour
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
-                                        StopCoroutines();
                                         break;
                                     }
                                     if ((i + 1 < board.width) && (j + 1 < board.height) && board.allFruits[i + 1, j + 1] && type2 == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
@@ -1133,7 +1119,6 @@ public class SwipeHint : MonoBehaviour
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
-                                        StopCoroutines();
                                         break;
                                     }
                                 }
@@ -1181,7 +1166,6 @@ public class SwipeHint : MonoBehaviour
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
-                                        StopCoroutines();
                                         break;
 
                                     }
@@ -1192,7 +1176,6 @@ public class SwipeHint : MonoBehaviour
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
-                                        StopCoroutines();
                                         break;
                                     }
                                 }
@@ -1205,7 +1188,6 @@ public class SwipeHint : MonoBehaviour
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
-                                        StopCoroutines();
                                         break;
                                     }
                                     if ((i + 1 < board.width) && (j - 1 >= 0) && board.allFruits[i + 1, j - 1] && type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
@@ -1215,7 +1197,6 @@ public class SwipeHint : MonoBehaviour
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
-                                        StopCoroutines();
                                         break;
                                     }
                                 }
@@ -1240,7 +1221,6 @@ public class SwipeHint : MonoBehaviour
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
-                                        StopCoroutines();
                                         break;
                                     }
                                     if ((i - 1 >= 0) && (j + 1 < board.height) && board.allFruits[i - 1, j + 1] && type2 == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType && board.allFruits[i - 1, j])
@@ -1250,7 +1230,6 @@ public class SwipeHint : MonoBehaviour
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
-                                        StopCoroutines();
                                         break;
                                     }
                                 }
@@ -1263,7 +1242,6 @@ public class SwipeHint : MonoBehaviour
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
-                                        StopCoroutines();
                                         break;
                                     }
                                     if ((i + 1 < board.width) && (j + 1 < board.height) && board.allFruits[i + 1, j + 1] && type2 == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType && board.allFruits[i + 1, j])
@@ -1273,7 +1251,6 @@ public class SwipeHint : MonoBehaviour
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
-                                        StopCoroutines();
                                         break;
                                     }
                                 }
@@ -1328,7 +1305,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1357,7 +1333,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1386,7 +1361,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1415,7 +1389,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1441,7 +1414,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1467,7 +1439,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1494,7 +1465,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1522,7 +1492,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1550,7 +1519,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1578,7 +1546,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1607,7 +1574,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1636,7 +1602,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1667,7 +1632,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1697,7 +1661,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1727,7 +1690,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1745,7 +1707,7 @@ public class SwipeHint : MonoBehaviour
                          *   
                          */
 
-                        if (j + 2 < board.height)
+                        if (j + 3 < board.height)
                         {
                             if (board.allFruits[i, j + 1] &&
                                 board.allFruits[i, j + 2] &&
@@ -1757,7 +1719,6 @@ public class SwipeHint : MonoBehaviour
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
-                                StopCoroutines();
                                 break;
                             }
                         }
@@ -1766,7 +1727,6 @@ public class SwipeHint : MonoBehaviour
                 }
             }
         }
-        StopCoroutines();
     }
 
 
@@ -1775,9 +1735,23 @@ public class SwipeHint : MonoBehaviour
 
     #endregion
 
-    public void StopCoroutines()
+   
+
+    public void StopHintCoroutines()
     {
+        Debug.Log("STOPPED");
+        if (fruit)
+        {
+            fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, false);
+            fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, false);
+            fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, false);
+            fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, false);
+        }
+      
+
         StopAllCoroutines();
+        continueIteration = false;
+        oneHintActive = false;
         //board.isRunning = false;
     }
 

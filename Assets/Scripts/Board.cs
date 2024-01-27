@@ -1,16 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Collections.LowLevel.Unsafe;
-using Unity.Jobs;
-using Unity.Properties;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Audio;
-using UnityEngine.SceneManagement;
-using UnityEngine.U2D.IK;
-using static UnityEngine.GraphicsBuffer;
+
 
 public class Board : MonoBehaviour
 {
@@ -23,6 +15,7 @@ public class Board : MonoBehaviour
     [SerializeField]
     public AchievementManager achievementManager;
     public TaskController taskController;
+    public PowerUpController powerUpController;
     public SwipeHint swipeHint;
     public SaveData saveData;
     public SpecialPowerController specialPowerController;
@@ -62,8 +55,6 @@ public class Board : MonoBehaviour
     // Test variable
     public int specialPowerID = 0;
     public bool specialSwipe = false;
-
-    public bool hintStop = false;
 
     private void Awake()
     {
@@ -124,7 +115,7 @@ public class Board : MonoBehaviour
 
     }
 
-    private void Update()
+    /*private void Update()
     {
         // Check if the conditions are met
         if (hintBool && !exitUpdate)
@@ -151,7 +142,7 @@ public class Board : MonoBehaviour
             timer = 0f;
         }
 
-    }
+    }*/
 
     /// <summary>
     /// Arranging the general scale variable of prefabs according to size of board.
@@ -292,6 +283,8 @@ public class Board : MonoBehaviour
             // Inserting fallPoint to array
             columnsFallIndexY[i] = fallPoint;
         }
+
+        CheckForStarterPowerUps();
     }
 
     /// <summary>
@@ -309,7 +302,7 @@ public class Board : MonoBehaviour
         }
 
         //StopCoroutine(GiveHint());
-        swipeHint.isHintSearching = false;
+        StopHint();
 
         if (swipeHint.fruit != null)
         {
@@ -565,6 +558,8 @@ public class Board : MonoBehaviour
                         fruitsCheck.Clear();
 
                         popped = true;
+                        swipeHint.oneHintActive = false;
+                        //swipeHint.StopCoroutines();
 
                         // SWIPE HINT ANIMATION STOP
 
@@ -588,8 +583,34 @@ public class Board : MonoBehaviour
 
         if (!popped)
         {
-            exitUpdate = false;
-            hintBool = true;
+            bool allFruitsStopped = true;
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    if (allFruits[i, j] && allFruits[i, j].GetComponent<Fruit>().isMoving)
+                    {
+                        allFruitsStopped = false;
+
+                        j = height;
+                        i = width;
+                    }
+                }
+            }
+            if (allFruitsStopped)
+            {
+                hintBool = true;
+            }
+            else
+            {
+
+                StopHint();
+                
+            }
+        }
+        else
+        {
+            StopHint();
         }
         checkingMatch = false;
 
@@ -673,7 +694,6 @@ public class Board : MonoBehaviour
             if (!specialSwipe)
             {
                 taskController.MovePlayed();
-                hintStop = true;
             }
             else
             {
@@ -683,10 +703,11 @@ public class Board : MonoBehaviour
         }
         else
         {
-            swipeHint.oneHintActive = false;
+            //swipeHint.oneHintActive = false;
             audioManager.SwipeResist();
             ChangeTwoFruit(fruit, otherFruit);
             yield return new WaitForSeconds(0.3f);
+            swipeHint.oneHintActive = false;
         }
 
         if (fruit)
@@ -927,17 +948,16 @@ public class Board : MonoBehaviour
                     emptyPlaces.Enqueue(j);
 
                     // THESE CODES CAN BE IMPROVE PLEASE CHECK THE ALGO
-                    if((j + 1 < height && !allTiles[i, j + 1]) || (j + 2 < height && !allTiles[i, j + 2]))
+                    
+                    if(((j + 1 < height && !allTiles[i, j + 1])) && columnsFallIndexY[i]!=j)
                     {
-                        StartCoroutine(CrossFall(i, j + 1));
-
+                        CrossFall(i, j + 1);
                     }
                     else
                     {
-                        if ((j + 1 < height && allTiles[i, j + 1] && allTiles[i, j + 1].GetComponent<BackgroundTile>().isCurrentObstacleBox) || (j + 2 < height && allTiles[i, j + 2] && allTiles[i, j + 2].GetComponent<BackgroundTile>().isCurrentObstacleBox))
+                        if ((j + 1 < height && allTiles[i, j + 1] && allTiles[i, j + 1].GetComponent<BackgroundTile>().isCurrentObstacleBox))
                         {
-                            StartCoroutine(CrossFall(i, j + 1));
-
+                            CrossFall(i, j + 1);
                         }
                     }
                    
@@ -964,27 +984,31 @@ public class Board : MonoBehaviour
             float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
             float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
             int emptyRowIndex = emptyPlaces.Dequeue();
-            Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, columnsFallIndexY[i]+1 * scaleNumber - yOffset);
+            // If this place did not filled then create object for it.
+            if (!allFruits[i, emptyRowIndex]) {
 
-            // Instantiate a new fruit at the position of the destroyed fruit. Fruit that going to be created must be from existFruits variable. existFruits
-            // list contains indexes of avaliable fruits.
-            int fruitToUse = existFruits[UnityEngine.Random.Range(0, existFruits.Count)];
-            GameObject newFruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
-            Fruit newFruitScript = newFruit.GetComponent<Fruit>();
+                Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, (columnsFallIndexY[i] + 1) * scaleNumber - yOffset);
 
-            // Set the parent and name of the new fruit
-            newFruit.transform.parent = this.transform;
-            newFruit.name = "( " + i + ", " + emptyRowIndex + " )";
+                // Instantiate a new fruit at the position of the destroyed fruit. Fruit that going to be created must be from existFruits variable. existFruits
+                // list contains indexes of avaliable fruits.
+                int fruitToUse = existFruits[UnityEngine.Random.Range(0, existFruits.Count)];
+                GameObject newFruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
+                Fruit newFruitScript = newFruit.GetComponent<Fruit>();
 
-            // Set the column and row of the new fruit
-            newFruitScript.column = i;
-            newFruitScript.row = emptyRowIndex;
-            newFruitScript.fruitType = fruitToUse;
-            newFruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
+                // Set the parent and name of the new fruit
+                newFruit.transform.parent = this.transform;
+                newFruit.name = "( " + i + ", " + emptyRowIndex + " )";
 
-            audioManager.FruitFall();
-            // Add the new fruit to the allFruits array
-            yield return new WaitForSeconds(0.1f);
+                // Set the column and row of the new fruit
+                newFruitScript.column = i;
+                newFruitScript.row = emptyRowIndex;
+                newFruitScript.fruitType = fruitToUse;
+                newFruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
+
+                audioManager.FruitFall();
+                // Add the new fruit to the allFruits array
+                yield return new WaitForSeconds(0.1f);
+            }
         }
         fillingColumn[i] = false;
 
@@ -1001,7 +1025,7 @@ public class Board : MonoBehaviour
         /*
         Power Up Type Number;
         
-        -1 : Horizantal Harvester
+        -1 : Horizontal Harvester
         -2 : Vertical Harvester
         -3 : TNT
          */
@@ -1043,11 +1067,11 @@ public class Board : MonoBehaviour
     /// <param name="column"></param>
     /// <param name="row"></param>
     /// <returns></returns>
-    private IEnumerator CrossFall(int column, int row)
+    private void CrossFall(int column, int row)
     {
         GameObject fruit = null;
         Fruit fruitScript;
-        yield return new WaitForSeconds(0.5f);
+      //  yield return new WaitForSeconds(0.1f);
         if (column - 1 >= 0 && FruitAvailable(allFruits[column - 1, row]) && !allFruits[column, row - 1])
         {
             fruit = allFruits[column - 1, row];
@@ -1529,7 +1553,7 @@ public class Board : MonoBehaviour
                 specialPowerController.SpecialPowerUpUsed(3);
                 break;
         }
-        hintStop = true;
+        StopHint();
         specialPowerID = 0;
     }
 
@@ -1551,11 +1575,68 @@ public class Board : MonoBehaviour
                 break;
         }
     }
-
+    /// <summary>
+    /// Disabling special power.
+    /// </summary>
     public void DisableSpecialPowers()
     {
         specialPowerID = 0;
         specialSwipe = false;
     }
+    /// <summary>
+    /// Stopping hint system.
+    /// </summary>
+    public void StopHint()
+    {
+        
+        if (swipeHint.oneHintActive)
+        {
+            swipeHint.StopHintCoroutines();
 
+        }
+
+        hintBool = false;
+    }
+
+    private void CheckForStarterPowerUps()
+    {
+        /* 
+         powerUpController powerUps Indexes
+        0 - Harvester
+        1 - TNT
+
+         */
+
+
+        for (int i = 0; i < 2; i++)
+        {
+            Debug.Log(powerUpController.powerUps[i].isActivated);
+
+            if (powerUpController.powerUps[i].isActivated) {
+                int column, row;
+                Debug.Log("PowerUp active");
+                column = Random.Range(0, width);
+                row = Random.Range(0, height);
+                while (!allFruits[column,row] )
+                {
+                    Debug.Log("Searching for powerUp");
+                    column = Random.Range(0, width);
+                    row = Random.Range(0, height);
+                }
+
+                Destroy(allFruits[column,row]);
+
+                if (i == 0)
+                {
+                    // Harvester creation randomly horizontal or vertical
+                    CreatePowerUp(column, row,-Random.Range(1,3));
+                }
+                else
+                {
+                    // Tnt or other powerUps. Tnt = -3 that why -i-2.
+                    CreatePowerUp(column, row, -i - 2);
+                }
+            }
+        }
+    }
 }

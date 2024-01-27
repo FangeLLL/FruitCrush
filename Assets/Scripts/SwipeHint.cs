@@ -14,6 +14,9 @@ public class SwipeHint : MonoBehaviour
     public bool continueIteration = true;
     public bool oneHintActive;
 
+    // Add a flag to track whether the coroutine has been started
+    public bool hasCoroutineStarted = false;
+
     List<Vector2Int> possibleMoves = new List<Vector2Int>();
 
     private void Start()
@@ -23,7 +26,7 @@ public class SwipeHint : MonoBehaviour
 
     private void Update()
     {
-        if (board.hintBool && !board.exitUpdate)
+        /*if (board.hintBool && !board.exitUpdate)
         {
             if (isHintSearching)
             {
@@ -41,8 +44,22 @@ public class SwipeHint : MonoBehaviour
             StopAllCoroutines();
             oneHintActive = false;
             Debug.Log("HINT STOPPED");
+        }*/
+
+        if(board.hintBool && !oneHintActive && !hasCoroutineStarted)
+        {
+            StartCoroutine(WaitForHint());
+            hasCoroutineStarted = true;
         }
 
+    }
+
+    private IEnumerator WaitForHint()
+    {
+        yield return new WaitForSeconds(3);
+        continueIteration = true;
+        StartCoroutine(PowerUpsIteration());
+        
     }
 
     #region Iteration
@@ -50,7 +67,6 @@ public class SwipeHint : MonoBehaviour
     // THIS IS FOR POWER UPS HINT
     private IEnumerator PowerUpsIteration()
     {
-        oneHintActive = true;
         for (int i = 0; i < board.width; i++) // COLUMN
         {
             if (!continueIteration)
@@ -151,7 +167,6 @@ public class SwipeHint : MonoBehaviour
                     
                     if (board.allFruits[i, j])
                     {
-                        Debug.Log(j);
                         int type = board.allFruits[i, j].GetComponent<Fruit>().fruitType;
 
                         if (j + 1 < board.height && board.allFruits[i, j + 1])
@@ -1778,6 +1793,8 @@ public class SwipeHint : MonoBehaviour
     public void StopCoroutines()
     {
         StopAllCoroutines();
+        continueIteration = false;
+        oneHintActive = true;
         //board.isRunning = false;
     }
 

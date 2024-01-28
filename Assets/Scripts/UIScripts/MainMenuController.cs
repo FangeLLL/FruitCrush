@@ -19,26 +19,36 @@ public class MainMenuController : Sounds
     [SerializeField] private TextMeshProUGUI levelBoxText;
 
     [SerializeField] private GameObject playButton;
+
     [SerializeField] private GameObject starBox;
     [SerializeField] private GameObject livesBox;
+
     [SerializeField] private GameObject settingsIcon;
     [SerializeField] private GameObject tasksIcon;
+    [SerializeField] private GameObject battlePassIcon;
+
     [SerializeField] private GameObject grayBack;
     [SerializeField] private GameObject shopBackground;
     [SerializeField] private GameObject shopTopUI;
     [SerializeField] private GameObject shopCloseButton;
+
     [SerializeField] private GameObject outOfLivesBox;
     [SerializeField] private GameObject outOfLivesBoxQuitButton;
     [SerializeField] private GameObject refillButton;
+
     [SerializeField] private GameObject playBox;
     [SerializeField] private GameObject playBoxQuitButton;
     [SerializeField] private GameObject playBoxPlayButton;
     [SerializeField] private GameObject levelBox;
+
     [SerializeField] private GameObject MenuBackground;
     [SerializeField] private GameObject settingsMenu;
     [SerializeField] private GameObject settingsCloseButton;
     [SerializeField] private GameObject tasksMenu;
     [SerializeField] private GameObject tasksCloseButton;
+    [SerializeField] private GameObject battlePassMenu;
+    [SerializeField] private GameObject battlePassCloseButton;
+
     [SerializeField] private GameObject musicToggleBlock;
     [SerializeField] private GameObject soundToggleBlock;
     [SerializeField] private GameObject hintToggleBlock;
@@ -114,6 +124,7 @@ public class MainMenuController : Sounds
         yield return new WaitForSeconds(0.25f);
 
         tasksIcon.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+        battlePassIcon.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
     }
 
     public void ToggleMusic()
@@ -292,7 +303,7 @@ public class MainMenuController : Sounds
 
         for (int i = 0; i < shopController.shopItems.Length; i++)
         {
-            //shopController.shopItems[i].item.GetComponent<Animator>().SetTrigger("ShopOpen");
+            shopController.shopItems[i].item.GetComponent<Animator>().SetTrigger("ShopOpen");
             yield return new WaitForSeconds(0.01f);
         }
     }
@@ -374,6 +385,22 @@ public class MainMenuController : Sounds
         MenuBackground.SetActive(false);
         tasksMenu.SetActive(false);
         dailyTaskManager.TaskIconNotification();
+        audioManager.MenuClickReturn();
+    }
+
+    public void BattlePassButtonTapped()
+    {
+        MenuBackground.SetActive(true);
+        battlePassMenu.SetActive(true);
+        battlePassMenu.GetComponent<Animator>().SetTrigger("MenuOpen");
+        audioManager.MenuClick();
+    }
+
+    public void BattlePassCloseButtonTapped()
+    {
+        MenuBackground.SetActive(false);
+        battlePassMenu.SetActive(false);
+        //notification ayarlamaca
         audioManager.MenuClickReturn();
     }
 }

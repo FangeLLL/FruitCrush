@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1591640915798354651}
   - component: {fileID: 8256839375181607625}
   - component: {fileID: 7644661403254883778}
-  - component: {fileID: 1677137218421938901}
   m_Layer: 0
   m_Name: BoxOfFruit
   m_TagString: Obstacle
@@ -131,20 +130,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1677137218421938901
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3330133265949295339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8b1509a3ad7a1145ab5feb3d95eba6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 1
-  indexOfPlace: 0
-  boxObstacle: 1
-  indestructible: 0
-  id: 4

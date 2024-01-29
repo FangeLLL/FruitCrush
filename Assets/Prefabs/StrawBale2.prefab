@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1591640915798354651}
   - component: {fileID: 8256839375181607625}
   - component: {fileID: 7644661403254883778}
-  - component: {fileID: 1677137218421938901}
+  - component: {fileID: -6570273278286912603}
   m_Layer: 0
   m_Name: StrawBale2
   m_TagString: Obstacle
@@ -131,7 +131,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1677137218421938901
+--- !u!114 &-6570273278286912603
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,9 +143,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8b1509a3ad7a1145ab5feb3d95eba6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obstacleSpecs: {fileID: 11400000, guid: fdba285560d2a0f4d875a325f541b71c, type: 2}
   health: 2
-  indexOfPlace: 0
-  boxObstacle: 1
-  indestructible: 0
-  obstacleHitSound: StrawBaleBreak
-  id: 2

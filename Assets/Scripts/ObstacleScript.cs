@@ -4,32 +4,26 @@ using UnityEngine;
 
 public class ObstacleScript : MonoBehaviour
 {
+
+
+    /*
     public int health;
-    // indexOfPlace variable represent, this prefav preffered place of inde value in obstacles variable.
     public int indexOfPlace;
     public bool boxObstacle=false;
     public bool indestructible = false;
+        public int id;
 
     public string obstacleHitSound;
+    */
+
+   [SerializeField] public ObstacleSpecs obstacleSpecs;
     private Board board;
     private TaskController taskController;
     AudioManager audioManager;
 
-    public int id;
+    public int health;
 
-    /*
-    
-    Note: Id - Name of obstacle - Index place of obstacle
 
-    Obstacle Ids:
-
-    0 - Strawbale - 0 
-    1 - Wheatfarm - 1
-    2 - Strawbale Strong (Has two health) - 0
-    3 - Apple Tree - 0
-    4 - Box of fruit - 0
-     
-     */
 
     private void Start()
     {
@@ -39,20 +33,19 @@ public class ObstacleScript : MonoBehaviour
     }
     public void TakeDamage()
     {     
-        if(indestructible)
+        if(obstacleSpecs.indestructible)
         {
-            audioManager.SoundController(obstacleHitSound);
-            // taskController.TaskProgress(taskIndex);
-            Debug.Log("Player got apple");
+            audioManager.SoundController(obstacleSpecs.obstacleHitSound);
+            taskController.TaskProgress(obstacleSpecs.id);
         }
         else
         {
             health--;
-            audioManager.SoundController(obstacleHitSound);
+            audioManager.SoundController(obstacleSpecs.obstacleHitSound);
             if (health <= 0)
             {
                 StartCoroutine(board.FadeOut(gameObject));
-                taskController.TaskProgress(id);
+                taskController.TaskProgress(obstacleSpecs.id);
             }
             else
             {

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1591640915798354651}
   - component: {fileID: 8256839375181607625}
   - component: {fileID: 7644661403254883778}
-  - component: {fileID: 1677137218421938901}
+  - component: {fileID: -6752316569287210872}
   m_Layer: 0
   m_Name: AppleTree
   m_TagString: Obstacle
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -131,7 +131,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1677137218421938901
+--- !u!114 &-6752316569287210872
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,9 +143,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8b1509a3ad7a1145ab5feb3d95eba6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obstacleSpecs: {fileID: 11400000, guid: f1c7496599c6ded4c8b8d6410f9ab7c5, type: 2}
   health: 1
-  indexOfPlace: 0
-  boxObstacle: 1
-  indestructible: 1
-  obstacleHitSound: StrawBaleBreak
-  id: 3

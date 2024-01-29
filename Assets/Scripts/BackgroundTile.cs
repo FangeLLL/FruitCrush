@@ -95,7 +95,7 @@ public class BackgroundTile : MonoBehaviour
         // If there is no obstacle left then isCurrentObstacleBox variable needs to be false.
         if (indexOfVisibleOne >= 0)
         {
-            isCurrentObstacleBox = obstacles[indexOfVisibleOne].GetComponent<ObstacleScript>().boxObstacle;
+            isCurrentObstacleBox = obstacles[indexOfVisibleOne].GetComponent<ObstacleScript>().obstacleSpecs.boxObstacle;
 
         }
         else

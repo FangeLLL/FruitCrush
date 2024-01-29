@@ -5290,6 +5290,7 @@ MonoBehaviour:
   levelText: {fileID: 0}
   isSoundOn: 0
   isMusicOn: 0
+  isHapticSupported: 0
 --- !u!114 &1428364324
 MonoBehaviour:
   m_ObjectHideFlags: 0

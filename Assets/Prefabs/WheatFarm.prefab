@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8989042901037719755}
   - component: {fileID: 7985771244452426370}
   - component: {fileID: 7841533705364132850}
-  - component: {fileID: 3695857947667440890}
+  - component: {fileID: 2683707346748485253}
   m_Layer: 0
   m_Name: WheatFarm
   m_TagString: Obstacle
@@ -131,7 +131,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &3695857947667440890
+--- !u!114 &2683707346748485253
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,9 +143,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8b1509a3ad7a1145ab5feb3d95eba6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obstacleSpecs: {fileID: 11400000, guid: ed72fd86892922548865b7f502512c69, type: 2}
   health: 1
-  indexOfPlace: 1
-  boxObstacle: 0
-  indestructible: 0
-  obstacleHitSound: MarbleBreak
-  id: 1

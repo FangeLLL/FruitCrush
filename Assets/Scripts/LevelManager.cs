@@ -176,7 +176,7 @@ public class LevelManager : MonoBehaviour
                     if (allTiles[i, j].GetComponent<LevelEditorBackgroundTile>().obstacles[0])
                     {
                         arrangeTilesIndexZero[(width * i) + j] = allTiles[i, j].GetComponent<LevelEditorBackgroundTile>().obstacles[0].
-                            GetComponent<ObstacleScript>().id;
+                            GetComponent<ObstacleScript>().obstacleSpecs.id;
                     }
                     else
                     {
@@ -186,7 +186,7 @@ public class LevelManager : MonoBehaviour
                     if (allTiles[i, j].GetComponent<LevelEditorBackgroundTile>().obstacles[1])
                     {
                         arrangeTilesIndexOne[(width * i) + j] = allTiles[i, j].GetComponent<LevelEditorBackgroundTile>().obstacles[1].
-                            GetComponent<ObstacleScript>().id;
+                            GetComponent<ObstacleScript>().obstacleSpecs.id;
                     }
                     else
                     {
@@ -196,7 +196,7 @@ public class LevelManager : MonoBehaviour
                     if (allTiles[i, j].GetComponent<LevelEditorBackgroundTile>().obstacles[2])
                     {
                         arrangeTilesIndexTwo[(width * i) + j] = allTiles[i, j].GetComponent<LevelEditorBackgroundTile>().obstacles[2].
-                            GetComponent<ObstacleScript>().id;
+                            GetComponent<ObstacleScript>().obstacleSpecs.id;
                     }
                     else
                     {
@@ -364,12 +364,12 @@ public class LevelManager : MonoBehaviour
                 // OBSTACLE IDS START FROM -1 SO SYSTEM GET NEGATIVE OF IT AND MINUS 1
                 int obstacleIndex = (-chosenId) - 1;
                 //  GETTING CHOSEN OBSTACLEN PREFAB INDEX LOCATION ON THE TILE OBSTACLE VARIABLE.
-                int placeOfObstacle = obstacles[obstacleIndex].GetComponent<ObstacleScript>().indexOfPlace;
+                int placeOfObstacle = obstacles[obstacleIndex].GetComponent<ObstacleScript>().obstacleSpecs.indexOfLayer;
                 int currentObstacleId = -1;
                 // IF THERE IS A OBSTACLE ALREADY EXÝST IN THE CURRENT PLACE THEN DESTROY THE OBSTACLE BUT IF DOES NOT EXÝST THEN CREATE THE OBSTACLE
                 if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle])
                 {
-                    currentObstacleId = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().id;
+                    currentObstacleId = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.id;
                     Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle]);
                     taskElements[currentObstacleId]--;
                 }

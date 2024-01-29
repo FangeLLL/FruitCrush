@@ -100,7 +100,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &962639571434477156
 Transform:
   m_ObjectHideFlags: 0
@@ -430,7 +430,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1594701409205146621, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_Name
-      value: Grape 1
+      value: Horizontal Harvester Power Up
       objectReference: {fileID: 0}
     - target: {fileID: 1769958116402937428, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_FlipX
@@ -440,6 +440,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: d3f3d0de78ee9894c82461bd31c5113b, type: 3}
+    - target: {fileID: 4633664314048729591, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: b73847e21c84ce047a13c27b5b4ec3a1, type: 2}
     - target: {fileID: 6775481451483027233, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_LocalScale.x
       value: 1

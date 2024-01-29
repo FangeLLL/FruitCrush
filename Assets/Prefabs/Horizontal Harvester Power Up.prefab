@@ -141,8 +141,10 @@ MonoBehaviour:
   targetV: {x: 0, y: 0}
   isClicked: 0
   isSwiped: 0
+  isMoving: 0
   animator: {fileID: 0}
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799
   swipeDown: 1769856547
+  swipeFlash: -577822589

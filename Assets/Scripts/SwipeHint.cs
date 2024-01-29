@@ -8,6 +8,9 @@ public class SwipeHint : MonoBehaviour
     private Board board;
     public Fruit fruit;
     public Fruit fruit2;
+    public Fruit fruit3;
+    public Fruit fruit4;
+    public Fruit fruit5;
     public float hintThreshold = 3f; // Adjust this threshold as needed
 
     public bool continueIteration = true;
@@ -197,7 +200,17 @@ public class SwipeHint : MonoBehaviour
                                     type == board.allFruits[i + 2, j + 1].GetComponent<Fruit>().fruitType)
                                 {
                                     fruit = board.allFruits[i + 2, j + 1].GetComponent<Fruit>();
+                                    fruit2 = board.allFruits[i + 1, j].GetComponent<Fruit>();
+                                    fruit3 = board.allFruits[i + 3, j].GetComponent<Fruit>();
+                                    fruit4 = board.allFruits[i + 4, j].GetComponent<Fruit>();
+                                    fruit5 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                     fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                    fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                    fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                    fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                    fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+
                                     yield return new WaitForSeconds(0.1f);
                                     continueIteration = false;
                                     break;
@@ -232,7 +245,16 @@ public class SwipeHint : MonoBehaviour
                             {
                                 Debug.Log("5 MATCH GO");
                                 fruit = board.allFruits[i + 2, j - 1].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 1, j].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i + 3, j].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i + 4, j].GetComponent<Fruit>();
+                                fruit5 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -263,7 +285,16 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i - 1, j + 2].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i - 1, j + 2].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j + 3].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i, j + 4].GetComponent<Fruit>();
+                                fruit5 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -294,7 +325,16 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i + 1, j + 2].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i + 1, j + 2].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j + 3].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i, j + 4].GetComponent<Fruit>();
+                                fruit5 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -354,7 +394,16 @@ public class SwipeHint : MonoBehaviour
                                 )
                             {
                                 fruit = board.allFruits[i, j + 3].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i - 1, j + 2].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i - 2, j + 2].GetComponent<Fruit>();
+                                fruit5 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -383,7 +432,16 @@ public class SwipeHint : MonoBehaviour
                                 )
                             {
                                 fruit = board.allFruits[i + 1, j + 2].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i - 1, j + 2].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i - 2, j + 2].GetComponent<Fruit>();
+                                fruit5 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -414,7 +472,16 @@ public class SwipeHint : MonoBehaviour
                                 )
                             {
                                 fruit = board.allFruits[i, j + 3].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i + 1, j + 2].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i + 2, j + 2].GetComponent<Fruit>();
+                                fruit5 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -441,8 +508,17 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i - 1, j + 2].GetComponent<Fruit>().fruitType
                                 )
                             {
-                                fruit = board.allFruits[i - 1, j + 2].GetComponent<Fruit>();
+                                fruit = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 1, j + 2].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i + 2, j + 2].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i - 1, j + 2].GetComponent<Fruit>();
+                                fruit5 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -473,7 +549,16 @@ public class SwipeHint : MonoBehaviour
                                 )
                             {
                                 fruit = board.allFruits[i, j].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 2].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j + 3].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i - 1, j + 1].GetComponent<Fruit>();
+                                fruit5 = board.allFruits[i - 2, j + 1].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -494,14 +579,23 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
                                 board.allFruits[i + 2, j] &&
                                 board.allFruits[i + 2, j + 1] &&
-                                type == board.allFruits[i + 2, j +1].GetComponent<Fruit>().fruitType &&
+                                type == board.allFruits[i + 2, j + 1].GetComponent<Fruit>().fruitType &&
                                 board.allFruits[i + 2, j + 2] &&
                                 type == board.allFruits[i + 2, j + 2].GetComponent<Fruit>().fruitType &&
                                 board.allFruits[i + 3, j] &&
                                 type == board.allFruits[i + 3, j].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i + 3, j].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 1, j].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i + 2, j + 1].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i + 2, j + 2].GetComponent<Fruit>();
+                                fruit5 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -521,18 +615,27 @@ public class SwipeHint : MonoBehaviour
 
                         if (j + 3 < board.height && i + 2 < board.width)
                         {
-                            if (board.allFruits[i, j+1] &&
-                                board.allFruits[i, j+2] &&
-                                type == board.allFruits[i, j+2].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i, j+3] &&
-                                type == board.allFruits[i, j+3].GetComponent<Fruit>().fruitType &&
+                            if (board.allFruits[i, j + 1] &&
+                                board.allFruits[i, j + 2] &&
+                                type == board.allFruits[i, j + 2].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i, j + 3] &&
+                                type == board.allFruits[i, j + 3].GetComponent<Fruit>().fruitType &&
                                 board.allFruits[i + 1, j + 1] &&
-                                type == board.allFruits[i +1, j + 1].GetComponent<Fruit>().fruitType &&
+                                type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType &&
                                 board.allFruits[i + 2, j + 1] &&
                                 type == board.allFruits[i + 2, j + 1].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i, j].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 2].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j + 3].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                fruit5 = board.allFruits[i + 2, j + 1].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -560,7 +663,16 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i + 3, j].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i, j].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i + 1, j + 2].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i + 2, j].GetComponent<Fruit>();
+                                fruit5 = board.allFruits[i + 3, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -593,28 +705,6 @@ public class SwipeHint : MonoBehaviour
                     {
                         int type = board.allFruits[i, j].GetComponent<Fruit>().fruitType;
 
-                        if (j + 3 < board.height)
-                        {
-                            if (i - 1 >= 0 && i + 1 < board.width && board.allFruits[i, j + 1] &&
-                                type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i, j + 2] &&
-                                board.allFruits[i - 1, j + 2] &&
-                                type == board.allFruits[i - 1, j + 2].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i + 1, j + 2] &&
-                                type == board.allFruits[i + 1, j + 2].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i, j + 3] &&
-                                type == board.allFruits[i, j + 3].GetComponent<Fruit>().fruitType)
-                            {
-                                fruit = board.allFruits[i, j + 3].GetComponent<Fruit>();
-                                fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
-                                yield return new WaitForSeconds(0.1f);
-                                continueIteration = false;
-                                break;
-                            }
-                        }
-
-
-
                         // FOR SWIPE RIGHT
                         /*      
                          *       |  
@@ -635,7 +725,16 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i - 1, j + 1].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 2].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i + 2, j + 1].GetComponent<Fruit>();
+                                fruit5 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -662,7 +761,16 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 2].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i - 1, j + 1].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i - 2, j + 1].GetComponent<Fruit>();
+                                fruit5 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -692,6 +800,11 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i, j + 3].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i, j + 3].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i - 1, j + 2].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i + 1, j + 2].GetComponent<Fruit>();
+                                fruit5 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
@@ -724,7 +837,17 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i, j].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 2].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j + 3].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i - 1, j + 1].GetComponent<Fruit>();
+                                fruit5 = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -779,7 +902,14 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i + 2, j + 1].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i + 2, j + 1].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 1, j].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i + 3, j].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -809,7 +939,16 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i + 2, j - 1].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i + 2, j - 1].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 1, j].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i + 3, j].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i + 2, j - 1].GetComponent<Fruit>();
+                                fruit5 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -838,7 +977,14 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 2, j].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i + 3, j].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -867,7 +1013,14 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i + 1, j - 1].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 2, j].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i + 3, j].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -889,15 +1042,22 @@ public class SwipeHint : MonoBehaviour
                         if (j + 3 < board.height && i - 1 >= 0)
                         {
                             if (board.allFruits[i, j + 1] &&
-                                board.allFruits[i, j +2] &&
-                                type == board.allFruits[i, j+2].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i, j+3] &&
-                                type == board.allFruits[i, j+3].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i, j + 2] &&
+                                type == board.allFruits[i, j + 2].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i, j + 3] &&
+                                type == board.allFruits[i, j + 3].GetComponent<Fruit>().fruitType &&
                                 board.allFruits[i - 1, j + 1] &&
                                 type == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i - 1, j + 1].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 2].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j + 3].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -927,7 +1087,14 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 2].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j + 3].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -957,7 +1124,14 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i - 1, j + 2].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i - 1, j + 2].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j + 3].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -987,7 +1161,14 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i + 1, j + 2].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i + 1, j + 2].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j + 3].GetComponent<Fruit>();
+                                fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1032,7 +1213,14 @@ public class SwipeHint : MonoBehaviour
                                     {
                                         //  Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j));
                                         fruit = board.allFruits[i - 2, j].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i - 1, j + 1].GetComponent<Fruit>();
+                                        fruit3 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                        fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                        fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
                                         break;
@@ -1041,7 +1229,14 @@ public class SwipeHint : MonoBehaviour
                                     {
                                         //    Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j - 1));
                                         fruit = board.allFruits[i - 1, j - 1].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i - 1, j + 1].GetComponent<Fruit>();
+                                        fruit3 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                        fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                        fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
                                         break;
@@ -1053,7 +1248,14 @@ public class SwipeHint : MonoBehaviour
                                     {
                                         //    Debug.Log("Possible Move - Column: " + (i + 2) + ", Row: " + (j));
                                         fruit = board.allFruits[i + 2, j].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                        fruit3 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                        fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                        fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
                                         break;
@@ -1062,7 +1264,14 @@ public class SwipeHint : MonoBehaviour
                                     {
                                         //   Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j - 1));
                                         fruit = board.allFruits[i + 1, j - 1].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                        fruit3 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                        fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                        fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
                                         break;
@@ -1086,7 +1295,14 @@ public class SwipeHint : MonoBehaviour
                                     {
                                         //     Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j));
                                         fruit = board.allFruits[i - 2, j].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i - 1, j - 1].GetComponent<Fruit>();
+                                        fruit3 = board.allFruits[i, j - 1].GetComponent<Fruit>();
+                                        fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                        fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
                                         break;
@@ -1095,7 +1311,14 @@ public class SwipeHint : MonoBehaviour
                                     {
                                         //     Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j + 1));
                                         fruit = board.allFruits[i - 1, j + 1].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i - 1, j - 1].GetComponent<Fruit>();
+                                        fruit3 = board.allFruits[i, j - 1].GetComponent<Fruit>();
+                                        fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                        fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
                                         break;
@@ -1107,7 +1330,14 @@ public class SwipeHint : MonoBehaviour
                                     {
                                         //    Debug.Log("Possible Move - Column: " + (i + 2) + ", Row: " + (j));
                                         fruit = board.allFruits[i + 2, j].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i + 1, j - 1].GetComponent<Fruit>();
+                                        fruit3 = board.allFruits[i, j - 1].GetComponent<Fruit>();
+                                        fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                        fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
                                         break;
@@ -1116,7 +1346,14 @@ public class SwipeHint : MonoBehaviour
                                     {
                                         //   Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j + 1));
                                         fruit = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i + 1, j - 1].GetComponent<Fruit>();
+                                        fruit3 = board.allFruits[i, j - 1].GetComponent<Fruit>();
+                                        fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                        fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
                                         break;
@@ -1163,7 +1400,14 @@ public class SwipeHint : MonoBehaviour
                                     {
                                         //     Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j));
                                         fruit = board.allFruits[i - 2, j].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i - 1, j + 1].GetComponent<Fruit>();
+                                        fruit3 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                        fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                        fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
                                         break;
@@ -1173,7 +1417,14 @@ public class SwipeHint : MonoBehaviour
                                     {
                                         //     Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j - 1));
                                         fruit = board.allFruits[i - 1, j - 1].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i - 1, j + 1].GetComponent<Fruit>();
+                                        fruit3 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                        fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                        fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
                                         break;
@@ -1185,7 +1436,14 @@ public class SwipeHint : MonoBehaviour
                                     {
                                         //     Debug.Log("Possible Move - Column: " + (i + 2) + ", Row: " + (j));
                                         fruit = board.allFruits[i + 2, j].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                        fruit3 = board.allFruits[i , j + 1].GetComponent<Fruit>();
+                                        fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                        fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
                                         break;
@@ -1194,7 +1452,14 @@ public class SwipeHint : MonoBehaviour
                                     {
                                         //    Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j - 1));
                                         fruit = board.allFruits[i + 1, j - 1].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                        fruit3 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                        fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                        fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
                                         break;
@@ -1218,7 +1483,14 @@ public class SwipeHint : MonoBehaviour
                                     {
                                         //    Debug.Log("Possible Move - Column: " + (i - 2) + ", Row: " + (j));
                                         fruit = board.allFruits[i - 2, j].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i - 1, j - 1].GetComponent<Fruit>();
+                                        fruit3 = board.allFruits[i, j - 1].GetComponent<Fruit>();
+                                        fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                        fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
                                         break;
@@ -1227,7 +1499,14 @@ public class SwipeHint : MonoBehaviour
                                     {
                                         //     Debug.Log("Possible Move - Column: " + (i - 1) + ", Row: " + (j + 1));
                                         fruit = board.allFruits[i - 1, j + 1].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i - 1, j - 1].GetComponent<Fruit>();
+                                        fruit3 = board.allFruits[i, j - 1].GetComponent<Fruit>();
+                                        fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                        fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
                                         break;
@@ -1239,7 +1518,14 @@ public class SwipeHint : MonoBehaviour
                                     {
                                         //    Debug.Log("Possible Move - Column: " + (i + 2) + ", Row: " + (j));
                                         fruit = board.allFruits[i + 2, j].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i + 1, j - 1].GetComponent<Fruit>();
+                                        fruit3 = board.allFruits[i, j - 1].GetComponent<Fruit>();
+                                        fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                        fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
                                         break;
@@ -1248,7 +1534,14 @@ public class SwipeHint : MonoBehaviour
                                     {
                                         //     Debug.Log("Possible Move - Column: " + (i + 1) + ", Row: " + (j + 1));
                                         fruit = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i + 1, j - 1].GetComponent<Fruit>();
+                                        fruit3 = board.allFruits[i, j - 1].GetComponent<Fruit>();
+                                        fruit4 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                         fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                        fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                        fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                         yield return new WaitForSeconds(0.1f);
                                         continueIteration = false;
                                         break;
@@ -1296,13 +1589,18 @@ public class SwipeHint : MonoBehaviour
                         if (j + 1 < board.height && i + 2 < board.width)
                         {
                             if (board.allFruits[i + 1, j] &&
-                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
                                 board.allFruits[i + 2, j] &&
-                                board.allFruits[i + 2, j + 1] &&
-                                type == board.allFruits[i + 2, j + 1].GetComponent<Fruit>().fruitType)
+                                type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType&
+                                board.allFruits[i + 1, j + 1] &&
+                                type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
                             {
-                                fruit = board.allFruits[i + 2, j + 1].GetComponent<Fruit>();
+                                fruit = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 2, j].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1324,13 +1622,18 @@ public class SwipeHint : MonoBehaviour
                         if (j - 1 >= 0 && i + 2 < board.width)
                         {
                             if (board.allFruits[i + 1, j] &&
-                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
                                 board.allFruits[i + 2, j] &&
-                                board.allFruits[i + 2, j - 1] &&
-                                type == board.allFruits[i + 2, j - 1].GetComponent<Fruit>().fruitType)
+                                type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 1, j - 1] &&
+                                type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType)
                             {
-                                fruit = board.allFruits[i + 2, j - 1].GetComponent<Fruit>();
+                                fruit = board.allFruits[i + 1, j - 1].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 2, j].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1348,17 +1651,21 @@ public class SwipeHint : MonoBehaviour
                          *   
                          */
 
-                        if (j + 1 < board.height && i + 2 < board.width)
+                        if (j - 1 >= 0 && i + 2 < board.width)
                         {
-                            if (board.allFruits[i + 1, j] &&
-                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i + 2, j] &&
-                                type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i, j + 1] &&
-                                type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
+                            if (board.allFruits[i, j - 1] &&
+                                board.allFruits[i + 1, j - 1] &&
+                                type == board.allFruits[i + 1, j - 1].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 2, j - 1] &&
+                                type == board.allFruits[i + 2, j - 1].GetComponent<Fruit>().fruitType)
                             {
-                                fruit = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                fruit = board.allFruits[i, j].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 1, j - 1].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i + 2, j - 1].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1376,17 +1683,21 @@ public class SwipeHint : MonoBehaviour
                          *   
                          */
 
-                        if (j - 1 >= 0 && i + 2 < board.width)
+                        if (j + 1 < board.height && i + 2 < board.width)
                         {
-                            if (board.allFruits[i + 1, j] &&
-                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i + 2, j] &&
-                                type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i, j - 1] &&
-                                type == board.allFruits[i, j - 1].GetComponent<Fruit>().fruitType)
+                            if (board.allFruits[i, j + 1] &&
+                                board.allFruits[i + 1, j + 1] &&
+                                type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 2, j + 1] &&
+                                type == board.allFruits[i + 2, j + 1].GetComponent<Fruit>().fruitType)
                             {
-                                fruit = board.allFruits[i, j - 1].GetComponent<Fruit>();
+                                fruit = board.allFruits[i, j].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i + 2, j + 1].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1401,17 +1712,21 @@ public class SwipeHint : MonoBehaviour
                          *  
                          */
 
-                        if (i + 2 < board.width && i - 1 >= 0)
+                        if (i + 3 < board.width)
                         {
                             if (board.allFruits[i + 1, j] &&
-                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
                                 board.allFruits[i + 2, j] &&
                                 type == board.allFruits[i + 2, j].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i - 1, j] &&
-                                type == board.allFruits[i - 1, j].GetComponent<Fruit>().fruitType)
+                                board.allFruits[i + 3, j] &&
+                                type == board.allFruits[i + 3, j].GetComponent<Fruit>().fruitType)
                             {
-                                fruit = board.allFruits[i-1, j].GetComponent<Fruit>();
+                                fruit = board.allFruits[i, j].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 2, j].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i + 3, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1436,7 +1751,12 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i + 2, j + 1].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i + 2, j + 1].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 1, j].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1462,7 +1782,12 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i + 2, j - 1].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i + 2, j - 1].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 1, j].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1480,7 +1805,7 @@ public class SwipeHint : MonoBehaviour
                          *   
                          */
 
-                        if (i + 2 < board.width)
+                        if (i + 3 < board.width)
                         {
                             if (board.allFruits[i + 1, j] &&
                                 type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
@@ -1489,7 +1814,12 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i + 3, j].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i + 3, j].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 1, j].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1516,7 +1846,12 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i - 1, j + 1].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 2].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1543,7 +1878,12 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 2].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1571,7 +1911,12 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i - 1, j + 2].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i - 1, j + 2].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1599,7 +1944,12 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i + 1, j + 2].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i + 1, j + 2].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1629,7 +1979,12 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i, j + 3].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i, j + 3].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1648,17 +2003,21 @@ public class SwipeHint : MonoBehaviour
                          *   
                          */
 
-                        if (j + 2 < board.height && i - 1 >= 0)
+                        if (j + 2 < board.height && i + 1 < board.width)
                         {
-                            if (board.allFruits[i, j + 1] &&
-                                type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i, j + 2] &&
-                                type == board.allFruits[i, j + 2].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i - 1, j] &&
-                                type == board.allFruits[i - 1, j].GetComponent<Fruit>().fruitType)
+                            if (board.allFruits[i + 1, j] &&
+                                board.allFruits[i + 1, j + 1] &&
+                                type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i + 1, j + 2] &&
+                                type == board.allFruits[i + 1, j + 2].GetComponent<Fruit>().fruitType)
                             {
-                                fruit = board.allFruits[i - 1, j].GetComponent<Fruit>();
+                                fruit = board.allFruits[i, j].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i + 1, j + 2].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1677,17 +2036,21 @@ public class SwipeHint : MonoBehaviour
                          *   
                          */
 
-                        if (j + 2 < board.height && i + 1 < board.width)
+                        if (j + 2 < board.height && i - 1 >= 0)
                         {
-                            if (board.allFruits[i, j + 1] &&
-                                type == board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i, j + 2] &&
-                                type == board.allFruits[i, j + 2].GetComponent<Fruit>().fruitType &&
-                                board.allFruits[i + 1, j] &&
-                                type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType)
+                            if (board.allFruits[i - 1, j] &&
+                                board.allFruits[i - 1, j + 1] &&
+                                type == board.allFruits[i - 1, j + 1].GetComponent<Fruit>().fruitType &&
+                                board.allFruits[i - 1, j + 2] &&
+                                type == board.allFruits[i - 1, j + 2].GetComponent<Fruit>().fruitType)
                             {
-                                fruit = board.allFruits[i + 1, j].GetComponent<Fruit>();
+                                fruit = board.allFruits[i, j].GetComponent<Fruit>();
+                                fruit = board.allFruits[i - 1, j + 1].GetComponent<Fruit>();
+                                fruit = board.allFruits[i - 1, j + 2].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1716,7 +2079,12 @@ public class SwipeHint : MonoBehaviour
                                 type == board.allFruits[i, j + 3].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i, j].GetComponent<Fruit>();
+                                fruit2 = board.allFruits[i, j + 2].GetComponent<Fruit>();
+                                fruit3 = board.allFruits[i, j + 3].GetComponent<Fruit>();
+
                                 fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
+                                fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
+                                fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, true);
                                 yield return new WaitForSeconds(0.1f);
                                 continueIteration = false;
                                 break;
@@ -1750,6 +2118,43 @@ public class SwipeHint : MonoBehaviour
             fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, false);
             fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, false);
             fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, false);
+            fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, false);
+        }
+
+        if(fruit2)
+        {
+            fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, false);
+            fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, false);
+            fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, false);
+            fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, false);
+            fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, false);
+        }
+
+        if (fruit3)
+        {
+            fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, false);
+            fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, false);
+            fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, false);
+            fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, false);
+            fruit3.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, false);
+        }
+
+        if (fruit4)
+        {
+            fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, false);
+            fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, false);
+            fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, false);
+            fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, false);
+            fruit4.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, false);
+        }
+
+        if (fruit5)
+        {
+            fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, false);
+            fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, false);
+            fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, false);
+            fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, false);
+            fruit5.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, false);
         }
       
 

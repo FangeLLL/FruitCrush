@@ -25,7 +25,11 @@ public class Board : MonoBehaviour
     public bool exitUpdate = false;
 
     AudioManager audioManager;
-    Animator animator;
+    Animator fruitAnimator;
+    Animator fruitAnimator2;
+    Animator fruitAnimator3;
+    Animator fruitAnimator4;
+    Animator fruitAnimator5;
 
     [SerializeField]
     private GameObject[] fruits;
@@ -106,7 +110,7 @@ public class Board : MonoBehaviour
         taskController.SetTask(gridData.taskElements);
         taskController.SetMoveCount(gridData.moveCount);
 
-        if(gridData.level == 0)
+        if (gridData.level == 0)
         {
             Debug.Log("This level did not made yet. Please, don't assume that this is a some sort of bug and tell Bertuð to fix it, just make this level in Level Editor.");
         }
@@ -114,6 +118,12 @@ public class Board : MonoBehaviour
         {
             SetUpWithArray(indexLibrary.Convert2DTo3D(width, height, savedFruits), indexLibrary.Convert2DTo3D(width, height, savedTiles), indexLibrary.Convert2DTo3D(width, height, savedTilesZero), indexLibrary.Convert2DTo3D(width, height, savedTilesOne), indexLibrary.Convert2DTo3D(width, height, savedTilesTwo));
         }
+
+        fruitAnimator = swipeHint.fruit.GetComponentInChildren<Animator>();
+        fruitAnimator2 = swipeHint.fruit2.GetComponentInChildren<Animator>();
+        fruitAnimator3 = swipeHint.fruit2.GetComponentInChildren<Animator>();
+        fruitAnimator4 = swipeHint.fruit3.GetComponentInChildren<Animator>();
+        fruitAnimator5 = swipeHint.fruit4.GetComponentInChildren<Animator>();
 
     }
 
@@ -306,17 +316,7 @@ public class Board : MonoBehaviour
         //StopCoroutine(GiveHint());
         StopHint();
 
-        if (swipeHint.fruit != null)
-        {
-            Animator animator = swipeHint.fruit.GetComponentInChildren<Animator>();
-            if (animator != null && animator.gameObject.activeSelf && animator.runtimeAnimatorController != null && animator.isActiveAndEnabled)
-            {
-                animator.SetBool(swipeHint.fruit.swipeUp, false);
-                animator.SetBool(swipeHint.fruit.swipeDown, false);
-                animator.SetBool(swipeHint.fruit.swipeLeft, false);
-                animator.SetBool(swipeHint.fruit.swipeRight, false);
-            }
-        }
+        StopHintAnimations();
 
         GameObject otherFruit;
         GameObject fruit = allFruits[column, row];
@@ -397,17 +397,7 @@ public class Board : MonoBehaviour
         fruit.GetComponent<Fruit>().isSwiped = true;
         otherFruit.GetComponent<Fruit>().isSwiped = true;
 
-        if (swipeHint.fruit != null)
-        {
-            Animator animator = swipeHint.fruit.GetComponentInChildren<Animator>();
-            if (animator != null && animator.gameObject.activeSelf && animator.runtimeAnimatorController != null && animator.isActiveAndEnabled)
-            {
-                animator.SetBool(swipeHint.fruit.swipeUp, false);
-                animator.SetBool(swipeHint.fruit.swipeDown, false);
-                animator.SetBool(swipeHint.fruit.swipeLeft, false);
-                animator.SetBool(swipeHint.fruit.swipeRight, false);
-            }
-        }
+        StopHintAnimations();
 
         audioManager.Swipe();
         StartCoroutine(CheckMove(fruit, otherFruit));
@@ -565,17 +555,7 @@ public class Board : MonoBehaviour
 
                         // SWIPE HINT ANIMATION STOP
 
-                        if (swipeHint.fruit != null)
-                        {
-                            Animator animator = swipeHint.fruit.GetComponentInChildren<Animator>();
-                            if (animator != null && animator.gameObject.activeSelf && animator.runtimeAnimatorController != null && animator.isActiveAndEnabled)
-                            {
-                                animator.SetBool(swipeHint.fruit.swipeUp, false);
-                                animator.SetBool(swipeHint.fruit.swipeDown, false);
-                                animator.SetBool(swipeHint.fruit.swipeLeft, false);
-                                animator.SetBool(swipeHint.fruit.swipeRight, false);
-                            }
-                        }
+                        StopHintAnimations();
                         achievementManager.AchievementProgress(typeFruits);
                     }
 
@@ -607,7 +587,7 @@ public class Board : MonoBehaviour
             {
 
                 StopHint();
-                
+
             }
         }
         else
@@ -954,8 +934,8 @@ public class Board : MonoBehaviour
                     emptyPlaces.Enqueue(j);
 
                     // THESE CODES CAN BE IMPROVE PLEASE CHECK THE ALGO
-                    
-                    if(((j + 1 < height && !allTiles[i, j + 1])) && columnsFallIndexY[i]!=j)
+
+                    if (((j + 1 < height && !allTiles[i, j + 1])) && columnsFallIndexY[i] != j)
                     {
                         CrossFall(i, j + 1);
                     }
@@ -966,7 +946,7 @@ public class Board : MonoBehaviour
                             CrossFall(i, j + 1);
                         }
                     }
-                   
+
                 }
                 else if (emptyPlaces.Count > 0)
                 {
@@ -991,7 +971,8 @@ public class Board : MonoBehaviour
             float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
             int emptyRowIndex = emptyPlaces.Dequeue();
             // If this place did not filled then create object for it.
-            if (!allFruits[i, emptyRowIndex]) {
+            if (!allFruits[i, emptyRowIndex])
+            {
 
                 Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, (columnsFallIndexY[i] + 1) * scaleNumber - yOffset);
 
@@ -1077,7 +1058,7 @@ public class Board : MonoBehaviour
     {
         GameObject fruit = null;
         Fruit fruitScript;
-      //  yield return new WaitForSeconds(0.1f);
+        //  yield return new WaitForSeconds(0.1f);
         if (column - 1 >= 0 && FruitAvailable(allFruits[column - 1, row]) && !allFruits[column, row - 1])
         {
             fruit = allFruits[column - 1, row];
@@ -1360,9 +1341,9 @@ public class Board : MonoBehaviour
     private void HorizontalHarvesterMove(GameObject harvester, bool clone)
     {
         float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
-      //  float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
+        //  float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
 
-       // Vector2 tempPosition = new Vector2((width-1) * scaleNumber - xOffset, (height-1) * scaleNumber - yOffset);
+        // Vector2 tempPosition = new Vector2((width-1) * scaleNumber - xOffset, (height-1) * scaleNumber - yOffset);
 
         harvester.GetComponent<Collider2D>().enabled = false;
         Fruit harvesterScript = harvester.GetComponent<Fruit>();
@@ -1370,7 +1351,7 @@ public class Board : MonoBehaviour
         int row = harvesterScript.row, column = harvesterScript.column;
         if (clone)
         {
-            harvesterScript.targetV.x = ((width - 1) * scaleNumber - xOffset)+1;
+            harvesterScript.targetV.x = ((width - 1) * scaleNumber - xOffset) + 1;
 
             HorizontalDestroy(column, row, true);
         }
@@ -1409,10 +1390,10 @@ public class Board : MonoBehaviour
         }
         else
         {
-        //    harvesterScript.targetV.y = allTiles[column, height - 1].transform.position.y + 1;
-            harvesterScript.targetV.y =  - yOffset - 1;
+            //    harvesterScript.targetV.y = allTiles[column, height - 1].transform.position.y + 1;
+            harvesterScript.targetV.y = -yOffset - 1;
 
-            VerticalDestroy(column, row, true);        
+            VerticalDestroy(column, row, true);
 
         }
         if (allTiles[column, row])
@@ -1594,7 +1575,7 @@ public class Board : MonoBehaviour
     /// </summary>
     public void StopHint()
     {
-        
+
         if (swipeHint.oneHintActive)
         {
             swipeHint.StopHintCoroutines();
@@ -1620,22 +1601,23 @@ public class Board : MonoBehaviour
         for (int i = 0; i < 2; i++)
         {
 
-            if (powerUpController.powerUps[i].isActivated) {
+            if (powerUpController.powerUps[i].isActivated)
+            {
                 int column, row;
                 column = Random.Range(0, width);
                 row = Random.Range(0, height);
-                while (!allFruits[column,row] )
+                while (!allFruits[column, row])
                 {
                     column = Random.Range(0, width);
                     row = Random.Range(0, height);
                 }
 
-                Destroy(allFruits[column,row]);
+                Destroy(allFruits[column, row]);
 
                 if (i == 0)
                 {
                     // Harvester creation randomly horizontal or vertical
-                    CreatePowerUp(column, row,-Random.Range(1,3));
+                    CreatePowerUp(column, row, -Random.Range(1, 3));
                 }
                 else
                 {
@@ -1654,13 +1636,13 @@ public class Board : MonoBehaviour
     {
         shuffling = true;
 
-        for(int i = 0;i < width; i++)
+        for (int i = 0; i < width; i++)
         {
-            for(int j = 0; j < height; j++)
+            for (int j = 0; j < height; j++)
             {
-                if (allFruits[i, j] && allFruits[i,j].GetComponent<Fruit>().fruitType>=0)
+                if (allFruits[i, j] && allFruits[i, j].GetComponent<Fruit>().fruitType >= 0)
                 {
-                    DestroyController(allFruits[i,j],false);
+                    DestroyController(allFruits[i, j], false);
                 }
             }
         }
@@ -1671,14 +1653,14 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                if (allTiles[i,j] && !allFruits[i, j] && !allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
+                if (allTiles[i, j] && !allFruits[i, j] && !allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
                 {
                     int fruitToUse = existFruits[Random.Range(0, existFruits.Count)];
                     GameObject newFruit = Instantiate(fruits[fruitToUse], allTiles[i, j].transform.position, Quaternion.identity);
                     Fruit newFruitScript = newFruit.GetComponent<Fruit>();
 
                     // Set the parent and name of the new fruit
-                 //   newFruit.transform.parent = this.transform;
+                    //   newFruit.transform.parent = this.transform;
                     newFruit.name = "( " + i + ", " + j + " )";
 
                     newFruitScript.targetV = allTiles[i, j].transform.position;
@@ -1693,5 +1675,72 @@ public class Board : MonoBehaviour
         }
         shuffling = false;
         StopHint();
+    }
+
+    /// <summary>
+    /// This function checks if there is a fruit to flash, if there is then it stops the fruit's animation.
+    /// </summary>
+    private void StopHintAnimations()
+    {
+        if (swipeHint.fruit != null)
+        {
+            if (fruitAnimator != null && fruitAnimator.gameObject.activeSelf && fruitAnimator.runtimeAnimatorController != null && fruitAnimator.isActiveAndEnabled)
+            {
+                fruitAnimator.SetBool(swipeHint.fruit.swipeUp, false);
+                fruitAnimator.SetBool(swipeHint.fruit.swipeDown, false);
+                fruitAnimator.SetBool(swipeHint.fruit.swipeLeft, false);
+                fruitAnimator.SetBool(swipeHint.fruit.swipeRight, false);
+                fruitAnimator.SetBool(swipeHint.fruit.swipeFlash, false);
+            }
+
+            if (swipeHint.fruit2 != null)
+            {
+                if (fruitAnimator2 != null && fruitAnimator2.gameObject.activeSelf && fruitAnimator2.runtimeAnimatorController != null && fruitAnimator2.isActiveAndEnabled)
+                {
+                    fruitAnimator2.SetBool(swipeHint.fruit2.swipeUp, false);
+                    fruitAnimator2.SetBool(swipeHint.fruit2.swipeDown, false);
+                    fruitAnimator2.SetBool(swipeHint.fruit2.swipeLeft, false);
+                    fruitAnimator2.SetBool(swipeHint.fruit2.swipeRight, false);
+                    fruitAnimator2.SetBool(swipeHint.fruit2.swipeFlash, false);
+                }
+            }
+
+            if (swipeHint.fruit3 != null)
+            {
+                if (fruitAnimator3 != null && fruitAnimator3.gameObject.activeSelf && fruitAnimator3.runtimeAnimatorController != null && fruitAnimator3.isActiveAndEnabled)
+                {
+                    fruitAnimator3.SetBool(swipeHint.fruit2.swipeUp, false);
+                    fruitAnimator3.SetBool(swipeHint.fruit2.swipeDown, false);
+                    fruitAnimator3.SetBool(swipeHint.fruit2.swipeLeft, false);
+                    fruitAnimator3.SetBool(swipeHint.fruit2.swipeRight, false);
+                    fruitAnimator3.SetBool(swipeHint.fruit2.swipeFlash, false);
+                }
+            }
+
+            if (swipeHint.fruit4 != null)
+            {
+                if (fruitAnimator4 != null && fruitAnimator4.gameObject.activeSelf && fruitAnimator4.runtimeAnimatorController != null && fruitAnimator4.isActiveAndEnabled)
+                {
+                    fruitAnimator4.SetBool(swipeHint.fruit2.swipeUp, false);
+                    fruitAnimator4.SetBool(swipeHint.fruit2.swipeDown, false);
+                    fruitAnimator4.SetBool(swipeHint.fruit2.swipeLeft, false);
+                    fruitAnimator4.SetBool(swipeHint.fruit2.swipeRight, false);
+                    fruitAnimator4.SetBool(swipeHint.fruit2.swipeFlash, false);
+                }
+            }
+
+            if (swipeHint.fruit5 != null)
+            {
+                if (fruitAnimator5 != null && fruitAnimator5.gameObject.activeSelf && fruitAnimator5.runtimeAnimatorController != null && fruitAnimator5.isActiveAndEnabled)
+                {
+                    fruitAnimator5.SetBool(swipeHint.fruit2.swipeUp, false);
+                    fruitAnimator5.SetBool(swipeHint.fruit2.swipeDown, false);
+                    fruitAnimator5.SetBool(swipeHint.fruit2.swipeLeft, false);
+                    fruitAnimator5.SetBool(swipeHint.fruit2.swipeRight, false);
+                    fruitAnimator5.SetBool(swipeHint.fruit2.swipeFlash, false);
+                }
+            }
+
+        }
     }
 }

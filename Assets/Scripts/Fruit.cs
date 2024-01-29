@@ -36,6 +36,8 @@ public class Fruit : MonoBehaviour
     public int swipeUp = Animator.StringToHash("isSwipeUp");
     [HideInInspector]
     public int swipeDown = Animator.StringToHash("isSwipeDown");
+    [HideInInspector]
+    public int swipeFlash = Animator.StringToHash("isSwipeHintIdle");
 
     float speed;
 

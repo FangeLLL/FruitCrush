@@ -1480,7 +1480,7 @@ public class SwipeHint : MonoBehaviour
                          *   
                          */
 
-                        if (i + 2 < board.width)
+                        if (i + 3 < board.width)
                         {
                             if (board.allFruits[i + 1, j] &&
                                 type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&

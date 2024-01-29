@@ -1548,9 +1548,9 @@ MonoBehaviour:
   - {fileID: 3566861933945487612, guid: 05739bb40d03c5040938d6f697a1917d, type: 3}
   - {fileID: 3566861933945487612, guid: 58ce11db28a5fd6488f101077c873ba6, type: 3}
   powerUps:
-  - {fileID: 7148421088010075250, guid: c7052b1bc5e43864db4d03c6a55e51c3, type: 3}
-  - {fileID: 7148421088010075250, guid: 00ad14dbf5faad7488ad12c64a277e04, type: 3}
-  - {fileID: 7148421088010075250, guid: 3319a208155756443a292e419ac5c1a9, type: 3}
+  - {fileID: 3566861933945487612, guid: 6040aac6762fdf747b3611a111760a44, type: 3}
+  - {fileID: 3566861933945487612, guid: 8ba020ce8acef7b42a6fb0fe051b5326, type: 3}
+  - {fileID: 3566861933945487612, guid: a72ccf681aec45b42b260078d9419924, type: 3}
   obstaclePrefabs:
   - {fileID: 3330133265949295339, guid: 6e55f47fa5c0a774683277fda450e2a5, type: 3}
   - {fileID: 6852588376716934326, guid: ad1b1ae42f3cc564d9f5736dfad49c04, type: 3}
@@ -1576,6 +1576,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fruit: {fileID: 8183136484916695726, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
   fruit2: {fileID: 8183136484916695726, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
+  fruit3: {fileID: 0}
+  fruit4: {fileID: 0}
+  fruit5: {fileID: 0}
   hintThreshold: 1
   continueIteration: 1
   oneHintActive: 0

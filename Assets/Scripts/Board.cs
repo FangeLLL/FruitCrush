@@ -1235,7 +1235,7 @@ public class Board : MonoBehaviour
 
                 GameObject cloneHorizontal = Instantiate(powerUps[0], allTiles[column, row].transform.position, powerUps[0].transform.rotation);
                 Fruit cloneHorizontalScript = cloneHorizontal.GetComponent<Fruit>();
-                cloneHorizontal.GetComponent<SpriteRenderer>().flipX = false;
+                cloneHorizontal.GetComponentInChildren<SpriteRenderer>().flipX = false;
 
                 cloneHorizontalScript.row = row;
                 cloneHorizontalScript.column = column;
@@ -1251,7 +1251,7 @@ public class Board : MonoBehaviour
 
                 GameObject cloneVertical = Instantiate(powerUps[1], allTiles[column, row].transform.position, powerUps[1].transform.rotation);
                 Fruit cloneVerticalScript = cloneVertical.GetComponent<Fruit>();
-                cloneVertical.GetComponent<SpriteRenderer>().flipY = true;
+                cloneVertical.GetComponentInChildren<SpriteRenderer>().flipY = true;
 
                 cloneVerticalScript.row = row;
                 cloneVerticalScript.column = column;

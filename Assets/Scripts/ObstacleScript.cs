@@ -49,9 +49,9 @@ public class ObstacleScript : MonoBehaviour
             }
             else
             {
-                Color color = gameObject.GetComponent<SpriteRenderer>().color;
+                Color color = gameObject.GetComponentInChildren<SpriteRenderer>().color;
                 color.g += 0.5f;
-                gameObject.GetComponent<SpriteRenderer>().color = color;
+                gameObject.GetComponentInChildren<SpriteRenderer>().color = color;
             }
         }
     }

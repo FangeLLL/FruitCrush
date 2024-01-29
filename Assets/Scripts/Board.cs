@@ -118,12 +118,16 @@ public class Board : MonoBehaviour
         {
             SetUpWithArray(indexLibrary.Convert2DTo3D(width, height, savedFruits), indexLibrary.Convert2DTo3D(width, height, savedTiles), indexLibrary.Convert2DTo3D(width, height, savedTilesZero), indexLibrary.Convert2DTo3D(width, height, savedTilesOne), indexLibrary.Convert2DTo3D(width, height, savedTilesTwo));
         }
-
-        fruitAnimator = swipeHint.fruit.GetComponentInChildren<Animator>();
-        fruitAnimator2 = swipeHint.fruit2.GetComponentInChildren<Animator>();
-        fruitAnimator3 = swipeHint.fruit2.GetComponentInChildren<Animator>();
-        fruitAnimator4 = swipeHint.fruit3.GetComponentInChildren<Animator>();
-        fruitAnimator5 = swipeHint.fruit4.GetComponentInChildren<Animator>();
+        if(swipeHint.fruit)
+            fruitAnimator = swipeHint.fruit.GetComponentInChildren<Animator>();
+        if (swipeHint.fruit2)
+            fruitAnimator2 = swipeHint.fruit2.GetComponentInChildren<Animator>();
+        if (swipeHint.fruit3)
+            fruitAnimator3 = swipeHint.fruit2.GetComponentInChildren<Animator>();
+        if (swipeHint.fruit4)
+            fruitAnimator4 = swipeHint.fruit3.GetComponentInChildren<Animator>();
+        if (swipeHint.fruit5)
+            fruitAnimator5 = swipeHint.fruit4.GetComponentInChildren<Animator>();
 
     }
 

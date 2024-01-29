@@ -2009,7 +2009,7 @@ public class SwipeHint : MonoBehaviour
                                 board.allFruits[i + 1, j + 1] &&
                                 type == board.allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType &&
                                 board.allFruits[i + 1, j + 2] &&
-                                type == board.allFruits[i, j + 2].GetComponent<Fruit>().fruitType)
+                                type == board.allFruits[i + 1, j + 2].GetComponent<Fruit>().fruitType)
                             {
                                 fruit = board.allFruits[i, j].GetComponent<Fruit>();
                                 fruit2 = board.allFruits[i + 1, j + 1].GetComponent<Fruit>();

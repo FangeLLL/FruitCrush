@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06f4d882e274efa4b95734ced04d6b55, type: 3}
-  m_Name: AppleTreeScript
+  m_Name: 4StrawbaleScript
   m_EditorClassIdentifier: 
   indexOfLayer: 0
   boxObstacle: 1
-  indestructible: 1
-  isCollectible: 1
+  indestructible: 0
+  isCollectible: 0
   obstacleHitSound: StrawBaleBreak
-  powerUpNeed: 0
-  id: 5
-  taskID: 2
-  sprites: []
+  id: 3
+  sprites:
+  - {fileID: 21300000, guid: 3333a468ed45f044a9f6bca786d506ff, type: 3}
+  - {fileID: 21300000, guid: c644e41d9c2ee5049be3b704a38511f5, type: 3}
+  - {fileID: 21300000, guid: 2ce73ecd18a01e34d9ca16e92bf5ec74, type: 3}
+  - {fileID: 21300000, guid: c08cd88bdaa54ea408fa683877556253, type: 3}

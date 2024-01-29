@@ -30,13 +30,18 @@ public class ObstacleScript : MonoBehaviour
         board = FindObjectOfType<Board>();
         taskController = FindObjectOfType<TaskController>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+
+        if (health > 1)
+        {
+            GetComponentInChildren<SpriteRenderer>().sprite = obstacleSpecs.sprites[health-1];
+        }
     }
     public void TakeDamage()
     {     
         if(obstacleSpecs.indestructible)
         {
             audioManager.SoundController(obstacleSpecs.obstacleHitSound);
-            taskController.TaskProgress(obstacleSpecs.id);
+            taskController.TaskProgress(obstacleSpecs.taskID);
         }
         else
         {
@@ -45,13 +50,11 @@ public class ObstacleScript : MonoBehaviour
             if (health <= 0)
             {
                 StartCoroutine(board.FadeOut(gameObject));
-                taskController.TaskProgress(obstacleSpecs.id);
+                taskController.TaskProgress(obstacleSpecs.taskID);
             }
             else
             {
-                Color color = gameObject.GetComponentInChildren<SpriteRenderer>().color;
-                color.g += 0.5f;
-                gameObject.GetComponentInChildren<SpriteRenderer>().color = color;
+                GetComponentInChildren<SpriteRenderer>().sprite = obstacleSpecs.sprites[health-1];
             }
         }
     }

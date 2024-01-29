@@ -15,7 +15,7 @@ PrefabInstance:
     - target: {fileID: 4269577592316774446, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 7549f573040ddb44fb1c75c238e49463, type: 3}
+      objectReference: {fileID: 21300000, guid: 3333a468ed45f044a9f6bca786d506ff, type: 3}
     - target: {fileID: 4269577592316774446, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_SortingOrder
       value: 2
@@ -83,7 +83,7 @@ PrefabInstance:
     - target: {fileID: 6464164452895249494, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: obstacleSpecs
       value: 
-      objectReference: {fileID: 11400000, guid: 644a0883dfa5efd4fbe5386082d8b6fb, type: 2}
+      objectReference: {fileID: 11400000, guid: 391a6d61881558c45b87ed1c4a941564, type: 2}
     - target: {fileID: 7691684475836866756, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.x
       value: 0.5

@@ -1552,10 +1552,13 @@ MonoBehaviour:
   - {fileID: 3566861933945487612, guid: 8ba020ce8acef7b42a6fb0fe051b5326, type: 3}
   - {fileID: 3566861933945487612, guid: a72ccf681aec45b42b260078d9419924, type: 3}
   obstaclePrefabs:
-  - {fileID: 3330133265949295339, guid: 6e55f47fa5c0a774683277fda450e2a5, type: 3}
-  - {fileID: 6852588376716934326, guid: ad1b1ae42f3cc564d9f5736dfad49c04, type: 3}
-  - {fileID: 3330133265949295339, guid: fe41b404371a0c94c893126b94b8006f, type: 3}
-  - {fileID: 3330133265949295339, guid: 2a978f398e0f34047aeaa9ec3f36345a, type: 3}
+  - {fileID: 6328190920238408510, guid: 6aa1145ad355b16418575dd33033baa6, type: 3}
+  - {fileID: 6328190920238408510, guid: be7172eb9ecde174db4f0bf788622a39, type: 3}
+  - {fileID: 6328190920238408510, guid: 58e2224bc58217c4aa4a1d8432c8918a, type: 3}
+  - {fileID: 6328190920238408510, guid: dca4d44705f273548bda5e216b0b9bb1, type: 3}
+  - {fileID: 6328190920238408510, guid: 6c49852131ad9e94aba0017793037121, type: 3}
+  - {fileID: 6328190920238408510, guid: e35711bae03bfbd4b8fbb443070cea29, type: 3}
+  - {fileID: 6328190920238408510, guid: 29588b77317ec2b47965e0a39574ec53, type: 3}
   tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
   hintBool: 0
   userLevel: 0
@@ -23734,7 +23737,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -180, y: 122}
+  m_AnchoredPosition: {x: -179.02, y: 122.32}
   m_SizeDelta: {x: 1024, y: 1024}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &8332445004921187328

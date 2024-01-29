@@ -17,4 +17,7 @@ MonoBehaviour:
   indestructible: 0
   isCollectible: 0
   obstacleHitSound: MarbleBreak
-  id: 1
+  powerUpNeed: 0
+  id: 4
+  taskID: 1
+  sprites: []

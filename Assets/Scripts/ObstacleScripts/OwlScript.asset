@@ -10,11 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06f4d882e274efa4b95734ced04d6b55, type: 3}
-  m_Name: StrongStrawbaleScript
+  m_Name: OwlScript
   m_EditorClassIdentifier: 
   indexOfLayer: 0
   boxObstacle: 1
   indestructible: 0
   isCollectible: 0
   obstacleHitSound: StrawBaleBreak
-  id: 2
+  powerUpNeed: 1
+  id: 6
+  taskID: 3
+  sprites: []

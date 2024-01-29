@@ -27,7 +27,11 @@ public class ObstacleSpecs : ScriptableObject
     public bool indestructible;
     public bool isCollectible;
     public string obstacleHitSound;
+    public bool powerUpNeed;
 
     public int id;
+    public int taskID;
+
+    public Sprite[] sprites;
 
 }

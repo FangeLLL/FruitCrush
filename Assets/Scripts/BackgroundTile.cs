@@ -66,7 +66,16 @@ public class BackgroundTile : MonoBehaviour
  
     public void Boom()
     {
-        if (indexOfVisibleOne>=0)
+        if (indexOfVisibleOne>=0 && !obstacles[indexOfVisibleOne].GetComponent<ObstacleScript>().obstacleSpecs.powerUpNeed)
+        {
+            obstacles[indexOfVisibleOne].GetComponent<ObstacleScript>().TakeDamage();
+            DetectVisibleOne();
+        }
+    }
+
+    public void PowerUpBoom()
+    {
+        if (indexOfVisibleOne >= 0)
         {
             obstacles[indexOfVisibleOne].GetComponent<ObstacleScript>().TakeDamage();
             DetectVisibleOne();

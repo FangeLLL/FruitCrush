@@ -56,7 +56,6 @@ public class Board : MonoBehaviour
 
     private int[] columnsFallIndexY;
 
-    // Test variable
     public int specialPowerID = 0;
     public bool specialSwipe = false;
 
@@ -1225,6 +1224,7 @@ public class Board : MonoBehaviour
     /// <param name="fruit"></param>
     public void ActivatePowerUp(GameObject fruit)
     {
+        Debug.Log("Activate powerup");
         Fruit fruitScript = fruit.GetComponent<Fruit>();
         fruitScript.fadeout = true;
         int column = fruitScript.column, row = fruitScript.row, type = fruitScript.fruitType;
@@ -1321,15 +1321,15 @@ public class Board : MonoBehaviour
             for (int j = row - range; j <= row + range; j++)
             {
                 if (j >= 0 && j < height && i >= 0 && i < width)
-                {
-                    if (allFruits[i, j])
-                    {
-                        DestroyController(allFruits[i, j], false);
-                        audioManager.FruitCrush();
-                    }
+                {           
                     if (allTiles[i, j])
                     {
                         allTiles[i, j].GetComponent<BackgroundTile>().PowerUpBoom();
+                        if (allFruits[i, j])
+                        {
+                            DestroyController(allFruits[i, j], false);
+                            audioManager.FruitCrush();
+                        }
                     }
 
                 }
@@ -1421,21 +1421,22 @@ public class Board : MonoBehaviour
         {
             for (int i = row + 1; i < height; i++)
             {
-                if (allFruits[column, i])
-                {
-                    DestroyController(allFruits[column, i], false);
-                    audioManager.FruitCrush();
-                }
                 if (allTiles[column, i])
                 {
+                    if (allFruits[column, i])
+                    {
+                        DestroyController(allFruits[column, i], false);
+                        audioManager.FruitCrush();
+                    }
+
                     if (powerUp)
                     {
-                        allTiles[column, row].GetComponent<BackgroundTile>().PowerUpBoom();
+                        allTiles[column, i].GetComponent<BackgroundTile>().PowerUpBoom();
 
                     }
                     else
                     {
-                        allTiles[column, row].GetComponent<BackgroundTile>().Boom();
+                        allTiles[column, i].GetComponent<BackgroundTile>().Boom();
 
                     }
                 }
@@ -1445,21 +1446,21 @@ public class Board : MonoBehaviour
         {
             for (int i = row - 1; i >= 0; i--)
             {
-                if (allFruits[column, i])
-                {
-                    DestroyController(allFruits[column, i], false);
-                    audioManager.FruitCrush();
-                }
                 if (allTiles[column, i])
                 {
+                    if (allFruits[column, i])
+                    {
+                        DestroyController(allFruits[column, i], false);
+                        audioManager.FruitCrush();
+                    }
                     if (powerUp)
                     {
-                        allTiles[column, row].GetComponent<BackgroundTile>().PowerUpBoom();
+                        allTiles[column, i].GetComponent<BackgroundTile>().PowerUpBoom();
 
                     }
                     else
                     {
-                        allTiles[column, row].GetComponent<BackgroundTile>().Boom();
+                        allTiles[column, i].GetComponent<BackgroundTile>().Boom();
 
                     }
                 }
@@ -1481,22 +1482,22 @@ public class Board : MonoBehaviour
             for (int i = column + 1; i < width; i++)
             {
 
-                if (allFruits[i, row])
-                {
-                    DestroyController(allFruits[i, row], false);
-                    audioManager.FruitCrush();
-
-                }
                 if (allTiles[i, row])
                 {
+                    if (allFruits[i, row])
+                    {
+                        DestroyController(allFruits[i, row], false);
+                        audioManager.FruitCrush();
+
+                    }
                     if (powerUp)
                     {
-                        allTiles[column, row].GetComponent<BackgroundTile>().PowerUpBoom();
+                        allTiles[i, row].GetComponent<BackgroundTile>().PowerUpBoom();
 
                     }
                     else
                     {
-                        allTiles[column, row].GetComponent<BackgroundTile>().Boom();
+                        allTiles[i, row].GetComponent<BackgroundTile>().Boom();
 
                     }
                 }
@@ -1508,28 +1509,28 @@ public class Board : MonoBehaviour
             for (int i = column - 1; i >= 0; i--)
             {
 
-                if (allFruits[i, row])
-                {
-                    DestroyController(allFruits[i, row], false);
-                    audioManager.FruitCrush();
-                }
                 if (allTiles[i, row])
                 {
+                    if (allFruits[i, row])
+                    {
+                        DestroyController(allFruits[i, row], false);
+                        audioManager.FruitCrush();
+                    }
                     if (powerUp)
                     {
-                        allTiles[column, row].GetComponent<BackgroundTile>().PowerUpBoom();
+                        allTiles[i, row].GetComponent<BackgroundTile>().PowerUpBoom();
 
                     }
                     else
                     {
-                        allTiles[column, row].GetComponent<BackgroundTile>().Boom();
+                        allTiles[i, row].GetComponent<BackgroundTile>().Boom();
 
                     }
                 }
             }
         }
     }
-
+    /*
     /// <summary>
     /// Destroy just one tile.
     /// </summary>
@@ -1557,7 +1558,7 @@ public class Board : MonoBehaviour
         }
 
     }
-
+    */
     /// <summary>
     /// This function activate selected special power. 
     /// </summary>
@@ -1566,32 +1567,40 @@ public class Board : MonoBehaviour
     public void ActivateSpecialPower(int column, int row)
     {
         bool failed = false;
+        if (shuffling)
+        {
+            return;
+        }
+
+        if (allFruits[column,row] && allFruits[column, row].GetComponent<Fruit>().fruitType < 0)
+        {
+            allFruits[column, row].GetComponent<Fruit>().specialPowerActive = true;
+        }
         switch (specialPowerID)
         {
             case 1:
                 // Special Power: Vertical Destroyer
                 specialPowerController.SpecialPowerUpUsed(0);
-                DestroyOneTile(column, 0,false);
-                VerticalDestroy(column, 0, true,false);
+                VerticalDestroy(column, -1, true,false);
                 break;
             case 2:
                 // Special Power: Horizontal Destroyer
                 specialPowerController.SpecialPowerUpUsed(1);
-                DestroyOneTile(0, row,false);
-                HorizontalDestroy(0, row, true,false);
+                HorizontalDestroy(-1, row, true,false);
                 break;
             case 3:
                 // Special Power: One Tile Destroyer
 
                 // If tile has no obstacle it destroy fruit but if tile has obstacle then it checks if it is just break with powerup if it is then
-                // it gives log.
-                if (allTiles[column, row].GetComponent<BackgroundTile>().indexOfVisibleOne < 0 && allFruits[column, row])
+                // it gives log. Also, if tile does exist but there is no obstacle or fruit then gives log.
+                
+                if (allFruits[column, row])
                 {
                     specialPowerController.SpecialPowerUpUsed(2);
                     DestroyController(allFruits[column, row], false);
                     audioManager.FruitCrush();
                 }
-                else if(!allTiles[column, row].GetComponent<BackgroundTile>().obstacles[allTiles[column, row].GetComponent<BackgroundTile>().indexOfVisibleOne].GetComponent<ObstacleScript>().obstacleSpecs.powerUpNeed)
+                else if(allTiles[column, row].GetComponent<BackgroundTile>().indexOfVisibleOne >= 0 &&  !allTiles[column, row].GetComponent<BackgroundTile>().obstacles[allTiles[column, row].GetComponent<BackgroundTile>().indexOfVisibleOne].GetComponent<ObstacleScript>().obstacleSpecs.powerUpNeed)
                 {
                     specialPowerController.SpecialPowerUpUsed(2);
                     allTiles[column, row].GetComponent<BackgroundTile>().Boom();
@@ -1599,9 +1608,10 @@ public class Board : MonoBehaviour
                 else
                 {
                     failed = true;
-                    Debug.Log("YOU CANT DESTROY THIS OBSTACLE. THIS OBSTACLE CAN BE BREKABLE BY JUST POWERUPS");
+                    Debug.Log("YOU CANT DESTROY THIS OBSTACLE. THIS OBSTACLE CAN BE BREKABLE BY JUST POWERUPS OR THERE IS NOTHING INSIDE OF TILE TO DESTROY");
                 }
-              
+                
+
                 break;
             case 4:
                 // Special Power: Super Swipe

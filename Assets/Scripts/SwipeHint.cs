@@ -51,7 +51,6 @@ public class SwipeHint : MonoBehaviour
         if(board.hintBool && !oneHintActive)
         {
             oneHintActive = true;
-            Debug.Log("START WAIT");
             StartCoroutine(WaitForHint());
            // hasCoroutineStarted = true;
         }
@@ -60,14 +59,8 @@ public class SwipeHint : MonoBehaviour
 
     private IEnumerator WaitForHint()
     {
-        yield return new WaitForSeconds(1);
-        Debug.Log("1");
-        yield return new WaitForSeconds(1);
-        Debug.Log("2");
-        yield return new WaitForSeconds(1);
-        Debug.Log("3");
+        yield return new WaitForSeconds(3);
         continueIteration = true;
-        Debug.Log("START HINT");
         StartCoroutine(PowerUpsIteration());
 
     }
@@ -232,7 +225,6 @@ public class SwipeHint : MonoBehaviour
 
                         if (i + 4 < board.width)
                         {
-                            Debug.Log("5 MATCH");
                             if (board.allFruits[i + 1, j] &&
                                 type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
                                 board.allFruits[i + 2, j] &&
@@ -243,7 +235,6 @@ public class SwipeHint : MonoBehaviour
                                 board.allFruits[i + 2, j - 1] &&
                                 type == board.allFruits[i + 2, j - 1].GetComponent<Fruit>().fruitType)
                             {
-                                Debug.Log("5 MATCH GO");
                                 fruit = board.allFruits[i + 2, j - 1].GetComponent<Fruit>();
                                 fruit2 = board.allFruits[i + 1, j].GetComponent<Fruit>();
                                 fruit3 = board.allFruits[i + 3, j].GetComponent<Fruit>();
@@ -2111,7 +2102,6 @@ public class SwipeHint : MonoBehaviour
 
     public void StopHintCoroutines()
     {
-        Debug.Log("STOPPED");
         if (fruit)
         {
             fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, false);

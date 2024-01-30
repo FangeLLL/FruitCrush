@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6775481451483027233}
-  - component: {fileID: 5345015638225086304}
   - component: {fileID: 8183136484916695726}
   m_Layer: 0
   m_Name: BaseFruit
@@ -34,41 +33,6 @@ Transform:
   - {fileID: 6118191939555662036}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &5345015638225086304
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1594701409205146621}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!114 &8183136484916695726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,15 +49,17 @@ MonoBehaviour:
   column: 0
   row: 0
   firstTouchPosition: {x: 0, y: 0}
+  fadeout: 0
   targetV: {x: 0, y: 0}
-  speed: 0.04
   isClicked: 0
   isSwiped: 0
+  isMoving: 0
   animator: {fileID: 4633664314048729591}
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799
   swipeDown: 1769856547
+  swipeFlash: -577822589
 --- !u!1 &6537579639732625407
 GameObject:
   m_ObjectHideFlags: 0

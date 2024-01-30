@@ -39,7 +39,6 @@ public class Fruit : MonoBehaviour
     [HideInInspector]
     public int swipeFlash = Animator.StringToHash("isSwipeHintIdle");
 
-    public bool specialPowerActive = false;
 
     void Awake()
     {
@@ -89,26 +88,6 @@ public class Fruit : MonoBehaviour
                 }
             }            
         }      
-    }
-
-
-    private void OnMouseDown()
-    {     
-        firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        isClicked = true;
-    }
-    
-    private void OnMouseUp()
-    {
-        isClicked = false;
-        if (fruitType < 0 && board.taskController.moveCount > 0 && !isSwiped && !specialPowerActive && board.taskController.isBoardActive)
-        {
-
-            board.taskController.MovePlayed();
-            board.StopHint();
-            board.ActivatePowerUp(gameObject);
-        }
-        specialPowerActive = false;
     }
 
     private void CalculateAngle()

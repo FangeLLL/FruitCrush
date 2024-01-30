@@ -1579,9 +1579,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fruit: {fileID: 8183136484916695726, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
   fruit2: {fileID: 8183136484916695726, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
-  fruit3: {fileID: 0}
-  fruit4: {fileID: 0}
-  fruit5: {fileID: 0}
+  fruit3: {fileID: 8183136484916695726, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
+  fruit4: {fileID: 8183136484916695726, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
+  fruit5: {fileID: 8183136484916695726, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
   hintThreshold: 1
   continueIteration: 1
   oneHintActive: 0
@@ -7985,7 +7985,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000091552734, y: -0.00012207031}
+  m_AnchoredPosition: {x: -0.00012207031, y: -0.00012207031}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &692748913
@@ -23737,7 +23737,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -179.02, y: 122.32}
+  m_AnchoredPosition: {x: -180, y: 122}
   m_SizeDelta: {x: 1024, y: 1024}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &8332445004921187328

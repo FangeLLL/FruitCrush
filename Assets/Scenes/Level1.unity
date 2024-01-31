@@ -8816,6 +8816,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 866597669}
+        m_TargetAssemblyTypeName: MusicManager, Assembly-CSharp
+        m_MethodName: FadeOutInGameMusic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &815695845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9066,7 +9078,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - {fileID: 8300000, guid: f827f03ee009c854b896fc09d7900adf, type: 3}
-  - {fileID: 8300000, guid: de3bf7d3258e36f45a27d6ad0d35f1c2, type: 3}
+  - {fileID: 8300000, guid: 0fa01b192c85c0c4ab13a4307d6e30e6, type: 3}
   source: {fileID: 0}
 --- !u!82 &866597670
 AudioSource:
@@ -14751,6 +14763,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 866597669}
+        m_TargetAssemblyTypeName: MusicManager, Assembly-CSharp
+        m_MethodName: FadeOutInGameMusic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1629775816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16059,6 +16083,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1772865871}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: ContinueButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 866597669}
+        m_TargetAssemblyTypeName: MusicManager, Assembly-CSharp
+        m_MethodName: FadeOutInGameMusic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -24173,10 +24209,10 @@ SceneRoots:
   - {fileID: 58578421}
   - {fileID: 1772865869}
   - {fileID: 1772453842}
+  - {fileID: 866597671}
   - {fileID: 160705527}
   - {fileID: 1692974011}
   - {fileID: 1377052679}
   - {fileID: 2621444644783491204}
   - {fileID: 1679605654}
   - {fileID: 195724683}
-  - {fileID: 866597671}

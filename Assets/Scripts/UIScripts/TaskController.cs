@@ -217,6 +217,10 @@ public class TaskController : MonoBehaviour
         liveRegen.LevelComplete();
         rewardController.GiveStarReward(200);
 
+        int bpProgress = PlayerPrefs.GetInt("BattlePassProgression", 0);
+        bpProgress += 4;
+        PlayerPrefs.SetInt("BattlePassProgression", bpProgress);
+
         int levelFinishTask = PlayerPrefs.GetInt("LevelFinishTask", 0);
 
         levelFinishTask++;

@@ -1565,6 +1565,7 @@ MonoBehaviour:
   scaleNumber: 0
   specialPowerID: 0
   specialSwipe: 0
+  specialPowerUsing: 0
 --- !u!114 &160705529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9065,6 +9066,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - {fileID: 8300000, guid: f827f03ee009c854b896fc09d7900adf, type: 3}
+  - {fileID: 8300000, guid: de3bf7d3258e36f45a27d6ad0d35f1c2, type: 3}
   source: {fileID: 0}
 --- !u!82 &866597670
 AudioSource:

@@ -13,6 +13,8 @@ public class BackgroundTile : MonoBehaviour
     public int indexOfVisibleOne=-1;
     public bool isCurrentObstacleBox=false;
 
+    private Vector2 firstTouchPosition;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +23,7 @@ public class BackgroundTile : MonoBehaviour
 
     private void Update()
     {
+        /*
         if (Input.GetMouseButtonDown(0) && board.specialPowerID != 0)
         {
             // Convert the mouse position to world coordinates
@@ -32,6 +35,52 @@ public class BackgroundTile : MonoBehaviour
                 board.ActivateSpecialPower(column, row);
             }
         }
+        */
+    }
+
+    private void OnMouseDown()
+    {
+        if (board.specialPowerID == 0 || board.specialSwipe)
+        {
+            if (board.allFruits[column, row])
+            {
+                firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                board.allFruits[column, row].GetComponent<Fruit>().firstTouchPosition = firstTouchPosition;
+                board.allFruits[column, row].GetComponent<Fruit>().isClicked = true;
+            }
+        }
+    }
+
+    private void OnMouseUp()
+    {
+
+        if (board.specialPowerID == 0 || board.specialSwipe)
+        {
+            if (board.allFruits[column, row])
+            {
+                if (board.allFruits[column, row].GetComponent<Fruit>().isClicked&&!board.specialSwipe && board.allFruits[column, row].GetComponent<Fruit>().fruitType < 0 && board.taskController.moveCount > 0 && !board.allFruits[column, row].GetComponent<Fruit>().isSwiped && board.taskController.isBoardActive)
+                {
+                    if (Vector2.Distance(transform.position, firstTouchPosition) < 0.3f)
+                    {
+                        Debug.Log("clicked");
+                        board.taskController.MovePlayed();
+                        board.StopHint();
+                        board.ActivatePowerUp(board.allFruits[column, row]);
+
+                    }
+                   
+                }
+                board.allFruits[column, row].GetComponent<Fruit>().isClicked = false;
+
+            }
+
+        }
+        else
+        {
+            board.ActivateSpecialPower(column, row);
+
+        }
+
     }
 
     public void Explosion(int column,int row)

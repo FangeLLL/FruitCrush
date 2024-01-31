@@ -58,6 +58,7 @@ public class Board : MonoBehaviour
 
     public int specialPowerID = 0;
     public bool specialSwipe = false;
+    public bool specialPowerUsing = false;
 
     private bool shuffling = false;
 
@@ -397,6 +398,12 @@ public class Board : MonoBehaviour
         {
             return;
         }
+
+        if(otherFruit.GetComponent<Fruit>().fruitType == fruit.GetComponent<Fruit>().fruitType && specialSwipe)
+        {
+            Debug.Log("You cant swipe same type of fruits with specialSwipe");
+            return;
+        }
         fruit.GetComponent<Fruit>().isSwiped = true;
         otherFruit.GetComponent<Fruit>().isSwiped = true;
 
@@ -632,7 +639,7 @@ public class Board : MonoBehaviour
 
         // If two object are power ups then merge happens.
 
-        if (fruitScript.fruitType < 0 && otherFruitScript.fruitType < 0)
+        if (fruitScript.fruitType < 0 && otherFruitScript.fruitType < 0 && !specialSwipe)
         {
             // Selected power up moves towards to other power up
             fruitScript.row = otherFruitScript.row;
@@ -648,28 +655,35 @@ public class Board : MonoBehaviour
             // If one of them is power up then they switch and power up activate.
             ChangeTwoFruit(fruit, otherFruit);
             yield return new WaitForSeconds(0.2f);
-
-            if (fruitScript.fruitType < 0 || otherFruitScript.fruitType < 0)
+            if(!specialSwipe)
             {
-                // If one of the fruits is power up 
-                if (fruitScript.fruitType < 0)
+                if (fruitScript.fruitType < 0 || otherFruitScript.fruitType < 0)
                 {
-                    ActivatePowerUp(fruit);
+                    // If one of the fruits is power up 
+                    if (fruitScript.fruitType < 0)
+                    {
+                        ActivatePowerUp(fruit);
 
+                    }
+                    else
+                    {
+                        ActivatePowerUp(otherFruit);
+
+                    }
+                    succesfulMove = true;
                 }
                 else
                 {
-                    ActivatePowerUp(otherFruit);
+                    yield return new WaitForSeconds(0.1f);
 
+                    succesfulMove = IsSuccesfulMove(fruit, otherFruit);
                 }
-                succesfulMove = true;
             }
             else
             {
-                yield return new WaitForSeconds(0.1f);
-
-                succesfulMove = IsSuccesfulMove(fruit, otherFruit);
+                succesfulMove = true;
             }
+           
         }
 
 
@@ -682,6 +696,7 @@ public class Board : MonoBehaviour
             }
             else
             {
+                ActivateSpecialPower(fruitScript.column, fruitScript.row);
                 specialSwipe = false;
             }
 
@@ -725,12 +740,6 @@ public class Board : MonoBehaviour
         Fruit fruitScript = fruit.GetComponent<Fruit>();
         Fruit otherFruitScript = otherFruit.GetComponent<Fruit>();
 
-        if (specialSwipe)
-        {
-            ActivateSpecialPower(fruitScript.column, fruitScript.row);
-
-            return true;
-        }
 
         if (CheckMatchSides(fruitScript.row, fruitScript.column) || CheckMatchSides(otherFruitScript.row, otherFruitScript.column))
         {
@@ -1224,7 +1233,8 @@ public class Board : MonoBehaviour
     /// <param name="fruit"></param>
     public void ActivatePowerUp(GameObject fruit)
     {
-        Debug.Log("Activate powerup");
+        Debug.Log("powerUp");
+
         Fruit fruitScript = fruit.GetComponent<Fruit>();
         fruitScript.fadeout = true;
         int column = fruitScript.column, row = fruitScript.row, type = fruitScript.fruitType;
@@ -1315,7 +1325,6 @@ public class Board : MonoBehaviour
     private void TNTExplosion(int column, int row, int range)
     {
         allFruits[column, row].GetComponent<Fruit>().fadeout = true;
-        StartCoroutine(FadeOut(allFruits[column, row]));
         for (int i = column - range; i <= column + range; i++)
         {
             for (int j = row - range; j <= row + range; j++)
@@ -1335,6 +1344,8 @@ public class Board : MonoBehaviour
                 }
             }
         }
+        StartCoroutine(FadeOut(allFruits[column, row]));
+
     }
 
     /// <summary>
@@ -1349,7 +1360,6 @@ public class Board : MonoBehaviour
 
         // Vector2 tempPosition = new Vector2((width-1) * scaleNumber - xOffset, (height-1) * scaleNumber - yOffset);
 
-        harvester.GetComponent<Collider2D>().enabled = false;
         Fruit harvesterScript = harvester.GetComponent<Fruit>();
         //harvesterScript.speed = 0.04f;
         int row = harvesterScript.row, column = harvesterScript.column;
@@ -1382,7 +1392,6 @@ public class Board : MonoBehaviour
     public void VerticalHarvesterMove(GameObject harvester, bool clone)
     {
         float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
-        harvester.GetComponent<Collider2D>().enabled = false;
         Fruit harvesterScript = harvester.GetComponent<Fruit>();
         int row = harvesterScript.row, column = harvesterScript.column;
         if (clone)
@@ -1572,10 +1581,6 @@ public class Board : MonoBehaviour
             return;
         }
 
-        if (allFruits[column,row] && allFruits[column, row].GetComponent<Fruit>().fruitType < 0)
-        {
-            allFruits[column, row].GetComponent<Fruit>().specialPowerActive = true;
-        }
         switch (specialPowerID)
         {
             case 1:
@@ -1622,8 +1627,9 @@ public class Board : MonoBehaviour
         {
             StopHint();
             specialPowerID = 0;
+            specialPowerUsing = false;
         }
-     
+
     }
 
     /// <summary>
@@ -1634,6 +1640,7 @@ public class Board : MonoBehaviour
     public void SelectedSpecialPower(int id)
     {
         specialPowerID = id;
+        specialPowerUsing = true;
 
 
         switch (specialPowerID)

@@ -218,7 +218,7 @@ public class TaskController : MonoBehaviour
         rewardController.GiveStarReward(200);
 
         int bpProgress = PlayerPrefs.GetInt("BattlePassProgression", 0);
-        bpProgress += 4;
+        bpProgress += 8;
         PlayerPrefs.SetInt("BattlePassProgression", bpProgress);
 
         int levelFinishTask = PlayerPrefs.GetInt("LevelFinishTask", 0);

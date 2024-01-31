@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.PlasticSCM.Editor.WebApi;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -8,7 +9,6 @@ using UnityEngine.UI;
 [System.Serializable]
 public class FreeStages
 {
-    public int stageNumber;
     public int[] freeReward;
 
     public bool freeRewardUnlocked;
@@ -26,7 +26,6 @@ public class FreeStages
 [System.Serializable]
 public class PremiumStages
 {
-    public int stageNumber;
     public int[] premiumReward;
 
     public bool premiumRewardUnlocked;
@@ -55,6 +54,8 @@ public class BattlePassManager : MonoBehaviour
 
     public int[] stageRequirements = { 1, 3, 3, 3, 5, 5, 5, 7, 7, 7, 70};
 
+    public ScrollRect scrollRect;
+
     private void Start()
     {
         for (int i = 0; i < freeStages.Length; i++)
@@ -62,8 +63,11 @@ public class BattlePassManager : MonoBehaviour
             freeStages[i].freeRewardButton = freeStages[i].stage.transform.GetChild(0).gameObject;
             freeStages[i].freeRewardTick = freeStages[i].stage.transform.GetChild(2).gameObject;
             freeStages[i].progressSlider = freeStages[i].stage.transform.GetChild(4).GetChild(0).gameObject.GetComponent<Slider>();
+            freeStages[i].progressSlider.maxValue = stageRequirements[i];
             premiumStages[i].premiumRewardButton = premiumStages[i].stage.transform.GetChild(1).gameObject;
             premiumStages[i].premiumRewardTick = premiumStages[i].stage.transform.GetChild(3).gameObject;
+
+            freeStages[i].stage.transform.GetChild(4).GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = (i+1).ToString();
         }
             
         totalProgression = PlayerPrefs.GetInt("BattlePassProgression", 0);
@@ -86,6 +90,7 @@ public class BattlePassManager : MonoBehaviour
 
                 if (onetime)
                 {
+                    scrollRect.verticalNormalizedPosition = 1 - (1 / freeStages.Length) * i;
                     freeStages[i].progressSlider.value = bpProgress + stageRequirements[i];
                     onetime = false;
                 }

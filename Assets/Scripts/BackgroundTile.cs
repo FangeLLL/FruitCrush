@@ -62,18 +62,15 @@ public class BackgroundTile : MonoBehaviour
                 {
                     if (Vector2.Distance(transform.position, firstTouchPosition) < 0.3f)
                     {
-                        Debug.Log("clicked");
                         board.taskController.MovePlayed();
                         board.StopHint();
                         board.ActivatePowerUp(board.allFruits[column, row]);
 
-                    }
-                   
+                    }              
                 }
                 board.allFruits[column, row].GetComponent<Fruit>().isClicked = false;
 
             }
-
         }
         else
         {

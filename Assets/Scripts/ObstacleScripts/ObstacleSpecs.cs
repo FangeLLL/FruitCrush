@@ -33,5 +33,6 @@ public class ObstacleSpecs : ScriptableObject
     public int taskID;
 
     public Sprite[] sprites;
-
+    // public GameObject[] combinedObstacles;
+    public bool is4TimesBigger;
 }

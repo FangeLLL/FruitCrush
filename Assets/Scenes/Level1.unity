@@ -1559,12 +1559,14 @@ MonoBehaviour:
   - {fileID: 6328190920238408510, guid: 6c49852131ad9e94aba0017793037121, type: 3}
   - {fileID: 6328190920238408510, guid: e35711bae03bfbd4b8fbb443070cea29, type: 3}
   - {fileID: 6328190920238408510, guid: 29588b77317ec2b47965e0a39574ec53, type: 3}
+  - {fileID: 6328190920238408510, guid: de93ca2e95c4da7438caf2b997749d9c, type: 3}
   tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
   hintBool: 0
   userLevel: 0
   scaleNumber: 0
   specialPowerID: 0
   specialSwipe: 0
+  specialPowerUsing: 0
 --- !u!114 &160705529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17403,10 +17405,11 @@ MonoBehaviour:
     taskText: {fileID: 1755543394}
     isCompleted: 0
   taskSprites:
-  - {fileID: 21300000, guid: 7549f573040ddb44fb1c75c238e49463, type: 3}
+  - {fileID: 21300000, guid: 3333a468ed45f044a9f6bca786d506ff, type: 3}
   - {fileID: 21300000, guid: 519ee4913832c2c4ebce0c87edd2a375, type: 3}
-  - {fileID: 21300000, guid: 0a6ce9f7b5f88a8438ffbea37a010d65, type: 3}
-  - {fileID: 21300000, guid: a7b5c6e4ae16f2f47961b75e0c33b731, type: 3}
+  - {fileID: 21300000, guid: a6bcda1b86a2a1b4a9431dbab9d54961, type: 3}
+  - {fileID: 21300000, guid: df1c759e3cc341f46b44d7649db8dd84, type: 3}
+  - {fileID: 21300000, guid: bc25c52884a23ee4184a314de753030d, type: 3}
   moveCount: 0
   currentObjectiveIndex: 0
   onetime: 1

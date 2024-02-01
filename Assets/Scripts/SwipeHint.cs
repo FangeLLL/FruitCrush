@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using System.Collections;
+using System.Drawing;
 
 public class SwipeHint : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class SwipeHint : MonoBehaviour
     public bool hasCoroutineStarted = false;
 
     List<Vector2Int> possibleMoves = new List<Vector2Int>();
+    private bool isMergeHorizontal;
+    private int point;
 
     private void Start()
     {
@@ -78,11 +81,13 @@ public class SwipeHint : MonoBehaviour
     // THIS IS FOR POWER UPS HINT
     private IEnumerator PowerUpsIteration()
     {
-        if (!isIterating) 
+        if (!isIterating)
         {
             isIterating = true;
             if (!continueIteration) continueIteration = true;
-        } 
+        }
+
+        point = 0;
 
         for (int i = 0; i < board.width; i++) // COLUMN
         {
@@ -94,71 +99,120 @@ public class SwipeHint : MonoBehaviour
             {
                 for (int j = 0; j < board.height; j++) // ROW
                 {
-                    if (j + 1 < board.height && board.allFruits[i, j] && board.allFruits[i, j + 1])
+                    if (board.allFruits[i, j])
                     {
                         int type = board.allFruits[i, j].GetComponent<Fruit>().fruitType;
 
-                        // UPPER BOUNDS
-                        if (type < 0 && board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType < 0)
+                        //MERGE HORIZONTAL
+
+                        /*            
+                         *  -- 
+                         *  
+                         *  */
+
+                        if (type < 0 && i + 1 < board.width)
                         {
-                            if (j + 1 < board.width && j - 1 >= 0)
+                            if (board.allFruits[i + 1, j] &&
+                                board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType < 0 &&
+                                type + board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType < 0)
                             {
-                                if (i - 1 >= 0 && board.allFruits[i - 1, j] && type == -3 && type == board.allFruits[i - 1, j].GetComponent<Fruit>().fruitType)
-                                {
-                                    fruit = board.allFruits[i, j].GetComponent<Fruit>();
-                                    //fruit2 = board.allFruits[i - 1, j].GetComponent<Fruit>();
-                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
-                                    //fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
-                                    yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;
-                                    break;
-                                }
+                                
 
-                                if (i + 1 >= 0 && board.allFruits[i + 1, j] && type == -3 && type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType)
+                                if (Mathf.Abs(type + board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType) > Mathf.Abs(point))
                                 {
-                                    fruit = board.allFruits[i, j].GetComponent<Fruit>();
-                                    //fruit2 = board.allFruits[i + 1, j].GetComponent<Fruit>();
-                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
-                                    //fruit2.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
-                                    yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;
-                                    break;
-                                }
-
-                                if ((i - 1 >= 0 && board.allFruits[i - 1, j] && type < 0 && board.allFruits[i - 1, j].GetComponent<Fruit>().fruitType < 0))
-                                {
-                                    fruit = board.allFruits[i, j].GetComponent<Fruit>();
-                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
-                                    yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;
-                                    break;
-                                }
-
-                                if ((i + 1 >= 0 && board.allFruits[i + 1, j] && type < 0 && board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType < 0))
-                                {
-                                    fruit = board.allFruits[i, j].GetComponent<Fruit>();
-                                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);
-                                    yield return new WaitForSeconds(0.1f);
-                                    continueIteration = false;
-                                    break;
+                                    if (!showHint)
+                                    {
+                                        showHint = true;
+                                        yield return new WaitForSeconds(0.1f);
+                                        continueIteration = false;
+                                        isIterating = false;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        isMergeHorizontal = true;
+                                        point = type + board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType;
+                                        fruit = board.allFruits[i + 1, j].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i, j].GetComponent<Fruit>();
+                                    }
+                                    
+                                    
                                 }
                             }
-
                         }
-                    }
 
-                    if (j - 1 >= 0 && board.allFruits[i, j] && board.allFruits[i, j - 1])
-                    {
+                        // MERGE VERTICAL
 
+                        /*            
+                         *  |
+                         *  |
+                         *  
+                         *  */
+
+                        if (type < 0 && j + 1 < board.height)
+                        {
+                            if (board.allFruits[i, j + 1] &&
+                                board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType < 0 &&
+                                type + board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType < 0)
+                            {
+                                
+
+                                if (Mathf.Abs(type + board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType) > Mathf.Abs(point))
+                                {
+                                    if (!showHint)
+                                    {
+                                        showHint = true;
+                                        yield return new WaitForSeconds(0.1f);
+                                        continueIteration = false;
+                                        isIterating = false;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        Debug.Log("TEST");
+                                        isMergeHorizontal = false;
+                                        point = type + board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType;
+                                        fruit = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                        fruit2 = board.allFruits[i, j].GetComponent<Fruit>();
+                                    }                                   
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
         yield return new WaitForSeconds(0.1f);
-        if (continueIteration)
+
+        if (point < 0)
         {
-            StartCoroutine(FiveMatchIteration());
+            if (showHint && fruit && fruit2)
+            {
+                continueIteration = false;
+                if (isMergeHorizontal)
+                {
+                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
+                    fruit2.GetComponentInChildren<Animator>().SetBool(fruit2.swipeRight, true);
+                }
+                else
+                {
+                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
+                    fruit2.GetComponentInChildren<Animator>().SetBool(fruit2.swipeUp, true);
+                }
+            }
         }
+        else
+        {
+            yield return new WaitForSeconds(0.1f);
+            //point = 0;
+            isMergeHorizontal = false;
+            if (continueIteration)
+            {
+                StartCoroutine(FiveMatchIteration());
+            }
+        }
+        
+        
 
     }
 

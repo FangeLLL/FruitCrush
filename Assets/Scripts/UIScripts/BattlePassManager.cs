@@ -4,6 +4,7 @@ using TMPro;
 using Unity.PlasticSCM.Editor.WebApi;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -55,6 +56,9 @@ public class BattlePassManager : MonoBehaviour
     public int[] stageRequirements = { 1, 3, 3, 3, 5, 5, 5, 7, 7, 7, 70};
 
     public ScrollRect scrollRect;
+    public GameObject notif;
+    public GameObject infoText;
+    public GameObject info;
 
     private void Start()
     {
@@ -62,12 +66,13 @@ public class BattlePassManager : MonoBehaviour
         {
             freeStages[i].freeRewardButton = freeStages[i].stage.transform.GetChild(0).gameObject;
             freeStages[i].freeRewardTick = freeStages[i].stage.transform.GetChild(2).gameObject;
-            freeStages[i].progressSlider = freeStages[i].stage.transform.GetChild(4).GetChild(0).gameObject.GetComponent<Slider>();
+            freeStages[i].progressSlider = freeStages[i].stage.transform.GetChild(5).GetChild(0).gameObject.GetComponent<Slider>();
             freeStages[i].progressSlider.maxValue = stageRequirements[i];
             premiumStages[i].premiumRewardButton = premiumStages[i].stage.transform.GetChild(1).gameObject;
             premiumStages[i].premiumRewardTick = premiumStages[i].stage.transform.GetChild(3).gameObject;
+            premiumStages[i].premiumRewardLock = premiumStages[i].stage.transform.GetChild(4).gameObject;
 
-            freeStages[i].stage.transform.GetChild(4).GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = (i+1).ToString();
+            freeStages[i].stage.transform.GetChild(5).GetChild(1).GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = (i+1).ToString();
         }
             
         totalProgression = PlayerPrefs.GetInt("BattlePassProgression", 0);
@@ -97,12 +102,12 @@ public class BattlePassManager : MonoBehaviour
             }
         }
 
-        if (!isPremiumActive)
+        if (isPremiumActive)
         {
             for (int i = 0; i < premiumStages.Length; i++)
             {
-                premiumStages[i].premiumRewardAvailable = false;
-                //Stages[i].premiumRewardLock.SetActive(true);
+                premiumStages[i].premiumRewardAvailable = true;
+                premiumStages[i].premiumRewardLock.SetActive(false);
             }
         }
 
@@ -112,14 +117,18 @@ public class BattlePassManager : MonoBehaviour
             {
                 freeStages[i].freeRewardTaken = true;
                 freeStages[i].freeRewardTick.SetActive(true);
+                freeStages[i].freeRewardTick.transform.localScale = new Vector3(0.112f, 0.112f, 0.112f);
             }
 
             if (PlayerPrefs.GetInt("PremiumRewardTaken_" + i, 0) == 1)
             {
                 premiumStages[i].premiumRewardTaken = true;
-                freeStages[i].freeRewardTick.SetActive(true);
+                premiumStages[i].premiumRewardTick.SetActive(true);
+                premiumStages[i].premiumRewardTick.transform.localScale = new Vector3(0.112f, 0.112f, 0.112f);
             }
         }
+
+        NotificationNumber();
     }
 
     public void FreeRewardTapped(int stage)
@@ -128,18 +137,28 @@ public class BattlePassManager : MonoBehaviour
 
         if (!currentStage.freeRewardUnlocked)
         {
-            Debug.Log("Reward(s) are not unlocked yet.");
+            info.transform.localPosition = new Vector3(-52, 0, 0);
+            info.transform.position += new Vector3(0, currentStage.stage.transform.position.y - 340, 0);
+            infoText.SetActive(true);
+            infoText.GetComponent<Animator>().SetTrigger("InfoDisplay");
+            infoText.GetComponentInChildren<TextMeshProUGUI>().text = "Reward  is not unlocked  yet.";
         }
         else if (currentStage.freeRewardUnlocked && !currentStage.freeRewardTaken)
         {
             rewardController.DisplayRewards(currentStage.freeReward);
             currentStage.freeRewardTick.SetActive(true);
             currentStage.freeRewardTaken = true;
+            currentStage.freeRewardTick.GetComponent<Animator>().SetTrigger("Tapped");
             PlayerPrefs.SetInt("FreeRewardTaken_" + stage, 1);
+            NotificationNumber();
         }
         else
         {
-            Debug.Log("Reward(s) are taken.");
+            info.transform.localPosition = new Vector3(-52, 0, 0);
+            info.transform.position += new Vector3(0, currentStage.stage.transform.position.y - 340, 0);
+            infoText.SetActive(true);
+            infoText.GetComponent<Animator>().SetTrigger("InfoDisplay");
+            infoText.GetComponentInChildren<TextMeshProUGUI>().text = "Reward  is taken";
         }
     }
     
@@ -149,22 +168,36 @@ public class BattlePassManager : MonoBehaviour
 
         if (!currentStage.premiumRewardUnlocked)
         {
-            Debug.Log("Reward(s) are not unlocked yet.");
+            info.transform.localPosition = new Vector3(137, 0, 0);
+            info.transform.position += new Vector3(0, currentStage.stage.transform.position.y - 340, 0);
+            infoText.SetActive(true);
+            infoText.GetComponent<Animator>().SetTrigger("InfoDisplay");
+            infoText.GetComponentInChildren<TextMeshProUGUI>().text = "Reward  is not unlocked  yet.";
         }
         else if (!currentStage.premiumRewardAvailable)
         {
-            Debug.Log("Buy Fruit Pass for this reward!");
+            info.transform.localPosition = new Vector3(137, 0, 0);
+            info.transform.position += new Vector3(0, currentStage.stage.transform.position.y - 340, 0);
+            infoText.SetActive(true);
+            infoText.GetComponent<Animator>().SetTrigger("InfoDisplay");
+            infoText.GetComponentInChildren<TextMeshProUGUI>().text = "Buy Fruit Pass for  this reward !";
         }
         else if (currentStage.premiumRewardUnlocked && !currentStage.premiumRewardTaken && currentStage.premiumRewardAvailable)
         {
             rewardController.DisplayRewards(currentStage.premiumReward);
             currentStage.premiumRewardTick.SetActive(true);
             currentStage.premiumRewardTaken = true;
+            currentStage.premiumRewardTick.GetComponent<Animator>().SetTrigger("Tapped");
             PlayerPrefs.SetInt("PremiumRewardTaken_" + stage, 1);
+            NotificationNumber();
         }
         else
         {
-            Debug.Log("Reward(s) are taken.");
+            info.transform.localPosition = new Vector3(137, 0, 0);
+            info.transform.position += new Vector3(0, currentStage.stage.transform.position.y - 340, 0);
+            infoText.SetActive(true);
+            infoText.GetComponent<Animator>().SetTrigger("InfoDisplay");
+            infoText.GetComponentInChildren<TextMeshProUGUI>().text = "Reward  is taken";
         }
     }
 
@@ -173,11 +206,11 @@ public class BattlePassManager : MonoBehaviour
         for (int i = 0; i < premiumStages.Length; i++)
         {
             premiumStages[i].premiumRewardAvailable = true;
-            //premiumStages[i].premiumRewardLock.SetActive(false);
+            premiumStages[i].premiumRewardLock.SetActive(false);
         }
     }
 
-    public int NotificationNumber()
+    public void NotificationNumber()
     {
         int count= 0;
 
@@ -187,11 +220,19 @@ public class BattlePassManager : MonoBehaviour
             {
                 count++;
             }
-            if (!premiumStages[i].premiumRewardTaken && premiumStages[i].premiumRewardUnlocked)
+            if (!premiumStages[i].premiumRewardTaken && premiumStages[i].premiumRewardUnlocked && premiumStages[i].premiumRewardAvailable)
             {
                 count++;
             }
         }
-        return count;
+
+        if (count < 1)
+        {
+            notif.SetActive(false);
+        }
+        else
+        {
+            notif.GetComponentInChildren<TextMeshProUGUI>().text = count.ToString();
+        }
     }
 }

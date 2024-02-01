@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06f4d882e274efa4b95734ced04d6b55, type: 3}
+  m_Name: BushScript
+  m_EditorClassIdentifier: 
+  indexOfLayer: 0
+  boxObstacle: 1
+  indestructible: 0
+  isCollectible: 0
+  obstacleHitSound: StrawBaleBreak
+  powerUpNeed: 0
+  id: 7
+  taskID: 4
+  sprites:
+  - {fileID: 21300000, guid: bcfa00879b0347e449f73040e91143ac, type: 3}
+  - {fileID: 21300000, guid: 6fed679547532f440a91422d2a8f45c7, type: 3}
+  - {fileID: 21300000, guid: 86f9489b22a528349a63c15750f221ee, type: 3}
+  - {fileID: 21300000, guid: 5347676dc90c2b9408cabf577cd6251f, type: 3}
+  - {fileID: 21300000, guid: bc25c52884a23ee4184a314de753030d, type: 3}
+  is4TimesBigger: 1

@@ -236,7 +236,8 @@ public class LevelManager : MonoBehaviour
         {
             obstacleScale.transform.localScale = new Vector3(scaleNumber, scaleNumber, scaleNumber);
         }
-
+        
+        // Creating tiles.
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
@@ -249,24 +250,69 @@ public class LevelManager : MonoBehaviour
                 backgroundTile.GetComponent<LevelEditorBackgroundTile>().row = j;
                 allTiles[i, j] = backgroundTile;
 
+               
+            }
+        }
+
+        // Creating obstacles and fruits.
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                
                 if (arrangedTiles[i, j] == 1)
-                {       
+                {
+                    GameObject tempObstacle = null;
+                    Vector2 tempPosition = allTiles[i, j].transform.position;
 
-                    if (arrangedTilesZero[i, j] != -1)
+                    int repeat = 1;
+
+                    int arrangedTilesIndex = 0;
+
+                    for(int c = 0; c < 3; c++)
                     {
-                        backgroundTile.GetComponent<LevelEditorBackgroundTile>().obstacles[0] = Instantiate(obstacles[arrangedTilesZero[i, j]], tempPosition, Quaternion.identity);
-                    }
+                        // Checking every layer because system will put obstacles according to layer ids.
+                        switch (c)
+                        {
+                            case 0:
+                                arrangedTilesIndex = arrangedTilesZero[i, j];
+                                break;
+                            case 1:
+                                arrangedTilesIndex = arrangedTilesOne[i, j];
+                                break;
+                            case 2:
+                                arrangedTilesIndex = arrangedTilesTwo[i, j];
+                                break;
+                        }
 
-                    if (arrangedTilesOne[i, j] != -1)
-                    {
-                        backgroundTile.GetComponent<LevelEditorBackgroundTile>().obstacles[1] = Instantiate(obstacles[arrangedTilesOne[i, j]], tempPosition, Quaternion.identity);
-                    }
+                        // Checking if layer has obstacle and that tile has a obstacle in its that layer. 
+                        if (arrangedTilesIndex != -1 && !allTiles[i, j].GetComponent<LevelEditorBackgroundTile>().obstacles[c])
+                        {
+                            // If obstacle is big obstacle then it will arrange position and assign this object 4 tile. 
+                            if (obstacles[arrangedTilesIndex].GetComponent<ObstacleScript>().obstacleSpecs.is4TimesBigger)
+                            {
+                                tempPosition = new Vector2((i + 0.5f) * scaleNumber - xOffset, (j + 0.5f) * scaleNumber - yOffset);
+                                repeat = 2;
+                            }
+                            else
+                            {
+                                tempPosition = allTiles[i, j].transform.position;
+                                repeat = 1;
+                            }
+                            tempObstacle = Instantiate(obstacles[arrangedTilesIndex], tempPosition, Quaternion.identity);
 
-                    if (arrangedTilesTwo[i, j] != -1)
-                    {
-                        backgroundTile.GetComponent<LevelEditorBackgroundTile>().obstacles[2] = Instantiate(obstacles[arrangedTilesTwo[i, j]], tempPosition, Quaternion.identity);
-                    }
+                            for (int a = 0; a < repeat; a++)
+                            {
+                                for (int b = 0; b < repeat; b++)
+                                {
+                                    // Assigning object to relevant tile/tiles.
+                                    allTiles[i + b, j + a].GetComponent<LevelEditorBackgroundTile>().obstacles[c] = tempObstacle;
 
+                                }
+                            }
+                        }
+                    }
+                    
                     // If type of fruit -1 then it means fruit does not exist.
                     if (arrangedFruits[i, j] >= 0)
                     {
@@ -283,13 +329,17 @@ public class LevelManager : MonoBehaviour
                 }
                 else
                 {
-                    backgroundTile.GetComponent<LevelEditorBackgroundTile>().active = false;
-                    Color color = backgroundTile.GetComponent<SpriteRenderer>().color;
+                    allTiles[i, j].GetComponent<LevelEditorBackgroundTile>().active = false;
+                    Color color = allTiles[i, j].GetComponent<SpriteRenderer>().color;
                     color.a = 0.5f;
-                    backgroundTile.GetComponent<SpriteRenderer>().color = color;
+                    allTiles[i, j].GetComponent<SpriteRenderer>().color = color;
                 }
+
             }
         }
+
+
+       
     }
 
     private void SetUp()
@@ -334,75 +384,122 @@ public class LevelManager : MonoBehaviour
 
     public void ReplaceObject(int column, int row)
     {
-        if (allTiles[column,row].GetComponent<LevelEditorBackgroundTile>().active) {
-            float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
-            float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
-            Vector2 tempPosition = new Vector2(column * scaleNumber - xOffset, row * scaleNumber - yOffset);
+        if (!allTiles[column,row].GetComponent<LevelEditorBackgroundTile>().active) {
+            Debug.Log("This tile deactivated please activate this tile before putting something in.");
+            return;
+        }
 
-            // INSTANTIATE A NEW FRUIT AT THE POSITION OF THE DESTROYED FRUIT
-            if (chosenId >= 0)
-            {
-                if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[0])
-                {
-                    // Destroy box
-                    Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[0]);
-                }
-                GameObject fruit = Instantiate(fruits[chosenId], tempPosition, Quaternion.identity);
-                fruit.transform.parent = this.transform;
-                fruit.name = "( " + column + ", " + row + " )";
+        float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
+        float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
+        Vector2 tempPosition;
+        GameObject obstacle = null;
+        bool isObstacle4TimesBigger = false;
 
-                // SET THE COLUMN AND ROW OF THE NEW FRUIT
-                fruit.GetComponent<Fruit>().column = column;
-                fruit.GetComponent<Fruit>().row = row;
-                fruit.GetComponent<Fruit>().fruitType = chosenId;
-                // ADD THE NEW FRUIT TO THE ALLFRUITS ARRAY
-                Destroy(allFruits[column, row]);
-                allFruits[column, row] = fruit;
-            }
-            else
-            {
-                // OBSTACLE IDS START FROM -1 SO SYSTEM GET NEGATIVE OF IT AND MINUS 1
-                int obstacleIndex = (-chosenId) - 1;
-                //  GETTING CHOSEN OBSTACLEN PREFAB INDEX LOCATION ON THE TILE OBSTACLE VARIABLE.
-                int placeOfObstacle = obstacles[obstacleIndex].GetComponent<ObstacleScript>().obstacleSpecs.indexOfLayer;
-                int currentObstacleId = -1;
-                int currentObstacleTaskID;
-                // IF THERE IS A OBSTACLE ALREADY EXÝST IN THE CURRENT PLACE THEN DESTROY THE OBSTACLE BUT IF DOES NOT EXÝST THEN CREATE THE OBSTACLE
-                if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle])
-                {
-                    currentObstacleId = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.id;
-                    currentObstacleTaskID = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.taskID;
-                    Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle]);
-                    taskElements[currentObstacleTaskID]--;
-                }
-
-                // IF CHOSEN OBSTACLE ALREADY CRATED IN THAT TILE THEN IT MEANS USER WANTED TO DESTROY IT.
-                if (obstacleIndex != currentObstacleId)
-                {
-                    GameObject obstacle = Instantiate(obstacles[obstacleIndex], tempPosition, Quaternion.identity);
-                    obstacle.transform.parent = this.transform;
-                    obstacle.name = "( " + column + ", " + row + " )";
-                    allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle] = obstacle;
-                    taskElements[obstacle.GetComponent<ObstacleScript>().obstacleSpecs.taskID]++;
-                }
-
-                // IF OBSTACLE INDEX OF PLACE IS 0 THEN IT MEANS IT IS A BOX TYPE OBSTACLE SO SYSTEM MUST DESTROY FRUIT IF FRUIT EXIST.
-
-                if (placeOfObstacle == 0)
-                {
-                    if (allFruits[column, row])
-                    {
-                        Destroy(allFruits[column, row]);
-                    }
-                }
-            }
+        // If the chosen asset is obstacle and obstacle is 4 times bigger obstacle then placed it center of four tile. 
+        if (chosenId < 0 && obstacles[(-chosenId) - 1].GetComponent<ObstacleScript>().obstacleSpecs.is4TimesBigger)
+        {
+            isObstacle4TimesBigger = true;
+            tempPosition = new Vector2((column + 0.5f) * scaleNumber - xOffset, (row + 0.5f) * scaleNumber - yOffset);
         }
         else
         {
-            Debug.Log("This tile deactivated please activate this tile before putting something in.");
+            tempPosition = new Vector2(column * scaleNumber - xOffset, row * scaleNumber - yOffset);
         }
 
+        if(isObstacle4TimesBigger && (column+1>=width || row + 1 >= height))
+        {
+            Debug.Log("You can't put big obstacle in that tile. It exceeds the limit of board");
+            return;
+        }
 
+        // INSTANTIATE A NEW FRUIT AT THE POSITION OF THE DESTROYED FRUIT
+        if (chosenId >= 0)
+        {
+            if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[0])
+            {
+                // Destroy box
+                Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[0]);
+            }
+            GameObject fruit = Instantiate(fruits[chosenId], tempPosition, Quaternion.identity);
+            fruit.transform.parent = this.transform;
+            fruit.name = "( " + column + ", " + row + " )";
+
+            // SET THE COLUMN AND ROW OF THE NEW FRUIT
+            fruit.GetComponent<Fruit>().column = column;
+            fruit.GetComponent<Fruit>().row = row;
+            fruit.GetComponent<Fruit>().fruitType = chosenId;
+            // ADD THE NEW FRUIT TO THE ALLFRUITS ARRAY
+            Destroy(allFruits[column, row]);
+            allFruits[column, row] = fruit;
+        }
+        else
+        {
+            // OBSTACLE IDS START FROM -1 SO SYSTEM GET NEGATIVE OF IT AND MINUS 1
+            int obstacleIndex = (-chosenId) - 1;
+            //  GETTING CHOSEN OBSTACLEN PREFAB INDEX LOCATION ON THE TILE OBSTACLE VARIABLE.
+            int placeOfObstacle = obstacles[obstacleIndex].GetComponent<ObstacleScript>().obstacleSpecs.indexOfLayer;
+            int currentObstacleId = -1;
+            if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle])
+            {
+                currentObstacleId = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.id;
+
+            }
+
+            int currentObstacleTaskID;
+
+            // If obstacle is4TimesBigger then repeat cehck and destroy method 4 times.
+            int repeat = isObstacle4TimesBigger ? 2 : 1;
+
+            // IF CHOSEN OBSTACLE ALREADY CRATED IN THAT TILE THEN IT MEANS USER WANTED TO DESTROY IT.
+            if (obstacleIndex != currentObstacleId)
+            {
+                obstacle = Instantiate(obstacles[obstacleIndex], tempPosition, Quaternion.identity);
+                obstacle.transform.parent = this.transform;
+                obstacle.name = "( " + column + ", " + row + " )";
+                taskElements[obstacle.GetComponent<ObstacleScript>().obstacleSpecs.taskID]++;
+            }
+            else
+            {
+                // If system will just destroy the obstacle then there is no need to repeat it.
+                repeat = 1;
+            }
+
+            for (int i = 0; i < repeat; i++)
+            {
+                for (int j = 0; j < repeat; j++)
+                {
+
+                    // IF THERE IS A OBSTACLE ALREADY EXÝST IN THE CURRENT PLACE THEN DESTROY THE OBSTACLE BUT IF DOES NOT EXÝST THEN CREATE THE OBSTACLE
+
+                    if (allTiles[column + j, row + i].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle])
+                    {
+                        currentObstacleId = allTiles[column + j, row + i].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.id;
+                        currentObstacleTaskID = allTiles[column + j, row + i].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.taskID;
+                        Destroy(allTiles[column + j, row + i].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle]);
+                        taskElements[currentObstacleTaskID]--;
+                    }
+
+                    // MAKE THE ASSIGMENTS
+                    if (obstacleIndex != currentObstacleId)
+                    {
+
+                        allTiles[column + j, row + i].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle] = obstacle;
+
+                    }
+
+                    // IF OBSTACLE INDEX OF PLACE IS 0 THEN IT MEANS IT IS A BOX TYPE OBSTACLE SO SYSTEM MUST DESTROY FRUIT IF FRUIT EXIST.
+
+                    if (placeOfObstacle == 0)
+                    {
+                        if (allFruits[column + j, row + i])
+                        {
+                            Destroy(allFruits[column + j, row + i]);
+                        }
+                    }
+                }
+            }
+
+        }
     }
 
     public void DeactivateTile(int column,int row)
@@ -421,6 +518,7 @@ public class LevelManager : MonoBehaviour
             {
                 if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[i])
                 {
+                    taskElements[allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[i].GetComponent<ObstacleScript>().obstacleSpecs.taskID]--;
                     Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[i]);
                 }
             }

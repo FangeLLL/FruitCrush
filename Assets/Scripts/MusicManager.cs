@@ -65,8 +65,8 @@ public class MusicManager : Sounds
             FadeInInGameMusic();
                 
         }*/
-        source.Stop();
-        FadeInInGameMusic();
+        //source.Stop();
+        //FadeInInGameMusic();
     }
 
     public void FadeOutInGameMusic()
@@ -80,13 +80,13 @@ public class MusicManager : Sounds
             source.Stop();
             FadeInMainMenuMusic();
         }*/
-        source.Stop();
-        FadeInMainMenuMusic();
+        //source.Stop();
+        //FadeInMainMenuMusic();
     }
 
     private void FadeInInGameMusic()
     {
-        InGameMusicOne();
+        //InGameMusicOne();
         /*if (source.volume <= 1f)
         {                      
             source.volume += Time.deltaTime / musicFadeDuration;
@@ -95,7 +95,7 @@ public class MusicManager : Sounds
 
     private void FadeInMainMenuMusic()
     {
-        MainMenuMusic();
+        //MainMenuMusic();
         /*if (source.volume <= 1f)
         {
             source.volume += Time.deltaTime / musicFadeDuration;

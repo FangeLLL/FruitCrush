@@ -23,10 +23,22 @@ public class BerkeController : MonoBehaviour
         {
             StartEdging();
         }
+        else if(berke_yarrak == kalkik && berke_got == kalkik)
+        {
+            StartCoroutine(StartSwordFight());
+        }
     }
 
     private void StartEdging()
     {
+        Destroy(berke);
+    }
+
+    private IEnumerator StartSwordFight()
+    {
+        Debug.Log("AHHHH GOTUM");
+        yield return new WaitForSeconds(1f);
+        Debug.Log("31");
         Destroy(berke);
     }
 }

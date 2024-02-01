@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 
@@ -95,7 +96,6 @@ public class Board : MonoBehaviour
 
         fillingColumn = new bool[width];
 
-        StartCoroutine(FillTheGaps());
 
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         allFruits = new GameObject[width, height];
@@ -128,6 +128,7 @@ public class Board : MonoBehaviour
             fruitAnimator4 = swipeHint.fruit3.GetComponentInChildren<Animator>();
         if (swipeHint.fruit5)
             fruitAnimator5 = swipeHint.fruit4.GetComponentInChildren<Animator>();
+
 
     }
 
@@ -255,33 +256,83 @@ public class Board : MonoBehaviour
                     backgroundTile.GetComponent<BackgroundTile>().row = j;
                     allTiles[i, j] = backgroundTile;
 
-                    // arrangedTilesZero, one and two represents obstacles that inside of each other. For example, if we put wheatfarm inside of
-                    // strawbale then we must put strawbale to arrangedTilesZero and wheatfarm to arrangedTilesOne so basically arrangedTilesZero will 
-                    // be front and arrangedTilesOne will be in back and they will break according to this order.
+                  
 
-                    // For, trying to make more standart mostly of transparent and filliable obstacles will be put arrangedTilesOne and obstacles that
-                    // blocking fruits and other stuff (Block obstacles) will be put arrangedTilesZero.
+                }
+            }
+            // Inserting fallPoint to array
+            columnsFallIndexY[i] = fallPoint;
+        }
 
-                    if (arrangedTilesZero[i, j] != -1)
+
+        // Creating obstacles and fruits.
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+
+                if (arrangedTiles[i, j] == 1)
+                {
+                    GameObject tempObstacle = null;
+                    Vector2 tempPosition = allTiles[i, j].transform.position;
+
+                    int repeat = 1;
+
+                    int arrangedTilesIndex = 0;
+
+                    for (int c = 0; c < 3; c++)
                     {
-                        backgroundTile.GetComponent<BackgroundTile>().obstacles[0] = Instantiate(obstaclePrefabs[arrangedTilesZero[i, j]], tempPosition, Quaternion.identity);
+                        // Checking every layer because system will put obstacles according to layer ids.
+                        switch (c)
+                        {
+                            case 0:
+                                arrangedTilesIndex = arrangedTilesZero[i, j];
+                                break;
+                            case 1:
+                                arrangedTilesIndex = arrangedTilesOne[i, j];
+                                break;
+                            case 2:
+                                arrangedTilesIndex = arrangedTilesTwo[i, j];
+                                break;
+                        }
+
+                        // arrangedTilesZero, one and two represents obstacles that inside of each other. For example, if we put wheatfarm inside of
+                        // strawbale then we must put strawbale to arrangedTilesZero and wheatfarm to arrangedTilesOne so basically arrangedTilesZero will 
+                        // be front and arrangedTilesOne will be in back and they will break according to this order.
+
+                        // For, trying to make more standart mostly of transparent and filliable obstacles will be put arrangedTilesOne and obstacles that
+                        // blocking fruits and other stuff (Block obstacles) will be put arrangedTilesZero.
+
+                        // Checking if layer has obstacle and that tile has a obstacle in its that layer. 
+                        if (arrangedTilesIndex != -1 && !allTiles[i, j].GetComponent<BackgroundTile>().obstacles[c])
+                        {
+                            // If obstacle is big obstacle then it will arrange position and assign this object 4 tile. 
+                            if (obstaclePrefabs[arrangedTilesIndex].GetComponent<ObstacleScript>().obstacleSpecs.is4TimesBigger)
+                            {
+                                tempPosition = new Vector2((i + 0.5f) * scaleNumber - xOffset, (j + 0.5f) * scaleNumber - yOffset);
+                                repeat = 2;
+                            }
+                            else
+                            {
+                                tempPosition = allTiles[i, j].transform.position;
+                                repeat = 1;
+                            }
+                            tempObstacle = Instantiate(obstaclePrefabs[arrangedTilesIndex], tempPosition, Quaternion.identity);
+
+                            for (int a = 0; a < repeat; a++)
+                            {
+                                for (int b = 0; b < repeat; b++)
+                                {
+                                    // Assigning object to relevant tile/tiles.
+                                    allTiles[i + b, j + a].GetComponent<BackgroundTile>().obstacles[c] = tempObstacle;
+                                    // After creating obstacles tile needs to check which obstacle will be break first.
+                                    allTiles[i + b, j + a].GetComponent<BackgroundTile>().DetectVisibleOne();
+                                }
+                            }
+                        }
                     }
 
-                    if (arrangedTilesOne[i, j] != -1)
-                    {
-                        backgroundTile.GetComponent<BackgroundTile>().obstacles[1] = Instantiate(obstaclePrefabs[arrangedTilesOne[i, j]], tempPosition, Quaternion.identity);
-                    }
-
-                    if (arrangedTilesTwo[i, j] != -1)
-                    {
-                        backgroundTile.GetComponent<BackgroundTile>().obstacles[2] = Instantiate(obstaclePrefabs[arrangedTilesTwo[i, j]], tempPosition, Quaternion.identity);
-                    }
-
-                    // After creating obstacles tile needs to check which obstacle will be break first.
-
-                    backgroundTile.GetComponent<BackgroundTile>().DetectVisibleOne();
-
-                    // If type of fruit -1 then it means fruit does not exist in this cell.
+                    // If type of fruit -1 then it means fruit does not exist.
                     if (arrangedFruits[i, j] >= 0)
                     {
                         int fruitToUse = arrangedFruits[i, j];
@@ -295,12 +346,11 @@ public class Board : MonoBehaviour
                     }
 
                 }
-            }
-            // Inserting fallPoint to array
-            columnsFallIndexY[i] = fallPoint;
-        }
 
+            }
+        }
         CheckForStarterPowerUps();
+        StartCoroutine(FillTheGaps());
     }
 
     /// <summary>
@@ -1233,7 +1283,6 @@ public class Board : MonoBehaviour
     /// <param name="fruit"></param>
     public void ActivatePowerUp(GameObject fruit)
     {
-        Debug.Log("powerUp");
 
         Fruit fruitScript = fruit.GetComponent<Fruit>();
         fruitScript.fadeout = true;
@@ -1832,4 +1881,22 @@ public class Board : MonoBehaviour
 
         }
     }
+
+    public void AllTilesDetectVisibleOne()
+    {
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+
+                allTiles[i, j].GetComponent<BackgroundTile>().DetectVisibleOne();
+
+
+            }
+        }
+
+    }
+
 }
+
+

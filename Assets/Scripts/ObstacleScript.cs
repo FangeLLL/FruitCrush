@@ -51,6 +51,10 @@ public class ObstacleScript : MonoBehaviour
             {
                 StartCoroutine(board.FadeOut(gameObject));
                 taskController.TaskProgress(obstacleSpecs.taskID);
+                if(obstacleSpecs.is4TimesBigger)
+                {
+                    board.AllTilesDetectVisibleOne();
+                }
             }
             else
             {

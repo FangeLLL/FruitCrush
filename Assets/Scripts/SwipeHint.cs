@@ -668,10 +668,10 @@ public class SwipeHint : MonoBehaviour
                                 }
                                 else
                                 {
-                                    fruit = board.allFruits[i, j + 1].GetComponent<Fruit>();
+                                    fruit = board.allFruits[i - 1, j + 2].GetComponent<Fruit>();
                                     fruit2 = board.allFruits[i + 1, j + 2].GetComponent<Fruit>();
                                     fruit3 = board.allFruits[i + 2, j + 2].GetComponent<Fruit>();
-                                    fruit4 = board.allFruits[i - 1, j + 2].GetComponent<Fruit>();
+                                    fruit4 = board.allFruits[i, j + 1].GetComponent<Fruit>();
                                     fruit5 = board.allFruits[i, j].GetComponent<Fruit>();
 
                                     fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, true);

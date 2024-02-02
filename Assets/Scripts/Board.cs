@@ -570,16 +570,28 @@ public class Board : MonoBehaviour
 
                     if (fruitsCheck.Count > 0)
                     {
-                        audioManager.FruitCrush();
-                        type = allFruits[i, j].GetComponent<Fruit>().fruitType;
-                        typeFruits[type] += fruitsCheck.Count;
+                        bool newMatch = false;
+                       
                         string damageID = Guid.NewGuid().ToString();
 
                         for (int e = 0; e < fruitsCheck.Count; e++)
                         {
-                            fruitsCheck[e].GetComponent<Fruit>().damageID = damageID;
-                            DestroyController(fruitsCheck[e], true);
+                            if (!fruitsCheck[e].GetComponent<Fruit>().fadeout)
+                            {
+                                newMatch = true;
+                                fruitsCheck[e].GetComponent<Fruit>().damageID = damageID;
+                                DestroyController(fruitsCheck[e], true);
+                            }                           
                         }
+
+                        // if these fruit every one of them didn't started to pop then this means this is new match.
+                        if (newMatch)
+                        {
+                            audioManager.FruitCrush();
+                            type = allFruits[i, j].GetComponent<Fruit>().fruitType;
+                            typeFruits[type] += fruitsCheck.Count;
+                        }
+
                         if (fruitsCheck.Count > 3)
                         {
                             // Creating Power Up according to shape of match.
@@ -1158,6 +1170,8 @@ public class Board : MonoBehaviour
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>(), otherFruitScript = otherFruit.GetComponent<Fruit>();
         fruitScript.damageID = otherFruitScript.damageID;
+        fruitScript.isPowerUpSoundPlayed = true;
+        otherFruitScript.isPowerUpSoundPlayed = true;
         if (otherFruitScript.fruitType == fruitScript.fruitType)
         {
             // If two power up same it goes here
@@ -1167,6 +1181,7 @@ public class Board : MonoBehaviour
                 case -1:
                     fruitScript.fruitType = -2;
                     fruitScript.transform.rotation = Quaternion.Euler(0f, 0f, 90f);
+                    audioManager.Harvester();
                     ActivatePowerUp(fruit);
                     ActivatePowerUp(otherFruit);
                     break;
@@ -1174,11 +1189,13 @@ public class Board : MonoBehaviour
                 case -2:
                     fruitScript.fruitType = -1;
                     fruitScript.transform.rotation = Quaternion.Euler(0f, 0f, 0);
+                    audioManager.Harvester();
                     ActivatePowerUp(fruit);
                     ActivatePowerUp(otherFruit);
                     break;
                 case -3:
                     fruitScript.fadeout = true;
+                    audioManager.Pickaxe();             
                     StartCoroutine(FadeOut(fruit));
                     TNTExplosion(otherFruitScript.column, otherFruitScript.row, 2);
                     break;
@@ -1197,10 +1214,12 @@ public class Board : MonoBehaviour
                     switch (otherFruitScript.fruitType)
                     {
                         case -2:
+                            audioManager.Harvester();
                             ActivatePowerUp(fruit);
                             ActivatePowerUp(otherFruit);
                             break;
                         case -3:
+                            audioManager.Harvester();
                             Destroy(otherFruit);
                             if (fruitScript.row + 1 < height)
                             {
@@ -1222,10 +1241,12 @@ public class Board : MonoBehaviour
                     switch (otherFruitScript.fruitType)
                     {
                         case -1:
+                            audioManager.Harvester();
                             ActivatePowerUp(fruit);
                             ActivatePowerUp(otherFruit);
                             break;
                         case -3:
+                            audioManager.Harvester();
                             Destroy(otherFruit);
                             if (fruitScript.column - 1 >= 0)
                             {
@@ -1247,6 +1268,7 @@ public class Board : MonoBehaviour
                     switch (otherFruitScript.fruitType)
                     {
                         case -1:
+                            audioManager.Harvester();
                             Destroy(fruit);
                             if (otherFruitScript.row + 1 < height)
                             {
@@ -1262,6 +1284,7 @@ public class Board : MonoBehaviour
                             }
                             break;
                         case -2:
+                            audioManager.Harvester();
                             Destroy(fruit);
                             if (otherFruitScript.column - 1 >= 0)
                             {
@@ -1308,7 +1331,10 @@ public class Board : MonoBehaviour
 
                 HorizontalHarvesterMove(cloneHorizontal, true);
                 HorizontalHarvesterMove(fruit, false);
-                audioManager.Harvester();
+                if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
+                {
+                    audioManager.Harvester();
+                }
 
                 break;
             // Vertical Harvester power up
@@ -1324,12 +1350,18 @@ public class Board : MonoBehaviour
 
                 VerticalHarvesterMove(cloneVertical, true);
                 VerticalHarvesterMove(fruit, false);
-                audioManager.Harvester();
+                if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
+                {
+                    audioManager.Harvester();
+                }
                 break;
             // TNT power up
             case -3:
                 TNTExplosion(column, row, 1);
-                audioManager.Pickaxe();
+                if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
+                {
+                    audioManager.Pickaxe();
+                }
                 break;
 
         }
@@ -1392,7 +1424,6 @@ public class Board : MonoBehaviour
                         if (allFruits[i, j])
                         {
                             DestroyController(allFruits[i, j], false);
-                            audioManager.FruitCrush();
                         }
                     }
 

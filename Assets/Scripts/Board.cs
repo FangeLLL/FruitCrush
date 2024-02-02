@@ -1012,17 +1012,57 @@ public class Board : MonoBehaviour
 
                     // THESE CODES CAN BE IMPROVE PLEASE CHECK THE ALGO
 
-                    if (((j + 1 < height && !allTiles[i, j + 1])) && columnsFallIndexY[i] != j)
+                    if(j + 1 < height)
                     {
-                        CrossFall(i, j + 1);
-                    }
-                    else
-                    {
-                        if ((j + 1 < height && allTiles[i, j + 1] && allTiles[i, j + 1].GetComponent<BackgroundTile>().isCurrentObstacleBox))
+
+                        bool crossFall = true;
+                        bool checkForEmptyPlaces = true;
+                        int k = 1;
+
+                        // If all the way to obstacle or missing tile is emty then fruit will call crossfall but if in this way there is a fruit then no crossfall. 
+
+                        while (checkForEmptyPlaces)
+                        {                   
+
+                            if(allFruits[i, j + k] || k + j + 1 == height)
+                            {
+                                crossFall = false;
+                                checkForEmptyPlaces = false;
+                            }
+
+
+                            if (!allTiles[i, j + k] || (allTiles[i, j + k] && allTiles[i, j + k].GetComponent<BackgroundTile>().isCurrentObstacleBox)) {
+                                checkForEmptyPlaces = false;
+                            }
+
+                            k++;
+                        }
+
+                        if (crossFall)
                         {
                             CrossFall(i, j + 1);
+
                         }
+                        /*
+                        else
+                        {
+                            if (!allTiles[i, j + 1] && columnsFallIndexY[i] != j)
+                            {
+                                CrossFall(i, j + 1);
+                            }
+                            else if (allTiles[i, j + 1] && allTiles[i, j + 1].GetComponent<BackgroundTile>().isCurrentObstacleBox)
+                            {
+
+                                CrossFall(i, j + 1);
+                            }
+                        }
+                        */
+
+                      
+
                     }
+
+                    
 
                 }
                 else if (emptyPlaces.Count > 0)

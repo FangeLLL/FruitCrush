@@ -137,8 +137,8 @@ public class BattlePassManager : MonoBehaviour
 
         if (!currentStage.freeRewardUnlocked)
         {
-            info.transform.localPosition = new Vector3(-52, 0, 0);
-            info.transform.position += new Vector3(0, currentStage.stage.transform.position.y - 340, 0);
+            info.transform.SetParent(currentStage.stage.transform, false);
+            info.transform.position = currentStage.freeRewardButton.transform.position;
             infoText.SetActive(true);
             infoText.GetComponent<Animator>().SetTrigger("InfoDisplay");
             infoText.GetComponentInChildren<TextMeshProUGUI>().text = "Reward  is not unlocked  yet.";
@@ -154,8 +154,9 @@ public class BattlePassManager : MonoBehaviour
         }
         else
         {
-            info.transform.localPosition = new Vector3(-52, 0, 0);
-            info.transform.position += new Vector3(0, currentStage.stage.transform.position.y - 340, 0);
+            info.transform.SetParent(currentStage.stage.transform, false);
+            info.transform.position = currentStage.freeRewardButton.transform.position;
+            info.transform.SetSiblingIndex(6);
             infoText.SetActive(true);
             infoText.GetComponent<Animator>().SetTrigger("InfoDisplay");
             infoText.GetComponentInChildren<TextMeshProUGUI>().text = "Reward  is taken";
@@ -168,16 +169,18 @@ public class BattlePassManager : MonoBehaviour
 
         if (!currentStage.premiumRewardUnlocked)
         {
-            info.transform.localPosition = new Vector3(137, 0, 0);
-            info.transform.position += new Vector3(0, currentStage.stage.transform.position.y - 340, 0);
+            info.transform.SetParent(currentStage.stage.transform, false);
+            info.transform.position = currentStage.premiumRewardButton.transform.position;
+            info.transform.SetSiblingIndex(6);
             infoText.SetActive(true);
             infoText.GetComponent<Animator>().SetTrigger("InfoDisplay");
             infoText.GetComponentInChildren<TextMeshProUGUI>().text = "Reward  is not unlocked  yet.";
         }
         else if (!currentStage.premiumRewardAvailable)
         {
-            info.transform.localPosition = new Vector3(137, 0, 0);
-            info.transform.position += new Vector3(0, currentStage.stage.transform.position.y - 340, 0);
+            info.transform.SetParent(currentStage.stage.transform, false);
+            info.transform.position = currentStage.premiumRewardButton.transform.position;
+            info.transform.SetSiblingIndex(6);
             infoText.SetActive(true);
             infoText.GetComponent<Animator>().SetTrigger("InfoDisplay");
             infoText.GetComponentInChildren<TextMeshProUGUI>().text = "Buy Fruit Pass for  this reward !";
@@ -193,8 +196,9 @@ public class BattlePassManager : MonoBehaviour
         }
         else
         {
-            info.transform.localPosition = new Vector3(137, 0, 0);
-            info.transform.position += new Vector3(0, currentStage.stage.transform.position.y - 340, 0);
+            info.transform.SetParent(currentStage.stage.transform, false);
+            info.transform.position = currentStage.premiumRewardButton.transform.position;
+            info.transform.SetSiblingIndex(6);
             infoText.SetActive(true);
             infoText.GetComponent<Animator>().SetTrigger("InfoDisplay");
             infoText.GetComponentInChildren<TextMeshProUGUI>().text = "Reward  is taken";

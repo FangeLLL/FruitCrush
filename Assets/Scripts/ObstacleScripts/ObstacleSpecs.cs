@@ -32,7 +32,11 @@ public class ObstacleSpecs : ScriptableObject
     public int id;
     public int taskID;
 
+    // In every damage taken how much task proggress will add.
+    public int[] amountOfCollect;
+
     public Sprite[] sprites;
     // public GameObject[] combinedObstacles;
     public bool is4TimesBigger;
+
 }

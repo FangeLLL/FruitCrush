@@ -456,7 +456,23 @@ public class LevelManager : MonoBehaviour
                 obstacle = Instantiate(obstacles[obstacleIndex], tempPosition, Quaternion.identity);
                 obstacle.transform.parent = this.transform;
                 obstacle.name = "( " + column + ", " + row + " )";
-                taskElements[obstacle.GetComponent<ObstacleScript>().obstacleSpecs.taskID]++;
+
+                if (obstacle.GetComponent<ObstacleScript>().obstacleSpecs.isCollectible)
+                {
+                    // If obstacle collectiable type of obstacle then system must add amount of collectiable things to task. 
+                    int[] collectArray = obstacle.GetComponent<ObstacleScript>().obstacleSpecs.amountOfCollect;
+                    int totalCollect = 0;
+                    for (int i = 0; i < collectArray.Length; i++)
+                    {
+                        totalCollect += collectArray[i];
+                    }
+                    taskElements[obstacle.GetComponent<ObstacleScript>().obstacleSpecs.taskID] += totalCollect;
+                }
+                else
+                {
+                    taskElements[obstacle.GetComponent<ObstacleScript>().obstacleSpecs.taskID]++;
+                }
+
             }
             else
             {
@@ -464,20 +480,34 @@ public class LevelManager : MonoBehaviour
                 repeat = 1;
             }
 
+            // IF THERE IS A OBSTACLE ALREADY EXÝST IN THE CURRENT PLACE THEN DESTROY THE OBSTACLE BUT IF DOES NOT EXÝST THEN CREATE THE OBSTACLE
+
+            if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle])
+            {
+                currentObstacleId = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.id;
+                currentObstacleTaskID = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.taskID;
+                if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.isCollectible)
+                {
+                    // If obstacle collectiable type of obstacle then system must extract amount of collectiable things from task. 
+                    int[] collectArray = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.amountOfCollect;
+                    int totalCollect=0;
+                    for(int i = 0; i < collectArray.Length; i++)
+                    {
+                        totalCollect+= collectArray[i];
+                    }
+                    taskElements[currentObstacleTaskID] -= totalCollect; 
+                }
+                else
+                {
+                    taskElements[currentObstacleTaskID]--;
+                }
+                Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle]);
+            }
+
             for (int i = 0; i < repeat; i++)
             {
                 for (int j = 0; j < repeat; j++)
-                {
-
-                    // IF THERE IS A OBSTACLE ALREADY EXÝST IN THE CURRENT PLACE THEN DESTROY THE OBSTACLE BUT IF DOES NOT EXÝST THEN CREATE THE OBSTACLE
-
-                    if (allTiles[column + j, row + i].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle])
-                    {
-                        currentObstacleId = allTiles[column + j, row + i].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.id;
-                        currentObstacleTaskID = allTiles[column + j, row + i].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.taskID;
-                        Destroy(allTiles[column + j, row + i].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle]);
-                        taskElements[currentObstacleTaskID]--;
-                    }
+                {     
 
                     // MAKE THE ASSIGMENTS
                     if (obstacleIndex != currentObstacleId)

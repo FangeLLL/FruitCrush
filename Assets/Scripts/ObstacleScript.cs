@@ -23,6 +23,7 @@ public class ObstacleScript : MonoBehaviour
 
     public int health;
 
+    public List<string> takenDamageIDs = new List<string>();
 
 
     private void Start()
@@ -36,9 +37,19 @@ public class ObstacleScript : MonoBehaviour
             GetComponentInChildren<SpriteRenderer>().sprite = obstacleSpecs.sprites[health-1];
         }
     }
-    public void TakeDamage()
-    {     
-        if(obstacleSpecs.indestructible)
+    public void TakeDamage(string damageID)
+    {
+
+        if (takenDamageIDs.Contains(damageID))
+        {
+            return;
+        }
+        else
+        {
+            takenDamageIDs.Add(damageID);
+        }
+
+        if (obstacleSpecs.indestructible)
         {
             audioManager.SoundController(obstacleSpecs.obstacleHitSound);
             taskController.TaskProgress(obstacleSpecs.taskID);
@@ -58,6 +69,14 @@ public class ObstacleScript : MonoBehaviour
             }
             else
             {
+                if (obstacleSpecs.isCollectible)
+                {
+                    for (int i = 0; i < obstacleSpecs.amountOfCollect[health]; i++)
+                    {
+                        taskController.TaskProgress(obstacleSpecs.taskID);
+                    }
+
+                }
                 GetComponentInChildren<SpriteRenderer>().sprite = obstacleSpecs.sprites[health-1];
             }
         }

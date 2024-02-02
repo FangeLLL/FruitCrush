@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
-
+using System;
 
 public class Board : MonoBehaviour
 {
@@ -573,8 +573,11 @@ public class Board : MonoBehaviour
                         audioManager.FruitCrush();
                         type = allFruits[i, j].GetComponent<Fruit>().fruitType;
                         typeFruits[type] += fruitsCheck.Count;
+                        string damageID = Guid.NewGuid().ToString();
+
                         for (int e = 0; e < fruitsCheck.Count; e++)
                         {
+                            fruitsCheck[e].GetComponent<Fruit>().damageID = damageID;
                             DestroyController(fruitsCheck[e], true);
                         }
                         if (fruitsCheck.Count > 3)
@@ -1103,6 +1106,8 @@ public class Board : MonoBehaviour
         newPowerUpScript.fruitType = type;
         newPowerUp.gameObject.transform.position = allTiles[column, row].transform.position;
         newPowerUpScript.targetV = allTiles[column, row].transform.position;
+        newPowerUpScript.damageID = Guid.NewGuid().ToString();
+
 
 
         // Add the new powerup to the allFruits array
@@ -1152,6 +1157,7 @@ public class Board : MonoBehaviour
     public void ActivateMergePowerUp(GameObject fruit, GameObject otherFruit)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>(), otherFruitScript = otherFruit.GetComponent<Fruit>();
+        fruitScript.damageID = otherFruitScript.damageID;
         if (otherFruitScript.fruitType == fruitScript.fruitType)
         {
             // If two power up same it goes here
@@ -1354,7 +1360,7 @@ public class Board : MonoBehaviour
                     int row = obj.GetComponent<Fruit>().row;
                     int column = obj.GetComponent<Fruit>().column;
 
-                    allTiles[column, row].GetComponent<BackgroundTile>().Explosion(column, row);
+                    allTiles[column, row].GetComponent<BackgroundTile>().Explosion(column, row, obj.GetComponent<Fruit>().damageID);
                 }
                 StartCoroutine(FadeOut(obj));
             }
@@ -1382,7 +1388,7 @@ public class Board : MonoBehaviour
                 {           
                     if (allTiles[i, j])
                     {
-                        allTiles[i, j].GetComponent<BackgroundTile>().PowerUpBoom();
+                        allTiles[i, j].GetComponent<BackgroundTile>().PowerUpBoom(allFruits[column, row].GetComponent<Fruit>().damageID);
                         if (allFruits[i, j])
                         {
                             DestroyController(allFruits[i, j], false);
@@ -1416,18 +1422,18 @@ public class Board : MonoBehaviour
         {
             harvesterScript.targetV.x = ((width - 1) * scaleNumber - xOffset) + 1;
 
-            HorizontalDestroy(column, row, true,true);
+            HorizontalDestroy(column, row, true, harvesterScript.damageID);
         }
         else
         {
             harvesterScript.targetV.x = -xOffset - 1;
 
-            HorizontalDestroy(column, row, false,true);
+            HorizontalDestroy(column, row, false, harvesterScript.damageID);
 
         }
         if (allTiles[column, row])
         {
-            allTiles[column, row].GetComponent<BackgroundTile>().PowerUpBoom();
+            allTiles[column, row].GetComponent<BackgroundTile>().PowerUpBoom(harvesterScript.damageID);
         }
         StartCoroutine(FadeOut(harvester));
 
@@ -1448,19 +1454,19 @@ public class Board : MonoBehaviour
             //  harvesterScript.targetV.y = allTiles[column, 0].transform.position.y - 1;
             harvesterScript.targetV.y = (height - 1) * scaleNumber - yOffset - 1;
 
-            VerticalDestroy(column, row, false,true);
+            VerticalDestroy(column, row, false,harvesterScript.damageID);
         }
         else
         {
             //    harvesterScript.targetV.y = allTiles[column, height - 1].transform.position.y + 1;
             harvesterScript.targetV.y = -yOffset - 1;
 
-            VerticalDestroy(column, row, true,true);
+            VerticalDestroy(column, row, true, harvesterScript.damageID);
 
         }
         if (allTiles[column, row])
         {
-            allTiles[column, row].GetComponent<BackgroundTile>().PowerUpBoom();
+            allTiles[column, row].GetComponent<BackgroundTile>().PowerUpBoom(harvesterScript.damageID);
         }
         StartCoroutine(FadeOut(harvester));
 
@@ -1473,7 +1479,7 @@ public class Board : MonoBehaviour
     /// <param name="column"></param>
     /// <param name="row"></param>
     /// <param name="up"></param>
-    private void VerticalDestroy(int column, int row, bool up,bool powerUp)
+    private void VerticalDestroy(int column, int row, bool up,string damageID)
     {
         if (up)
         {
@@ -1487,16 +1493,8 @@ public class Board : MonoBehaviour
                         audioManager.FruitCrush();
                     }
 
-                    if (powerUp)
-                    {
-                        allTiles[column, i].GetComponent<BackgroundTile>().PowerUpBoom();
+                    allTiles[column, i].GetComponent<BackgroundTile>().PowerUpBoom(damageID);
 
-                    }
-                    else
-                    {
-                        allTiles[column, i].GetComponent<BackgroundTile>().Boom();
-
-                    }
                 }
             }
         }
@@ -1511,16 +1509,8 @@ public class Board : MonoBehaviour
                         DestroyController(allFruits[column, i], false);
                         audioManager.FruitCrush();
                     }
-                    if (powerUp)
-                    {
-                        allTiles[column, i].GetComponent<BackgroundTile>().PowerUpBoom();
+                    allTiles[column, i].GetComponent<BackgroundTile>().PowerUpBoom(damageID);
 
-                    }
-                    else
-                    {
-                        allTiles[column, i].GetComponent<BackgroundTile>().Boom();
-
-                    }
                 }
             }
         }
@@ -1533,7 +1523,7 @@ public class Board : MonoBehaviour
     /// <param name="column"></param>
     /// <param name="row"></param>
     /// <param name="right"></param>
-    private void HorizontalDestroy(int column, int row, bool right, bool powerUp)
+    private void HorizontalDestroy(int column, int row, bool right,string damageID)
     {
         if (right)
         {
@@ -1548,16 +1538,8 @@ public class Board : MonoBehaviour
                         audioManager.FruitCrush();
 
                     }
-                    if (powerUp)
-                    {
-                        allTiles[i, row].GetComponent<BackgroundTile>().PowerUpBoom();
+                    allTiles[i, row].GetComponent<BackgroundTile>().PowerUpBoom(damageID);
 
-                    }
-                    else
-                    {
-                        allTiles[i, row].GetComponent<BackgroundTile>().Boom();
-
-                    }
                 }
 
             }
@@ -1574,49 +1556,13 @@ public class Board : MonoBehaviour
                         DestroyController(allFruits[i, row], false);
                         audioManager.FruitCrush();
                     }
-                    if (powerUp)
-                    {
-                        allTiles[i, row].GetComponent<BackgroundTile>().PowerUpBoom();
+                    allTiles[i, row].GetComponent<BackgroundTile>().PowerUpBoom(damageID);
 
-                    }
-                    else
-                    {
-                        allTiles[i, row].GetComponent<BackgroundTile>().Boom();
-
-                    }
                 }
             }
         }
     }
-    /*
-    /// <summary>
-    /// Destroy just one tile.
-    /// </summary>
-    /// <param name="column"></param>
-    /// <param name="row"></param>
-    private void DestroyOneTile(int column, int row,bool powerUp)
-    {
-        if (allFruits[column, row])
-        {
-            DestroyController(allFruits[column, row], false);
-            audioManager.FruitCrush();
-
-        }
-        if (allTiles[column, row])
-        {
-            if (powerUp)
-            {
-                allTiles[column, row].GetComponent<BackgroundTile>().PowerUpBoom();
-
-            }
-            else
-            {
-                allTiles[column, row].GetComponent<BackgroundTile>().Boom();
-            }
-        }
-
-    }
-    */
+    
     /// <summary>
     /// This function activate selected special power. 
     /// </summary>
@@ -1624,6 +1570,8 @@ public class Board : MonoBehaviour
     /// <param name="row"></param>
     public void ActivateSpecialPower(int column, int row)
     {
+        string damageID = Guid.NewGuid().ToString();
+
         bool failed = false;
         if (shuffling)
         {
@@ -1635,12 +1583,12 @@ public class Board : MonoBehaviour
             case 1:
                 // Special Power: Vertical Destroyer
                 specialPowerController.SpecialPowerUpUsed(0);
-                VerticalDestroy(column, -1, true,false);
+                VerticalDestroy(column, -1, true, damageID);
                 break;
             case 2:
                 // Special Power: Horizontal Destroyer
                 specialPowerController.SpecialPowerUpUsed(1);
-                HorizontalDestroy(-1, row, true,false);
+                HorizontalDestroy(-1, row, true, damageID);
                 break;
             case 3:
                 // Special Power: One Tile Destroyer
@@ -1654,15 +1602,14 @@ public class Board : MonoBehaviour
                     DestroyController(allFruits[column, row], false);
                     audioManager.FruitCrush();
                 }
-                else if(allTiles[column, row].GetComponent<BackgroundTile>().indexOfVisibleOne >= 0 &&  !allTiles[column, row].GetComponent<BackgroundTile>().obstacles[allTiles[column, row].GetComponent<BackgroundTile>().indexOfVisibleOne].GetComponent<ObstacleScript>().obstacleSpecs.powerUpNeed)
+                else if(allTiles[column, row].GetComponent<BackgroundTile>().indexOfVisibleOne >= 0)
                 {
                     specialPowerController.SpecialPowerUpUsed(2);
-                    allTiles[column, row].GetComponent<BackgroundTile>().Boom();
+                    allTiles[column, row].GetComponent<BackgroundTile>().PowerUpBoom(damageID);
                 }
                 else
                 {
                     failed = true;
-                    Debug.Log("YOU CANT DESTROY THIS OBSTACLE. THIS OBSTACLE CAN BE BREKABLE BY JUST POWERUPS OR THERE IS NOTHING INSIDE OF TILE TO DESTROY");
                 }
                 
 
@@ -1742,12 +1689,12 @@ public class Board : MonoBehaviour
             if (powerUpController.powerUps[i].isActivated)
             {
                 int column, row;
-                column = Random.Range(0, width);
-                row = Random.Range(0, height);
+                column =UnityEngine.Random.Range(0, width);
+                row = UnityEngine.Random.Range(0, height);
                 while (!allFruits[column, row])
                 {
-                    column = Random.Range(0, width);
-                    row = Random.Range(0, height);
+                    column = UnityEngine.Random.Range(0, width);
+                    row = UnityEngine.Random.Range(0, height);
                 }
 
                 Destroy(allFruits[column, row]);
@@ -1755,7 +1702,7 @@ public class Board : MonoBehaviour
                 if (i == 0)
                 {
                     // Harvester creation randomly horizontal or vertical
-                    CreatePowerUp(column, row, -Random.Range(1, 3));
+                    CreatePowerUp(column, row, -UnityEngine.Random.Range(1, 3));
                 }
                 else
                 {
@@ -1793,7 +1740,7 @@ public class Board : MonoBehaviour
             {
                 if (allTiles[i, j] && !allFruits[i, j] && !allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
                 {
-                    int fruitToUse = existFruits[Random.Range(0, existFruits.Count)];
+                    int fruitToUse = existFruits[UnityEngine.Random.Range(0, existFruits.Count)];
                     GameObject newFruit = Instantiate(fruits[fruitToUse], allTiles[i, j].transform.position, Quaternion.identity);
                     Fruit newFruitScript = newFruit.GetComponent<Fruit>();
 

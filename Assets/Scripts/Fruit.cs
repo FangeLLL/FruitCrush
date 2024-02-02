@@ -28,6 +28,8 @@ public class Fruit : MonoBehaviour
 
     public Animator animator;
 
+    public string damageID; 
+
     [HideInInspector]
     public int swipeRight = Animator.StringToHash("isSwipeRight");
     [HideInInspector]

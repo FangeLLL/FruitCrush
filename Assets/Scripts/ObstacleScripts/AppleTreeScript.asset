@@ -15,9 +15,11 @@ MonoBehaviour:
   indexOfLayer: 0
   boxObstacle: 1
   indestructible: 1
-  isCollectible: 1
+  isCollectible: 0
   obstacleHitSound: StrawBaleBreak
   powerUpNeed: 0
   id: 5
   taskID: 2
+  amountOfCollect: 
   sprites: []
+  is4TimesBigger: 0

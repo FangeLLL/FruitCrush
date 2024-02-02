@@ -28,7 +28,9 @@ public class Fruit : MonoBehaviour
 
     public Animator animator;
 
-    public string damageID; 
+    public string damageID;
+
+    public bool isPowerUpSoundPlayed = false;
 
     [HideInInspector]
     public int swipeRight = Animator.StringToHash("isSwipeRight");

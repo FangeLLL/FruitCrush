@@ -256,4 +256,10 @@ public class AudioManager : Sounds
         source.PlayOneShot(source.clip);
     }
 
+    public void ObjectTouch()
+    {
+        source.clip = sounds[60];
+        source.PlayOneShot(source.clip);
+    }
+
 }

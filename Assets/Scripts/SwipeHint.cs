@@ -1236,13 +1236,11 @@ public class SwipeHint : MonoBehaviour
                                     fruit2 = board.allFruits[i + 1, j].GetComponent<Fruit>();
                                     fruit3 = board.allFruits[i + 3, j].GetComponent<Fruit>();
                                     fruit4 = board.allFruits[i + 2, j - 1].GetComponent<Fruit>();
-                                    fruit5 = board.allFruits[i, j].GetComponent<Fruit>();
 
                                     fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, true);
                                     fruit2.GetComponentInChildren<Animator>().SetBool(fruit2.swipeFlash, true);
                                     fruit3.GetComponentInChildren<Animator>().SetBool(fruit3.swipeFlash, true);
                                     fruit4.GetComponentInChildren<Animator>().SetBool(fruit4.swipeFlash, true);
-                                    fruit5.GetComponentInChildren<Animator>().SetBool(fruit5.swipeFlash, true);
                                     yield return new WaitForSeconds(0.1f);
                                     continueIteration = false;
                                     isIterating = false;

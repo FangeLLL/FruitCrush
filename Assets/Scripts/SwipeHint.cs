@@ -243,7 +243,7 @@ public class SwipeHint : MonoBehaviour
                              *     
                              *   
                              */
-                            if (i + 4 < board.width)
+                            if (i + 4 < board.width && j + 1 < board.height)
                             {
                                 if (board.allFruits[i + 1, j] && board.allFruits[i, j] &&
                                     type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&
@@ -287,7 +287,7 @@ public class SwipeHint : MonoBehaviour
                                 }
                             }
                         }
-                        
+
 
                         // FOR SWIPE UP
 
@@ -300,7 +300,7 @@ public class SwipeHint : MonoBehaviour
                          *   
                          */
 
-                        if (i + 4 < board.width)
+                        if (i + 4 < board.width && j - 1 >= 0)
                         {
                             if (board.allFruits[i + 1, j] &&
                                 type == board.allFruits[i + 1, j].GetComponent<Fruit>().fruitType &&

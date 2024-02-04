@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06f4d882e274efa4b95734ced04d6b55, type: 3}
-  m_Name: AppleTreeScript
+  m_Name: BirdScript
   m_EditorClassIdentifier: 
   indexOfLayer: 0
-  boxObstacle: 1
+  boxObstacle: 0
   indestructible: 1
-  isCollectible: 1
+  isCollectible: 0
   obstacleHitSound: StrawBaleBreak
   powerUpNeed: 0
-  id: 5
-  taskID: 2
-  amountOfCollect: 01000000
+  id: 10
+  taskID: 7
+  amountOfCollect: 
   sprites: []
   is4TimesBigger: 0
-  isDownward: 0
-  isMovable: 0
+  isDownward: 1
+  isMovable: 1

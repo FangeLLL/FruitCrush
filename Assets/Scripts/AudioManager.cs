@@ -177,8 +177,9 @@ public class AudioManager : Sounds
 
     public void Harvester()
     {
-        harvesterSource.clip = sounds[25];
-        harvesterSource.PlayOneShot(harvesterSource.clip);
+        Debug.Log("TEST TEST");
+        source.clip = sounds[25];
+        source.PlayOneShot(source.clip);
     }
 
     public void Pickaxe()

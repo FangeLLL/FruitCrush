@@ -110,7 +110,8 @@ public class AudioManager : Sounds
 
     public void BoxBreak()
     {
-        source.clip = sounds[14];
+        // 14 is not used.
+        source.clip = sounds[31];
         source.PlayOneShot(source.clip);
     }
 
@@ -176,8 +177,9 @@ public class AudioManager : Sounds
 
     public void Harvester()
     {
-        harvesterSource.clip = sounds[25];
-        harvesterSource.PlayOneShot(harvesterSource.clip);
+        Debug.Log("TEST TEST");
+        source.clip = sounds[25];
+        source.PlayOneShot(source.clip);
     }
 
     public void Pickaxe()
@@ -203,9 +205,62 @@ public class AudioManager : Sounds
         powerUpGainSource.clip = sounds[29];
         powerUpGainSource.PlayOneShot(powerUpGainSource.clip);
     }
+
     public void PowerUpGain2()
     {
         powerUpGainSource.clip = sounds[30];
         powerUpGainSource.PlayOneShot(powerUpGainSource.clip);
     }
+
+    public void BoxTouch()
+    {
+        source.clip = sounds[Random.Range(32, 34)];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void BushCrush()
+    {
+        source.clip = sounds[34];
+        source.PlayOneShot(source.clip);
+    }
+
+    /// <summary>
+    /// This function nopens ný noor.
+    /// </summary>
+    public void OpenDoor()
+    {
+        source.clip = sounds[35];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void TouchGrass()
+    {
+        source.clip = sounds[36];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void TouchHoney()
+    {
+        source.clip = sounds[37];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void UISoundEffect()
+    {
+        source.clip = sounds[57];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void UISoundEffect2()
+    {
+        source.clip = sounds[58];
+        source.PlayOneShot(source.clip);
+    }
+
+    public void ObjectTouch()
+    {
+        source.clip = sounds[60];
+        source.PlayOneShot(source.clip);
+    }
+
 }

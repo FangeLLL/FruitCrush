@@ -17,10 +17,10 @@ MonoBehaviour:
   indestructible: 0
   isCollectible: 1
   obstacleHitSound: StrawBaleBreak
-  powerUpNeed: 1
+  powerUpNeed: 0
   id: 9
   taskID: 6
-  amountOfCollect: 000000000200000002000000020000000300000001000000
+  amountOfCollect: 010000000300000002000000020000000200000000000000
   sprites:
   - {fileID: 21300000, guid: 8f0ff01d540cece40ae339d73d1fa698, type: 3}
   - {fileID: 21300000, guid: 0b52d6ec5939cfe42a53f44cdd862e1f, type: 3}

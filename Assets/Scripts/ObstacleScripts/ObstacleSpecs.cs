@@ -17,9 +17,9 @@ public class ObstacleSpecs : ScriptableObject
     1 - Wheatfarm - 1
     2 - Strawbale Strong (Has two health) - 0
     3 - Apple Tree - 0
-    4 - Box of fruit - 0
      
      */
+
 
     // indexOfLayer variable represent, this prefab preffered place of index value in obstacles variable.
     public int indexOfLayer;
@@ -39,4 +39,9 @@ public class ObstacleSpecs : ScriptableObject
     // public GameObject[] combinedObstacles;
     public bool is4TimesBigger;
 
+    // It means when obstacle hits ground level its done. 
+    public bool isDownward;
+
+    // It means it has fruit script then when creating obstacle assigning unique id to prevent match. 
+    public bool isMovable;
 }

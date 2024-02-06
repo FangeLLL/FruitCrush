@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ObstacleScript : MonoBehaviour
@@ -36,6 +37,11 @@ public class ObstacleScript : MonoBehaviour
         {
             GetComponentInChildren<SpriteRenderer>().sprite = obstacleSpecs.sprites[health-1];
         }
+
+        if(obstacleSpecs.isDownward)
+        {
+            StartCoroutine(CheckForDownward());
+        }
     }
     public void TakeDamage(string damageID)
     {
@@ -51,8 +57,11 @@ public class ObstacleScript : MonoBehaviour
 
         if (obstacleSpecs.indestructible)
         {
-            audioManager.SoundController(obstacleSpecs.obstacleHitSound);
-            taskController.TaskProgress(obstacleSpecs.taskID);
+            if(obstacleSpecs.isCollectible)
+            {
+                audioManager.SoundController(obstacleSpecs.obstacleHitSound);
+                taskController.TaskProgress(obstacleSpecs.taskID);
+            }         
         }
         else
         {
@@ -81,4 +90,21 @@ public class ObstacleScript : MonoBehaviour
             }
         }
     }
+
+    IEnumerator CheckForDownward()
+    {
+        yield return new WaitForSeconds(0.5f);
+        if (GetComponent<Fruit>().row==0 && !GetComponent<Fruit>().isSwiped)
+        {
+            StartCoroutine(board.FadeOut(gameObject));
+            board.allTiles[GetComponent<Fruit>().column, GetComponent<Fruit>().row].GetComponent<BackgroundTile>().DetectVisibleOne();
+            taskController.TaskProgress(obstacleSpecs.taskID);
+        }
+        else
+        {
+            StartCoroutine(CheckForDownward());
+        }
+       
+    }
+
 }

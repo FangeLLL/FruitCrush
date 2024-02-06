@@ -265,14 +265,17 @@ public class UIManager : Sounds
         yield return new WaitForSeconds(0.1f);
 
         soundIcon.GetComponent<Animator>().SetTrigger("SettingsOn"); // 0.33 sec
+        soundIcon.GetComponent<Button>().interactable = true;
 
         yield return new WaitForSeconds(0.1f);
 
         musicIcon.GetComponent<Animator>().SetTrigger("SettingsOn"); // 0.33 sec
+        musicIcon.GetComponent<Button>().interactable = true;
 
         yield return new WaitForSeconds(0.1f);
 
         exitGameIcon.GetComponent<Animator>().SetTrigger("SettingsOn"); // 0.33 sec
+        exitGameIcon.GetComponent<Button>().interactable = true;
 
         yield return new WaitForSeconds(0.3f);
 
@@ -292,14 +295,17 @@ public class UIManager : Sounds
         yield return new WaitForSeconds(0.1f);
 
         exitGameIcon.GetComponent<Animator>().SetTrigger("SettingsOff"); // 0.33 sec
+        exitGameIcon.GetComponent<Button>().interactable = false;
 
         yield return new WaitForSeconds(0.1f);
 
         musicIcon.GetComponent<Animator>().SetTrigger("SettingsOff"); // 0.33 sec
+        musicIcon.GetComponent<Button>().interactable = false;
 
         yield return new WaitForSeconds(0.1f);
 
         soundIcon.GetComponent<Animator>().SetTrigger("SettingsOff"); // 0.33 sec
+        soundIcon.GetComponent<Button>().interactable = false;
 
         yield return new WaitForSeconds(0.14f);
 

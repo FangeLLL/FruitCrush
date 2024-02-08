@@ -31,4 +31,7 @@ public class ObstacleSpecs : ScriptableObject
     // It means it has fruit script then when creating obstacle assigning unique id to prevent match. 
     public bool isMovable;
 
+    // If obstacle is consecutive.
+    public bool isConsecutive;
+
 }

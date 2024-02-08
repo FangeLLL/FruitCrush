@@ -62,25 +62,51 @@ public class ObstacleScript : MonoBehaviour
             audioManager.SoundController(obstacleSpecs.obstacleHitSound);
             if (health <= 0)
             {
-                StartCoroutine(board.FadeOut(gameObject));
-                taskController.TaskProgress(obstacleSpecs.taskID);
-                if(obstacleSpecs.is4TimesBigger)
+                if (obstacleSpecs.isConsecutive)
                 {
-                    board.AllTilesDetectVisibleOne();
+                    AdvanceTaskProgress();
+                    health = obstacleSpecs.sprites.Length;
+                    GetComponentInChildren<SpriteRenderer>().sprite = obstacleSpecs.sprites[health - 1];
                 }
+                else
+                {
+                    StartCoroutine(board.FadeOut(gameObject));
+                    if (obstacleSpecs.isCollectible)
+                    {
+                        AdvanceTaskProgress();
+                    }
+                    else
+                    {
+                        taskController.TaskProgress(obstacleSpecs.taskID);
+
+                    }
+
+                    if (obstacleSpecs.is4TimesBigger)
+                    {
+                        board.AllTilesDetectVisibleOne();
+                    }
+                }
+                
             }
             else
             {
                 if (obstacleSpecs.isCollectible)
                 {
-                    for (int i = 0; i < obstacleSpecs.amountOfCollect[health]; i++)
-                    {
-                        taskController.TaskProgress(obstacleSpecs.taskID);
-                    }
 
+                    AdvanceTaskProgress();
                 }
-                GetComponentInChildren<SpriteRenderer>().sprite = obstacleSpecs.sprites[health-1];
+              
+                GetComponentInChildren<SpriteRenderer>().sprite = obstacleSpecs.sprites[health - 1];
+
             }
+        }
+    }
+
+   private void AdvanceTaskProgress()
+    {
+        for (int i = 0; i < obstacleSpecs.amountOfCollect[health]; i++)
+        {
+            taskController.TaskProgress(obstacleSpecs.taskID);
         }
     }
 

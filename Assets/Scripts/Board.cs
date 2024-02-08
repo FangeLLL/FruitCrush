@@ -713,7 +713,7 @@ public class Board : MonoBehaviour
 
         // If two object are power ups then merge happens.
 
-        if (fruitScript.fruitType < 0 && otherFruitScript.fruitType < 0 && !specialSwipe)
+        if (fruitScript.fruitType > -100 && otherFruitScript.fruitType > -100 && fruitScript.fruitType < 0 && otherFruitScript.fruitType < 0 && !specialSwipe)
         {
             // Selected power up moves towards to other power up
             fruitScript.row = otherFruitScript.row;
@@ -731,7 +731,7 @@ public class Board : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
             if(!specialSwipe)
             {
-                if (fruitScript.fruitType < 0 || otherFruitScript.fruitType < 0)
+                if ((fruitScript.fruitType > -100 && fruitScript.fruitType < 0) || (otherFruitScript.fruitType > -100 && otherFruitScript.fruitType < 0))
                 {
                     // If one of the fruits is power up 
                     if (fruitScript.fruitType < 0)
@@ -1052,26 +1052,8 @@ public class Board : MonoBehaviour
                             CrossFall(i, j + 1);
 
                         }
-                        /*
-                        else
-                        {
-                            if (!allTiles[i, j + 1] && columnsFallIndexY[i] != j)
-                            {
-                                CrossFall(i, j + 1);
-                            }
-                            else if (allTiles[i, j + 1] && allTiles[i, j + 1].GetComponent<BackgroundTile>().isCurrentObstacleBox)
-                            {
-
-                                CrossFall(i, j + 1);
-                            }
-                        }
-                        */
-
-                      
-
+     
                     }
-
-                    
 
                 }
                 else if (emptyPlaces.Count > 0)

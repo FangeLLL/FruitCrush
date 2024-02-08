@@ -87,7 +87,7 @@ public class BackgroundTile : MonoBehaviour
         {
             if (column + i<board.width && column + i>=0 && board.allTiles[column + i, row])
             {
-                if (board.allTiles[column + i, row].GetComponent<BackgroundTile>().isCurrentObstacleBox)
+                if (board.allTiles[column + i, row].GetComponent<BackgroundTile>().indexOfVisibleOne==0)
                 {
                     board.allTiles[column + i, row].GetComponent<BackgroundTile>().Boom(damageID);
                 }
@@ -99,7 +99,7 @@ public class BackgroundTile : MonoBehaviour
         {
             if (row + i < board.height && row + i >= 0 && board.allTiles[column, row + i])
             {
-                if (board.allTiles[column, row + i].GetComponent<BackgroundTile>().isCurrentObstacleBox)
+                if (board.allTiles[column, row + i].GetComponent<BackgroundTile>().indexOfVisibleOne==0)
                 {
                     board.allTiles[column, row + i].GetComponent<BackgroundTile>().Boom(damageID);
                 }

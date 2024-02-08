@@ -6,23 +6,14 @@ using UnityEngine;
 public class ObstacleScript : MonoBehaviour
 {
 
-
-    /*
-    public int health;
-    public int indexOfPlace;
-    public bool boxObstacle=false;
-    public bool indestructible = false;
-        public int id;
-
-    public string obstacleHitSound;
-    */
-
    [SerializeField] public ObstacleSpecs obstacleSpecs;
     private Board board;
     private TaskController taskController;
     AudioManager audioManager;
 
     public int health;
+
+    private int row, column;
 
     public List<string> takenDamageIDs = new List<string>();
 
@@ -38,9 +29,11 @@ public class ObstacleScript : MonoBehaviour
             GetComponentInChildren<SpriteRenderer>().sprite = obstacleSpecs.sprites[health-1];
         }
 
-        if(obstacleSpecs.isDownward)
+        if(obstacleSpecs.isMovable)
         {
-            StartCoroutine(CheckForDownward());
+            row = GetComponent<Fruit>().row;
+            column = GetComponent<Fruit>().column;
+            StartCoroutine(LoopForMovableObstacle());
         }
     }
     public void TakeDamage(string damageID)
@@ -91,20 +84,38 @@ public class ObstacleScript : MonoBehaviour
         }
     }
 
-    IEnumerator CheckForDownward()
+    IEnumerator LoopForMovableObstacle()
     {
         yield return new WaitForSeconds(0.5f);
-        if (GetComponent<Fruit>().row==0 && !GetComponent<Fruit>().isSwiped)
+
+        if (obstacleSpecs.isDownward && GetComponent<Fruit>().row == 0 && !GetComponent<Fruit>().isSwiped)
         {
             StartCoroutine(board.FadeOut(gameObject));
-            board.allTiles[GetComponent<Fruit>().column, GetComponent<Fruit>().row].GetComponent<BackgroundTile>().DetectVisibleOne();
             taskController.TaskProgress(obstacleSpecs.taskID);
-        }
-        else
-        {
-            StartCoroutine(CheckForDownward());
-        }
-       
-    }
 
+        }
+
+        if(row != GetComponent<Fruit>().row || column != GetComponent<Fruit>().column)
+        {
+            board.allTiles[column, row].GetComponent<BackgroundTile>().obstacles[obstacleSpecs.indexOfLayer] = null;
+            board.allTiles[column, row].GetComponent<BackgroundTile>().DetectVisibleOne();
+           row = GetComponent<Fruit>().row;
+            column = GetComponent<Fruit>().column;
+            board.allTiles[column, row].GetComponent<BackgroundTile>().obstacles[obstacleSpecs.indexOfLayer] = gameObject;
+            board.allTiles[column, row].GetComponent<BackgroundTile>().DetectVisibleOne();
+
+        }
+
+        StartCoroutine(LoopForMovableObstacle());
+
+    }
+    /*
+    private void OnDestroy()
+    {
+        if(obstacleSpecs.isMovable)
+        {
+            board.allTiles[GetComponent<Fruit>().column, GetComponent<Fruit>().row].GetComponent<BackgroundTile>().DetectVisibleOne();
+        }
+    }
+    */
 }

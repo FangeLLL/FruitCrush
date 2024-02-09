@@ -473,6 +473,11 @@ public class LevelManager : MonoBehaviour
                     taskElements[obstacle.GetComponent<ObstacleScript>().obstacleSpecs.taskID]++;
                 }
 
+                if (obstacle.GetComponent<ObstacleScript>().obstacleSpecs.spreadWheatfarm)
+                {
+                    taskElements[1]+=16;
+                }
+
             }
             else
             {
@@ -480,28 +485,12 @@ public class LevelManager : MonoBehaviour
                 repeat = 1;
             }
 
-            // IF THERE IS A OBSTACLE ALREADY EXÝST IN THE CURRENT PLACE THEN DESTROY THE OBSTACLE BUT IF DOES NOT EXÝST THEN CREATE THE OBSTACLE
+            // IF THERE IS A OBSTACLE ALREADY EXÝST IN THE CURRENT PLACE THEN DESTROY THE OBSTACLE 
 
             if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle])
             {
                 currentObstacleId = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.id;
-                currentObstacleTaskID = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.taskID;
-                if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.isCollectible)
-                {
-                    // If obstacle collectiable type of obstacle then system must extract amount of collectiable things from task. 
-                    int[] collectArray = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.amountOfCollect;
-                    int totalCollect=0;
-                    for(int i = 0; i < collectArray.Length; i++)
-                    {
-                        totalCollect+= collectArray[i];
-                    }
-                    taskElements[currentObstacleTaskID] -= totalCollect; 
-                }
-                else
-                {
-                    taskElements[currentObstacleTaskID]--;
-                }
-                Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle]);
+                RemoveTasks(column,row,placeOfObstacle);
             }
 
             for (int i = 0; i < repeat; i++)
@@ -548,8 +537,7 @@ public class LevelManager : MonoBehaviour
             {
                 if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[i])
                 {
-                    taskElements[allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[i].GetComponent<ObstacleScript>().obstacleSpecs.taskID]--;
-                    Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[i]);
+                    RemoveTasks(column, row,i);
                 }
             }
 
@@ -652,6 +640,38 @@ public class LevelManager : MonoBehaviour
     {
         uploadLevel = true;
         RestartScene();
+    }
+
+    /// <summary>
+    /// Removing tasks realted to that obstacle and destroying obstacle
+    /// </summary>
+    /// <param name="column"></param>
+    /// <param name="row"></param>
+    /// <param name="layer"></param>
+    private void RemoveTasks(int column,int row,int layer)
+    {
+        int currentObstacleTaskID = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[layer].GetComponent<ObstacleScript>().obstacleSpecs.taskID;
+        if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[layer].GetComponent<ObstacleScript>().obstacleSpecs.isCollectible)
+        {
+            // If obstacle collectiable type of obstacle then system must extract amount of collectiable things from task. 
+            int[] collectArray = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[layer].GetComponent<ObstacleScript>().obstacleSpecs.amountOfCollect;
+            int totalCollect = 0;
+            for (int j = 0; j < collectArray.Length; j++)
+            {
+                totalCollect += collectArray[j];
+            }
+            taskElements[currentObstacleTaskID] -= totalCollect;
+        }
+        else
+        {
+            taskElements[currentObstacleTaskID]--;
+        }
+
+        if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[layer].GetComponent<ObstacleScript>().obstacleSpecs.spreadWheatfarm)
+        {
+            taskElements[1] -= 16;
+        }
+        Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[layer]);
     }
 
 }

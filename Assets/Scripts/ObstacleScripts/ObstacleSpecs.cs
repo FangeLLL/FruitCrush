@@ -34,4 +34,7 @@ public class ObstacleSpecs : ScriptableObject
     // If obstacle is consecutive.
     public bool isConsecutive;
 
+    // If obstacle spread wheathFarm 4x4 of plane
+    public bool spreadWheatfarm;
+
 }

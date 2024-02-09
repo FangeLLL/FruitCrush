@@ -321,6 +321,9 @@ public class Board : MonoBehaviour
 
                             tempObstacle = Instantiate(obstaclePrefabs[arrangedTilesIndex], tempPosition, Quaternion.identity);
 
+                            tempObstacle.GetComponent<ObstacleScript>().row = j;
+                            tempObstacle.GetComponent<ObstacleScript>().column = i;
+
                             if (tempObstacle.GetComponent<ObstacleScript>().obstacleSpecs.isMovable)
                             {
                                 tempObstacle.GetComponent<Fruit>().column = i;

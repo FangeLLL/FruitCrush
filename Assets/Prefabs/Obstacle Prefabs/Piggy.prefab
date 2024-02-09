@@ -153,6 +153,7 @@ MonoBehaviour:
   column: 0
   row: 0
   firstTouchPosition: {x: 0, y: 0}
+  colorType: 
   fadeout: 0
   targetV: {x: 0, y: 0}
   isClicked: 0

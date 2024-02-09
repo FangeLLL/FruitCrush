@@ -37,4 +37,6 @@ public class ObstacleSpecs : ScriptableObject
     // If obstacle spread wheathFarm 4x4 of plane
     public bool spreadWheatfarm;
 
+    public string colorType;
+
 }

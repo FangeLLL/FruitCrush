@@ -1426,7 +1426,7 @@ public class Board : MonoBehaviour
                     int row = obj.GetComponent<Fruit>().row;
                     int column = obj.GetComponent<Fruit>().column;
 
-                    allTiles[column, row].GetComponent<BackgroundTile>().Explosion(column, row, obj.GetComponent<Fruit>().damageID);
+                    allTiles[column, row].GetComponent<BackgroundTile>().Explosion(column, row, obj.GetComponent<Fruit>().damageID, obj.GetComponent<Fruit>().colorType);
                 }
                 StartCoroutine(FadeOut(obj));
             }

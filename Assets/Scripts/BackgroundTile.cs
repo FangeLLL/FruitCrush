@@ -80,7 +80,7 @@ public class BackgroundTile : MonoBehaviour
 
     }
 
-    public void Explosion(int column,int row, string damageID)
+    public void Explosion(int column,int row, string damageID,string colorType)
     {
 
         for(int i=-1; i<2; i+=2)
@@ -89,7 +89,7 @@ public class BackgroundTile : MonoBehaviour
             {
                 if (board.allTiles[column + i, row].GetComponent<BackgroundTile>().indexOfVisibleOne==0)
                 {
-                    board.allTiles[column + i, row].GetComponent<BackgroundTile>().Boom(damageID);
+                    board.allTiles[column + i, row].GetComponent<BackgroundTile>().Boom(damageID,colorType);
                 }
             }
             
@@ -101,21 +101,25 @@ public class BackgroundTile : MonoBehaviour
             {
                 if (board.allTiles[column, row + i].GetComponent<BackgroundTile>().indexOfVisibleOne==0)
                 {
-                    board.allTiles[column, row + i].GetComponent<BackgroundTile>().Boom(damageID);
+                    board.allTiles[column, row + i].GetComponent<BackgroundTile>().Boom(damageID, colorType);
                 }
             }      
         }
 
-        Boom(damageID);
+        Boom(damageID, colorType);
 
     }
  
-    public void Boom(string damageID)
+    public void Boom(string damageID,string colorType)
     {
         if (indexOfVisibleOne>=0 && !obstacles[indexOfVisibleOne].GetComponent<ObstacleScript>().obstacleSpecs.powerUpNeed)
         {
-            obstacles[indexOfVisibleOne].GetComponent<ObstacleScript>().TakeDamage(damageID);
-            DetectVisibleOne();
+            string obstacleColorType = obstacles[indexOfVisibleOne].GetComponent<ObstacleScript>().obstacleSpecs.colorType;
+            if (string.IsNullOrEmpty(obstacleColorType) || colorType==obstacleColorType)
+            {
+                obstacles[indexOfVisibleOne].GetComponent<ObstacleScript>().TakeDamage(damageID);
+                DetectVisibleOne();
+            }       
         }
     }
 

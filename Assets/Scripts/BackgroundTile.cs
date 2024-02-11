@@ -58,13 +58,13 @@ public class BackgroundTile : MonoBehaviour
         {
             if (board.allFruits[column, row])
             {
-                if (board.allFruits[column, row].GetComponent<Fruit>().isClicked&&!board.specialSwipe && board.allFruits[column, row].GetComponent<Fruit>().fruitType < 0 && board.taskController.moveCount > 0 && !board.allFruits[column, row].GetComponent<Fruit>().isSwiped && board.taskController.isBoardActive)
+                if (!board.blockUserMove && board.allFruits[column, row].GetComponent<Fruit>().isClicked&&!board.specialSwipe && board.allFruits[column, row].GetComponent<Fruit>().fruitType < 0 && board.taskController.moveCount > 0 && !board.allFruits[column, row].GetComponent<Fruit>().isSwiped && board.taskController.isBoardActive)
                 {
                     if (Vector2.Distance(transform.position, firstTouchPosition) < 0.3f)
                     {
                         board.taskController.MovePlayed();
                         board.StopHint();
-                        board.ActivatePowerUp(board.allFruits[column, row]);
+                        board.ActivatePowerUp(board.allFruits[column, row],0,false);
 
                     }              
                 }

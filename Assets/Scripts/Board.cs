@@ -51,12 +51,17 @@ public class Board : MonoBehaviour
 
     public int userLevel;
 
+    public bool blockUserMove = false;
+
     public GameObject[,] allFruits;
     public GameObject[,] allTiles;
     public float scaleNumber;
     private float scaleFactorFruit;
 
     private int[] columnsFallIndexY;
+
+    // Each index represents related id of an fruit. 
+    private int[] totalNumberOfFruits;
 
     public int specialPowerID = 0;
     public bool specialSwipe = false;
@@ -78,6 +83,8 @@ public class Board : MonoBehaviour
 
         width = gridData.width;
         height = gridData.height;
+
+        totalNumberOfFruits = new int[fruits.Length];
 
         // Some of columns falling point can be diffirent because of missing tiles in that column. 
         columnsFallIndexY = new int[width];
@@ -355,6 +362,7 @@ public class Board : MonoBehaviour
                         fruit.GetComponent<Fruit>().row = j;
                         fruit.GetComponent<Fruit>().fruitType = fruitToUse;
                         allFruits[i, j] = fruit;
+                        totalNumberOfFruits[fruitToUse]++;
                     }
 
                 }
@@ -375,6 +383,11 @@ public class Board : MonoBehaviour
     public void SwipeFruits(float swipeAngle, int column, int row)
     {
         if (taskController.moveCount < 1 || !taskController.isBoardActive)
+        {
+            return;
+        }
+
+        if (blockUserMove)
         {
             return;
         }
@@ -611,9 +624,10 @@ public class Board : MonoBehaviour
                             GameObject fruitToChange = fruitsCheck[UnityEngine.Random.Range(0, fruitsCheck.Count)];
                             int row = fruitToChange.GetComponent<Fruit>().row;
                             int column = fruitToChange.GetComponent<Fruit>().column;
-                            if (rowPopped && columnPopped)
+                            if (fruitsCheck.Count > 4)
                             {
-                                //  CreatePowerUp(column, row, -3);
+                                CreatePowerUp(column, row, -5);
+                                audioManager.PowerUpGain2();
                             }
                             else if (rowPopped)
                             {
@@ -739,12 +753,12 @@ public class Board : MonoBehaviour
                     // If one of the fruits is power up 
                     if (fruitScript.fruitType < 0)
                     {
-                        ActivatePowerUp(fruit);
+                        ActivatePowerUp(fruit,otherFruitScript.fruitType);
 
                     }
                     else
                     {
-                        ActivatePowerUp(otherFruit);
+                        ActivatePowerUp(otherFruit,fruitScript.fruitType);
 
                     }
                     succesfulMove = true;
@@ -1126,6 +1140,8 @@ public class Board : MonoBehaviour
         -1 : Horizontal Harvester
         -2 : Vertical Harvester
         -3 : TNT
+
+        -5: Disco Ball
          */
 
         int powerUpCreate = PlayerPrefs.GetInt("SpecialFruitTask", 0);
@@ -1233,6 +1249,14 @@ public class Board : MonoBehaviour
                     StartCoroutine(FadeOut(fruit));
                     TNTExplosion(otherFruitScript.column, otherFruitScript.row, 2);
                     break;
+                case -5:
+                    fruitScript.fadeout = true;
+                    otherFruitScript.fadeout = true;
+                    audioManager.Pickaxe();
+                    StartCoroutine(FadeOut(fruit));
+                    StartCoroutine(FadeOut(otherFruit));
+                    DamageToAllBoard();
+                    break;
             }
 
         }
@@ -1268,6 +1292,12 @@ public class Board : MonoBehaviour
                                 ActivatePowerUp(fruit);
                             }
                             break;
+                        case -5:
+                            audioManager.Pickaxe();
+                            fruitScript.fadeout = true;
+                            StartCoroutine(FadeOut(fruit));
+                            ActivatePowerUp(otherFruit,-1);
+                            break;
                     }
                     break;
                 // Vertical Harvester
@@ -1294,6 +1324,12 @@ public class Board : MonoBehaviour
                                 fruitScript.column++;
                                 ActivatePowerUp(fruit);
                             }
+                            break;
+                        case -5:
+                            fruitScript.fadeout = true;
+                            audioManager.Pickaxe();
+                            StartCoroutine(FadeOut(fruit));
+                            ActivatePowerUp(otherFruit,-2);
                             break;
                     }
                     break;
@@ -1333,7 +1369,21 @@ public class Board : MonoBehaviour
                                 ActivatePowerUp(otherFruit);
                             }
                             break;
+                        case -5:
+                            fruitScript.fadeout = true;
+                            audioManager.Pickaxe();
+                            StartCoroutine(FadeOut(fruit));
+                            ActivatePowerUp(otherFruit,-3);
+                            break;
                     }
+                    break;
+                case -5:
+
+                    otherFruitScript.fadeout = true;
+                    audioManager.Pickaxe();
+                    StartCoroutine(FadeOut(otherFruit));
+                    ActivatePowerUp(fruit, otherFruitScript.fruitType);
+
                     break;
             }
         }
@@ -1344,7 +1394,7 @@ public class Board : MonoBehaviour
     /// Activating powerup according to type.
     /// </summary>
     /// <param name="fruit"></param>
-    public void ActivatePowerUp(GameObject fruit)
+    public void ActivatePowerUp(GameObject fruit, int fruitType=0,bool isSwiped=true)
     {
 
         Fruit fruitScript = fruit.GetComponent<Fruit>();
@@ -1398,6 +1448,32 @@ public class Board : MonoBehaviour
                 }
                 break;
 
+            // Disco Ball power up
+            case -5:
+                int targetFruitType = fruitType;
+                // If discoball just clicked then returns most avaliable fruit type.
+                if (!isSwiped || fruitType<0)
+                {
+                    int totalNumber = totalNumberOfFruits[0];
+                    for(int i = 1; i < fruits.Length; i++)
+                    {
+                        if (totalNumber < totalNumberOfFruits[i])
+                        {
+                            targetFruitType = i;
+                            totalNumber = totalNumberOfFruits[i];
+                        }
+                    }
+                }
+
+                StartCoroutine(DiscoBallSelectAndDestroy(fruit,targetFruitType, fruitType));
+
+
+                if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
+                {
+                    audioManager.Pickaxe();
+                }
+                break;
+
         }
     }
 
@@ -1428,6 +1504,7 @@ public class Board : MonoBehaviour
 
                     allTiles[column, row].GetComponent<BackgroundTile>().Explosion(column, row, obj.GetComponent<Fruit>().damageID, obj.GetComponent<Fruit>().colorType);
                 }
+                totalNumberOfFruits[obj.GetComponent<Fruit>().fruitType]--;
                 StartCoroutine(FadeOut(obj));
             }
             else
@@ -1894,21 +1971,107 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Calls DetectVisibleOne() function on every tile.
+    /// </summary>
     public void AllTilesDetectVisibleOne()
     {
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
             {
-
                 allTiles[i, j].GetComponent<BackgroundTile>().DetectVisibleOne();
+            }
+        }
+    }
 
-
+    private IEnumerator DiscoBallSelectAndDestroy(GameObject discoBall,int targetFruitType,int powerUpCreateType)
+    {
+        blockUserMove = true;
+        List<GameObject> fruitsToDisappear = new List<GameObject>();
+        for(int i = 0;i < height; i++)
+        {
+            for( int j = 0; j < width;j++)
+            {
+                if (allFruits[j, i] && allFruits[j,i].GetComponent<Fruit>().fruitType == targetFruitType)
+                {
+                    fruitsToDisappear.Add(allFruits[j,i]);
+                }
             }
         }
 
+        List<GameObject> fruitsLeft = new List<GameObject>();
+        fruitsLeft.AddRange(fruitsToDisappear);
+        int random;
+        GameObject fruit;
+        Fruit fruitScript;
+        if(powerUpCreateType < 0)
+        {
+            fruitsToDisappear.Clear();
+        }
+
+        while (fruitsLeft.Count > 0)
+        {
+            random = UnityEngine.Random.Range(0, fruitsLeft.Count);
+            fruit = fruitsLeft[random];
+            fruitsLeft.Remove(fruit);
+            if (powerUpCreateType < 0)
+            {
+                fruitScript = fruit.GetComponent<Fruit>();
+                CreatePowerUp(fruitScript.column, fruitScript.row,powerUpCreateType);
+                fruitsToDisappear.Add(allFruits[fruitScript.column, fruitScript.row]);
+                DestroyController(fruit,false);
+            }
+            else
+            {
+                if (fruit)
+                {
+                    fruit.GetComponentInChildren<SpriteRenderer>().color = new Color(255, 0, 0, 255);
+                }
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+
+
+        for (int i = 0; i < fruitsToDisappear.Count; i++)
+        {
+            DestroyController(fruitsToDisappear[i], false);
+        }
+
+        StartCoroutine(FadeOut(discoBall));
+
+
+        blockUserMove = false;
     }
 
+    /// <summary>
+    /// It damages all obstacles and destroys all fruits on board.
+    /// </summary>
+    private void DamageToAllBoard()
+    {
+        blockUserMove = true;
+        string damageID = Guid.NewGuid().ToString();
+
+        for (int i = 0;i<height;i++)
+        {
+            for(int j = 0;j<width;j++)
+            {
+                if (allTiles[j, i])
+                {
+                    if (allFruits[j, i])
+                    {
+                        DestroyController(allFruits[i, j], false);
+                    }
+
+                    if (allTiles[j, i].GetComponent<BackgroundTile>().indexOfVisibleOne >= 0)
+                    {
+                        allTiles[j, i].GetComponent<BackgroundTile>().PowerUpBoom(damageID);
+                    }
+                }
+            }
+        }
+        blockUserMove = false;
+    }
 }
 
 

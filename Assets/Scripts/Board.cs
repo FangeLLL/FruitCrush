@@ -1485,6 +1485,10 @@ public class Board : MonoBehaviour
     /// <param name="explosion"></param>
     private void DestroyController(GameObject obj, bool explosion)
     {
+        if (!obj)
+        {
+            return;
+        }
 
         if (obj.GetComponent<Fruit>().fadeout)
         {
@@ -2012,23 +2016,27 @@ public class Board : MonoBehaviour
 
         while (fruitsLeft.Count > 0)
         {
+           
             random = UnityEngine.Random.Range(0, fruitsLeft.Count);
             fruit = fruitsLeft[random];
             fruitsLeft.Remove(fruit);
-            if (powerUpCreateType < 0)
+            if (fruit)
             {
-                fruitScript = fruit.GetComponent<Fruit>();
-                CreatePowerUp(fruitScript.column, fruitScript.row,powerUpCreateType);
-                fruitsToDisappear.Add(allFruits[fruitScript.column, fruitScript.row]);
-                DestroyController(fruit,false);
-            }
-            else
-            {
-                if (fruit)
+                if (powerUpCreateType < 0)
+                {
+                    fruitScript = fruit.GetComponent<Fruit>();
+                    CreatePowerUp(fruitScript.column, fruitScript.row, powerUpCreateType);
+                    fruitsToDisappear.Add(allFruits[fruitScript.column, fruitScript.row]);
+                    DestroyController(fruit, false);
+                }
+                else
                 {
                     fruit.GetComponentInChildren<SpriteRenderer>().color = new Color(255, 0, 0, 255);
+
+
                 }
             }
+          
             yield return new WaitForSeconds(0.1f);
         }
 

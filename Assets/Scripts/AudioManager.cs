@@ -82,7 +82,6 @@ public class AudioManager : Sounds
 
     public void FruitFall()
     {
-        Debug.Log(fruitFallPlaying);
         if (!fruitFallPlaying)
         {
             fruitFallPlaying=true;

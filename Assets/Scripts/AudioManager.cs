@@ -78,10 +78,25 @@ public class AudioManager : Sounds
         source.PlayOneShot(source.clip);
     }
 
+    bool fruitFallPlaying=false;
+
     public void FruitFall()
     {
-        source.clip = sounds[7];
-        source.PlayOneShot(source.clip);
+        Debug.Log(fruitFallPlaying);
+        if (!fruitFallPlaying)
+        {
+            fruitFallPlaying=true;
+            StartCoroutine(WaitForSound());
+            source.clip = sounds[7];
+            source.PlayOneShot(source.clip);
+        }
+        
+    }
+
+    private IEnumerator WaitForSound()
+    {
+        yield return new WaitForSeconds(0.1f);
+        fruitFallPlaying = false;
     }
 
     public void Bubble()

@@ -1066,7 +1066,7 @@ public class Board : MonoBehaviour
                             }
 
 
-                            if (!allTiles[i, j + k] || (allTiles[i, j + k] && allTiles[i, j + k].GetComponent<BackgroundTile>().isCurrentObstacleBox)) {
+                            if (allTiles[i, j + k] && allTiles[i, j + k].GetComponent<BackgroundTile>().isCurrentObstacleBox) {
                                 checkForEmptyPlaces = false;
                             }
 

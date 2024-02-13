@@ -32,7 +32,17 @@ public class Fruit : MonoBehaviour
 
     public string damageID;
 
+    public float speedMultiplier=6f;
+
     public bool isPowerUpSoundPlayed = false;
+
+    public bool outsideOfBoard = false;
+
+    public int hitBorder=0;
+
+    public bool moveToward = false;
+
+    public GameObject attachedPowerUp=null;
 
     [HideInInspector]
     public int swipeRight = Animator.StringToHash("isSwipeRight");
@@ -58,7 +68,10 @@ public class Fruit : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().name != "LevelEditor")
         {
-            board.allFruits[column, row] = this.gameObject;
+            if (!outsideOfBoard)
+            {
+                board.allFruits[column, row] = this.gameObject;
+            }
 
           
             if (isSwiped)
@@ -70,7 +83,20 @@ public class Fruit : MonoBehaviour
             else
             {
                 // Other movements
-                transform.position = Vector2.Lerp(transform.position, targetV, 6f * Time.deltaTime);
+                if (moveToward)
+                {
+                    if(attachedPowerUp)
+                    {
+                        attachedPowerUp.GetComponent<Fruit>().targetV = transform.position;
+                    }
+                    transform.position = Vector2.MoveTowards(transform.position, targetV, speedMultiplier * Time.deltaTime);
+                }
+                else
+                {
+                    transform.position = Vector2.Lerp(transform.position, targetV, speedMultiplier * Time.deltaTime);
+
+                }
+
 
             }
 

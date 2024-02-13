@@ -1551,7 +1551,7 @@ MonoBehaviour:
   - {fileID: 3566861933945487612, guid: 6040aac6762fdf747b3611a111760a44, type: 3}
   - {fileID: 3566861933945487612, guid: 8ba020ce8acef7b42a6fb0fe051b5326, type: 3}
   - {fileID: 3566861933945487612, guid: a72ccf681aec45b42b260078d9419924, type: 3}
-  - {fileID: 3566861933945487612, guid: ae0807c4e8905454e84e9dc68acc882b, type: 3}
+  - {fileID: 3566861933945487612, guid: 5ad67b354ca85c840b8f75f7c8ae0ee0, type: 3}
   - {fileID: 3566861933945487612, guid: ae0807c4e8905454e84e9dc68acc882b, type: 3}
   obstaclePrefabs:
   - {fileID: 6328190920238408510, guid: 6aa1145ad355b16418575dd33033baa6, type: 3}
@@ -1577,6 +1577,7 @@ MonoBehaviour:
   tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
   hintBool: 0
   userLevel: 0
+  blockUserMove: 0
   scaleNumber: 0
   specialPowerID: 0
   specialSwipe: 0

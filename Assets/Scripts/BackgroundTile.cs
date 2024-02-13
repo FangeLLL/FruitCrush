@@ -14,10 +14,12 @@ public class BackgroundTile : MonoBehaviour
     public bool isCurrentObstacleBox=false;
 
     private Vector2 firstTouchPosition;
+    private AudioManager audioManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         board = FindObjectOfType<Board>();
     }
 
@@ -36,6 +38,66 @@ public class BackgroundTile : MonoBehaviour
             }
         }
         */
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Fruit fruitScript = other.GetComponent<Fruit>();
+
+
+        if (board.allFruits[column, row])
+        {
+            audioManager.FruitCrush();
+            board.DestroyController(board.allFruits[column,row],false);
+        }
+
+        if (indexOfVisibleOne>=0)
+        {
+            PowerUpBoom(fruitScript.damageID);
+            if (fruitScript.attachedPowerUp)
+            {
+                Fruit powerUpScript = fruitScript.attachedPowerUp.GetComponent<Fruit>();
+                powerUpScript.targetV = transform.position;
+                powerUpScript.row = row;
+                powerUpScript.column = column;
+                powerUpScript.moveToward = false;
+                board.ActivatePowerUp(fruitScript.attachedPowerUp);
+
+                Destroy(other.gameObject);
+
+            }
+        }
+
+
+        if (other)
+        {
+            Vector2 vector2 = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+
+            if (fruitScript.targetV == vector2)
+            {
+                fruitScript.hitBorder++;
+                if (fruitScript.hitBorder == 2)
+                {
+                    if (fruitScript.attachedPowerUp)
+                    {
+                        Fruit powerUpScript = fruitScript.attachedPowerUp.GetComponent<Fruit>();
+                        powerUpScript.targetV = transform.position;
+                        powerUpScript.row = row;
+                        powerUpScript.column = column;
+                        powerUpScript.moveToward = false;
+                        board.ActivatePowerUp(fruitScript.attachedPowerUp);
+                    }
+                    StartCoroutine(board.FadeOut(other.gameObject));
+                }
+                else
+                {
+                    fruitScript.targetV = board.GetBoomerangTargetLoc(column, row);
+
+                }
+            }
+        }
+       
+        // PowerUpBoom(other.GetComponent<Fruit>().damageID);
     }
 
     private void OnMouseDown()
@@ -68,7 +130,11 @@ public class BackgroundTile : MonoBehaviour
 
                     }              
                 }
-                board.allFruits[column, row].GetComponent<Fruit>().isClicked = false;
+                if (board.allFruits[column, row])
+                {
+                    board.allFruits[column, row].GetComponent<Fruit>().isClicked = false;
+
+                }
 
             }
         }
@@ -163,5 +229,7 @@ public class BackgroundTile : MonoBehaviour
 
         }
     }
+
    
+
 }

@@ -626,24 +626,24 @@ public class Board : MonoBehaviour
                             int column = fruitToChange.GetComponent<Fruit>().column;
                             if (fruitsCheck.Count > 4)
                             {
-                                CreatePowerUp(column, row, -4);
+                                CreatePowerUp(column, row, -5);
                                 audioManager.PowerUpGain2();
                             }
                             else if (rowPopped)
                             {
-                                CreatePowerUp(column, row, -4);
+                                CreatePowerUp(column, row, -1);
                                 audioManager.PowerUpGain();
 
                             }
                             else if (columnPopped)
                             {
-                                CreatePowerUp(column, row, -4);
+                                CreatePowerUp(column, row, -2);
                                 audioManager.PowerUpGain();
 
                             }
                             else if (squarePopped)
                             {
-                                CreatePowerUp(column, row, -4);
+                                CreatePowerUp(column, row, -5);
                                 audioManager.PowerUpGain2();
                             }
 
@@ -2102,7 +2102,15 @@ public class Board : MonoBehaviour
                 if (powerUpCreateType < 0)
                 {
                     fruitScript = fruit.GetComponent<Fruit>();
-                    CreatePowerUp(fruitScript.column, fruitScript.row, powerUpCreateType);
+                    // If type is bigger then -3 it means it is either vertical or horizontal harvester so it will randomizely spawn.
+                    if (powerUpCreateType > -3)
+                    {
+                        CreatePowerUp(fruitScript.column, fruitScript.row, UnityEngine.Random.Range(-2, 0));
+                    }
+                    else
+                    {
+                        CreatePowerUp(fruitScript.column, fruitScript.row, powerUpCreateType);
+                    }
                     fruitsToDisappear.Add(allFruits[fruitScript.column, fruitScript.row]);
                     DestroyController(fruit, false);
                 }

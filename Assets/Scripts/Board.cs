@@ -624,6 +624,7 @@ public class Board : MonoBehaviour
                             GameObject fruitToChange = fruitsCheck[UnityEngine.Random.Range(0, fruitsCheck.Count)];
                             int row = fruitToChange.GetComponent<Fruit>().row;
                             int column = fruitToChange.GetComponent<Fruit>().column;
+                            /*
                             if (fruitsCheck.Count > 4)
                             {
                                 CreatePowerUp(column, row, -5);
@@ -646,6 +647,9 @@ public class Board : MonoBehaviour
                                 CreatePowerUp(column, row, -5);
                                 audioManager.PowerUpGain2();
                             }
+                            */
+                            CreatePowerUp(column, row, UnityEngine.Random.Range(-1,-6));
+                            audioManager.PowerUpGain();
 
                         }
                         fruitsCheck.Clear();
@@ -706,7 +710,7 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     private bool FruitAvailable(GameObject obj)
     {
-        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.5f)
+        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.5f && !obj.GetComponent<Fruit>().isSwiped)
         {
             return true;
         }
@@ -894,7 +898,7 @@ public class Board : MonoBehaviour
 
         for (int k = -2; k < 2; k++)
         {
-            if (column + k >= 0 && column + k + 1 < width && allFruits[column + k, row] && allFruits[column + k + 1, row])
+            if (column + k >= 0 && column + k + 1 < width && FruitAvailable(allFruits[column + k, row]) && FruitAvailable(allFruits[column + k + 1, row]))
             {
                 if (allFruits[column + k, row].GetComponent<Fruit>().fruitType == allFruits[column + k + 1, row].GetComponent<Fruit>().fruitType)
                 {
@@ -918,7 +922,7 @@ public class Board : MonoBehaviour
 
         for (int k = -2; k < 2; k++)
         {
-            if (row + k >= 0 && row + k + 1 < height && allFruits[column, row + k] && allFruits[column, row + k + 1])
+            if (row + k >= 0 && row + k + 1 < height && FruitAvailable(allFruits[column, row + k]) && FruitAvailable(allFruits[column, row + k + 1]))
             {
                 if (allFruits[column, row + k].GetComponent<Fruit>().fruitType == allFruits[column, row + k + 1].GetComponent<Fruit>().fruitType)
                 {

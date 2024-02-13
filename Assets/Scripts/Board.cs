@@ -1031,7 +1031,11 @@ public class Board : MonoBehaviour
         {
             if (!allTiles[i, j] || allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
             {
-                emptyPlaces.Clear();
+                if(allTiles[i, j])
+                {
+                    emptyPlaces.Clear();
+                }
+              
             }
             else
             {

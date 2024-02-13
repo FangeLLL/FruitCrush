@@ -1057,10 +1057,10 @@ public class SwipeHint : MonoBehaviour
                                     fruit5 = board.allFruits[i, j].GetComponent<Fruit>();
 
                                     fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
-                                    fruit2.GetComponentInChildren<Animator>().SetBool(fruit2.swipeDown, true);
-                                    fruit3.GetComponentInChildren<Animator>().SetBool(fruit3.swipeDown, true);
-                                    fruit4.GetComponentInChildren<Animator>().SetBool(fruit4.swipeDown, true);
-                                    fruit5.GetComponentInChildren<Animator>().SetBool(fruit5.swipeDown, true);
+                                    fruit2.GetComponentInChildren<Animator>().SetBool(fruit2.swipeFlash, true);
+                                    fruit3.GetComponentInChildren<Animator>().SetBool(fruit3.swipeFlash, true);
+                                    fruit4.GetComponentInChildren<Animator>().SetBool(fruit4.swipeFlash, true);
+                                    fruit5.GetComponentInChildren<Animator>().SetBool(fruit5.swipeFlash, true);
                                     yield return new WaitForSeconds(0.1f);
                                     continueIteration = false;
                                     isIterating = false;

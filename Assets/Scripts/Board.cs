@@ -710,7 +710,7 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     private bool FruitAvailable(GameObject obj)
     {
-        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.5f && !obj.GetComponent<Fruit>().isSwiped)
+        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.5f )
         {
             return true;
         }
@@ -992,7 +992,7 @@ public class Board : MonoBehaviour
     private IEnumerator FillTheGaps()
     {
         yield return null;
-        if (!shuffling)
+        if (!shuffling || blockUserMove)
         {
             for (int i = 0; i < width; i++)
             {
@@ -1022,6 +1022,7 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     public IEnumerator FillTheColumn(int i)
     {
+      
         fillingColumn[i] = true;
 
         Queue<int> emptyPlaces = new Queue<int>();

@@ -17,7 +17,16 @@ MonoBehaviour:
   indestructible: 0
   isCollectible: 0
   obstacleHitSound: StrawBaleBreak
+  powerUpNeed: 0
   id: 1
+  taskID: 0
+  amountOfCollect: 
   sprites:
-  - {fileID: 21300000, guid: 3333a468ed45f044a9f6bca786d506ff, type: 3}
-  - {fileID: 21300000, guid: c644e41d9c2ee5049be3b704a38511f5, type: 3}
+  - {fileID: 21300000, guid: 3d74305a08283864e83b7c4a2b4eb389, type: 3}
+  - {fileID: 21300000, guid: 2fb881215cf7c944da0abd59bd96890b, type: 3}
+  is4TimesBigger: 0
+  isDownward: 0
+  isMovable: 0
+  isConsecutive: 0
+  spreadWheatfarm: 0
+  colorType: 

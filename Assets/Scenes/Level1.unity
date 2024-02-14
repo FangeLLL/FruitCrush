@@ -17489,7 +17489,7 @@ MonoBehaviour:
     taskText: {fileID: 1755543394}
     isCompleted: 0
   taskSprites:
-  - {fileID: 21300000, guid: 3333a468ed45f044a9f6bca786d506ff, type: 3}
+  - {fileID: 21300000, guid: 3d74305a08283864e83b7c4a2b4eb389, type: 3}
   - {fileID: 21300000, guid: 519ee4913832c2c4ebce0c87edd2a375, type: 3}
   - {fileID: 21300000, guid: 8ffafacb544722940a15e35e89559288, type: 3}
   - {fileID: 21300000, guid: df1c759e3cc341f46b44d7649db8dd84, type: 3}

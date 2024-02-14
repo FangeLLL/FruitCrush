@@ -38,15 +38,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6201112758758003517, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6201112758758003517, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6201112758758003517, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6201112758758003517, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -161,7 +161,12 @@ MonoBehaviour:
   isMoving: 0
   animator: {fileID: 0}
   damageID: 
+  speedMultiplier: 6
   isPowerUpSoundPlayed: 0
+  outsideOfBoard: 0
+  hitBorder: 0
+  moveToward: 0
+  attachedPowerUp: {fileID: 0}
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799

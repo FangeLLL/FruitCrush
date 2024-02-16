@@ -954,7 +954,7 @@ public class Board : MonoBehaviour
     {
 
         float elapsedTime = 0f;
-        float fadeDuration = 0.2f;
+        float fadeDuration = 0.5f;
         Color color = obj.GetComponentInChildren<SpriteRenderer>().color;
 
         while (elapsedTime < fadeDuration)

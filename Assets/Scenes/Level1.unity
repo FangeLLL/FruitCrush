@@ -16903,8 +16903,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sounds:
-  - {fileID: 8300000, guid: 40c281462a8f8bf4eabf73fefd7becce, type: 3}
-  - {fileID: 8300000, guid: a684a032001321b4398cc08c61340fae, type: 3}
+  - {fileID: 8300000, guid: e5405511d7fe59f449fb4eac03d212d8, type: 3}
+  - {fileID: 8300000, guid: 3626d85d2c0a3ce4e96fb574d999f1d6, type: 3}
   - {fileID: 8300000, guid: 0ec659e0f7d0d1945a15f013ab57c5c1, type: 3}
   - {fileID: 8300000, guid: cc11a100b626e3e43982e812aeae76a6, type: 3}
   - {fileID: 8300000, guid: cc11a100b626e3e43982e812aeae76a6, type: 3}
@@ -16964,6 +16964,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: bdf3804f1e91ae94f9363913a9bce630, type: 3}
   - {fileID: 8300000, guid: 2d412217ab405874e8eece7679f5e173, type: 3}
   - {fileID: 8300000, guid: eac598665331f7646a72a92da93e3736, type: 3}
+  - {fileID: 8300000, guid: a500ae8e54a5b6b41913ad8ae85560c9, type: 3}
   source: {fileID: 0}
   powerUpGainSource: {fileID: 1772453846}
   hoeSource: {fileID: 1772453845}

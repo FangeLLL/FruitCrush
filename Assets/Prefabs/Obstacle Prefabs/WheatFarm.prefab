@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WheatFarm
       objectReference: {fileID: 0}
+    - target: {fileID: 3808654082424183633, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
+      propertyPath: UVModule.sprites.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 519ee4913832c2c4ebce0c87edd2a375, type: 3}
     - target: {fileID: 4269577592316774446, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_Sprite
       value: 

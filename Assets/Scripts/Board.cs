@@ -610,13 +610,14 @@ public class Board : MonoBehaviour
                         }
 
                         // if these fruit every one of them didn't started to pop then this means this is new match.
+                        /*
                         if (newMatch)
                         {
                             audioManager.FruitCrush();
                             type = allFruits[i, j].GetComponent<Fruit>().fruitType;
                             typeFruits[type] += fruitsCheck.Count;
                         }
-
+                        */
                         if (fruitsCheck.Count > 3)
                         {
                             // Creating Power Up according to shape of match.
@@ -953,7 +954,7 @@ public class Board : MonoBehaviour
     {
 
         float elapsedTime = 0f;
-        float fadeDuration = 0.25f;
+        float fadeDuration = 0.2f;
         Color color = obj.GetComponentInChildren<SpriteRenderer>().color;
 
         while (elapsedTime < fadeDuration)
@@ -981,6 +982,51 @@ public class Board : MonoBehaviour
             obj.GetComponentInChildren<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 0f);
             Destroy(obj);
         }
+
+
+    }
+
+    /// <summary>
+    /// Object will be fade away slowly before destroye.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public IEnumerator FruitPop(GameObject obj)
+    {
+        /*
+        float elapsedTime = 0f;
+        float fadeDuration = 0.1f;
+
+        while (elapsedTime < fadeDuration)
+        {
+            // Calculate the new alpha value
+            float scale = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
+
+            // Update the object's color with the new alpha
+            if (obj)
+            {
+
+                obj.transform.GetChild(0).transform.localScale = new Vector2(scale, scale);
+            }
+            else
+            {
+                elapsedTime = fadeDuration;
+            }
+
+            elapsedTime += Time.deltaTime;
+            yield return null; // Wait for the next frame
+        }
+        */
+        yield return new WaitForSeconds(0.1f);
+        obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        obj.GetComponent<ParticleSystem>().Play();
+        yield return new WaitForSeconds(0.2f);
+        obj.GetComponent<Fruit>().outsideOfBoard = true;
+        allFruits[obj.GetComponent<Fruit>().column, obj.GetComponent<Fruit>().row] = null;
+        yield return new WaitForSeconds(1.5f);
+
+        Destroy(obj);
+
 
 
     }
@@ -1585,15 +1631,16 @@ public class Board : MonoBehaviour
             // straw bale or something like that
             if (obj.GetComponent<Fruit>().fruitType >= 0)
             {
+                int row = obj.GetComponent<Fruit>().row;
+                int column = obj.GetComponent<Fruit>().column;
                 if (explosion)
                 {
-                    int row = obj.GetComponent<Fruit>().row;
-                    int column = obj.GetComponent<Fruit>().column;
-
                     allTiles[column, row].GetComponent<BackgroundTile>().Explosion(column, row, obj.GetComponent<Fruit>().damageID, obj.GetComponent<Fruit>().colorType);
                 }
                 totalNumberOfFruits[obj.GetComponent<Fruit>().fruitType]--;
-                StartCoroutine(FadeOut(obj));
+           //     obj.GetComponent<Fruit>().outsideOfBoard = true;
+           //     allFruits[column, row] = null;
+                StartCoroutine(FruitPop(obj));
             }
             else
             {

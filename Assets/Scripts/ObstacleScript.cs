@@ -68,7 +68,7 @@ public class ObstacleScript : MonoBehaviour
                 }
                 else
                 {
-                    StartCoroutine(board.FadeOut(gameObject));
+                    StartCoroutine(ObstacleBreak());
                     if (obstacleSpecs.isCollectible)
                     {
                         AdvanceTaskProgress();
@@ -102,6 +102,7 @@ public class ObstacleScript : MonoBehaviour
             }
             else
             {
+                GetComponent<ParticleSystem>().Play();
                 if (obstacleSpecs.isCollectible)
                 {
 
@@ -120,6 +121,25 @@ public class ObstacleScript : MonoBehaviour
         {
             taskController.TaskProgress(obstacleSpecs.taskID);
         }
+    }
+
+    /// <summary>
+    /// Object will be fade away slowly before destroye.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public IEnumerator ObstacleBreak()
+    {
+        yield return new WaitForSeconds(0.1f);
+        GetComponentInChildren<SpriteRenderer>().enabled = false;
+        GetComponent<ParticleSystem>().Play();
+        yield return new WaitForSeconds(0.2f);
+        board.allTiles[column, row].GetComponent<BackgroundTile>().obstacles[obstacleSpecs.indexOfLayer] = null;
+        board.allTiles[column, row].GetComponent<BackgroundTile>().DetectVisibleOne();
+        yield return new WaitForSeconds(1.5f);
+
+        Destroy(gameObject);
+
     }
 
     IEnumerator LoopForMovableObstacle()

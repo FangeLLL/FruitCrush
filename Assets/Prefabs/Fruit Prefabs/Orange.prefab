@@ -428,6 +428,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8336548580480921090, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
+      propertyPath: UVModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8336548580480921090, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8336548580480921090, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8336548580480921090, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8336548580480921090, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
+      propertyPath: UVModule.sprites.Array.data[0].sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: cd56808e1dec8a741ae694e0af8d3a92, type: 3}
     - target: {fileID: 1594701409205146621, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_Name
       value: Orange

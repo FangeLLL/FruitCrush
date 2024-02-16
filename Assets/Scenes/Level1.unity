@@ -16903,8 +16903,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sounds:
-  - {fileID: 8300000, guid: a658eaa66e1f99e4483010e1dadf1ba8, type: 3}
-  - {fileID: 8300000, guid: c62b4c2ee6f57c74aa46c2d4fdd0e9d0, type: 3}
+  - {fileID: 8300000, guid: e5405511d7fe59f449fb4eac03d212d8, type: 3}
+  - {fileID: 8300000, guid: 3626d85d2c0a3ce4e96fb574d999f1d6, type: 3}
   - {fileID: 8300000, guid: 0ec659e0f7d0d1945a15f013ab57c5c1, type: 3}
   - {fileID: 8300000, guid: cc11a100b626e3e43982e812aeae76a6, type: 3}
   - {fileID: 8300000, guid: cc11a100b626e3e43982e812aeae76a6, type: 3}

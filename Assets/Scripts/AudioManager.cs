@@ -47,6 +47,7 @@ public class AudioManager : Sounds
      * 27 => UI SOUND EFFECT
      * 28 => UI SOUND EFFECT 2
      * 29 => OBJECT TOUCH
+     * 61 => BOOMERANG
      */
 
     private void Awake()
@@ -457,6 +458,17 @@ public class AudioManager : Sounds
             source.clip = sounds[60];
             source.PlayOneShot(source.clip);
         }        
+    }
+
+    public void Boomerang()
+    {
+        if (!isSoundPlaying[61])
+        {
+            isSoundPlaying[61] = true;
+            StartCoroutine(WaitForSound(61));
+            source.clip = sounds[61];
+            source.PlayOneShot(source.clip);
+        }
     }
 
 }

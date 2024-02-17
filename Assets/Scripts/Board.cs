@@ -601,13 +601,13 @@ public class Board : MonoBehaviour
 
                         for (int e = 0; e < fruitsCheck.Count; e++)
                         {
-                            if (!fruitsCheck[e].GetComponent<Fruit>().fadeout)
-                            {
-                                newMatch = true;
-                                fruitsCheck[e].GetComponent<Fruit>().damageID = damageID;
-                                DestroyController(fruitsCheck[e], true);
-                            }                           
+                            fruitsCheck[e].GetComponent<Fruit>().damageID = damageID;
+                            DestroyController(fruitsCheck[e], true);
                         }
+
+                        audioManager.FruitCrush();
+                        type = allFruits[i, j].GetComponent<Fruit>().fruitType;
+                        typeFruits[type] += fruitsCheck.Count;
 
                         // if these fruit every one of them didn't started to pop then this means this is new match.
                         /*
@@ -711,7 +711,7 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     private bool FruitAvailable(GameObject obj)
     {
-        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.5f )
+        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.5f && !obj.GetComponent<Fruit>().fadeout)
         {
             return true;
         }
@@ -1018,23 +1018,14 @@ public class Board : MonoBehaviour
         }
         */
         yield return new WaitForSeconds(0.1f);
-        if (obj)
-        {
-            obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
-            obj.GetComponent<ParticleSystem>().Play();
-        }
+        obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        obj.GetComponent<ParticleSystem>().Play();
         yield return new WaitForSeconds(0.2f);
-        if (obj)
-        {
-            obj.GetComponent<Fruit>().outsideOfBoard = true;
-            allFruits[obj.GetComponent<Fruit>().column, obj.GetComponent<Fruit>().row] = null;
-        }
+        obj.GetComponent<Fruit>().outsideOfBoard = true;
+        allFruits[obj.GetComponent<Fruit>().column, obj.GetComponent<Fruit>().row] = null;
         yield return new WaitForSeconds(1.5f);
-        if (obj)
-        {
-            Destroy(obj);
+        Destroy(obj);
 
-        }
     }
 
     /// <summary>
@@ -1677,7 +1668,7 @@ public class Board : MonoBehaviour
                     if (allTiles[i, j])
                     {
                         allTiles[i, j].GetComponent<BackgroundTile>().PowerUpBoom(tntScript.damageID);
-                        if (allFruits[i, j] && allFruits[i, j].GetComponent<Fruit>().fruitType>-100)
+                        if (FruitAvailable(allFruits[i, j]) && allFruits[i, j].GetComponent<Fruit>().fruitType>-100)
                         {
                             DestroyController(allFruits[i, j], false);
                         }
@@ -1774,7 +1765,7 @@ public class Board : MonoBehaviour
             {
                 if (allTiles[column, i])
                 {
-                    if (allFruits[column, i] && allFruits[column, i].GetComponent<Fruit>().fruitType > -100)
+                    if (FruitAvailable(allFruits[column, i]) && allFruits[column, i].GetComponent<Fruit>().fruitType > -100)
                     {
                         DestroyController(allFruits[column, i], false);
                         audioManager.FruitCrush();
@@ -1791,7 +1782,7 @@ public class Board : MonoBehaviour
             {
                 if (allTiles[column, i])
                 {
-                    if (allFruits[column, i] && allFruits[column, i].GetComponent<Fruit>().fruitType > -100)
+                    if (FruitAvailable(allFruits[column, i]) && allFruits[column, i].GetComponent<Fruit>().fruitType > -100)
                     {
                         DestroyController(allFruits[column, i], false);
                         audioManager.FruitCrush();
@@ -1819,7 +1810,7 @@ public class Board : MonoBehaviour
 
                 if (allTiles[i, row])
                 {
-                    if (allFruits[i, row] && allFruits[i, row].GetComponent<Fruit>().fruitType > -100)
+                    if (FruitAvailable(allFruits[i, row]) && allFruits[i, row].GetComponent<Fruit>().fruitType > -100)
                     {
                         DestroyController(allFruits[i, row], false);
                         audioManager.FruitCrush();
@@ -1838,7 +1829,7 @@ public class Board : MonoBehaviour
 
                 if (allTiles[i, row])
                 {
-                    if (allFruits[i, row] && allFruits[i, row].GetComponent<Fruit>().fruitType > -100)
+                    if (FruitAvailable(allFruits[i, row]) && allFruits[i, row].GetComponent<Fruit>().fruitType > -100)
                     {
                         DestroyController(allFruits[i, row], false);
                         audioManager.FruitCrush();
@@ -1883,7 +1874,7 @@ public class Board : MonoBehaviour
                 // If tile has no obstacle it destroy fruit but if tile has obstacle then it checks if it is just break with powerup if it is then
                 // it gives log. Also, if tile does exist but there is no obstacle or fruit then gives log.
                 
-                if (allFruits[column, row] && allFruits[column, row].GetComponent<Fruit>().fruitType > -100)
+                if (FruitAvailable(allFruits[column, row]) && allFruits[column, row].GetComponent<Fruit>().fruitType > -100)
                 {
                     specialPowerController.SpecialPowerUpUsed(2);
                     DestroyController(allFruits[column, row], false);

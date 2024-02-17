@@ -1018,17 +1018,23 @@ public class Board : MonoBehaviour
         }
         */
         yield return new WaitForSeconds(0.1f);
-        obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
-        obj.GetComponent<ParticleSystem>().Play();
+        if (obj)
+        {
+            obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
+            obj.GetComponent<ParticleSystem>().Play();
+        }
         yield return new WaitForSeconds(0.2f);
-        obj.GetComponent<Fruit>().outsideOfBoard = true;
-        allFruits[obj.GetComponent<Fruit>().column, obj.GetComponent<Fruit>().row] = null;
+        if (obj)
+        {
+            obj.GetComponent<Fruit>().outsideOfBoard = true;
+            allFruits[obj.GetComponent<Fruit>().column, obj.GetComponent<Fruit>().row] = null;
+        }
         yield return new WaitForSeconds(1.5f);
+        if (obj)
+        {
+            Destroy(obj);
 
-        Destroy(obj);
-
-
-
+        }
     }
 
     /// <summary>
@@ -1523,6 +1529,7 @@ public class Board : MonoBehaviour
                 cloneHorizontalScript.row = row;
                 cloneHorizontalScript.column = column;
                 cloneHorizontal.gameObject.transform.position = allTiles[column, row].transform.position;
+                cloneHorizontalScript.damageID = fruitScript.damageID;
 
                 HorizontalHarvesterMove(cloneHorizontal, true);
                 HorizontalHarvesterMove(fruit, false);
@@ -1542,6 +1549,7 @@ public class Board : MonoBehaviour
                 cloneVerticalScript.row = row;
                 cloneVerticalScript.column = column;
                 cloneVertical.gameObject.transform.position = allTiles[column, row].transform.position;
+                cloneVerticalScript.damageID=fruitScript.damageID;
 
                 VerticalHarvesterMove(cloneVertical, true);
                 VerticalHarvesterMove(fruit, false);

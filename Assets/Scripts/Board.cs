@@ -499,7 +499,7 @@ public class Board : MonoBehaviour
     private IEnumerator CheckAndDestroyMatches()
     {
         // List of fruits going to be popped.
-        List<GameObject> fruitsCheck = new List<GameObject>();
+        List<GameObject> fruitsCheckTotal = new List<GameObject>();
         checkingMatch = true;
         yield return null;
         popped = false;
@@ -509,151 +509,211 @@ public class Board : MonoBehaviour
         int[] typeFruits = new int[fruits.Length];
 
         // Check for matches in columns
-        for (int i = 0; i < width; i++)
+        for (int j = 0; j < height; j++)
         {
-            for (int j = 0; j < height; j++)
+            for (int i = 0; i < width; i++)
             {
-
-                List<GameObject> fruitsCheckTemp = new List<GameObject>();
-                bool same = true;
-                int k = 0;
-                bool rowPopped = false, columnPopped = false, squarePopped = false;
                 // it checking if bottom piece and one above it same. In every cycle it adds the one is currently below checking and if two of them not same
                 // then its out of the  cycle. Checking if the space is null or exist.
                 if (FruitAvailable(allFruits[i, j]) && allFruits[i, j].GetComponent<Fruit>().fruitType >= 0)
                 {
-                    // Column
-                    while (same)
-                    {
-                        if (j + k + 1 >= height || !FruitAvailable(allFruits[i, j + k + 1]) || allFruits[i, j + k].GetComponent<Fruit>().fruitType != allFruits[i, j + k + 1].GetComponent<Fruit>().fruitType)
-                        {
-                            same = false;
-                        }
-                        fruitsCheckTemp.Add(allFruits[i, j + k]);
-                        k++;
-                    }
-                    same = true;
-                    // If there is a more than 2 dual matches then it adds the fruits to main pop list. There is no need to check if there is a same
-                    // fruits inside in main list because this is first filling of main list.
-                    if (k < 3)
-                    {
-                        fruitsCheckTemp.Clear();
-                    }
-                    else
-                    {
-                        columnPopped = true;
-                        fruitsCheck.AddRange(fruitsCheckTemp);
-                    }
-                    k = 0;
 
-                    // Same goes for ROW
-                    while (same)
+                    bool rowPopped = false, columnPopped = false, squarePopped = false;
+
+                    List<GameObject> fruitsCheckRow = new List<GameObject>();
+                    List<GameObject> fruitsCheckColumn = new List<GameObject>();
+                    List<GameObject> fruitsCheckSquare = new List<GameObject>();
+
+                    bool isFirstlyRowDetected = false;
+
+                    fruitsCheckRow = RowCheck(i, j);
+
+                    if (fruitsCheckRow.Count >= 3)
                     {
-                        if (i + k + 1 >= width || !FruitAvailable(allFruits[i + k + 1, j]) || allFruits[i + k, j].GetComponent<Fruit>().fruitType != allFruits[i + k + 1, j].GetComponent<Fruit>().fruitType)
-                        {
-                            same = false;
-                        }
-                        fruitsCheckTemp.Add(allFruits[i + k, j]);
-                        k++;
-                    }
-                    if (k < 3)
-                    {
-                        fruitsCheckTemp.Clear();
-                    }
-                    else
-                    {
+                        isFirstlyRowDetected = true;
+                        List<GameObject> tempFruitsCheckColumn = new List<GameObject>();
                         rowPopped = true;
-                        // It adds the fruits to main pop list (adding the just diffirent ones). 
-                        fruitsCheck.AddRange(fruitsCheckTemp.Except(fruitsCheck).ToList());
-                    }
-
-                    int type;
-
-                    // Checking Square match
-
-                    if (j + 1 < height && FruitAvailable(allFruits[i, j]) && FruitAvailable(allFruits[i, j + 1]) && (type = allFruits[i, j].GetComponent<Fruit>().fruitType) == allFruits[i, j + 1].GetComponent<Fruit>().fruitType)
-                    {
-                        if (i + 1 < width && FruitAvailable(allFruits[i + 1, j]) && FruitAvailable(allFruits[i + 1, j + 1]) && allFruits[i + 1, j].GetComponent<Fruit>().fruitType
-                        == allFruits[i + 1, j + 1].GetComponent<Fruit>().fruitType && type == allFruits[i + 1, j].GetComponent<Fruit>().fruitType)
+                        for(int e=0; e < fruitsCheckRow.Count; e++)
                         {
-                            fruitsCheckTemp.Add(allFruits[i, j]);
-                            fruitsCheckTemp.Add(allFruits[i, j + 1]);
-                            fruitsCheckTemp.Add(allFruits[i + 1, j]);
-                            fruitsCheckTemp.Add(allFruits[i + 1, j + 1]);
-                            squarePopped = true;
+                            tempFruitsCheckColumn = ColumnCheck(fruitsCheckRow[e].GetComponent<Fruit>().column,j);
+                            if(tempFruitsCheckColumn.Count >= 3)
+                            {
+                                fruitsCheckColumn = tempFruitsCheckColumn;
+                                columnPopped = true;
+                                break;
+                            }
+                            tempFruitsCheckColumn.Clear();
                         }
-                    }
 
-                    if (fruitsCheckTemp.Count < 3)
-                    {
-                        fruitsCheckTemp.Clear();
+                        // If both column and row happend than no need to check square
+                        if (!columnPopped)
+                        {
+
+                            List<GameObject> tempFruitsCheckSquare = new List<GameObject>();
+                            for (int e = 0; e < fruitsCheckRow.Count; e++)
+                            {
+                                tempFruitsCheckSquare = SquareCheck(fruitsCheckRow[e].GetComponent<Fruit>().column, j);
+                                if (tempFruitsCheckSquare.Count == 4)
+                                {
+                                    fruitsCheckSquare = tempFruitsCheckSquare;
+                                    squarePopped = true;
+                                    break;
+                                }
+                                tempFruitsCheckSquare.Clear();
+                            }
+                        }
+
                     }
                     else
                     {
-                        fruitsCheck.AddRange(fruitsCheckTemp.Except(fruitsCheck).ToList());
+                        fruitsCheckRow.Clear();
+                        fruitsCheckColumn = ColumnCheck(i,j);
+                        if(fruitsCheckColumn.Count >= 3)
+                        {
+                            List<GameObject> tempFruitsCheckRow = new List<GameObject>();
+                            columnPopped = true;
+                            for (int e = 0; e < fruitsCheckColumn.Count; e++)
+                            {
+                                tempFruitsCheckRow = RowCheck(i, fruitsCheckColumn[e].GetComponent<Fruit>().row);
+                                if (tempFruitsCheckRow.Count >= 3)
+                                {
+                                    fruitsCheckRow = tempFruitsCheckRow;
+                                    rowPopped = true;
+                                    break;
+                                }
+                                tempFruitsCheckRow.Clear();
+                            }
+
+                            // If both column and row happend than no need to check square
+                            if (!rowPopped)
+                            {
+                                List<GameObject> tempFruitsCheckSquare = new List<GameObject>();
+                                for (int e = 0; e < fruitsCheckColumn.Count; e++)
+                                {
+                                    tempFruitsCheckSquare = SquareCheck(i, fruitsCheckColumn[e].GetComponent<Fruit>().row);
+                                    if (tempFruitsCheckSquare.Count == 4)
+                                    {
+                                        fruitsCheckSquare = tempFruitsCheckSquare;
+                                        squarePopped = true;
+                                        break;
+                                    }
+                                    tempFruitsCheckSquare.Clear();
+                                }
+                            }
+                          
+
+                        }
+                        else
+                        {
+                            fruitsCheckSquare = SquareCheck(i, j);
+                            if (fruitsCheckSquare.Count == 4)
+                            {
+                                squarePopped=true;
+                            }
+                            fruitsCheckColumn.Clear();
+                        }
                     }
 
-                    if (fruitsCheck.Count > 0)
+                    int powerUpID=0;
+
+                    fruitsCheckTotal.AddRange(fruitsCheckRow);
+                    fruitsCheckTotal.AddRange(fruitsCheckColumn.Except(fruitsCheckTotal).ToList());
+                    fruitsCheckTotal.AddRange(fruitsCheckSquare.Except(fruitsCheckTotal).ToList());
+
+                    if (squarePopped)
                     {
-                        bool newMatch = false;
+                        // TNT just square
+                       
+                        powerUpID = -3;
+                    }
+                    else if (columnPopped || rowPopped)
+                    {
+                        if (columnPopped && rowPopped)
+                        {
+                            if ((fruitsCheckColumn.Count == 5 && fruitsCheckRow.Count == 3) || (fruitsCheckRow.Count == 5 && fruitsCheckColumn.Count == 3))
+                            {
+                                // Big T
+                                /*
+
+                                * * * * *
+                                    *
+                                    *
+                                    *
+
+                                  */
+
+                                powerUpID = -5;
+
+                            }
+                            else
+                            {
+                                powerUpID = -4;
+                            }
+                            
+
+                        }
+                        else
+                        {
+                            // 5 line light ball
+                            if(fruitsCheckColumn.Count>4 || fruitsCheckRow.Count > 4)
+                            {
+                             
+                                powerUpID = -5;
+                            }
+                            else
+                            {
+                                if (rowPopped)
+                                {
+                                    // 4 match Row popped vertical harvester
+                                    if(fruitsCheckRow.Count > 3)
+                                    {
+                                        powerUpID = -2;
+                                    }
+                                }
+                                else
+                                {
+                                    // 4 match Column popped horizontal harvester
+                                    if (fruitsCheckColumn.Count > 3)
+                                    {
+                                        powerUpID = -1;
+                                    }
+                                }
+                            }
+                           
+                        }
+                    }
+
+                    int type = allFruits[i, j].GetComponent<Fruit>().fruitType;
+
+                    if (fruitsCheckTotal.Count >= 3)
+                    {
                        
                         string damageID = Guid.NewGuid().ToString();
 
-                        for (int e = 0; e < fruitsCheck.Count; e++)
+                        for (int e = 0; e < fruitsCheckTotal.Count; e++)
                         {
-                            fruitsCheck[e].GetComponent<Fruit>().damageID = damageID;
-                            DestroyController(fruitsCheck[e], true);
+                            fruitsCheckTotal[e].GetComponent<Fruit>().damageID = damageID;
+                            DestroyController(fruitsCheckTotal[e], true);
                         }
 
                         audioManager.FruitCrush();
                         type = allFruits[i, j].GetComponent<Fruit>().fruitType;
-                        typeFruits[type] += fruitsCheck.Count;
+                        typeFruits[type] += fruitsCheckTotal.Count;
 
-                        // if these fruit every one of them didn't started to pop then this means this is new match.
-                        /*
-                        if (newMatch)
-                        {
-                            audioManager.FruitCrush();
-                            type = allFruits[i, j].GetComponent<Fruit>().fruitType;
-                            typeFruits[type] += fruitsCheck.Count;
-                        }
-                        */
-                        if (fruitsCheck.Count > 3)
+                        if (powerUpID!=0)
                         {
                             // Creating Power Up according to shape of match.
 
-                            GameObject fruitToChange = fruitsCheck[UnityEngine.Random.Range(0, fruitsCheck.Count)];
+                            GameObject fruitToChange = fruitsCheckTotal[UnityEngine.Random.Range(0, fruitsCheckTotal.Count)];
+
                             int row = fruitToChange.GetComponent<Fruit>().row;
                             int column = fruitToChange.GetComponent<Fruit>().column;
-                            /*
-                            if (fruitsCheck.Count > 4)
-                            {
-                                CreatePowerUp(column, row, -5);
-                                audioManager.PowerUpGain2();
-                            }
-                            else if (rowPopped)
-                            {
-                                CreatePowerUp(column, row, -1);
-                                audioManager.PowerUpGain();
-
-                            }
-                            else if (columnPopped)
-                            {
-                                CreatePowerUp(column, row, -2);
-                                audioManager.PowerUpGain();
-
-                            }
-                            else if (squarePopped)
-                            {
-                                CreatePowerUp(column, row, -5);
-                                audioManager.PowerUpGain2();
-                            }
-                            */
-                            CreatePowerUp(column, row, UnityEngine.Random.Range(-1,-6));
+                            
+                            CreatePowerUp(column, row,powerUpID);
                             audioManager.PowerUpGain();
 
                         }
-                        fruitsCheck.Clear();
+                        fruitsCheckTotal.Clear();
 
                         popped = true;
                         swipeHint.oneHintActive = false;
@@ -691,9 +751,7 @@ public class Board : MonoBehaviour
             }
             else
             {
-
                 StopHint();
-
             }
         }
         else
@@ -702,6 +760,130 @@ public class Board : MonoBehaviour
         }
         checkingMatch = false;
 
+    }
+
+    private List<GameObject> SquareCheck(int column, int row)
+    {
+        List<GameObject> fruitsCheckTemp = new List<GameObject>();
+        int type;
+
+        // Checking Square match
+
+
+        if (row + 1 < height && FruitAvailable(allFruits[column, row]) && FruitAvailable(allFruits[column, row + 1]) && (type = allFruits[column, row].GetComponent<Fruit>().fruitType) == allFruits[column, row + 1].GetComponent<Fruit>().fruitType)
+        {
+            if (column + 1 < width && FruitAvailable(allFruits[column + 1, row]) && FruitAvailable(allFruits[column + 1, row + 1]) && allFruits[column + 1, row].GetComponent<Fruit>().fruitType
+            == allFruits[column + 1, row + 1].GetComponent<Fruit>().fruitType && type == allFruits[column + 1, row].GetComponent<Fruit>().fruitType)
+            {
+                fruitsCheckTemp.Add(allFruits[column, row]);
+                fruitsCheckTemp.Add(allFruits[column, row + 1]);
+                fruitsCheckTemp.Add(allFruits[column + 1, row]);
+                fruitsCheckTemp.Add(allFruits[column + 1, row + 1]);
+                return fruitsCheckTemp;
+            }
+
+            if (column - 1 >= 0 && FruitAvailable(allFruits[column - 1, row]) && FruitAvailable(allFruits[column - 1, row + 1]) && allFruits[column - 1, row].GetComponent<Fruit>().fruitType
+           == allFruits[column - 1, row + 1].GetComponent<Fruit>().fruitType && type == allFruits[column - 1, row].GetComponent<Fruit>().fruitType)
+            {
+                fruitsCheckTemp.Add(allFruits[column, row]);
+                fruitsCheckTemp.Add(allFruits[column, row + 1]);
+                fruitsCheckTemp.Add(allFruits[column - 1, row]);
+                fruitsCheckTemp.Add(allFruits[column - 1, row + 1]);
+                return fruitsCheckTemp;
+            }
+        }
+
+        return fruitsCheckTemp;
+    }
+
+    /// <summary>
+    /// First try to start position by checking if is same type of fruit to downward direction. After finding out lowest positioned fruit then putting same type of fruits to
+    /// list.
+    /// </summary>
+    /// <param name="column"></param>
+    /// <param name="row"></param>
+    /// <returns></returns>
+    private List<GameObject> ColumnCheck(int column, int row)
+    {
+        bool same = true;
+        List<GameObject> fruitsCheckTemp = new List<GameObject>();
+        int k = 0;
+        int startRow = row;
+
+        // Finding lowest positioned fruits.
+        while (same)
+        {
+            if (row + k - 1 < 0 || !FruitAvailable(allFruits[column, row + k - 1]) || allFruits[column, row + k].GetComponent<Fruit>().fruitType != allFruits[column, row + k - 1].GetComponent<Fruit>().fruitType)
+            {
+                same = false;
+                startRow = row + k;
+            }
+            k--;
+        }
+
+        k = 0;
+        same = true;
+
+        while (same)
+        {
+            if (startRow + k + 1 >= height || !FruitAvailable(allFruits[column, startRow + k + 1]) || allFruits[column, startRow + k].GetComponent<Fruit>().fruitType != allFruits[column, startRow + k + 1].GetComponent<Fruit>().fruitType)
+            {
+                same = false;
+            }
+            fruitsCheckTemp.Add(allFruits[column, startRow + k]);
+            k++;
+        }
+
+        return fruitsCheckTemp;
+    }
+
+    /// <summary>
+    /// First try to start position by checking if is same type of fruit to left direction. After finding out leftmost positioned fruit then putting same type of fruits to 
+    /// list.
+    /// </summary>
+    /// <param name="column"></param>
+    /// <param name="row"></param>
+    /// <returns></returns>
+    private List<GameObject> RowCheck(int column, int row)
+    {
+        bool same = true;
+        List<GameObject> fruitsCheckTemp = new List<GameObject>();
+        int k = 0;
+        int startColumn=column;
+
+
+        // Finding leftmost positinoed fruit.
+        while (same)
+        {
+            if (column + k - 1 < 0 || !FruitAvailable(allFruits[column + k - 1, row]) || allFruits[column + k, row].GetComponent<Fruit>().fruitType != allFruits[column + k - 1, row].GetComponent<Fruit>().fruitType)
+            {
+                same = false;
+                startColumn = column + k;
+            }
+            k--;
+        }
+
+      
+        k = 0;
+        same = true;
+
+        while (same)
+        {
+            if (startColumn + k + 1 >= width || !FruitAvailable(allFruits[startColumn + k + 1, row]) || allFruits[startColumn + k, row].GetComponent<Fruit>().fruitType != allFruits[startColumn + k + 1, row].GetComponent<Fruit>().fruitType)
+            {
+                same = false;
+            }
+            fruitsCheckTemp.Add(allFruits[startColumn + k, row]);
+            k++;
+        }
+
+        if (startColumn != column && fruitsCheckTemp.Count>=3)
+        {
+            Debug.Log("Startcolumn: " + startColumn);
+        }
+
+
+        return fruitsCheckTemp;
     }
 
     /// <summary>

@@ -697,7 +697,6 @@ public class Board : MonoBehaviour
                             DestroyController(fruitsCheckTotal[e], true);
                         }
 
-                        audioManager.FruitCrush();
                         type = allFruits[i, j].GetComponent<Fruit>().fruitType;
                         typeFruits[type] += fruitsCheckTotal.Count;
 
@@ -707,8 +706,12 @@ public class Board : MonoBehaviour
 
                             GameObject fruitToChange = fruitsCheckTotal[UnityEngine.Random.Range(0, fruitsCheckTotal.Count)];                      
 
-                            StartCoroutine(FruitsGatheringAnim(fruitsCheckTotal, fruitToChange.GetComponent<Fruit>().column, fruitToChange.GetComponent<Fruit>().row,powerUpID));                                             
+                            StartCoroutine(FruitsGatheringAnim(fruitsCheckTotal, fruitToChange.GetComponent<Fruit>().column, fruitToChange.GetComponent<Fruit>().row,powerUpID));
 
+                        }
+                        else
+                        {
+                            audioManager.FruitCrush();
                         }
                         fruitsCheckTotal.Clear();
 
@@ -946,7 +949,7 @@ public class Board : MonoBehaviour
         {
             // If one of them is power up then they switch and power up activate.
             ChangeTwoFruit(fruit, otherFruit);
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
             if(!specialSwipe)
             {
                 if ((fruitScript.fruitType > -100 && fruitScript.fruitType < 0) || (otherFruitScript.fruitType > -100 && otherFruitScript.fruitType < 0))

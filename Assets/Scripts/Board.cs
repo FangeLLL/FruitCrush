@@ -1359,6 +1359,7 @@ public class Board : MonoBehaviour
                 newFruitScript.row = emptyRowIndex;
                 newFruitScript.fruitType = fruitToUse;
                 newFruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
+                totalNumberOfFruits[fruitToUse]++;
 
                 audioManager.FruitFall();
                 // Add the new fruit to the allFruits array

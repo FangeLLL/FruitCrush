@@ -401,7 +401,7 @@ public class Board : MonoBehaviour
         GameObject fruit = allFruits[column, row];
         if (fruit.GetComponent<Fruit>().isSwiped)
         {
-            audioManager.SwipeResistBorder();
+            Debug.Log("This fruit already swiping");
             return;
         }
         if (swipeAngle > -45 && swipeAngle <= 45 && column + 1 < width)
@@ -414,7 +414,6 @@ public class Board : MonoBehaviour
             else
             {
                 Debug.Log("You cant swipe right!!!");
-                audioManager.SwipeResistBorder();
                 return;
             }
 
@@ -429,7 +428,6 @@ public class Board : MonoBehaviour
             else
             {
                 Debug.Log("You cant swipe up!!!");
-                audioManager.SwipeResistBorder();
                 return;
             }
 
@@ -444,7 +442,6 @@ public class Board : MonoBehaviour
             else
             {
                 Debug.Log("You cant swipe left!!!");
-                audioManager.SwipeResistBorder();
                 return;
             }
 
@@ -459,7 +456,6 @@ public class Board : MonoBehaviour
             else
             {
                 Debug.Log("You cant swipe down!!!");
-                audioManager.SwipeResistBorder();
                 return;
             }
         }
@@ -596,9 +592,7 @@ public class Board : MonoBehaviour
                                     }
                                     tempFruitsCheckSquare.Clear();
                                 }
-                            }
-                          
-
+                            }                        
                         }
                         else
                         {
@@ -724,7 +718,6 @@ public class Board : MonoBehaviour
                         StopHintAnimations();
                         achievementManager.AchievementProgress(typeFruits);
                     }
-
                 }
             }
         }
@@ -892,14 +885,13 @@ public class Board : MonoBehaviour
 
         yield return new WaitForSeconds(0.3f);
 
+        CreatePowerUp(column, row, powerUpID);
 
         foreach (GameObject obj in DestroyFruits)
         {
             Destroy(obj);
         }
 
-
-        CreatePowerUp(column, row, powerUpID);
         audioManager.PowerUpGain();
     }
 

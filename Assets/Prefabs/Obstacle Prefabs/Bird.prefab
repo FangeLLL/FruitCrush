@@ -19,7 +19,7 @@ PrefabInstance:
     - target: {fileID: 4269577592316774446, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 0610e9cc4c5652a43b87efecaafbef8a, type: 3}
+      objectReference: {fileID: 21300000, guid: 3945775129283f74d91e9b65c56b0415, type: 3}
     - target: {fileID: 4269577592316774446, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -176,3 +176,4 @@ MonoBehaviour:
   swipeUp: 381951799
   swipeDown: 1769856547
   swipeFlash: -577822589
+  boomerangRotating: -759622409

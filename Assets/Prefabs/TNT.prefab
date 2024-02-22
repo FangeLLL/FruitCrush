@@ -439,22 +439,22 @@ PrefabInstance:
     - target: {fileID: 1769958116402937428, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 6350814391ec9754b86856890ed17e3f, type: 3}
+      objectReference: {fileID: 21300000, guid: abe6b92b6b74d0b419381ad1c90b5d40, type: 3}
     - target: {fileID: 4633664314048729591, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 290be07fe513cc14d95f6f82ee0dfcc8, type: 2}
     - target: {fileID: 6775481451483027233, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.8333333
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6775481451483027233, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.8333333
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6775481451483027233, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.8333333
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6775481451483027233, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_LocalPosition.x

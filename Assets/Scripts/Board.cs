@@ -502,7 +502,7 @@ public class Board : MonoBehaviour
         hintBool = false;
 
         // For, achivement progress it contains type of fruits popped count.  
-        int[] typeFruits = new int[fruits.Length];
+      //  int[] typeFruits = new int[fruits.Length];
 
         // Check for matches in columns
         for (int j = 0; j < height; j++)
@@ -634,14 +634,11 @@ public class Board : MonoBehaviour
                                   */
 
                                 powerUpID = -5;
-
                             }
                             else
                             {
                                 powerUpID = -4;
-                            }
-                            
-
+                            }                          
                         }
                         else
                         {
@@ -674,8 +671,6 @@ public class Board : MonoBehaviour
                         }
                     }
 
-                    int type = allFruits[i, j].GetComponent<Fruit>().fruitType;
-
                     if (fruitsCheckTotal.Count >= 3)
                     {
                        
@@ -684,6 +679,7 @@ public class Board : MonoBehaviour
                         for (int e = 0; e < fruitsCheckTotal.Count; e++)
                         {
                             fruitsCheckTotal[e].GetComponent<Fruit>().damageID = damageID;
+                            
                             if (powerUpID != 0)
                             {
                                 fruitsCheckTotal[e].GetComponent<Fruit>().outsideOfBoard = true;
@@ -691,17 +687,16 @@ public class Board : MonoBehaviour
                             DestroyController(fruitsCheckTotal[e], true);
                         }
 
-                        type = allFruits[i, j].GetComponent<Fruit>().fruitType;
-                        typeFruits[type] += fruitsCheckTotal.Count;
+                        int type = allFruits[i, j].GetComponent<Fruit>().fruitType;
+                     //   typeFruits[type] += fruitsCheckTotal.Count;
 
                         if (powerUpID!=0)
                         {
                             // Creating Power Up according to shape of match.
 
-                            GameObject fruitToChange = fruitsCheckTotal[UnityEngine.Random.Range(0, fruitsCheckTotal.Count)];                      
+                            GameObject fruitToChange = fruitsCheckTotal[UnityEngine.Random.Range(0, fruitsCheckTotal.Count)];
 
-                            StartCoroutine(FruitsGatheringAnim(fruitsCheckTotal, fruitToChange.GetComponent<Fruit>().column, fruitToChange.GetComponent<Fruit>().row,powerUpID));
-
+                               StartCoroutine(FruitsGatheringAnim(fruitsCheckTotal, fruitToChange.GetComponent<Fruit>().column, fruitToChange.GetComponent<Fruit>().row,powerUpID));
                         }
                         else
                         {
@@ -716,7 +711,7 @@ public class Board : MonoBehaviour
                         // SWIPE HINT ANIMATION STOP
 
                         StopHintAnimations();
-                        achievementManager.AchievementProgress(typeFruits);
+                      //  achievementManager.AchievementProgress(typeFruits);
                     }
                 }
             }
@@ -1209,13 +1204,22 @@ public class Board : MonoBehaviour
         }
         */
         yield return new WaitForSeconds(0.1f);
-        obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
-        obj.GetComponent<ParticleSystem>().Play();
+        if (obj)
+        {
+            obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
+            obj.GetComponent<ParticleSystem>().Play();
+        }
         yield return new WaitForSeconds(0.2f);
-        obj.GetComponent<Fruit>().outsideOfBoard = true;
-        allFruits[obj.GetComponent<Fruit>().column, obj.GetComponent<Fruit>().row] = null;
+        if (obj)
+        {
+            obj.GetComponent<Fruit>().outsideOfBoard = true;
+            allFruits[obj.GetComponent<Fruit>().column, obj.GetComponent<Fruit>().row] = null;
+        }
         yield return new WaitForSeconds(1.5f);
-        Destroy(obj);
+        if (obj)
+        {
+            Destroy(obj);
+        }
 
     }
 
@@ -1836,8 +1840,6 @@ public class Board : MonoBehaviour
                     allTiles[column, row].GetComponent<BackgroundTile>().Explosion(column, row, obj.GetComponent<Fruit>().damageID, obj.GetComponent<Fruit>().colorType);
                 }
                 totalNumberOfFruits[obj.GetComponent<Fruit>().fruitType]--;
-                //     obj.GetComponent<Fruit>().outsideOfBoard = true;
-                //     allFruits[column, row] = null;
                 if (!obj.GetComponent<Fruit>().outsideOfBoard)
                 {
                     StartCoroutine(FruitPop(obj));

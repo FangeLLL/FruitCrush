@@ -939,7 +939,7 @@ public class Board : MonoBehaviour
             // Selected power up moves towards to other power up
             fruitScript.row = otherFruitScript.row;
             fruitScript.column = otherFruitScript.column;
-            fruitScript.targetV = otherFruitScript.targetV;
+            fruitScript.targetV = otherFruitScript.targetV; 
 
             ActivateMergePowerUp(fruit, otherFruit);
             succesfulMove = true;
@@ -1768,7 +1768,14 @@ public class Board : MonoBehaviour
                 fruitScript.targetV = GetBoomerangTargetLoc(fruitScript.column, fruitScript.row);
 
                 allFruits[fruitScript.column, fruitScript.row] = null;
-                
+
+                // fruit.GetComponent<TurnObject>().enabled = true;
+
+
+               // fruit.transform.GetChild(0).GetComponent<TrailRenderer>().enabled = true;
+               // fruit.transform.GetChild(0).GetChild(1).GetComponentInChildren<TrailRenderer>().enabled = true;
+
+                fruit.GetComponentInChildren<Animator>().SetBool(fruitScript.boomerangRotating, true);
 
                 if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
                 {

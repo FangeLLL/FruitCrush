@@ -70,6 +70,7 @@ MonoBehaviour:
   swipeUp: 381951799
   swipeDown: 1769856547
   swipeFlash: -577822589
+  boomerangRotating: -759622409
 --- !u!198 &-8336548580480921090
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -153,7 +154,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.7
+      scalar: 2
       minScalar: 1.5
       maxCurve:
         serializedVersion: 2

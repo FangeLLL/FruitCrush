@@ -33,6 +33,8 @@ public class Board : MonoBehaviour
     Animator fruitAnimator4;
     Animator fruitAnimator5;
 
+    public Sprite harvesterUpSprite, harvesterDownSprite;
+
     [SerializeField]
     private GameObject[] fruits;
     [SerializeField]
@@ -953,7 +955,7 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     private bool FruitAvailable(GameObject obj)
     {
-        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.2f && !obj.GetComponent<Fruit>().fadeout)
+        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.4f && !obj.GetComponent<Fruit>().fadeout)
         {
             return true;
         }
@@ -1777,7 +1779,9 @@ public class Board : MonoBehaviour
 
                 GameObject cloneHorizontal = Instantiate(powerUps[0], allTiles[column, row].transform.position, powerUps[0].transform.rotation);
                 Fruit cloneHorizontalScript = cloneHorizontal.GetComponent<Fruit>();
-                cloneHorizontal.GetComponentInChildren<SpriteRenderer>().flipX = false;
+
+                cloneHorizontalScript.GetComponentInChildren<SpriteRenderer>().sprite = harvesterUpSprite;
+                fruitScript.GetComponentInChildren<SpriteRenderer>().sprite = harvesterDownSprite;
 
                 cloneHorizontalScript.row = row;
                 cloneHorizontalScript.column = column;
@@ -1808,7 +1812,9 @@ public class Board : MonoBehaviour
 
                 GameObject cloneVertical = Instantiate(powerUps[1], allTiles[column, row].transform.position, powerUps[1].transform.rotation);
                 Fruit cloneVerticalScript = cloneVertical.GetComponent<Fruit>();
-                cloneVertical.GetComponentInChildren<SpriteRenderer>().flipY = true;
+
+                cloneVertical.GetComponentInChildren<SpriteRenderer>().sprite = harvesterDownSprite;
+                fruitScript.GetComponentInChildren<SpriteRenderer>().sprite = harvesterUpSprite;
 
                 cloneVerticalScript.row = row;
                 cloneVerticalScript.column = column;

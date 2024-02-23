@@ -485,6 +485,9 @@ public class Board : MonoBehaviour
 
         StopHintAnimations();
 
+        currentFruit = fruit;
+        currentOtherFruit = otherFruit;
+
         audioManager.Swipe();
         StartCoroutine(CheckMove(fruit, otherFruit));
         if (!checkingMatch)
@@ -616,7 +619,21 @@ public class Board : MonoBehaviour
                                     }
                                     tempFruitsCheckRow.Clear();
                                 }
-                                if (fruitsCheckRow.Count < 3)
+
+                                List<GameObject> tempFruitsCheckColumn = new List<GameObject>();
+                                for (int e = 0; e < fruitsCheckSquare.Count; e++)
+                                {
+                                    tempFruitsCheckColumn = ColumnCheck(fruitsCheckSquare[e].GetComponent<Fruit>().column, j);
+                                    if (tempFruitsCheckColumn.Count >= 3)
+                                    {
+                                        fruitsCheckColumn = tempFruitsCheckColumn;
+                                        columnPopped = true;
+                                        break;
+                                    }
+                                    tempFruitsCheckColumn.Clear();
+                                }
+
+                                if (fruitsCheckRow.Count < 4 && fruitsCheckColumn.Count < 4)
                                 {
                                     squarePopped = true;
                                 }
@@ -1013,8 +1030,6 @@ public class Board : MonoBehaviour
             // If special swipe happen then its not count as move.
             if (!specialSwipe)
             {
-                currentFruit = fruit;
-                currentOtherFruit = otherFruit;
                 taskController.MovePlayed();
             }
             else
@@ -1026,8 +1041,6 @@ public class Board : MonoBehaviour
         }
         else
         {
-            currentOtherFruit = null;
-            currentFruit = null;
             //swipeHint.oneHintActive = false;
             audioManager.SwipeResist();
             ChangeTwoFruit(fruit, otherFruit);
@@ -1046,7 +1059,8 @@ public class Board : MonoBehaviour
 
         }
 
-
+        currentOtherFruit = null;
+        currentFruit = null;
     }
 
     /// <summary>

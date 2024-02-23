@@ -60,6 +60,9 @@ public class Board : MonoBehaviour
 
     private int[] columnsFallIndexY;
 
+    // When fruits swiped these gameobjects fills and used for creation powerup positions 
+    public GameObject currentFruit, currentOtherFruit;
+
     // Each index represents related id of an fruit. 
     private int[] totalNumberOfFruits;
 
@@ -77,6 +80,8 @@ public class Board : MonoBehaviour
 
     void Start()
     {
+       // Time.timeScale = 0.5f;
+
         userLevel = PlayerPrefs.GetInt("level", 0);
 
         Grid gridData = saveData.gridData[userLevel];
@@ -480,6 +485,9 @@ public class Board : MonoBehaviour
 
         StopHintAnimations();
 
+        currentFruit = fruit;
+        currentOtherFruit = otherFruit;
+
         audioManager.Swipe();
         StartCoroutine(CheckMove(fruit, otherFruit));
         if (!checkingMatch)
@@ -599,7 +607,36 @@ public class Board : MonoBehaviour
                             fruitsCheckSquare = SquareCheck(i, j);
                             if (fruitsCheckSquare.Count == 4)
                             {
-                                squarePopped=true;
+                                List<GameObject> tempFruitsCheckRow = new List<GameObject>();
+                                for (int e = 0; e < fruitsCheckSquare.Count; e++)
+                                {
+                                    tempFruitsCheckRow = RowCheck(i, fruitsCheckSquare[e].GetComponent<Fruit>().row);
+                                    if (tempFruitsCheckRow.Count >= 3)
+                                    {
+                                        fruitsCheckRow = tempFruitsCheckRow;
+                                        rowPopped = true;
+                                        break;
+                                    }
+                                    tempFruitsCheckRow.Clear();
+                                }
+
+                                List<GameObject> tempFruitsCheckColumn = new List<GameObject>();
+                                for (int e = 0; e < fruitsCheckSquare.Count; e++)
+                                {
+                                    tempFruitsCheckColumn = ColumnCheck(fruitsCheckSquare[e].GetComponent<Fruit>().column, j);
+                                    if (tempFruitsCheckColumn.Count >= 3)
+                                    {
+                                        fruitsCheckColumn = tempFruitsCheckColumn;
+                                        columnPopped = true;
+                                        break;
+                                    }
+                                    tempFruitsCheckColumn.Clear();
+                                }
+
+                                if (fruitsCheckRow.Count < 4 && fruitsCheckColumn.Count < 4)
+                                {
+                                    squarePopped = true;
+                                }
                             }
                             fruitsCheckColumn.Clear();
                         }
@@ -694,9 +731,28 @@ public class Board : MonoBehaviour
                         {
                             // Creating Power Up according to shape of match.
 
-                            GameObject fruitToChange = fruitsCheckTotal[UnityEngine.Random.Range(0, fruitsCheckTotal.Count)];
+                            GameObject fruitToChange;
 
-                               StartCoroutine(FruitsGatheringAnim(fruitsCheckTotal, fruitToChange.GetComponent<Fruit>().column, fruitToChange.GetComponent<Fruit>().row,powerUpID));
+                            if (fruitsCheckTotal.Contains(currentFruit))
+                            {
+                                fruitToChange = currentFruit;
+                                currentFruit = null;
+                                currentOtherFruit = null;
+                            }else  if (fruitsCheckTotal.Contains(currentOtherFruit))
+                            {
+                                fruitToChange = currentOtherFruit;
+                                currentOtherFruit = null;
+                                currentFruit = null;
+                            }
+                            else
+                            {
+                                fruitToChange = fruitsCheckTotal[UnityEngine.Random.Range(0, fruitsCheckTotal.Count)];
+                            }
+
+                          //  CreatePowerUp(fruitToChange.GetComponent<Fruit>().column, fruitToChange.GetComponent<Fruit>().row, powerUpID);
+
+
+                            StartCoroutine(FruitsGatheringAnim(fruitsCheckTotal, fruitToChange.GetComponent<Fruit>().column, fruitToChange.GetComponent<Fruit>().row,powerUpID));
                         }
                         else
                         {
@@ -878,9 +934,9 @@ public class Board : MonoBehaviour
             fruit.GetComponent<Fruit>().targetV = gatherPosition;
         }
 
-        yield return new WaitForSeconds(0.3f);
-
         CreatePowerUp(column, row, powerUpID);
+
+        yield return new WaitForSeconds(0.3f);
 
         foreach (GameObject obj in DestroyFruits)
         {
@@ -897,7 +953,7 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     private bool FruitAvailable(GameObject obj)
     {
-        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.5f && !obj.GetComponent<Fruit>().fadeout)
+        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.2f && !obj.GetComponent<Fruit>().fadeout)
         {
             return true;
         }
@@ -1003,7 +1059,8 @@ public class Board : MonoBehaviour
 
         }
 
-
+        currentOtherFruit = null;
+        currentFruit = null;
     }
 
     /// <summary>
@@ -1421,6 +1478,7 @@ public class Board : MonoBehaviour
 
 
         // Add the new powerup to the allFruits array
+        allFruits[column, row] = null;
         allFruits[column, row] = newPowerUp;
     }
 
@@ -1670,15 +1728,23 @@ public class Board : MonoBehaviour
                     }
                     break;
                 case -4:
-
                     audioManager.Pickaxe();
-                    otherFruitScript.fadeout = true;
-                    otherFruitScript.outsideOfBoard = true;
-                    otherFruitScript.moveToward = true;
-                    allFruits[otherFruitScript.column, otherFruitScript.row] = null;
-                    otherFruitScript.speedMultiplier = 10f;
-                    fruitScript.attachedPowerUp = otherFruit;
-                    ActivatePowerUp(fruit);
+                    if (otherFruitScript.fruitType == -5)
+                    {
+                        fruitScript.fadeout = true;
+                        StartCoroutine(FadeOut(fruit));
+                        ActivatePowerUp(otherFruit, fruitScript.fruitType);
+                    }
+                    else
+                    {
+                        otherFruitScript.fadeout = true;
+                        otherFruitScript.outsideOfBoard = true;
+                        otherFruitScript.moveToward = true;
+                        allFruits[otherFruitScript.column, otherFruitScript.row] = null;
+                        otherFruitScript.speedMultiplier = 10f;
+                        fruitScript.attachedPowerUp = otherFruit;
+                        ActivatePowerUp(fruit);
+                    }              
 
                     break;
                 case -5:

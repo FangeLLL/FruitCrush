@@ -26,6 +26,7 @@ public class MainMenuController : Sounds
     [SerializeField] private GameObject settingsIcon;
     [SerializeField] private GameObject tasksIcon;
     [SerializeField] private GameObject battlePassIcon;
+    [SerializeField] private GameObject farmIcon;
 
     [SerializeField] private GameObject grayBack;
     [SerializeField] private GameObject shopBackground;
@@ -48,6 +49,8 @@ public class MainMenuController : Sounds
     [SerializeField] private GameObject tasksCloseButton;
     [SerializeField] private GameObject battlePassMenu;
     [SerializeField] private GameObject battlePassCloseButton;
+    [SerializeField] private GameObject farmMenu;
+    [SerializeField] private GameObject farmCloseButton;
 
     [SerializeField] private GameObject musicToggleBlock;
     [SerializeField] private GameObject soundToggleBlock;
@@ -120,6 +123,7 @@ public class MainMenuController : Sounds
         starBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
         livesBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
         settingsIcon.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+        farmIcon.GetComponent<Animator>().SetTrigger("GameFinishTriggerReverse");
 
         yield return new WaitForSeconds(0.25f);
 
@@ -218,7 +222,7 @@ public class MainMenuController : Sounds
 
     IEnumerator PlayButtonTappedEnum()
     {
-        playButton.GetComponent<Animator>().SetTrigger("Tapped");
+        //playButton.GetComponent<Animator>().SetTrigger("Tapped");
         playBox.SetActive(true);
         playBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
 
@@ -255,7 +259,7 @@ public class MainMenuController : Sounds
 
     IEnumerator PlayBoxPlayButtonTappedEnum()
     {
-        playButton.GetComponent<Animator>().SetTrigger("Tapped");
+        //playButton.GetComponent<Animator>().SetTrigger("Tapped");
 
         if (liveRegen.lives <= 0)
         {
@@ -402,5 +406,10 @@ public class MainMenuController : Sounds
         battlePassMenu.SetActive(false);
         //notification ayarlamaca
         audioManager.MenuClickReturn();
+    }
+
+    public void FarmButtonTapped()
+    {
+        Debug.Log("Farm");
     }
 }

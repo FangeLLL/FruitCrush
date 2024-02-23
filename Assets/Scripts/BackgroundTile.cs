@@ -54,7 +54,7 @@ public class BackgroundTile : MonoBehaviour
         if (indexOfVisibleOne>=0)
         {
             PowerUpBoom(fruitScript.damageID);
-            if (fruitScript.attachedPowerUp)
+            if (fruitScript.fruitType==-4 && fruitScript.attachedPowerUp)
             {
                 Fruit powerUpScript = fruitScript.attachedPowerUp.GetComponent<Fruit>();
                 powerUpScript.targetV = transform.position;
@@ -75,25 +75,31 @@ public class BackgroundTile : MonoBehaviour
 
             if (fruitScript.targetV == vector2)
             {
-                fruitScript.hitBorder++;
-                if (fruitScript.hitBorder == 2)
+                if(fruitScript.fruitType == -4)
                 {
-                    if (fruitScript.attachedPowerUp)
+                    fruitScript.hitBorder++;
+                    if (fruitScript.hitBorder == 2)
                     {
-                        Fruit powerUpScript = fruitScript.attachedPowerUp.GetComponent<Fruit>();
-                        powerUpScript.targetV = transform.position;
-                        powerUpScript.row = row;
-                        powerUpScript.column = column;
-                        powerUpScript.moveToward = false;
-                        board.ActivatePowerUp(fruitScript.attachedPowerUp);
+                        if (fruitScript.attachedPowerUp)
+                        {
+                            Fruit powerUpScript = fruitScript.attachedPowerUp.GetComponent<Fruit>();
+                            powerUpScript.targetV = transform.position;
+                            powerUpScript.row = row;
+                            powerUpScript.column = column;
+                            powerUpScript.moveToward = false;
+                            board.ActivatePowerUp(fruitScript.attachedPowerUp);
+                        }
+                        StartCoroutine(board.FadeOut(other.gameObject));
                     }
-                    StartCoroutine(board.FadeOut(other.gameObject));
-                }
-                else
-                {
-                    fruitScript.targetV = board.GetBoomerangTargetLoc(column, row);
+                    else
+                    {
+                        fruitScript.targetV = board.GetBoomerangTargetLoc(column, row);
 
-                }
+                    }
+                }else
+                {
+                    Destroy(other.gameObject);
+                }           
             }
         }
        

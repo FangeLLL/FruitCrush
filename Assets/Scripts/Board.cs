@@ -1784,8 +1784,19 @@ public class Board : MonoBehaviour
                 cloneHorizontal.gameObject.transform.position = allTiles[column, row].transform.position;
                 cloneHorizontalScript.damageID = fruitScript.damageID;
 
-                HorizontalHarvesterMove(cloneHorizontal, true);
-                HorizontalHarvesterMove(fruit, false);
+                fruitScript.speedMultiplier = 5f;
+                cloneHorizontalScript.speedMultiplier = 5f;
+
+                fruitScript.targetV.x = allTiles[0, row].transform.position.x;
+                cloneHorizontalScript.targetV.x = allTiles[width - 1, row].transform.position.x;
+
+
+                fruitScript.outsideOfBoard = true;
+                cloneHorizontalScript.outsideOfBoard = true;
+
+                allFruits[column, row] = null;
+                cloneHorizontalScript.GetComponent<Collider2D>().enabled = true;
+                fruitScript.GetComponent<Collider2D>().enabled = true;
                 if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
                 {
                     audioManager.Harvester();
@@ -1804,8 +1815,19 @@ public class Board : MonoBehaviour
                 cloneVertical.gameObject.transform.position = allTiles[column, row].transform.position;
                 cloneVerticalScript.damageID=fruitScript.damageID;
 
-                VerticalHarvesterMove(cloneVertical, true);
-                VerticalHarvesterMove(fruit, false);
+                fruitScript.speedMultiplier = 5f;
+                cloneVerticalScript.speedMultiplier = 5f;
+
+                fruitScript.targetV.y = allTiles[column, 0].transform.position.y;
+                cloneVerticalScript.targetV.y = allTiles[column, height - 1].transform.position.y;
+
+                fruitScript.outsideOfBoard = true;
+                cloneVerticalScript.outsideOfBoard = true;
+
+                allFruits[column, row] = null;
+                cloneVerticalScript.GetComponent<Collider2D>().enabled = true;
+                fruitScript.GetComponent<Collider2D>().enabled = true;
+
                 if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
                 {
                     audioManager.Harvester();
@@ -1948,75 +1970,6 @@ public class Board : MonoBehaviour
             }
         }
         StartCoroutine(FadeOut(tnt));
-
-    }
-
-    /// <summary>
-    /// Horizontal Harvester move left and right so clone goes right and real one goes left. 
-    /// </summary>
-    /// <param name="harvester"></param>
-    /// <param name="clone"></param>
-    private void HorizontalHarvesterMove(GameObject harvester, bool clone)
-    {
-        float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
-        //  float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
-
-        // Vector2 tempPosition = new Vector2((width-1) * scaleNumber - xOffset, (height-1) * scaleNumber - yOffset);
-
-        Fruit harvesterScript = harvester.GetComponent<Fruit>();
-        //harvesterScript.speed = 0.04f;
-        int row = harvesterScript.row, column = harvesterScript.column;
-        if (clone)
-        {
-            harvesterScript.targetV.x = ((width - 1) * scaleNumber - xOffset) + 1;
-
-            HorizontalDestroy(column, row, true, harvesterScript.damageID);
-        }
-        else
-        {
-            harvesterScript.targetV.x = -xOffset - 1;
-
-            HorizontalDestroy(column, row, false, harvesterScript.damageID);
-
-        }
-        if (allTiles[column, row])
-        {
-            allTiles[column, row].GetComponent<BackgroundTile>().PowerUpBoom(harvesterScript.damageID);
-        }
-        StartCoroutine(FadeOut(harvester));
-
-    }
-
-    /// <summary>
-    /// Vertical Harvester move up and down so clone goes down and real one goes up. 
-    /// </summary>
-    /// <param name="harvester"></param>
-    /// <param name="clone"></param>
-    public void VerticalHarvesterMove(GameObject harvester, bool clone)
-    {
-        float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
-        Fruit harvesterScript = harvester.GetComponent<Fruit>();
-        int row = harvesterScript.row, column = harvesterScript.column;
-        if (clone)
-        {
-            //  harvesterScript.targetV.y = allTiles[column, 0].transform.position.y - 1;
-            harvesterScript.targetV.y = (height - 1) * scaleNumber - yOffset - 1;
-
-            VerticalDestroy(column, row, false,harvesterScript.damageID);
-        }
-        else
-        {
-            //    harvesterScript.targetV.y = allTiles[column, height - 1].transform.position.y + 1;
-            harvesterScript.targetV.y = -yOffset - 1;
-
-            VerticalDestroy(column, row, true, harvesterScript.damageID);
-
-        }
-        if (allTiles[column, row])
-        {
-            allTiles[column, row].GetComponent<BackgroundTile>().PowerUpBoom(harvesterScript.damageID);
-        }
-        StartCoroutine(FadeOut(harvester));
 
     }
 

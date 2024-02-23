@@ -259,7 +259,7 @@ public class MainMenuController : Sounds
 
     IEnumerator PlayBoxPlayButtonTappedEnum()
     {
-        playButton.GetComponent<Animator>().SetTrigger("Tapped");
+        //playButton.GetComponent<Animator>().SetTrigger("Tapped");
 
         if (liveRegen.lives <= 0)
         {

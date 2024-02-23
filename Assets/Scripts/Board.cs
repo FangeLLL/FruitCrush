@@ -732,8 +732,10 @@ public class Board : MonoBehaviour
                                 fruitToChange = fruitsCheckTotal[UnityEngine.Random.Range(0, fruitsCheckTotal.Count)];
                             }
 
+                          //  CreatePowerUp(fruitToChange.GetComponent<Fruit>().column, fruitToChange.GetComponent<Fruit>().row, powerUpID);
 
-                               StartCoroutine(FruitsGatheringAnim(fruitsCheckTotal, fruitToChange.GetComponent<Fruit>().column, fruitToChange.GetComponent<Fruit>().row,powerUpID));
+
+                            StartCoroutine(FruitsGatheringAnim(fruitsCheckTotal, fruitToChange.GetComponent<Fruit>().column, fruitToChange.GetComponent<Fruit>().row,powerUpID));
                         }
                         else
                         {
@@ -915,9 +917,9 @@ public class Board : MonoBehaviour
             fruit.GetComponent<Fruit>().targetV = gatherPosition;
         }
 
-        yield return new WaitForSeconds(0.3f);
-
         CreatePowerUp(column, row, powerUpID);
+
+        yield return new WaitForSeconds(0.3f);
 
         foreach (GameObject obj in DestroyFruits)
         {

@@ -33,6 +33,9 @@ public class Board : MonoBehaviour
     Animator fruitAnimator4;
     Animator fruitAnimator5;
 
+    [SerializeField]
+    private GameObject[] specialPowerUps;
+
     public Sprite harvesterUpSprite, harvesterDownSprite;
 
     [SerializeField]
@@ -2080,7 +2083,7 @@ public class Board : MonoBehaviour
         string damageID = Guid.NewGuid().ToString();
 
         bool failed = false;
-        if (shuffling)
+        if (shuffling || blockUserMove)
         {
             return;
         }
@@ -2089,13 +2092,20 @@ public class Board : MonoBehaviour
         {
             case 1:
                 // Special Power: Vertical Destroyer
+
                 specialPowerController.SpecialPowerUpUsed(0);
                 VerticalDestroy(column, -1, true, damageID);
+
+
                 break;
             case 2:
                 // Special Power: Horizontal Destroyer
+
                 specialPowerController.SpecialPowerUpUsed(1);
-                HorizontalDestroy(-1, row, true, damageID);
+
+                StartCoroutine(SunflowerCreationAndMovement(row));
+
+                // HorizontalDestroy(-1, row, true, damageID);
                 break;
             case 3:
                 // Special Power: One Tile Destroyer
@@ -2512,6 +2522,34 @@ public class Board : MonoBehaviour
         return allTiles[targetCol, targetRow].transform.position;
 
     }
+
+    private IEnumerator SunflowerCreationAndMovement(int row)
+    {
+
+        Vector2 tempPosition = new Vector2(allTiles[0, row].transform.position.x - 1.5f, allTiles[0, row].transform.position.y);
+
+
+        GameObject newSpecialPowerUp = Instantiate(specialPowerUps[0], tempPosition, specialPowerUps[0].transform.rotation);
+        Fruit newSpecialPowerUpScript = newSpecialPowerUp.GetComponentInChildren<Fruit>();
+
+        newSpecialPowerUpScript.outsideOfBoard = true;
+        newSpecialPowerUp.transform.position = tempPosition;
+        newSpecialPowerUpScript.damageID = Guid.NewGuid().ToString();
+
+        yield return new WaitForSeconds(0.5f);
+
+        newSpecialPowerUpScript.targetV.x = allTiles[width-1, row].transform.position.x+5;
+
+        yield return new WaitForSeconds(0.1f);
+
+        Destroy(newSpecialPowerUp.transform.GetChild(1).gameObject);
+
+        yield return new WaitForSeconds(1);
+
+        Destroy(newSpecialPowerUp);
+
+    }
+
 }
 
 

@@ -44,12 +44,23 @@ public class BackgroundTile : MonoBehaviour
     {
         Fruit fruitScript = other.GetComponent<Fruit>();
 
-
-        if (board.allFruits[column, row])
+        if (fruitScript.fruitType == -4)
         {
-            audioManager.FruitCrush();
-            board.DestroyController(board.allFruits[column,row],false);
+            if (board.FruitAvailable(board.allFruits[column, row]))
+            {
+                audioManager.FruitCrush();
+                board.DestroyController(board.allFruits[column, row], false);
+            }
         }
+        else
+        {
+            if (board.FruitAvailableWithoutDistanceCheck(board.allFruits[column, row]))
+            {
+                audioManager.FruitCrush();
+                board.DestroyController(board.allFruits[column, row], false);
+            }
+        }
+            
 
         if (indexOfVisibleOne>=0)
         {

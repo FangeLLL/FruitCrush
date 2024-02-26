@@ -87,7 +87,7 @@ public class Board : MonoBehaviour
 
     void Start()
     {
-       // Time.timeScale = 0.5f;
+        //Time.timeScale = 0.5f;
 
         userLevel = PlayerPrefs.GetInt("level", 0);
 
@@ -424,7 +424,7 @@ public class Board : MonoBehaviour
         if (swipeAngle > -45 && swipeAngle <= 45 && column + 1 < width)
         {
             // RIGHT SWIPE
-            if (FruitAvailable(allFruits[column + 1, row]))
+            if (FruitAvailableWithoutTypeCheck(allFruits[column + 1, row]))
             {
                 otherFruit = allFruits[column + 1, row];
             }
@@ -438,7 +438,7 @@ public class Board : MonoBehaviour
         else if (swipeAngle > 45 && swipeAngle <= 135 && row + 1 < height)
         {
             // UP SWIPE
-            if (FruitAvailable(allFruits[column, row + 1]))
+            if (FruitAvailableWithoutTypeCheck(allFruits[column, row + 1]))
             {
                 otherFruit = allFruits[column, row + 1];
             }
@@ -452,7 +452,7 @@ public class Board : MonoBehaviour
         else if ((swipeAngle > 135 || swipeAngle <= -135) && column > 0)
         {
             // LEFT SWIPE
-            if (FruitAvailable(allFruits[column - 1, row]))
+            if (FruitAvailableWithoutTypeCheck(allFruits[column - 1, row]))
             {
                 otherFruit = allFruits[column - 1, row];
             }
@@ -466,7 +466,7 @@ public class Board : MonoBehaviour
         else if (swipeAngle < -45 && swipeAngle >= -135 && row > 0)
         {
             // DOWN SWIPE
-            if (FruitAvailable(allFruits[column, row - 1]))
+            if (FruitAvailableWithoutTypeCheck(allFruits[column, row - 1]))
             {
                 otherFruit = allFruits[column, row - 1];
             }
@@ -531,7 +531,7 @@ public class Board : MonoBehaviour
             {
                 // it checking if bottom piece and one above it same. In every cycle it adds the one is currently below checking and if two of them not same
                 // then its out of the  cycle. Checking if the space is null or exist.
-                if (FruitAvailable(allFruits[i, j]) && allFruits[i, j].GetComponent<Fruit>().fruitType >= 0)
+                if (FruitAvailable(allFruits[i, j])&& allFruits[i, j].GetComponent<Fruit>().fruitType >= 0)
                 {
 
                     bool rowPopped = false, columnPopped = false, squarePopped = false;
@@ -725,6 +725,8 @@ public class Board : MonoBehaviour
                        
                         string damageID = Guid.NewGuid().ToString();
 
+                        int type = allFruits[i, j].GetComponent<Fruit>().fruitType;
+
                         for (int e = 0; e < fruitsCheckTotal.Count; e++)
                         {
                             fruitsCheckTotal[e].GetComponent<Fruit>().damageID = damageID;
@@ -736,7 +738,6 @@ public class Board : MonoBehaviour
                             DestroyController(fruitsCheckTotal[e], true);
                         }
 
-                        int type = allFruits[i, j].GetComponent<Fruit>().fruitType;
                      //   typeFruits[type] += fruitsCheckTotal.Count;
 
                         if (powerUpID!=0)
@@ -963,7 +964,41 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    private bool FruitAvailable(GameObject obj)
+    public bool FruitAvailable(GameObject obj)
+    {
+        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.4f && !obj.GetComponent<Fruit>().fadeout && obj.GetComponent<Fruit>().fruitType >= -100)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// This function used by only powerups because for this version distance check removed.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public bool FruitAvailableWithoutDistanceCheck(GameObject obj)
+    {
+        if (obj && !obj.GetComponent<Fruit>().fadeout && obj.GetComponent<Fruit>().fruitType >= -100)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// This function used by only powerups because for this version type check removed.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public bool FruitAvailableWithoutTypeCheck(GameObject obj)
     {
         if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.4f && !obj.GetComponent<Fruit>().fadeout)
         {
@@ -1421,18 +1456,13 @@ public class Board : MonoBehaviour
                 // list contains indexes of avaliable fruits.
                 int fruitToUse = existFruits[UnityEngine.Random.Range(0, existFruits.Count)];
                 GameObject newFruit;
-                int random=0;
+                int random=1;
                 if (indexOfCreatableObstacle != -1)
                 {
-                    random = UnityEngine.Random.Range(0,2);
+                    random = UnityEngine.Random.Range(0,4);
                 }
 
                 if (random==0)
-                {
-                    // normal fruit creation
-                    newFruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
-                }
-                else
                 {
                     // generatable type of obstacle creation
                     newFruit = Instantiate(obstaclePrefabs[indexOfCreatableObstacle], tempPosition, Quaternion.identity);
@@ -1440,6 +1470,11 @@ public class Board : MonoBehaviour
                     newFruit.GetComponent<ObstacleScript>().column = i;
                     allTiles[i, emptyRowIndex].GetComponent<BackgroundTile>().obstacles[0] = newFruit;
                     allTiles[i, emptyRowIndex].GetComponent<BackgroundTile>().DetectVisibleOne();
+                }
+                else
+                {
+                    // normal fruit creation
+                    newFruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
                 }
                 Fruit newFruitScript = newFruit.GetComponent<Fruit>();
 
@@ -1451,7 +1486,7 @@ public class Board : MonoBehaviour
                 newFruitScript.column = i;
                 newFruitScript.row = emptyRowIndex;
                 newFruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
-                if (random == 0)
+                if (random != 0)
                 {
                     totalNumberOfFruits[fruitToUse]++;
                     newFruitScript.fruitType = fruitToUse;

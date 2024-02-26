@@ -158,7 +158,7 @@ public class ObstacleScript : MonoBehaviour
 
     IEnumerator LoopForMovableObstacle()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
 
 
         if (obstacleSpecs.isDownward && GetComponent<Fruit>().row == 0 && !GetComponent<Fruit>().isSwiped)

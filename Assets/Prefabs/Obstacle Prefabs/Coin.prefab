@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e69ef51f8d14f9344af2e8f42cead964, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fruitType: -1001
+  fruitType: -1002
   column: 0
   row: 0
   firstTouchPosition: {x: 0, y: 0}

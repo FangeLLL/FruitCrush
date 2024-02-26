@@ -1578,6 +1578,7 @@ MonoBehaviour:
   - {fileID: 6328190920238408510, guid: 9a0dbf5c0986b3548b172e7158060a8c, type: 3}
   - {fileID: 6328190920238408510, guid: 8820749d80aea7541a3c5cb8560bcbce, type: 3}
   - {fileID: 6328190920238408510, guid: e271a3e47621fc346807e7c6c9605f1b, type: 3}
+  - {fileID: 6328190920238408510, guid: 0b7da84609c643a45a70c0aa7faa880e, type: 3}
   tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
   hintBool: 0
   userLevel: 0
@@ -17509,6 +17510,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: cf259f3d2f725064694030ac33fc1fbc, type: 3}
   - {fileID: 21300000, guid: d1dd49e30088304489938b5c760a2488, type: 3}
   - {fileID: 21300000, guid: adfc6b98421054f428779577c008b454, type: 3}
+  - {fileID: 21300000, guid: 49025950471abab41b6f9723e947cf80, type: 3}
   moveCount: 0
   currentObjectiveIndex: 0
   onetime: 1

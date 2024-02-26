@@ -137,6 +137,13 @@ public class ObstacleScript : MonoBehaviour
     /// <returns></returns>
     public IEnumerator ObstacleBreak()
     {
+        if (obstacleSpecs.isMovable)
+        {
+            StopCoroutine(LoopForMovableObstacle());
+            GetComponent<Fruit>().outsideOfBoard = true;
+            board.allFruits[column, row] = null;
+            GetComponent<Fruit>().enabled = false;
+        }
         yield return new WaitForSeconds(0.1f);
         GetComponentInChildren<SpriteRenderer>().enabled = false;
         GetComponent<ParticleSystem>().Play();
@@ -153,6 +160,7 @@ public class ObstacleScript : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
 
+
         if (obstacleSpecs.isDownward && GetComponent<Fruit>().row == 0 && !GetComponent<Fruit>().isSwiped)
         {
             StartCoroutine(board.FadeOut(gameObject));
@@ -160,11 +168,11 @@ public class ObstacleScript : MonoBehaviour
 
         }
 
-        if(row != GetComponent<Fruit>().row || column != GetComponent<Fruit>().column)
+        if (row != GetComponent<Fruit>().row || column != GetComponent<Fruit>().column)
         {
             board.allTiles[column, row].GetComponent<BackgroundTile>().obstacles[obstacleSpecs.indexOfLayer] = null;
             board.allTiles[column, row].GetComponent<BackgroundTile>().DetectVisibleOne();
-           row = GetComponent<Fruit>().row;
+            row = GetComponent<Fruit>().row;
             column = GetComponent<Fruit>().column;
             board.allTiles[column, row].GetComponent<BackgroundTile>().obstacles[obstacleSpecs.indexOfLayer] = gameObject;
             board.allTiles[column, row].GetComponent<BackgroundTile>().DetectVisibleOne();
@@ -172,6 +180,7 @@ public class ObstacleScript : MonoBehaviour
         }
 
         StartCoroutine(LoopForMovableObstacle());
+
 
     }
     /*

@@ -65,6 +65,8 @@ public class Board : MonoBehaviour
 
     private int[] columnsFallIndexY;
 
+    private int indexOfCreatableObstacle=-1;
+
     // When fruits swiped these gameobjects fills and used for creation powerup positions 
     public GameObject currentFruit, currentOtherFruit;
 
@@ -346,6 +348,11 @@ public class Board : MonoBehaviour
                                 tempObstacle.GetComponent<Fruit>().column = i;
                                 tempObstacle.GetComponent<Fruit>().row = j;
                                 allFruits[i, j] = tempObstacle;
+                            }
+
+                            if (tempObstacle.GetComponent<ObstacleScript>().obstacleSpecs.creatableOnPlay)
+                            {
+                                indexOfCreatableObstacle = arrangedTilesIndex;
                             }
 
                             for (int a = 0; a < repeat; a++)
@@ -1388,11 +1395,11 @@ public class Board : MonoBehaviour
                     audioManager.FruitFall();
                     int emptyRowIndex = emptyPlaces.Dequeue();
                     GameObject fruit = allFruits[i, j];
-                    allFruits[i, j] = null;
                     Fruit fruitScript = fruit.GetComponent<Fruit>();
-
                     fruitScript.row = emptyRowIndex;
                     fruitScript.column = i;
+                    allFruits[i, j] = null;
+                  
                     fruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
                     emptyPlaces.Enqueue(j);
                 }
@@ -1413,7 +1420,27 @@ public class Board : MonoBehaviour
                 // Instantiate a new fruit at the position of the destroyed fruit. Fruit that going to be created must be from existFruits variable. existFruits
                 // list contains indexes of avaliable fruits.
                 int fruitToUse = existFruits[UnityEngine.Random.Range(0, existFruits.Count)];
-                GameObject newFruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
+                GameObject newFruit;
+                int random=0;
+                if (indexOfCreatableObstacle != -1)
+                {
+                    random = UnityEngine.Random.Range(0,2);
+                }
+
+                if (random==0)
+                {
+                    // normal fruit creation
+                    newFruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
+                }
+                else
+                {
+                    // generatable type of obstacle creation
+                    newFruit = Instantiate(obstaclePrefabs[indexOfCreatableObstacle], tempPosition, Quaternion.identity);
+                    newFruit.GetComponent<ObstacleScript>().row = emptyRowIndex;
+                    newFruit.GetComponent<ObstacleScript>().column = i;
+                    allTiles[i, emptyRowIndex].GetComponent<BackgroundTile>().obstacles[0] = newFruit;
+                    allTiles[i, emptyRowIndex].GetComponent<BackgroundTile>().DetectVisibleOne();
+                }
                 Fruit newFruitScript = newFruit.GetComponent<Fruit>();
 
                 // Set the parent and name of the new fruit
@@ -1423,9 +1450,13 @@ public class Board : MonoBehaviour
                 // Set the column and row of the new fruit
                 newFruitScript.column = i;
                 newFruitScript.row = emptyRowIndex;
-                newFruitScript.fruitType = fruitToUse;
                 newFruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
-                totalNumberOfFruits[fruitToUse]++;
+                if (random == 0)
+                {
+                    totalNumberOfFruits[fruitToUse]++;
+                    newFruitScript.fruitType = fruitToUse;
+
+                }             
 
                 audioManager.FruitFall();
                 // Add the new fruit to the allFruits array

@@ -39,4 +39,7 @@ public class ObstacleSpecs : ScriptableObject
 
     public string colorType;
 
+    // If obstacle creatable like fruits for example coin.
+    public bool creatableOnPlay;
+
 }

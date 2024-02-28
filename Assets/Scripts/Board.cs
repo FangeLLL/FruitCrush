@@ -45,7 +45,7 @@ public class Board : MonoBehaviour
     public GameObject[] obstaclePrefabs;
     public GameObject tilePrefab;
 
-    private bool[] fillingColumn;
+    public bool[] fillingColumn;
 
     public bool hintBool = false;
     bool popped = false;
@@ -274,6 +274,10 @@ public class Board : MonoBehaviour
                     backgroundTile.name = "( " + i + ", " + j + " )";
                     backgroundTile.GetComponent<BackgroundTile>().column = i;
                     backgroundTile.GetComponent<BackgroundTile>().row = j;
+                    if(i==0 || i == width - 1 || j == 0 || j == height - 1)
+                    {
+                        backgroundTile.GetComponent<BackgroundTile>().border = true;
+                    }                 
                     allTiles[i, j] = backgroundTile;
 
                   
@@ -1283,30 +1287,6 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     public IEnumerator FruitPop(GameObject obj)
     {
-        /*
-        float elapsedTime = 0f;
-        float fadeDuration = 0.1f;
-
-        while (elapsedTime < fadeDuration)
-        {
-            // Calculate the new alpha value
-            float scale = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
-
-            // Update the object's color with the new alpha
-            if (obj)
-            {
-
-                obj.transform.GetChild(0).transform.localScale = new Vector2(scale, scale);
-            }
-            else
-            {
-                elapsedTime = fadeDuration;
-            }
-
-            elapsedTime += Time.deltaTime;
-            yield return null; // Wait for the next frame
-        }
-        */
         yield return new WaitForSeconds(0.1f);
         if (obj)
         {
@@ -1845,7 +1825,13 @@ public class Board : MonoBehaviour
         {
             // Horizontal Harvester power up
             case -1:
-
+                
+                for(int i = 0; i < width; i++)
+                {
+                    StopCoroutine(FillTheColumn(i));
+                }
+                Array.Fill(fillingColumn, true);
+                
                 GameObject cloneHorizontal = Instantiate(powerUps[0], allTiles[column, row].transform.position, powerUps[0].transform.rotation);
                 Fruit cloneHorizontalScript = cloneHorizontal.GetComponent<Fruit>();
 
@@ -1857,11 +1843,11 @@ public class Board : MonoBehaviour
                 cloneHorizontal.gameObject.transform.position = allTiles[column, row].transform.position;
                 cloneHorizontalScript.damageID = fruitScript.damageID;
 
-                fruitScript.speedMultiplier = 5f;
-                cloneHorizontalScript.speedMultiplier = 5f;
+                fruitScript.speedMultiplier = 6f;
+                cloneHorizontalScript.speedMultiplier = 6f;
 
-                fruitScript.targetV.x = allTiles[0, row].transform.position.x;
-                cloneHorizontalScript.targetV.x = allTiles[width - 1, row].transform.position.x;
+                fruitScript.targetV.x = allTiles[0, row].transform.position.x - 2;
+                cloneHorizontalScript.targetV.x = allTiles[width - 1, row].transform.position.x + 2;
 
 
                 fruitScript.outsideOfBoard = true;
@@ -1878,7 +1864,10 @@ public class Board : MonoBehaviour
                 break;
             // Vertical Harvester power up
             case -2:
-
+                
+                StopCoroutine(FillTheColumn(column));
+                fillingColumn[column] = true;
+                
                 GameObject cloneVertical = Instantiate(powerUps[1], allTiles[column, row].transform.position, powerUps[1].transform.rotation);
                 Fruit cloneVerticalScript = cloneVertical.GetComponent<Fruit>();
 
@@ -1890,11 +1879,11 @@ public class Board : MonoBehaviour
                 cloneVertical.gameObject.transform.position = allTiles[column, row].transform.position;
                 cloneVerticalScript.damageID=fruitScript.damageID;
 
-                fruitScript.speedMultiplier = 5f;
-                cloneVerticalScript.speedMultiplier = 5f;
+                fruitScript.speedMultiplier = 6f;
+                cloneVerticalScript.speedMultiplier = 6f;
 
-                fruitScript.targetV.y = allTiles[column, 0].transform.position.y;
-                cloneVerticalScript.targetV.y = allTiles[column, height - 1].transform.position.y;
+                fruitScript.targetV.y = allTiles[column, 0].transform.position.y - 2;
+                cloneVerticalScript.targetV.y = allTiles[column, height - 1].transform.position.y + 2;
 
                 fruitScript.outsideOfBoard = true;
                 cloneVerticalScript.outsideOfBoard = true;

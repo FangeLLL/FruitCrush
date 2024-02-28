@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,8 @@ public class BackgroundTile : MonoBehaviour
     public int indexOfVisibleOne=-1;
     public bool isCurrentObstacleBox=false;
 
+    // it used for detected if this on borders of table.
+    public bool border =false;
     private Vector2 firstTouchPosition;
     private AudioManager audioManager;
 
@@ -38,6 +41,7 @@ public class BackgroundTile : MonoBehaviour
             }
         }
         */
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -80,41 +84,58 @@ public class BackgroundTile : MonoBehaviour
         }
 
 
-        if (other)
+        if (other && border)
         {
-            Vector2 vector2 = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+            //  Vector2 vector2 = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
 
-            if (fruitScript.targetV == vector2)
+            if (fruitScript.fruitType == -4)
             {
-                if(fruitScript.fruitType == -4)
+                fruitScript.hitBorder++;
+                if (fruitScript.hitBorder == 2)
                 {
-                    fruitScript.hitBorder++;
-                    if (fruitScript.hitBorder == 2)
+                    if (fruitScript.attachedPowerUp)
                     {
-                        if (fruitScript.attachedPowerUp)
-                        {
-                            Fruit powerUpScript = fruitScript.attachedPowerUp.GetComponent<Fruit>();
-                            powerUpScript.targetV = transform.position;
-                            powerUpScript.row = row;
-                            powerUpScript.column = column;
-                            powerUpScript.moveToward = false;
-                            board.ActivatePowerUp(fruitScript.attachedPowerUp);
-                        }
-                        StartCoroutine(board.FadeOut(other.gameObject));
+                        Fruit powerUpScript = fruitScript.attachedPowerUp.GetComponent<Fruit>();
+                        powerUpScript.targetV = transform.position;
+                        powerUpScript.row = row;
+                        powerUpScript.column = column;
+                        powerUpScript.moveToward = false;
+                        board.ActivatePowerUp(fruitScript.attachedPowerUp);
                     }
-                    else
-                    {
-                        fruitScript.targetV = board.GetBoomerangTargetLoc(column, row);
+                    StartCoroutine(board.FadeOut(other.gameObject));
+                }
+                else
+                {
+                    fruitScript.targetV = board.GetBoomerangTargetLoc(column, row);
 
-                    }
-                }else
-                {
-                    Destroy(other.gameObject);
-                }           
+                }
+            }
+            else
+            {
+                StartCoroutine(WaitAndReleaseColumnForFilling(fruitScript.fruitType, fruitScript.column, other.gameObject));
             }
         }
        
         // PowerUpBoom(other.GetComponent<Fruit>().damageID);
+    }
+
+    private IEnumerator WaitAndReleaseColumnForFilling(int type,int column,GameObject obj)
+    {
+        yield return new WaitForSeconds(0.3f);
+
+        Destroy(obj);
+
+        if (type == -2)
+        {
+
+            board.fillingColumn[column] = false;
+        }
+
+        if (type == -1)
+        {
+
+            Array.Clear(board.fillingColumn, 0, board.fillingColumn.Length);
+        }
     }
 
     private void OnMouseDown()

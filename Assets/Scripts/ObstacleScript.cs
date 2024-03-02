@@ -137,6 +137,10 @@ public class ObstacleScript : MonoBehaviour
     /// <returns></returns>
     public IEnumerator ObstacleBreak()
     {
+        yield return new WaitForSeconds(0.1f);
+        GetComponentInChildren<SpriteRenderer>().enabled = false;
+        GetComponent<ParticleSystem>().Play();
+        yield return new WaitForSeconds(0.2f);
         if (obstacleSpecs.isMovable)
         {
             StopCoroutine(LoopForMovableObstacle());
@@ -144,10 +148,6 @@ public class ObstacleScript : MonoBehaviour
             board.allFruits[column, row] = null;
             GetComponent<Fruit>().enabled = false;
         }
-        yield return new WaitForSeconds(0.1f);
-        GetComponentInChildren<SpriteRenderer>().enabled = false;
-        GetComponent<ParticleSystem>().Play();
-        yield return new WaitForSeconds(0.2f);
         board.allTiles[column, row].GetComponent<BackgroundTile>().obstacles[obstacleSpecs.indexOfLayer] = null;
         board.allTiles[column, row].GetComponent<BackgroundTile>().DetectVisibleOne();
         yield return new WaitForSeconds(1.5f);

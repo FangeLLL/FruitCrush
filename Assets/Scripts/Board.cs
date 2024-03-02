@@ -69,7 +69,7 @@ public class Board : MonoBehaviour
     private int indexOfCreatableObstacle=-1;
 
     // When fruits swiped these gameobjects fills and used for creation powerup positions 
-    public GameObject currentFruit, currentOtherFruit;
+    private GameObject currentFruit, currentOtherFruit;
 
     // Each index represents related id of an fruit. 
     private int[] totalNumberOfFruits;
@@ -502,11 +502,8 @@ public class Board : MonoBehaviour
 
         StopHintAnimations();
 
-        if (!specialSwipe)
-        {
-            currentFruit = fruit;
-            currentOtherFruit = otherFruit;
-        }
+        currentFruit = fruit;
+        currentOtherFruit = otherFruit;
 
         audioManager.Swipe();
         StartCoroutine(CheckMove(fruit, otherFruit));
@@ -754,22 +751,17 @@ public class Board : MonoBehaviour
 
                             GameObject fruitToChange;
 
-                            if (fruitsCheckTotal.Contains(currentFruit))
+                            if (currentFruit && fruitsCheckTotal.Contains(currentFruit))
                             {
                                 fruitToChange = currentFruit;
-                                currentFruit = null;
-                            }else  if (fruitsCheckTotal.Contains(currentOtherFruit))
+                            }else  if (currentOtherFruit && fruitsCheckTotal.Contains(currentOtherFruit))
                             {
                                 fruitToChange = currentOtherFruit;
-                                currentOtherFruit = null;
                             }
                             else
                             {
                                 fruitToChange = fruitsCheckTotal[UnityEngine.Random.Range(0, fruitsCheckTotal.Count)];
                             }
-
-                          //  CreatePowerUp(fruitToChange.GetComponent<Fruit>().column, fruitToChange.GetComponent<Fruit>().row, powerUpID);
-
 
                             StartCoroutine(FruitsGatheringAnim(fruitsCheckTotal, fruitToChange.GetComponent<Fruit>().column, fruitToChange.GetComponent<Fruit>().row,powerUpID));
                         }
@@ -1110,13 +1102,13 @@ public class Board : MonoBehaviour
             otherFruitScript.isSwiped = false;
 
         }
-
+        /*
         if(!fruit || !otherFruit || succesfulMove)
         {
             currentOtherFruit = null;
             currentFruit = null;
         }
-       
+       */
     }
 
     /// <summary>
@@ -1193,6 +1185,11 @@ public class Board : MonoBehaviour
          4.  If match number 2 then it means there is a match function return true.
         */
 
+        List<GameObject> avaliableFruits = new List<GameObject>();
+
+       // RowCheck();
+
+        
         int match = 0;
 
         for (int k = -2; k < 2; k++)
@@ -1214,8 +1211,12 @@ public class Board : MonoBehaviour
             }
 
         }
+        
+
 
         // There is no match so match should be zero and the function works same as row function.
+
+        
 
         match = 0;
 
@@ -1237,7 +1238,7 @@ public class Board : MonoBehaviour
                 }
             }
         }
-
+        
 
         return false;
 

@@ -447,10 +447,10 @@ PrefabInstance:
     - target: {fileID: -8336548580480921090, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: UVModule.sprites.Array.data[0].sprite
       value: 
-      objectReference: {fileID: 21300000, guid: e0c0473c6db4d814585e26a5fd580a94, type: 3}
+      objectReference: {fileID: 21300000, guid: b45bb2eb26a64484d8c2d5969caf72bd, type: 3}
     - target: {fileID: 1594701409205146621, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_Name
-      value: Grape
+      value: DragonFruit
       objectReference: {fileID: 0}
     - target: {fileID: 1769958116402937428, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_Sprite

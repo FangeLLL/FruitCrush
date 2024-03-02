@@ -1187,58 +1187,39 @@ public class Board : MonoBehaviour
 
         List<GameObject> avaliableFruits = new List<GameObject>();
 
-       // RowCheck();
+         avaliableFruits = RowCheck(column,row);
 
-        
-        int match = 0;
-
-        for (int k = -2; k < 2; k++)
+        if(avaliableFruits.Count >= 3)
         {
-            if (column + k >= 0 && column + k + 1 < width && FruitAvailable(allFruits[column + k, row]) && FruitAvailable(allFruits[column + k + 1, row]))
-            {
-                if (allFruits[column + k, row].GetComponent<Fruit>().fruitType == allFruits[column + k + 1, row].GetComponent<Fruit>().fruitType)
-                {
-                    match++;
-                    if (match == 2)
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    match = 0;
-                }
-            }
-
+            return true;
         }
-        
+        avaliableFruits.Clear();
 
+        avaliableFruits = ColumnCheck(column, row);
 
-        // There is no match so match should be zero and the function works same as row function.
-
-        
-
-        match = 0;
-
-        for (int k = -2; k < 2; k++)
+        if (avaliableFruits.Count >= 3)
         {
-            if (row + k >= 0 && row + k + 1 < height && FruitAvailable(allFruits[column, row + k]) && FruitAvailable(allFruits[column, row + k + 1]))
+            return true;
+        }
+        avaliableFruits.Clear();
+
+        avaliableFruits = SquareCheck(column, row);
+
+        if (avaliableFruits.Count >= 3)
+        {
+            return true;
+        }
+        avaliableFruits.Clear();
+
+        if (row-1>=0 && allFruits[column,row].GetComponent<Fruit>().fruitType == allFruits[column, row - 1].GetComponent<Fruit>().fruitType)
+        {
+            avaliableFruits = SquareCheck(column, row-1);
+            if (avaliableFruits.Count >= 3)
             {
-                if (allFruits[column, row + k].GetComponent<Fruit>().fruitType == allFruits[column, row + k + 1].GetComponent<Fruit>().fruitType)
-                {
-                    match++;
-                    if (match == 2)
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    match = 0;
-                }
+                return true;
             }
         }
-        
+        avaliableFruits.Clear();
 
         return false;
 

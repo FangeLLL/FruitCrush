@@ -1909,12 +1909,12 @@ public class Board : MonoBehaviour
             // Boomerang power up
             case -4:
 
-                fruit.GetComponent<Collider2D>().enabled = true;
 
                 fruitScript.outsideOfBoard = true;
                 fruitScript.moveToward = true;
                 fruitScript.speedMultiplier = 11f;
                 fruitScript.targetV = GetBoomerangTargetLoc(fruitScript.column, fruitScript.row);
+                fruit.GetComponent<Collider2D>().enabled = true;
 
                 allFruits[fruitScript.column, fruitScript.row] = null;
 

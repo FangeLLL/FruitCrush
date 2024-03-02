@@ -84,33 +84,36 @@ public class BackgroundTile : MonoBehaviour
         }
 
 
-        if (other && border)
+        if (other)
         {
-            //  Vector2 vector2 = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
 
             if (fruitScript.fruitType == -4)
             {
-                fruitScript.hitBorder++;
-                if (fruitScript.hitBorder == 2)
+                Vector2 vector2 = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+                if (fruitScript.targetV == vector2)
                 {
-                    if (fruitScript.attachedPowerUp)
+                    fruitScript.hitBorder++;
+                    if (fruitScript.hitBorder == 2)
                     {
-                        Fruit powerUpScript = fruitScript.attachedPowerUp.GetComponent<Fruit>();
-                        powerUpScript.targetV = transform.position;
-                        powerUpScript.row = row;
-                        powerUpScript.column = column;
-                        powerUpScript.moveToward = false;
-                        board.ActivatePowerUp(fruitScript.attachedPowerUp);
+                        if (fruitScript.attachedPowerUp)
+                        {
+                            Fruit powerUpScript = fruitScript.attachedPowerUp.GetComponent<Fruit>();
+                            powerUpScript.targetV = transform.position;
+                            powerUpScript.row = row;
+                            powerUpScript.column = column;
+                            powerUpScript.moveToward = false;
+                            board.ActivatePowerUp(fruitScript.attachedPowerUp);
+                        }
+                        StartCoroutine(board.FadeOut(other.gameObject));
                     }
-                    StartCoroutine(board.FadeOut(other.gameObject));
-                }
-                else
-                {
-                    fruitScript.targetV = board.GetBoomerangTargetLoc(column, row);
+                    else
+                    {
+                        fruitScript.targetV = board.GetBoomerangTargetLoc(column, row);
 
-                }
+                    }
+                }          
             }
-            else
+            else if(border)
             {
                 StartCoroutine(WaitAndReleaseColumnForFilling(fruitScript.fruitType, fruitScript.column, other.gameObject));
             }

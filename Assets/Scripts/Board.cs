@@ -1211,7 +1211,7 @@ public class Board : MonoBehaviour
         }
         avaliableFruits.Clear();
 
-        if (row-1>=0 && allFruits[column,row].GetComponent<Fruit>().fruitType == allFruits[column, row - 1].GetComponent<Fruit>().fruitType)
+        if (row-1>=0 && allFruits[column, row - 1] && allFruits[column, row] && allFruits[column,row].GetComponent<Fruit>().fruitType == allFruits[column, row - 1].GetComponent<Fruit>().fruitType)
         {
             avaliableFruits = SquareCheck(column, row-1);
             if (avaliableFruits.Count >= 3)
@@ -1920,6 +1920,11 @@ public class Board : MonoBehaviour
 
             // Disco Ball power up
             case -5:
+                for (int i = 0; i < width; i++)
+                {
+                    StopCoroutine(FillTheColumn(i));
+                }
+                Array.Fill(fillingColumn, true);
                 int targetFruitType = swipedFruitType;
                 // If discoball just clicked then returns most avaliable fruit type.
                 if (!isSwiped || swipedFruitType < 0)
@@ -2468,7 +2473,7 @@ public class Board : MonoBehaviour
 
         StartCoroutine(FadeOut(discoBall));
 
-
+        Array.Clear(fillingColumn, 0, fillingColumn.Length);
         blockUserMove = false;
     }
 

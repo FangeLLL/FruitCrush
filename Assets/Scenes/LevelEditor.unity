@@ -4164,7 +4164,7 @@ GameObject:
   - component: {fileID: 884309844}
   - component: {fileID: 884309843}
   m_Layer: 5
-  m_Name: Banana
+  m_Name: Pear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4266,7 +4266,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7047b022b2fde2b4983bdb43bdfb19e8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1079dd48e861ca64fb17de9bb202e6eb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4873,7 +4873,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cd56808e1dec8a741ae694e0af8d3a92, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cf18c16e57e2627458e631d8b50f3fba, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5231,7 +5231,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 01271a8cd555efc448aa237881ce8281, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 188f67f6c63a699489045a2f4a42d944, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7564,7 +7564,7 @@ GameObject:
   - component: {fileID: 1508605862}
   - component: {fileID: 1508605861}
   m_Layer: 5
-  m_Name: BoxPink (1)
+  m_Name: Coin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9529,7 +9529,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8bccb85703b09264f88b3cdf7cf443e2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 08a6abd8e463be347854d1d31e4903dc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

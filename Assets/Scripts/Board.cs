@@ -45,6 +45,7 @@ public class Board : MonoBehaviour
     public GameObject[] obstaclePrefabs;
     public GameObject tilePrefab;
 
+    [SerializeField]
     public bool[] fillingColumn;
 
     public bool hintBool = false;
@@ -501,8 +502,11 @@ public class Board : MonoBehaviour
 
         StopHintAnimations();
 
-        currentFruit = fruit;
-        currentOtherFruit = otherFruit;
+        if (!specialSwipe)
+        {
+            currentFruit = fruit;
+            currentOtherFruit = otherFruit;
+        }
 
         audioManager.Swipe();
         StartCoroutine(CheckMove(fruit, otherFruit));
@@ -754,12 +758,10 @@ public class Board : MonoBehaviour
                             {
                                 fruitToChange = currentFruit;
                                 currentFruit = null;
-                                currentOtherFruit = null;
                             }else  if (fruitsCheckTotal.Contains(currentOtherFruit))
                             {
                                 fruitToChange = currentOtherFruit;
                                 currentOtherFruit = null;
-                                currentFruit = null;
                             }
                             else
                             {
@@ -1037,7 +1039,6 @@ public class Board : MonoBehaviour
 
             ActivateMergePowerUp(fruit, otherFruit);
             succesfulMove = true;
-
         }
         else
         {
@@ -1110,8 +1111,12 @@ public class Board : MonoBehaviour
 
         }
 
-        currentOtherFruit = null;
-        currentFruit = null;
+        if(!fruit || !otherFruit || succesfulMove)
+        {
+            currentOtherFruit = null;
+            currentFruit = null;
+        }
+       
     }
 
     /// <summary>
@@ -1187,7 +1192,6 @@ public class Board : MonoBehaviour
          3. If two object type same then it incrase the "match" number else "match" number will be zero.
          4.  If match number 2 then it means there is a match function return true.
         */
-
 
         int match = 0;
 
@@ -1914,7 +1918,7 @@ public class Board : MonoBehaviour
                 fruitScript.moveToward = true;
                 fruitScript.speedMultiplier = 11f;
                 fruitScript.targetV = GetBoomerangTargetLoc(fruitScript.column, fruitScript.row);
-                fruit.GetComponent<Collider2D>().enabled = true;
+                                fruit.GetComponent<Collider2D>().enabled = true;
 
                 allFruits[fruitScript.column, fruitScript.row] = null;
 

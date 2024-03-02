@@ -117,9 +117,7 @@ public class BackgroundTile : MonoBehaviour
             {
                 StartCoroutine(WaitAndReleaseColumnForFilling(fruitScript.fruitType, fruitScript.column, other.gameObject));
             }
-        }
-       
-        // PowerUpBoom(other.GetComponent<Fruit>().damageID);
+        }    
     }
 
     private IEnumerator WaitAndReleaseColumnForFilling(int type,int column,GameObject obj)

@@ -194,6 +194,7 @@ public class UIManager : Sounds
         {
             gameFinishBoxFalse.SetActive(true);
             gameFinishBoxFalse.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+            continueWithButton.GetComponent<Animator>().SetTrigger("Fixer");
 
             gameFinishBoxMoveCount1.GetComponent<Animator>().SetTrigger("GameFinishTrigger1");
             gameFinishBoxMoveCount2.GetComponent<Animator>().SetTrigger("GameFinishTrigger2");
@@ -655,6 +656,7 @@ public class UIManager : Sounds
     {
         gameFinishBoxFalse.SetActive(true);
         gameFinishBoxFalse.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+        continueWithButton.GetComponent<Animator>().SetTrigger("Fixer");
 
         gameFinishBoxMoveCount1.GetComponent<Animator>().SetTrigger("GameFinishTrigger1");
         gameFinishBoxMoveCount2.GetComponent<Animator>().SetTrigger("GameFinishTrigger2");

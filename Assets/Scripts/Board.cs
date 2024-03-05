@@ -1261,7 +1261,7 @@ public class Board : MonoBehaviour
 
             }
         }
-        yield return new WaitForSeconds(0.05f);
+        yield return new WaitForSeconds(0.1f);
        
         StartCoroutine(FillTheGaps());
     }
@@ -1344,7 +1344,7 @@ public class Board : MonoBehaviour
                     emptyPlaces.Enqueue(j);
 
                     // THESE CODES CAN BE IMPROVE PLEASE CHECK THE ALGO
-
+                    /*
                     if(j + 1 < height)
                     {
 
@@ -1378,7 +1378,7 @@ public class Board : MonoBehaviour
                         }
      
                     }
-
+                    */
                 }
                 else if (emptyPlaces.Count > 0)
                 {
@@ -1394,6 +1394,48 @@ public class Board : MonoBehaviour
                     fruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
                     emptyPlaces.Enqueue(j);
                 }
+            }
+        }
+
+        yield return new WaitForSeconds(0.05f);
+
+        for (int j = columnsFallIndexY[i]; j >= 0; j--)
+        {
+            if (j + 1 < height && !allFruits[i, j] && allTiles[i, j] && !allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
+            {
+
+                bool crossFall = true;
+                bool checkForEmptyPlaces = true;
+                int k = 1;
+
+                // If all the way to obstacle or missing tile is emty then fruit will call crossfall but if in this way there is a fruit then no crossfall. 
+
+                while (checkForEmptyPlaces)
+                {
+
+                    if (allFruits[i, j + k] || k + j + 1 == height)
+                    {
+                        crossFall = false;
+                        checkForEmptyPlaces = false;
+                    }
+
+
+                    if (allTiles[i, j + k] && allTiles[i, j + k].GetComponent<BackgroundTile>().isCurrentObstacleBox)
+                    {
+                        checkForEmptyPlaces = false;
+                    }
+
+                    k++;
+                }
+
+                if (crossFall)
+                {
+                    if(CrossFall(i, j + 1))
+                    {
+                        break;
+                    }
+                }
+
             }
         }
 
@@ -1515,7 +1557,7 @@ public class Board : MonoBehaviour
     /// <param name="column"></param>
     /// <param name="row"></param>
     /// <returns></returns>
-    private void CrossFall(int column, int row)
+    private bool CrossFall(int column, int row)
     {
         GameObject fruit = null;
         Fruit fruitScript;
@@ -1538,8 +1580,9 @@ public class Board : MonoBehaviour
             fruitScript.row = row - 1;
             fruitScript.column = column;
             fruitScript.targetV = allTiles[column, row - 1].transform.position;
+            return true;
         }
-
+        return false;
     }
 
     /// <summary>

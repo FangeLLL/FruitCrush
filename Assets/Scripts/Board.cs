@@ -986,10 +986,11 @@ public class Board : MonoBehaviour
         if (fruitScript.fruitType > -100 && otherFruitScript.fruitType > -100 && fruitScript.fruitType < 0 && otherFruitScript.fruitType < 0 && !specialSwipe)
         {
             // Selected power up moves towards to other power up
+            fruitScript.outsideOfBoard = true;
             fruitScript.row = otherFruitScript.row;
             fruitScript.column = otherFruitScript.column;
-            fruitScript.targetV = otherFruitScript.targetV; 
-
+            fruitScript.targetV = otherFruitScript.targetV;
+            yield return new WaitForSeconds(0.1f);
             ActivateMergePowerUp(fruit, otherFruit);
             succesfulMove = true;
         }
@@ -1006,12 +1007,10 @@ public class Board : MonoBehaviour
                     if (fruitScript.fruitType < 0)
                     {
                         ActivatePowerUp(fruit,otherFruitScript.fruitType);
-
                     }
                     else
                     {
                         ActivatePowerUp(otherFruit,fruitScript.fruitType);
-
                     }
                     succesfulMove = true;
                 }
@@ -1025,8 +1024,7 @@ public class Board : MonoBehaviour
             else
             {
                 succesfulMove = true;
-            }
-           
+            }       
         }
 
 
@@ -1063,13 +1061,6 @@ public class Board : MonoBehaviour
             otherFruitScript.isSwiped = false;
 
         }
-        /*
-        if(!fruit || !otherFruit || succesfulMove)
-        {
-            currentOtherFruit = null;
-            currentFruit = null;
-        }
-       */
     }
 
     /// <summary>
@@ -1254,7 +1245,6 @@ public class Board : MonoBehaviour
 
     }
 
-  
     private IEnumerator FillTheGaps()
     {
         yield return null;
@@ -1271,7 +1261,7 @@ public class Board : MonoBehaviour
 
             }
         }
-       // yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.05f);
        
         StartCoroutine(FillTheGaps());
     }
@@ -1827,19 +1817,18 @@ public class Board : MonoBehaviour
                 fruitScript.speedMultiplier = 2.5f;
                 cloneHorizontalScript.speedMultiplier = 2.5f;
 
-                fruitScript.targetV.x = allTiles[0, row].transform.position.x - 8;
-                cloneHorizontalScript.targetV.x = allTiles[width - 1, row].transform.position.x + 8;
-
-
                 fruitScript.outsideOfBoard = true;
                 cloneHorizontalScript.outsideOfBoard = true;
+
+                fruitScript.targetV.x = allTiles[0, row].transform.position.x - 8;
+                cloneHorizontalScript.targetV.x = allTiles[width - 1, row].transform.position.x + 8;
 
                 allFruits[column, row] = null;
                 cloneHorizontalScript.GetComponent<Collider2D>().enabled = true;
                 fruitScript.GetComponent<Collider2D>().enabled = true;
 
-                StartCoroutine(WaitAndDestroyObj(0.2f * width,fruit));
-                StartCoroutine(WaitAndDestroyObj(0.2f * width, cloneHorizontal));
+                StartCoroutine(WaitAndDestroyObj(0.15f * width,fruit));
+                StartCoroutine(WaitAndDestroyObj(0.15f * width, cloneHorizontal));
 
                 if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
                 {
@@ -1866,19 +1855,18 @@ public class Board : MonoBehaviour
                 fruitScript.speedMultiplier = 2.5f;
                 cloneVerticalScript.speedMultiplier = 2.5f;
 
-                fruitScript.targetV.y = allTiles[column, 0].transform.position.y - 8;
-                cloneVerticalScript.targetV.y = allTiles[column, height - 1].transform.position.y + 8;
-
                 fruitScript.outsideOfBoard = true;
                 cloneVerticalScript.outsideOfBoard = true;
+
+                fruitScript.targetV.y = allTiles[column, 0].transform.position.y - 8;
+                cloneVerticalScript.targetV.y = allTiles[column, height - 1].transform.position.y + 8;
 
                 allFruits[column, row] = null;
                 cloneVerticalScript.GetComponent<Collider2D>().enabled = true;
                 fruitScript.GetComponent<Collider2D>().enabled = true;
 
-
-                StartCoroutine(WaitAndDestroyObj(0.2f * width, fruit));
-                StartCoroutine(WaitAndDestroyObj(0.2f * width, cloneVertical));
+                StartCoroutine(WaitAndDestroyObj(0.15f * width, fruit));
+                StartCoroutine(WaitAndDestroyObj(0.15f * width, cloneVertical));
 
                 if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
                 {

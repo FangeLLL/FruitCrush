@@ -14,8 +14,6 @@ public class BackgroundTile : MonoBehaviour
     public int indexOfVisibleOne=-1;
     public bool isCurrentObstacleBox=false;
 
-    // it used for detected if this on borders of table.
-    public bool border =false;
     private Vector2 firstTouchPosition;
     private AudioManager audioManager;
 
@@ -113,30 +111,7 @@ public class BackgroundTile : MonoBehaviour
                     }
                 }          
             }
-            else if(border)
-            {
-                StartCoroutine(WaitAndReleaseColumnForFilling(fruitScript.fruitType, fruitScript.column, other.gameObject));
-            }
         }    
-    }
-
-    private IEnumerator WaitAndReleaseColumnForFilling(int type,int column,GameObject obj)
-    {
-        yield return new WaitForSeconds(0.3f);
-
-        Destroy(obj);
-
-        if (type == -2)
-        {
-
-            board.fillingColumn[column] = false;
-        }
-
-        if (type == -1)
-        {
-
-            Array.Clear(board.fillingColumn, 0, board.fillingColumn.Length);
-        }
     }
 
     private void OnMouseDown()

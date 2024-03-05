@@ -396,6 +396,7 @@ public class UIManager : Sounds
     IEnumerator PlusMoveBoughtEnum()
     {
         continueWithButton.GetComponent<Animator>().SetTrigger("Tapped");
+        gameFinishBoxFalse.SetActive(false);
 
         //yield return new WaitForSeconds(0.1f);
 
@@ -632,7 +633,7 @@ public class UIManager : Sounds
         
         yield return null;
 
-        gameFinishBoxLevel.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+        //gameFinishBoxLevel.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
         gameFinishBoxStar.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
 
         yield return new WaitForSeconds(1);
@@ -675,11 +676,11 @@ public class UIManager : Sounds
 
         yield return new WaitForSeconds(.5f);
 
-        gameFinishBoxLevel.SetActive(true);
+        //gameFinishBoxLevel.SetActive(true);
 
         yield return null;
 
-        gameFinishBoxLevel.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+        //gameFinishBoxLevel.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
     }
 
     public void ExitGameButtonTapped()

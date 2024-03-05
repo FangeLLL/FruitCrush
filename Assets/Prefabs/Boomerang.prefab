@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7793662537334363303}
   - component: {fileID: 8436159831015654162}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: cherry_3dd-export_mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8421339106018059113}
   - component: {fileID: 6944132677366769703}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: Left Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,7 +239,7 @@ GameObject:
   m_Component:
   - component: {fileID: 962639571434477156}
   - component: {fileID: 4658557699896262326}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: Grape3D_mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -323,7 +323,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7707849250790133050}
   - component: {fileID: 7890359621286258530}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: banana_sprite_mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -407,7 +407,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8295972253815015772}
   - component: {fileID: 6060802173349531486}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: 'Right Trail '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -552,7 +552,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2749628007631065136}
   - component: {fileID: 1033137402248661782}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: orange_sprite_mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -636,7 +636,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5403974318406426051}
   - component: {fileID: 2814524388746060233}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: avocado_sprite_mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -724,7 +724,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1594701409205146621, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1769958116402937428, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_FlipX
@@ -756,19 +756,19 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 290be07fe513cc14d95f6f82ee0dfcc8, type: 2}
     - target: {fileID: 6537579639732625407, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6775481451483027233, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.25
+      value: 0.8333333
       objectReference: {fileID: 0}
     - target: {fileID: 6775481451483027233, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.25
+      value: 0.8333333
       objectReference: {fileID: 0}
     - target: {fileID: 6775481451483027233, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.25
+      value: 0.8333333
       objectReference: {fileID: 0}
     - target: {fileID: 6775481451483027233, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -853,9 +853,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1594701409205146621, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -6371541539519931910}
-    - targetCorrespondingSourceObject: {fileID: 1594701409205146621, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
-      insertIndex: -1
       addedObject: {fileID: -5093943140615170969}
   m_SourcePrefab: {fileID: 100100000, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
 --- !u!1 &3566861933945487612 stripped
@@ -863,51 +860,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1594701409205146621, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
   m_PrefabInstance: {fileID: 2855720303799292673}
   m_PrefabAsset: {fileID: 0}
---- !u!61 &-6371541539519931910
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3566861933945487612}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
 --- !u!50 &-5093943140615170969
 Rigidbody2D:
   serializedVersion: 4

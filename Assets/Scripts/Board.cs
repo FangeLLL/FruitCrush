@@ -1302,7 +1302,7 @@ public class Board : MonoBehaviour
 
             }
         }
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.2f);
        
         StartCoroutine(FillTheGaps());
     }
@@ -1886,7 +1886,7 @@ public class Board : MonoBehaviour
             // Horizontal Harvester power up
             case -1:
 
-                StartCoroutine(StopAndStartAllFillings(0.1f * width));
+                StartCoroutine(StopAndStartAllFillings(0.07f * width));
 
                 GameObject cloneHorizontal = Instantiate(powerUps[0], allTiles[column, row].transform.position, powerUps[0].transform.rotation);
                 Fruit cloneHorizontalScript = cloneHorizontal.GetComponent<Fruit>();
@@ -1898,6 +1898,7 @@ public class Board : MonoBehaviour
                 cloneHorizontalScript.column = column;
                 cloneHorizontal.gameObject.transform.position = allTiles[column, row].transform.position;
                 cloneHorizontalScript.damageID = fruitScript.damageID;
+                cloneHorizontalScript.fruitType = type;
 
                 fruitScript.speedMultiplier = 2.5f;
                 cloneHorizontalScript.speedMultiplier = 2.5f;
@@ -1910,8 +1911,9 @@ public class Board : MonoBehaviour
                 cloneHorizontalScript.outsideOfBoard = true;
 
                 allFruits[column, row] = null;
-                cloneHorizontalScript.GetComponent<Collider2D>().enabled = true;
-                fruitScript.GetComponent<Collider2D>().enabled = true;
+                fruitScript.activePowerUp = true;
+                cloneHorizontalScript.activePowerUp = true;
+
 
                 StartCoroutine(WaitAndDestroyObj(0.2f * width, fruit));
                 StartCoroutine(WaitAndDestroyObj(0.2f * width, cloneHorizontal));
@@ -1925,7 +1927,7 @@ public class Board : MonoBehaviour
             // Vertical Harvester power up
             case -2:
 
-                StartCoroutine(StopAndStartSingleColumn(0.1f * width, column));
+                StartCoroutine(StopAndStartSingleColumn(0.07f * width, column));
 
                 GameObject cloneVertical = Instantiate(powerUps[1], allTiles[column, row].transform.position, powerUps[1].transform.rotation);
                 Fruit cloneVerticalScript = cloneVertical.GetComponent<Fruit>();
@@ -1937,6 +1939,7 @@ public class Board : MonoBehaviour
                 cloneVerticalScript.column = column;
                 cloneVertical.gameObject.transform.position = allTiles[column, row].transform.position;
                 cloneVerticalScript.damageID=fruitScript.damageID;
+                cloneVerticalScript.fruitType = type;
 
                 fruitScript.speedMultiplier = 2.5f;
                 cloneVerticalScript.speedMultiplier = 2.5f;
@@ -1948,8 +1951,8 @@ public class Board : MonoBehaviour
                 cloneVerticalScript.outsideOfBoard = true;
 
                 allFruits[column, row] = null;
-                cloneVerticalScript.GetComponent<Collider2D>().enabled = true;
-                fruitScript.GetComponent<Collider2D>().enabled = true;
+                fruitScript.activePowerUp = true;
+                cloneVerticalScript.activePowerUp = true;
 
                 StartCoroutine(WaitAndDestroyObj(0.2f * width, fruit));
                 StartCoroutine(WaitAndDestroyObj(0.2f * width, cloneVertical));
@@ -1971,12 +1974,11 @@ public class Board : MonoBehaviour
             // Boomerang power up
             case -4:
 
-
                 fruitScript.outsideOfBoard = true;
                 fruitScript.moveToward = true;
                 fruitScript.speedMultiplier = 11f;
                 fruitScript.targetV = GetBoomerangTargetLoc(fruitScript.column, fruitScript.row);
-                fruit.GetComponent<Collider2D>().enabled = true;
+                fruitScript.activePowerUp = true;
 
                 allFruits[fruitScript.column, fruitScript.row] = null;
 

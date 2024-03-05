@@ -34,6 +34,8 @@ public class Fruit : MonoBehaviour
 
     public float speedMultiplier=6f;
 
+    private AudioManager audioManager;
+
     public bool isPowerUpSoundPlayed = false;
 
     public bool outsideOfBoard = false;
@@ -43,6 +45,8 @@ public class Fruit : MonoBehaviour
     public bool moveToward = false;
 
     public GameObject attachedPowerUp=null;
+
+    public bool activePowerUp = false;
 
     [HideInInspector]
     public int swipeRight = Animator.StringToHash("isSwipeRight");
@@ -60,6 +64,7 @@ public class Fruit : MonoBehaviour
 
     void Awake()
     {
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         board = FindObjectOfType<Board>();
         targetV.x = transform.position.x;
         targetV.y = transform.position.y;
@@ -130,6 +135,22 @@ public class Fruit : MonoBehaviour
         swipeAngle = angleInRadians * Mathf.Rad2Deg;
 
         board.SwipeFruits(swipeAngle, column, row);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Fruit fruitScript;
+        if(fruitScript = other.GetComponent<Fruit>())
+        {
+            if (fruitScript.fruitType < 0 && fruitScript.activePowerUp)
+            {
+                audioManager.FruitCrush();
+                board.DestroyController(board.allFruits[column, row], false);
+            }
+        }
+
+        
+  
     }
 
 }

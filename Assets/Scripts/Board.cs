@@ -133,7 +133,7 @@ public class Board : MonoBehaviour
 
         if (gridData.level == 0)
         {
-            Debug.Log("This level did not made yet. Please, don't assume that this is a some sort of bug and tell Bertuð to fix it, just make this level in Level Editor.");
+            Debug.Log("This level did not made yet. Please, don't assume that this is a some sort of bug and tell Bertuï¿½ to fix it, just make this level in Level Editor.");
         }
         else
         {
@@ -1322,45 +1322,9 @@ public class Board : MonoBehaviour
     {
         if(!blockUserMove)
         {
-            Array.Fill(fillingColumn, true);
-
-            for (int i = 0; i < width; i++)
-            {
-                StopCoroutine(FillTheColumn(i));
-            }
-            yield return new WaitForSeconds(waitTime);
-
-            if (!blockUserMove)
-            {
-                Array.Fill(fillingColumn, true);
-                for (int i = 0; i < width; i++)
-                {
-                    StopCoroutine(FillTheColumn(i));
-                }
-
-                Array.Clear(fillingColumn, 0, fillingColumn.Length);
-            }
+            StartCoroutine(CheckAndDestroyMatches());
         }
-    }
-
-    private IEnumerator StopAndStartSingleColumn(float waitTime,int column)
-    {
-        if (!blockUserMove)
-        {
-            fillingColumn[column] = true;
-            StopCoroutine(FillTheColumn(column));
-
-            yield return new WaitForSeconds(waitTime);
-
-            if (!blockUserMove)
-            {
-                fillingColumn[column] = true;
-                StopCoroutine(FillTheColumn(column));
-
-                fillingColumn[column] = false;
-            }
-        }     
-
+        StartCoroutine(FillTheGaps());
     }
 
     /// <summary>

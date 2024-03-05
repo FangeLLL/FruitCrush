@@ -22,7 +22,6 @@ public class Board : MonoBehaviour
     public SaveData saveData;
     public SpecialPowerController specialPowerController;
 
-    public bool checkingMatch = false;
     public bool isRunning = false;
     public bool exitUpdate = false;
 
@@ -274,11 +273,7 @@ public class Board : MonoBehaviour
                     backgroundTile.transform.parent = this.transform;
                     backgroundTile.name = "( " + i + ", " + j + " )";
                     backgroundTile.GetComponent<BackgroundTile>().column = i;
-                    backgroundTile.GetComponent<BackgroundTile>().row = j;
-                    if(i==0 || i == width - 1 || j == 0 || j == height - 1)
-                    {
-                        backgroundTile.GetComponent<BackgroundTile>().border = true;
-                    }                 
+                    backgroundTile.GetComponent<BackgroundTile>().row = j;             
                     allTiles[i, j] = backgroundTile;
 
                   
@@ -393,6 +388,7 @@ public class Board : MonoBehaviour
         }
         CheckForStarterPowerUps();
         StartCoroutine(FillTheGaps());
+        StartCoroutine(CheckAndDestroyMatches());
     }
 
     /// <summary>
@@ -507,10 +503,6 @@ public class Board : MonoBehaviour
 
         audioManager.Swipe();
         StartCoroutine(CheckMove(fruit, otherFruit));
-        if (!checkingMatch)
-        {
-            StartCoroutine(CheckAndDestroyMatches());
-        }
     }
 
     /// <summary>
@@ -521,7 +513,6 @@ public class Board : MonoBehaviour
     {
         // List of fruits going to be popped.
         List<GameObject> fruitsCheckTotal = new List<GameObject>();
-        checkingMatch = true;
         yield return null;
         popped = false;
         hintBool = false;
@@ -813,7 +804,8 @@ public class Board : MonoBehaviour
         {
             StopHint();
         }
-        checkingMatch = false;
+
+        StartCoroutine(CheckAndDestroyMatches());
 
     }
 
@@ -1027,8 +1019,8 @@ public class Board : MonoBehaviour
             // Selected power up moves towards to other power up
             fruitScript.row = otherFruitScript.row;
             fruitScript.column = otherFruitScript.column;
-            fruitScript.targetV = otherFruitScript.targetV; 
-
+            fruitScript.targetV = otherFruitScript.targetV;
+            yield return new WaitForSeconds(0.1f);
             ActivateMergePowerUp(fruit, otherFruit);
             succesfulMove = true;
         }
@@ -1317,14 +1309,52 @@ public class Board : MonoBehaviour
        
         StartCoroutine(FillTheGaps());
     }
-  
+
     private IEnumerator StopAndStartAllFillings(float waitTime)
     {
-        if(!blockUserMove)
+        if (!blockUserMove)
         {
             StartCoroutine(CheckAndDestroyMatches());
+            Array.Fill(fillingColumn, true);
+
+            for (int i = 0; i < width; i++)
+            {
+                StopCoroutine(FillTheColumn(i));
+            }
+            yield return new WaitForSeconds(waitTime);
+
+            if (!blockUserMove)
+            {
+                Array.Fill(fillingColumn, true);
+                for (int i = 0; i < width; i++)
+                {
+                    StopCoroutine(FillTheColumn(i));
+                }
+
+                Array.Clear(fillingColumn, 0, fillingColumn.Length);
+            }
         }
         StartCoroutine(FillTheGaps());
+    }
+
+    private IEnumerator StopAndStartSingleColumn(float waitTime, int column)
+    {
+        if (!blockUserMove)
+        {
+            fillingColumn[column] = true;
+            StopCoroutine(FillTheColumn(column));
+
+            yield return new WaitForSeconds(waitTime);
+
+            if (!blockUserMove)
+            {
+                fillingColumn[column] = true;
+                StopCoroutine(FillTheColumn(column));
+
+                fillingColumn[column] = false;
+            }
+        }
+
     }
 
     /// <summary>
@@ -1860,13 +1890,9 @@ public class Board : MonoBehaviour
         {
             // Horizontal Harvester power up
             case -1:
-                
-                for(int i = 0; i < width; i++)
-                {
-                    StopCoroutine(FillTheColumn(i));
-                }
-                Array.Fill(fillingColumn, true);
-                
+
+                StartCoroutine(StopAndStartAllFillings(0.07f * width));
+
                 GameObject cloneHorizontal = Instantiate(powerUps[0], allTiles[column, row].transform.position, powerUps[0].transform.rotation);
                 Fruit cloneHorizontalScript = cloneHorizontal.GetComponent<Fruit>();
 
@@ -1878,11 +1904,11 @@ public class Board : MonoBehaviour
                 cloneHorizontal.gameObject.transform.position = allTiles[column, row].transform.position;
                 cloneHorizontalScript.damageID = fruitScript.damageID;
 
-                fruitScript.speedMultiplier = 6f;
-                cloneHorizontalScript.speedMultiplier = 6f;
+                fruitScript.speedMultiplier = 2.5f;
+                cloneHorizontalScript.speedMultiplier = 2.5f;
 
-                fruitScript.targetV.x = allTiles[0, row].transform.position.x - 2;
-                cloneHorizontalScript.targetV.x = allTiles[width - 1, row].transform.position.x + 2;
+                fruitScript.targetV.x = allTiles[0, row].transform.position.x - 8;
+                cloneHorizontalScript.targetV.x = allTiles[width - 1, row].transform.position.x + 8;
 
 
                 fruitScript.outsideOfBoard = true;
@@ -1891,6 +1917,10 @@ public class Board : MonoBehaviour
                 allFruits[column, row] = null;
                 cloneHorizontalScript.GetComponent<Collider2D>().enabled = true;
                 fruitScript.GetComponent<Collider2D>().enabled = true;
+
+                StartCoroutine(WaitAndDestroyObj(0.2f * width, fruit));
+                StartCoroutine(WaitAndDestroyObj(0.2f * width, cloneHorizontal));
+
                 if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
                 {
                     audioManager.Harvester();
@@ -1899,10 +1929,9 @@ public class Board : MonoBehaviour
                 break;
             // Vertical Harvester power up
             case -2:
-                
-                StopCoroutine(FillTheColumn(column));
-                fillingColumn[column] = true;
-                
+
+                StartCoroutine(StopAndStartSingleColumn(0.07f * width, column));
+
                 GameObject cloneVertical = Instantiate(powerUps[1], allTiles[column, row].transform.position, powerUps[1].transform.rotation);
                 Fruit cloneVerticalScript = cloneVertical.GetComponent<Fruit>();
 
@@ -1914,11 +1943,11 @@ public class Board : MonoBehaviour
                 cloneVertical.gameObject.transform.position = allTiles[column, row].transform.position;
                 cloneVerticalScript.damageID=fruitScript.damageID;
 
-                fruitScript.speedMultiplier = 6f;
-                cloneVerticalScript.speedMultiplier = 6f;
+                fruitScript.speedMultiplier = 2.5f;
+                cloneVerticalScript.speedMultiplier = 2.5f;
 
-                fruitScript.targetV.y = allTiles[column, 0].transform.position.y - 2;
-                cloneVerticalScript.targetV.y = allTiles[column, height - 1].transform.position.y + 2;
+                fruitScript.targetV.y = allTiles[column, 0].transform.position.y - 8;
+                cloneVerticalScript.targetV.y = allTiles[column, height - 1].transform.position.y + 8;
 
                 fruitScript.outsideOfBoard = true;
                 cloneVerticalScript.outsideOfBoard = true;
@@ -1926,6 +1955,9 @@ public class Board : MonoBehaviour
                 allFruits[column, row] = null;
                 cloneVerticalScript.GetComponent<Collider2D>().enabled = true;
                 fruitScript.GetComponent<Collider2D>().enabled = true;
+
+                StartCoroutine(WaitAndDestroyObj(0.2f * width, fruit));
+                StartCoroutine(WaitAndDestroyObj(0.2f * width, cloneVertical));
 
                 if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
                 {
@@ -1949,15 +1981,9 @@ public class Board : MonoBehaviour
                 fruitScript.moveToward = true;
                 fruitScript.speedMultiplier = 11f;
                 fruitScript.targetV = GetBoomerangTargetLoc(fruitScript.column, fruitScript.row);
-                                fruit.GetComponent<Collider2D>().enabled = true;
+                fruit.GetComponent<Collider2D>().enabled = true;
 
                 allFruits[fruitScript.column, fruitScript.row] = null;
-
-                // fruit.GetComponent<TurnObject>().enabled = true;
-
-
-               // fruit.transform.GetChild(0).GetComponent<TrailRenderer>().enabled = true;
-               // fruit.transform.GetChild(0).GetChild(1).GetComponentInChildren<TrailRenderer>().enabled = true;
 
                 fruit.GetComponentInChildren<Animator>().SetBool(fruitScript.boomerangRotating, true);
 
@@ -2458,6 +2484,15 @@ public class Board : MonoBehaviour
     private IEnumerator DiscoBallSelectAndDestroy(GameObject discoBall,int targetFruitType,int powerUpCreateType)
     {
         blockUserMove = true;
+
+        Array.Fill(fillingColumn, true);
+
+        for (int i = 0; i < width; i++)
+        {
+            StopCoroutine(FillTheColumn(i));
+        }
+
+
         List<GameObject> fruitsToDisappear = new List<GameObject>();
         for(int i = 0;i < height; i++)
         {
@@ -2522,8 +2557,9 @@ public class Board : MonoBehaviour
 
         StartCoroutine(FadeOut(discoBall));
 
-        Array.Clear(fillingColumn, 0, fillingColumn.Length);
+        yield return new WaitForSeconds(0.2f);
         blockUserMove = false;
+        StartCoroutine(StopAndStartAllFillings(0.01f));
     }
 
     /// <summary>
@@ -2635,6 +2671,8 @@ public class Board : MonoBehaviour
 
         newSpecialPowerUpScript.targetV.x = allTiles[width-1, row].transform.position.x+5;
 
+        StartCoroutine(StopAndStartAllFillings(0.05f * width));
+
         yield return new WaitForSeconds(0.1f);
 
         Destroy(newSpecialPowerUp.transform.GetChild(1).gameObject);
@@ -2643,6 +2681,12 @@ public class Board : MonoBehaviour
 
         Destroy(newSpecialPowerUp);
 
+    }
+
+    private IEnumerator WaitAndDestroyObj(float waitTime, GameObject obj)
+    {
+        yield return new WaitForSeconds(waitTime);
+        Destroy(obj);
     }
 
 }

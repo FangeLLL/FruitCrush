@@ -56,6 +56,7 @@ public class UIManager : Sounds
     [SerializeField] private GameObject quitLevelButton;
 
     [SerializeField] private TextMeshProUGUI movePriceText;
+    [SerializeField] private TextMeshProUGUI movePriceTextUnderlay;
     [SerializeField] private TextMeshProUGUI refillPriceText;
     [SerializeField] private TextMeshProUGUI levelText;
 
@@ -395,7 +396,7 @@ public class UIManager : Sounds
     {
         continueWithButton.GetComponent<Animator>().SetTrigger("Tapped");
 
-        yield return new WaitForSeconds(0.1f);
+        //yield return new WaitForSeconds(0.1f);
 
         taskController.moveCount = 5;
         taskController.moveText.text = taskController.moveCount.ToString();
@@ -409,10 +410,11 @@ public class UIManager : Sounds
         gameFinishBoxLevel.SetActive(false);
         gameFinishBoxLevel.transform.localPosition = new Vector3(0, 200, 0);
 
-        yield return new WaitForSeconds(0.35f);
+        //yield return new WaitForSeconds(0.35f);
 
         finishBackground2.SetActive(false);
         movePriceText.text = plusMovePrice.ToString();
+        movePriceTextUnderlay.text = plusMovePrice.ToString();
         gameFinishBoxFalse.SetActive(false);
     }
 
@@ -515,7 +517,7 @@ public class UIManager : Sounds
         continueButton.GetComponent<Animator>().SetTrigger("Tapped");
         continueButton.GetComponent<Button>().interactable = false;
 
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.1f);
 
         SceneManager.LoadScene("MainMenu");
     }
@@ -683,33 +685,17 @@ public class UIManager : Sounds
         audioManager.MenuClick();
         SettingsButton();
         settingsGray.GetComponent<Button>().interactable = false;
-        StartCoroutine(ExitGameButtonTappedEnum());
-    }
-
-    IEnumerator ExitGameButtonTappedEnum()
-    {
         quitLevelBox.SetActive(true);
         exitGameIcon.GetComponent<Animator>().SetTrigger("SettingsToggle");
-
-        yield return null;
-
-        quitLevelBox.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
+        quitLevelBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+        quitLevelBoxCloseButton.GetComponent<Animator>().SetTrigger("Fixer");
     }
 
     public void ExitGameBoxCloseButtonTapped()
     {
         audioManager.MenuClickReturn();
-        StartCoroutine(ExitGameBoxCloseButtonTappedEnum());
-    }
-
-    IEnumerator ExitGameBoxCloseButtonTappedEnum()
-    {
         quitLevelBoxCloseButton.GetComponent<Animator>().SetTrigger("Tapped");
         settingsGray.GetComponent<Animator>().SetTrigger("SettingsOff");
-        quitLevelBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
-
-        yield return new WaitForSeconds(0.5f);
-
         quitLevelBox.SetActive(false);
         settingsGray.SetActive(false);
         settingsGray.GetComponent<Button>().interactable = true;

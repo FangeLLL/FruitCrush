@@ -51,74 +51,68 @@ public class AchievementManager : MonoBehaviour
         }
     }
 
-    public void AchievementProgress(int[] progressArray)
+    public void AchievementProgress(int achievementIndex)
     {
-        Achievement totalAchievement = FindAchievementByIndex(5);
+        Achievement totalAchievement = FindAchievementByIndex(5); // Adjust the total achievement index as needed
 
-        for (int i = 0; i < progressArray.Length; i++)
+        Achievement individualAchievement = FindAchievementByIndex(achievementIndex);
+
+        if (individualAchievement != null)
         {
-            Achievement individualAchievement = FindAchievementByIndex(i);
+            individualAchievement.progress += 1;
+            totalAchievement.progress += 1;
 
-            if (individualAchievement != null)
+            int totalCrushTask = PlayerPrefs.GetInt("TotalCrushTask", 0);
+            totalCrushTask += 1;
+            PlayerPrefs.SetInt("TotalCrushTask", totalCrushTask);
+            PlayerPrefs.Save();
+
+            for (int j = individualAchievement.level; j < individualAchievement.steps.Length; j++)
             {
-                int progress = progressArray[i];
-                individualAchievement.progress += progress;
-                totalAchievement.progress += progress;
-
-                int totalCrushTask = PlayerPrefs.GetInt("TotalCrushTask", 0);
-
-                totalCrushTask += progress;
-
-                PlayerPrefs.SetInt("TotalCrushTask", totalCrushTask);
-                PlayerPrefs.Save();
-
-                for (int j = individualAchievement.level; j < individualAchievement.steps.Length; j++)
+                if (individualAchievement.progress >= individualAchievement.steps[j])
                 {
-                    if (individualAchievement.progress >= individualAchievement.steps[j])
-                    {
-                        individualAchievement.level = j + 1;
+                    individualAchievement.level = j + 1;
 
-                        // Check if the achievement is not already in the queue.
-                        if (!achievementQueue.Contains(individualAchievement))
-                        {
-                            achievementQueue.Enqueue(individualAchievement); // Add to the queue for display.
-                        }
-
-                        SaveAchievementData();
-                    }
-                    else
+                    // Check if the achievement is not already in the queue.
+                    if (!achievementQueue.Contains(individualAchievement))
                     {
-                        break;
+                        achievementQueue.Enqueue(individualAchievement); // Add to the queue for display.
                     }
+
+                    SaveAchievementData();
                 }
-
-                for (int j = totalAchievement.level; j < totalAchievement.steps.Length; j++)
+                else
                 {
-                    if (totalAchievement.progress >= totalAchievement.steps[j])
-                    {
-                        totalAchievement.level = j + 1;
-
-                        // Check if the achievement is not already in the queue.
-                        if (!achievementQueue.Contains(totalAchievement))
-                        {
-                            achievementQueue.Enqueue(totalAchievement); // Add to the queue for display.
-                        }
-
-                        SaveAchievementData();
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    break;
                 }
-
             }
-            else
+
+            for (int j = totalAchievement.level; j < totalAchievement.steps.Length; j++)
             {
-                Debug.LogWarning("Achievement not found with index: " + i);
+                if (totalAchievement.progress >= totalAchievement.steps[j])
+                {
+                    totalAchievement.level = j + 1;
+
+                    // Check if the achievement is not already in the queue.
+                    if (!achievementQueue.Contains(totalAchievement))
+                    {
+                        achievementQueue.Enqueue(totalAchievement); // Add to the queue for display.
+                    }
+
+                    SaveAchievementData();
+                }
+                else
+                {
+                    break;
+                }
             }
         }
+        else
+        {
+            Debug.LogWarning("Achievement not found with index: " + achievementIndex);
+        }
     }
+
 
     private void DisplayAchievement(Achievement achievement)
     {

@@ -14,6 +14,8 @@ public class BackgroundTile : MonoBehaviour
     public int indexOfVisibleOne=-1;
     public bool isCurrentObstacleBox=false;
 
+    // it used for detected if this on borders of table.
+    public bool border =false;
     private Vector2 firstTouchPosition;
     private AudioManager audioManager;
 
@@ -22,6 +24,24 @@ public class BackgroundTile : MonoBehaviour
     {
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         board = FindObjectOfType<Board>();
+    }
+
+    private void Update()
+    {
+        /*
+        if (Input.GetMouseButtonDown(0) && board.specialPowerID != 0)
+        {
+            // Convert the mouse position to world coordinates
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            // Check if the mouse position is within the bounds of this fruit
+            if (GetComponent<Collider2D>().OverlapPoint(mousePos) && !board.specialSwipe)
+            {
+                board.ActivateSpecialPower(column, row);
+            }
+        }
+        */
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -63,6 +83,7 @@ public class BackgroundTile : MonoBehaviour
             }
         }
 
+
         if (other)
         {
 
@@ -88,10 +109,34 @@ public class BackgroundTile : MonoBehaviour
                     else
                     {
                         fruitScript.targetV = board.GetBoomerangTargetLoc(column, row);
+
                     }
                 }          
             }
+            else if(border)
+            {
+                StartCoroutine(WaitAndReleaseColumnForFilling(fruitScript.fruitType, fruitScript.column, other.gameObject));
+            }
         }    
+    }
+
+    private IEnumerator WaitAndReleaseColumnForFilling(int type,int column,GameObject obj)
+    {
+        yield return new WaitForSeconds(0.3f);
+
+        Destroy(obj);
+
+        if (type == -2)
+        {
+
+            board.fillingColumn[column] = false;
+        }
+
+        if (type == -1)
+        {
+
+            Array.Clear(board.fillingColumn, 0, board.fillingColumn.Length);
+        }
     }
 
     private void OnMouseDown()
@@ -116,7 +161,7 @@ public class BackgroundTile : MonoBehaviour
             {
                 if (!board.blockUserMove && board.allFruits[column, row].GetComponent<Fruit>().isClicked&&!board.specialSwipe && board.allFruits[column, row].GetComponent<Fruit>().fruitType < 0 && board.taskController.moveCount > 0 && !board.allFruits[column, row].GetComponent<Fruit>().isSwiped && board.taskController.isBoardActive)
                 {
-                    if (Vector2.Distance(transform.position, firstTouchPosition) < 0.6f)
+                    if (Vector2.Distance(transform.position, firstTouchPosition) < 0.3f)
                     {
                         board.taskController.MovePlayed();
                         board.StopHint();

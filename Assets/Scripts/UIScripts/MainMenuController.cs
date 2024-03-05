@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,8 +18,6 @@ public class MainMenuController : Sounds
     [SerializeField] private TextMeshProUGUI starText;
     [SerializeField] private TextMeshProUGUI starShopText;
     [SerializeField] private TextMeshProUGUI levelBoxText;
-
-    [SerializeField] private GameObject playButton;
 
     [SerializeField] private GameObject starBox;
     [SerializeField] private GameObject livesBox;
@@ -222,10 +221,10 @@ public class MainMenuController : Sounds
 
     IEnumerator PlayButtonTappedEnum()
     {
-        //playButton.GetComponent<Animator>().SetTrigger("Tapped");
         playBox.SetActive(true);
         playBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
-
+        playBoxQuitButton.GetComponent<Animator>().SetTrigger("Fixer");
+        playBoxPlayButton.GetComponent<Animator>().SetTrigger("Fixer");
         yield return new WaitForSeconds(.5f);
 
         levelBox.SetActive(true);
@@ -234,21 +233,12 @@ public class MainMenuController : Sounds
 
     public void PlayBoxQuitButtonTapped()
     {
-        StartCoroutine(PlayBoxQuitButtonTappedEnum());
-        audioManager.MenuClickReturn();
-    }
-
-    IEnumerator PlayBoxQuitButtonTappedEnum()
-    {
         grayBack.SetActive(false);
         playBoxQuitButton.GetComponent<Animator>().SetTrigger("Tapped");
-        playBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
         levelBox.SetActive(false);
         levelBox.transform.localPosition = new Vector3(0, 200, 0);
-
-        yield return new WaitForSeconds(0.35f);
-
         playBox.SetActive(false);
+        audioManager.MenuClickReturn();
     }
 
     public void PlayBoxPlayButtonTapped()
@@ -264,6 +254,7 @@ public class MainMenuController : Sounds
         if (liveRegen.lives <= 0)
         {
             outOfLivesBox.SetActive(true);
+            playBox.SetActive(false);
             outOfLivesBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
 
         }
@@ -314,21 +305,13 @@ public class MainMenuController : Sounds
 
     public void OutOfLivesBoxQuitButtonTapped()
     {
-        StartCoroutine(OutOfLivesBoxQuitButtonTappedEnum());
-        audioManager.MenuClickReturn();
-    }
-
-    IEnumerator OutOfLivesBoxQuitButtonTappedEnum()
-    {
+        playBox.SetActive(true);
+        playBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+        playBoxQuitButton.GetComponent<Animator>().SetTrigger("Fixer");
+        playBoxPlayButton.GetComponent<Animator>().SetTrigger("Fixer");
         outOfLivesBoxQuitButton.GetComponent<Animator>().SetTrigger("Tapped");
-
-        yield return null;
-
-        outOfLivesBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
-
-        yield return new WaitForSeconds(0.5f);
-
         outOfLivesBox.SetActive(false);
+        audioManager.MenuClickReturn();
     }
 
     public void RefillButtonTapped()
@@ -337,26 +320,18 @@ public class MainMenuController : Sounds
         {
             liveRegen.LivesRefilled();
             resourceController.StarSpent(refillPrice);
-            StartCoroutine(RefillButtonTappedEnum());
+            refillButton.GetComponent<Animator>().SetTrigger("Tapped");
+            outOfLivesBox.SetActive(false);
+            playBox.SetActive(true);
+            playBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+            playBoxQuitButton.GetComponent<Animator>().SetTrigger("Fixer");
+            playBoxPlayButton.GetComponent<Animator>().SetTrigger("Fixer");
         }
         else
         {
             BuyStarsButtonTapped();
         }
         audioManager.MenuClick();
-    }
-
-    IEnumerator RefillButtonTappedEnum()
-    {
-        refillButton.GetComponent<Animator>().SetTrigger("Tapped");
-
-        yield return null;
-
-        outOfLivesBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
-
-        yield return new WaitForSeconds(0.5f);
-
-        outOfLivesBox.SetActive(false);
     }
 
     public void SettingsButtonTapped()

@@ -517,9 +517,6 @@ public class Board : MonoBehaviour
         popped = false;
         hintBool = false;
 
-        // For, achivement progress it contains type of fruits popped count.  
-      //  int[] typeFruits = new int[fruits.Length];
-
         // Check for matches in columns
         for (int j = 0; j < height; j++)
         {
@@ -2056,6 +2053,7 @@ public class Board : MonoBehaviour
                     allTiles[column, row].GetComponent<BackgroundTile>().Explosion(column, row, obj.GetComponent<Fruit>().damageID, obj.GetComponent<Fruit>().colorType);
                 }
                 totalNumberOfFruits[obj.GetComponent<Fruit>().fruitType]--;
+                achievementManager.AchievementProgress(obj.GetComponent<Fruit>().fruitType);
                 if (!obj.GetComponent<Fruit>().outsideOfBoard)
                 {
                     StartCoroutine(FruitPop(obj));

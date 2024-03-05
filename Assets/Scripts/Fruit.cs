@@ -114,7 +114,7 @@ public class Fruit : MonoBehaviour
             if (isClicked)
             {
                 lastTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                if (Vector2.Distance(transform.position, lastTouchPosition) > 0.6f)
+                if (Vector2.Distance(transform.position, lastTouchPosition) >= 0.6f)
                 {
                     CalculateAngle();
                     isClicked = false;

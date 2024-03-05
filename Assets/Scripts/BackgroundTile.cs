@@ -24,24 +24,6 @@ public class BackgroundTile : MonoBehaviour
         board = FindObjectOfType<Board>();
     }
 
-    private void Update()
-    {
-        /*
-        if (Input.GetMouseButtonDown(0) && board.specialPowerID != 0)
-        {
-            // Convert the mouse position to world coordinates
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            // Check if the mouse position is within the bounds of this fruit
-            if (GetComponent<Collider2D>().OverlapPoint(mousePos) && !board.specialSwipe)
-            {
-                board.ActivateSpecialPower(column, row);
-            }
-        }
-        */
-
-    }
-
     void OnTriggerEnter2D(Collider2D other)
     {
         Fruit fruitScript = other.GetComponent<Fruit>();
@@ -81,7 +63,6 @@ public class BackgroundTile : MonoBehaviour
             }
         }
 
-
         if (other)
         {
 
@@ -107,7 +88,6 @@ public class BackgroundTile : MonoBehaviour
                     else
                     {
                         fruitScript.targetV = board.GetBoomerangTargetLoc(column, row);
-
                     }
                 }          
             }
@@ -136,7 +116,7 @@ public class BackgroundTile : MonoBehaviour
             {
                 if (!board.blockUserMove && board.allFruits[column, row].GetComponent<Fruit>().isClicked&&!board.specialSwipe && board.allFruits[column, row].GetComponent<Fruit>().fruitType < 0 && board.taskController.moveCount > 0 && !board.allFruits[column, row].GetComponent<Fruit>().isSwiped && board.taskController.isBoardActive)
                 {
-                    if (Vector2.Distance(transform.position, firstTouchPosition) < 0.3f)
+                    if (Vector2.Distance(transform.position, firstTouchPosition) < 0.6f)
                     {
                         board.taskController.MovePlayed();
                         board.StopHint();

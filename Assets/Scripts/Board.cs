@@ -1824,8 +1824,8 @@ public class Board : MonoBehaviour
                 cloneHorizontal.gameObject.transform.position = allTiles[column, row].transform.position;
                 cloneHorizontalScript.damageID = fruitScript.damageID;
 
-                fruitScript.speedMultiplier = 3f;
-                cloneHorizontalScript.speedMultiplier = 3f;
+                fruitScript.speedMultiplier = 2.5f;
+                cloneHorizontalScript.speedMultiplier = 2.5f;
 
                 fruitScript.targetV.x = allTiles[0, row].transform.position.x - 8;
                 cloneHorizontalScript.targetV.x = allTiles[width - 1, row].transform.position.x + 8;
@@ -1863,8 +1863,8 @@ public class Board : MonoBehaviour
                 cloneVertical.gameObject.transform.position = allTiles[column, row].transform.position;
                 cloneVerticalScript.damageID=fruitScript.damageID;
 
-                fruitScript.speedMultiplier = 3f;
-                cloneVerticalScript.speedMultiplier = 3f;
+                fruitScript.speedMultiplier = 2.5f;
+                cloneVerticalScript.speedMultiplier = 2.5f;
 
                 fruitScript.targetV.y = allTiles[column, 0].transform.position.y - 8;
                 cloneVerticalScript.targetV.y = allTiles[column, height - 1].transform.position.y + 8;
@@ -2459,8 +2459,6 @@ public class Board : MonoBehaviour
                 else
                 {
                     fruit.GetComponentInChildren<SpriteRenderer>().color = new Color(255, 0, 0, 255);
-
-
                 }
             }
           

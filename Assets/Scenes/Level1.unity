@@ -1948,8 +1948,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 21300000, guid: 4c6f72227ffcbfb48a3e24bbd0aeeb38, type: 3}
   - {fileID: 0}
   - {fileID: 0}
@@ -1982,7 +1980,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 21300000, guid: 6e5e05954346ded4abaf764f25c96329, type: 3}
+  - {fileID: 21300000, guid: af460b6c69ebe624abf88fbcbf3e2fc4, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

@@ -33,6 +33,9 @@ public class Board : MonoBehaviour
     Animator fruitAnimator5;
 
     [SerializeField]
+    private Sprite[] tileSprites;
+
+    [SerializeField]
     private GameObject[] specialPowerUps;
 
     public Sprite harvesterUpSprite, harvesterDownSprite;
@@ -152,35 +155,6 @@ public class Board : MonoBehaviour
 
     }
 
-    /*private void Update()
-    {
-        // Check if the conditions are met
-        if (hintBool && !exitUpdate)
-        {
-            // Increment the timer
-            timer += Time.deltaTime;
-
-            // Check if two seconds have passed
-            if (timer >= waitTime)
-            {
-                if (!swipeHint.oneHintActive)
-                {
-                    swipeHint.isHintSearching = true;
-                    swipeHint.continueIteration = true;
-                    timer = 0f;
-                    exitUpdate = true;
-                }
-                
-            }
-        }
-        else
-        {
-            // Reset the timer if conditions are not met
-            timer = 0f;
-        }
-
-    }*/
-
     /// <summary>
     /// Arranging the general scale variable of prefabs according to size of board.
     /// </summary>
@@ -275,9 +249,7 @@ public class Board : MonoBehaviour
                     backgroundTile.GetComponent<BackgroundTile>().column = i;
                     backgroundTile.GetComponent<BackgroundTile>().row = j;             
                     allTiles[i, j] = backgroundTile;
-
-                  
-
+                 
                 }
             }
             // Inserting fallPoint to array
@@ -290,6 +262,11 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
+                if (allTiles[i, j])
+                {
+                    allTiles[i, j].GetComponent<SpriteRenderer>().sprite = TileWithBorder(i, j);
+                 //   Debug.Log(Array.IndexOf(tileSprites, TileWithBorder(i, j)));
+                }
 
                 if (arrangedTiles[i, j] == 1)
                 {
@@ -2685,6 +2662,617 @@ public class Board : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         Destroy(obj);
+    }
+
+    private Sprite TileWithBorder(int column,int row)
+    {
+        int nearbyTileAmount = 0;
+
+        bool[] tileNearby = new bool[9];
+        int k = 0;
+        for (int i = row - 1; i < row + 2; i++)
+        {
+            for (int j = column - 1; j < column + 2; j++)
+            {
+                tileNearby[k] = true;
+                if (j >= 0 && j < width && i >= 0 && i < height && allTiles[j, i])
+                {
+                    tileNearby[k] = false;
+                }
+                k++;
+            }
+        }
+
+
+        if (tileNearby[3])
+        {
+            nearbyTileAmount++;
+        }
+
+        if (tileNearby[5])
+        {
+            nearbyTileAmount++;
+        }
+
+        if (tileNearby[7])
+        {
+            nearbyTileAmount++;
+        }
+
+        if (tileNearby[1])
+        {
+            nearbyTileAmount++;
+        }
+
+        // full border tile
+
+        if (nearbyTileAmount == 0)
+        {
+            return tileSprites[0];
+        }
+
+        // default tile non-border
+
+        if (nearbyTileAmount == 4)
+        {
+            return tileSprites[1];
+        }
+
+        /*
+
+          6 7 8
+          3 4 5
+          0 1 2
+
+       */
+
+        if (nearbyTileAmount == 1)
+        {
+            if (tileNearby[3])
+            {
+
+                if (tileNearby[6])
+                {
+                    if (!tileNearby[0])
+                    {
+                        return tileSprites[2];
+                    }
+                    else
+                    {
+                        // return tileSprites[3];
+
+                        Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[11];
+                    }
+                }
+                else
+                {
+                    if (!tileNearby[0])
+                    {
+                        return tileSprites[4];
+                    }
+                    else
+                    {
+                        return tileSprites[5];
+                     
+                    }
+                }
+            
+
+            }
+            else if (tileNearby[7])
+            {
+
+                if (tileNearby[6])
+                {
+                    if (!tileNearby[8])
+                    {
+                        return tileSprites[6];
+                    }
+                    else
+                    {
+                        // return tileSprites[7];
+                        Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[11];
+                    }
+                }
+                else
+                {
+                    if (!tileNearby[8])
+                    {
+                        return tileSprites[8];
+                    }
+                    else
+                    {
+                          return tileSprites[9];
+                    
+                    }
+                }
+
+            }
+            else if (tileNearby[5])
+            {
+                if (tileNearby[2])
+                {
+                    if (!tileNearby[8])
+                    {
+                        return tileSprites[10];
+                    }
+                    else
+                    {
+                        return tileSprites[11];
+                    }
+                }
+                else
+                {
+                    if (!tileNearby[8])
+                    {
+                        return tileSprites[12];
+                    }
+                    else
+                    {
+                        return tileSprites[13];
+                    }
+                }
+
+            }
+            else
+            {
+                if (tileNearby[2])
+                {
+                    if (!tileNearby[0])
+                    {
+                        return tileSprites[14];
+                    }
+                    else
+                    {
+                        // return tileSprites[15];
+                        Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[11];
+                    }
+                }
+                else
+                {
+                    if (!tileNearby[0])
+                    {
+                        return tileSprites[16];
+                    }
+                    else
+                    {
+                    //    Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                    //    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[17];
+                    }
+                }
+
+            }
+        }
+
+
+        if (nearbyTileAmount == 3)
+        {
+            if (!tileNearby[3])
+            {
+
+                if (tileNearby[6])
+                {
+                    if (!tileNearby[0])
+                    {
+                        return tileSprites[18];
+                    }
+                    else
+                    {
+                        return tileSprites[19];
+                    }
+                }
+                else
+                {
+                    if (!tileNearby[0])
+                    {
+                        return tileSprites[20];
+                    }
+                    else
+                    {
+                        return tileSprites[21];
+                    }
+                }
+
+
+            }
+            else if (tileNearby[7])
+            {
+
+                if (!tileNearby[6])
+                {
+                    if (!tileNearby[8])
+                    {
+                        return tileSprites[22];
+                    }
+                    else
+                    {
+                        return tileSprites[23];
+                    }
+                }
+                else
+                {
+                    if (!tileNearby[8])
+                    {
+                        return tileSprites[24];
+                    }
+                    else
+                    {
+                        return tileSprites[25];
+                    }
+                }
+
+            }
+            else if (tileNearby[5])
+            {
+                if (!tileNearby[2])
+                {
+                    if (!tileNearby[8])
+                    {
+                        return tileSprites[26];
+                    }
+                    else
+                    {
+                        return tileSprites[27];
+                    }
+                }
+                else
+                {
+                    if (!tileNearby[8])
+                    {
+                        return tileSprites[28];
+                    }
+                    else
+                    {
+                        return tileSprites[29];
+                    }
+                }
+
+            }
+            else
+            {
+                if (!tileNearby[2])
+                {
+                    if (!tileNearby[0])
+                    {
+                        return tileSprites[30];
+                    }
+                    else
+                    {
+                        return tileSprites[31];
+                    }
+                }
+                else
+                {
+                    if (!tileNearby[0])
+                    {
+                        return tileSprites[32];
+                    }
+                    else
+                    {
+                        return tileSprites[33];
+                    }
+                }
+
+            }
+        }
+
+
+        if (nearbyTileAmount == 2)
+        {
+            // Crossing tiles
+
+            if (tileNearby[3] && tileNearby[7])
+            {
+                if (tileNearby[8])
+                {
+                    if (!tileNearby[0])
+                    {
+                        return tileSprites[34];
+                    }
+                    else
+                    {
+                        // return tileSprites[35];
+                        Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[43];
+                    }
+                }
+                else
+                {
+                    if (!tileNearby[0])
+                    {
+                        return tileSprites[36];
+                    }
+                    else
+                    {
+                          return tileSprites[37];
+                        
+                    }
+                }
+            }
+
+            if (tileNearby[3] && tileNearby[1])
+            {
+                if (tileNearby[6])
+                {
+                    if (!tileNearby[2])
+                    {
+                        return tileSprites[38];
+                    }
+                    else
+                    {
+                        //return tileSprites[39];
+                        Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[43];
+                    }
+                }
+                else
+                {
+                    if (!tileNearby[2])
+                    {
+                        return tileSprites[40];
+                    }
+                    else
+                    {
+                         return tileSprites[41];
+                       
+                    }
+                }
+            }
+
+            if (tileNearby[7] && tileNearby[5])
+            {
+                if (tileNearby[6])
+                {
+                    if (!tileNearby[2])
+                    {
+                        return tileSprites[42];
+                    }
+                    else
+                    {
+                        return tileSprites[43];
+                    }
+                }
+                else
+                {
+                    if (!tileNearby[2])
+                    {
+                        return tileSprites[44];
+                    }
+                    else
+                    {
+                        return tileSprites[45];
+                    }
+                }
+            }
+
+            if (tileNearby[1] && tileNearby[5])
+            {
+                if (tileNearby[0])
+                {
+                    if (!tileNearby[8])
+                    {
+                        return tileSprites[46];
+                    }
+                    else
+                    {
+                        // return tileSprites[47];
+                        Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[43];
+                    }
+                }
+                else
+                {
+                    if (!tileNearby[8])
+                    {
+                        return tileSprites[48];
+                    }
+                    else
+                    {
+                          return tileSprites[49];
+                       
+                    }
+                }
+            }
+
+            // Face to face direction
+
+            if (tileNearby[3] && tileNearby[5])
+            {
+                if (tileNearby[0] && tileNearby[6] && tileNearby[2] && tileNearby[8])
+                {
+                    return tileSprites[50];
+                }
+
+                // one missing tile
+
+                if (!tileNearby[0] && tileNearby[6] && tileNearby[2] && tileNearby[8])
+                {
+                    return tileSprites[51];
+                }
+
+                if (tileNearby[0] && !tileNearby[6] && tileNearby[2] && tileNearby[8])
+                {
+                    return tileSprites[52];
+                }
+
+                if (tileNearby[0] && tileNearby[6] && !tileNearby[2] && tileNearby[8])
+                {
+                    return tileSprites[53];
+                }
+
+                if (tileNearby[0] && tileNearby[6] && tileNearby[2] && !tileNearby[8])
+                {
+                    return tileSprites[54];
+                }
+
+                // two missing tile
+
+                if (!tileNearby[0] && !tileNearby[6] && tileNearby[2] && tileNearby[8])
+                {
+                    return tileSprites[55];
+                }
+
+                if (tileNearby[0] && !tileNearby[6] && !tileNearby[2] && tileNearby[8])
+                {
+                    return tileSprites[56];
+                }
+
+                if (tileNearby[0] && tileNearby[6] && !tileNearby[2] && !tileNearby[8])
+                {
+                    return tileSprites[57];
+                }
+
+                if (!tileNearby[0] && tileNearby[6] && tileNearby[2] && !tileNearby[8])
+                {
+                    return tileSprites[58];
+                }
+
+                if (!tileNearby[0] && tileNearby[6] && !tileNearby[2] && tileNearby[8])
+                {
+                    return tileSprites[59];
+                }
+
+                if (tileNearby[0] && !tileNearby[6] && tileNearby[2] && !tileNearby[8])
+                {
+                    return tileSprites[60];
+                }
+
+                // three missing tile
+
+                if (!tileNearby[0] && !tileNearby[6] && !tileNearby[2] && tileNearby[8])
+                {
+                    return tileSprites[61];
+                }
+
+                if (tileNearby[0] && !tileNearby[6] && !tileNearby[2] && !tileNearby[8])
+                {
+                    return tileSprites[62];
+                }
+
+                if (!tileNearby[0] && tileNearby[6] && !tileNearby[2] && !tileNearby[8])
+                {
+                    return tileSprites[63];
+                }
+
+                if (!tileNearby[0] && !tileNearby[6] && tileNearby[2] && !tileNearby[8])
+                {
+                    return tileSprites[64];
+                }
+
+                // four missing tile
+
+                if (!tileNearby[0] && !tileNearby[6] && !tileNearby[2] && !tileNearby[8])
+                {
+                    return tileSprites[65];
+                }
+
+            }
+
+            if (tileNearby[1] && tileNearby[7])
+            {
+                if (tileNearby[0] && tileNearby[6] && tileNearby[2] && tileNearby[8])
+                {
+                    return tileSprites[66];
+                }
+
+                // one missing tile
+
+                if (!tileNearby[0] && tileNearby[6] && tileNearby[2] && tileNearby[8])
+                {
+                    return tileSprites[67];
+                }
+
+                if (tileNearby[0] && !tileNearby[6] && tileNearby[2] && tileNearby[8])
+                {
+                    return tileSprites[68];
+                }
+
+                if (tileNearby[0] && tileNearby[6] && !tileNearby[2] && tileNearby[8])
+                {
+                    return tileSprites[69];
+                }
+
+                if (tileNearby[0] && tileNearby[6] && tileNearby[2] && !tileNearby[8])
+                {
+                    return tileSprites[70];
+                }
+
+                // two missing tile
+
+                if (!tileNearby[0] && !tileNearby[6] && tileNearby[2] && tileNearby[8])
+                {
+                    return tileSprites[71];
+                }
+
+                if (tileNearby[0] && !tileNearby[6] && !tileNearby[2] && tileNearby[8])
+                {
+                    return tileSprites[72];
+                }
+
+                if (tileNearby[0] && tileNearby[6] && !tileNearby[2] && !tileNearby[8])
+                {
+                    return tileSprites[73];
+                }
+
+                if (!tileNearby[0] && tileNearby[6] && tileNearby[2] && !tileNearby[8])
+                {
+                    return tileSprites[74];
+                }
+
+                if (!tileNearby[0] && tileNearby[6] && !tileNearby[2] && tileNearby[8])
+                {
+                    return tileSprites[75];
+                }
+
+                if (tileNearby[0] && !tileNearby[6] && tileNearby[2] && !tileNearby[8])
+                {
+                    return tileSprites[76];
+                }
+
+                // three missing tile
+
+                if (!tileNearby[0] && !tileNearby[6] && !tileNearby[2] && tileNearby[8])
+                {
+                    return tileSprites[77];
+                }
+
+                if (tileNearby[0] && !tileNearby[6] && !tileNearby[2] && !tileNearby[8])
+                {
+                    return tileSprites[78];
+                }
+
+                if (!tileNearby[0] && tileNearby[6] && !tileNearby[2] && !tileNearby[8])
+                {
+                    return tileSprites[79];
+                }
+
+                if (!tileNearby[0] && !tileNearby[6] && tileNearby[2] && !tileNearby[8])
+                {
+                    return tileSprites[80];
+                }
+
+                // four missing tile
+
+                if (!tileNearby[0] && !tileNearby[6] && !tileNearby[2] && !tileNearby[8])
+                {
+                    return tileSprites[81];
+                }
+
+            }
+
+        }
+
+        return tileSprites[0];
     }
 
 }

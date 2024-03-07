@@ -2571,21 +2571,16 @@ public class Board : MonoBehaviour
 
         int targetRow=0,targetCol=0;
 
+        int tryNumber = 0;
 
         do
         {
+            int k = 0;
+
             // Randomly select to stick either row or column. 
             if (UnityEngine.Random.Range(0, 2) == 0)
             {
                 // Stick to last row
-                if (row >= (height - 1) / 2)
-                {
-                    targetRow = 0;
-                }
-                else
-                {
-                    targetRow = height-1;
-                }
 
                 if (column >= (width - 1) / 2)
                 {
@@ -2595,19 +2590,26 @@ public class Board : MonoBehaviour
                 {
                     targetCol = UnityEngine.Random.Range(Mathf.RoundToInt(width / 2), width);
                 }
+
+            
+                do{
+                  
+                    if (row >= (height - 1) / 2)
+                    {
+                        targetRow = 0+k;
+                    }
+                    else
+                    {
+                        targetRow = height - 1 - k;
+                    }
+                    k++;
+                } while (k < ((height - 1) / 2)+1 && !allTiles[targetCol, targetRow]) ;
+
             }
             else
             {
                 // Stick to last column
-                if (column >= (width - 1) / 2)
-                {
-                    targetCol = 0;
-                }
-                else
-                {
-                    targetCol = width-1;
-                }
-
+               
 
                 if (row >= (height - 1) / 2)
                 {
@@ -2617,13 +2619,24 @@ public class Board : MonoBehaviour
                 {
                     targetRow = UnityEngine.Random.Range(Mathf.RoundToInt(height / 2), height);
                 }
+
+                do
+                {
+
+                    if (column >= (width - 1) / 2)
+                    {
+                        targetCol = 0 + k;
+                    }
+                    else
+                    {
+                        targetCol = width - 1 - k;
+                    }
+                    k++;
+                } while (k < ((width - 1) / 2) + 1 && !allTiles[targetCol, targetRow]);
+
             }
-
-          
-
-           
-
-        } while (!allTiles[targetCol, targetRow]);
+            tryNumber++;
+        } while (!allTiles[targetCol, targetRow] || tryNumber<50);
         
         return allTiles[targetCol, targetRow].transform.position;
 

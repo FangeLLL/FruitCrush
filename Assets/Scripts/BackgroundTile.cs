@@ -76,12 +76,19 @@ public class BackgroundTile : MonoBehaviour
                     }
                     else
                     {
-                        fruitScript.targetV = board.GetBoomerangTargetLoc(column, row);
-
+                        StartCoroutine(ChangeDirectionOfBoomerangWithDelay(fruitScript));
                     }
                 }          
             }         
         }    
+    }
+
+    private IEnumerator ChangeDirectionOfBoomerangWithDelay(Fruit boomerangScript)
+    {
+        
+        yield return new WaitForSeconds(0.15f);
+        boomerangScript.targetV = board.GetBoomerangTargetLoc(column, row);
+
     }
 
     private void OnMouseDown()

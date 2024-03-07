@@ -1937,88 +1937,24 @@ MonoBehaviour:
   isRunning: 0
   exitUpdate: 0
   tileSprites:
-  - {fileID: 21300000, guid: 9feaa8917567de447a4596b2315082fb, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 21300000, guid: 4c6f72227ffcbfb48a3e24bbd0aeeb38, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 21300000, guid: af460b6c69ebe624abf88fbcbf3e2fc4, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 989abe47541023f49826d6d59a50481c, type: 3}
+  - {fileID: 21300000, guid: 3ed77dcaa88eb9d4aa83b504c02255ae, type: 3}
+  - {fileID: 21300000, guid: bcd17f40c98cc5642bacccef75d01263, type: 3}
+  - {fileID: 21300000, guid: 4c006f82a3d47384dbb3a1f1c8f396aa, type: 3}
+  - {fileID: 21300000, guid: 35d5eb33b3975bb4790679402f4bd381, type: 3}
+  - {fileID: 21300000, guid: 0c80c2d79291b2c4784c2cd2135c61c8, type: 3}
+  - {fileID: 21300000, guid: c49da8ccaa387354fbb2cc0bbdc8f0fa, type: 3}
+  - {fileID: 21300000, guid: 032d73aaf030a584d8dd49eb736ce0ae, type: 3}
+  - {fileID: 21300000, guid: 519b86749ee0f17479831fddff3cfbdf, type: 3}
+  - {fileID: 21300000, guid: c5fac46f9485b2e4f97a3212ab97cc08, type: 3}
+  - {fileID: 21300000, guid: 53d0b3c35967b52489470799cb1b3128, type: 3}
+  - {fileID: 21300000, guid: 6a2e8241477651440b63b1e0024e1f73, type: 3}
+  - {fileID: 21300000, guid: e0b96a81024fa7649910e7d3703e7077, type: 3}
+  - {fileID: 21300000, guid: ad44443b50f2b8d49bc83e6df2e853a2, type: 3}
+  - {fileID: 21300000, guid: 027891b547f076745be47a1a7a694ee6, type: 3}
+  - {fileID: 21300000, guid: ceed89dc2071cec4a9c36f365b5be92b, type: 3}
+  - {fileID: 21300000, guid: 9ce03c4866f61e64eaa4b3b3f96e48b5, type: 3}
+  - {fileID: 21300000, guid: 1e298ea9d7fd98c4a9466b177f7da466, type: 3}
   specialPowerUps:
   - {fileID: 4957599933133466992, guid: 4d5018a4d531cf84998c340720efe41d, type: 3}
   harvesterUpSprite: {fileID: 21300000, guid: 20077c12fc9f8f74b84c5657d0fc4671, type: 3}

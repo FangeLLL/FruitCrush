@@ -2748,26 +2748,30 @@ public class Board : MonoBehaviour
                 {
                     if (!tileNearby[0])
                     {
-                        return tileSprites[2];
+                        Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[3];
                     }
                     else
                     {
-                        // return tileSprites[3];
 
                         Vector3 newRotation = new Vector3(0f, 0f, -180f);
                         allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
-                        return tileSprites[11];
+                        return tileSprites[2];
                     }
                 }
                 else
                 {
                     if (!tileNearby[0])
                     {
+                        Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
                         return tileSprites[4];
                     }
                     else
                     {
-                        return tileSprites[5];
+                        allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                        return tileSprites[3];
                      
                     }
                 }
@@ -2781,26 +2785,32 @@ public class Board : MonoBehaviour
                 {
                     if (!tileNearby[8])
                     {
-                        return tileSprites[6];
+                        allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                        Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[3];
                     }
                     else
                     {
-                        // return tileSprites[7];
                         Vector3 newRotation = new Vector3(0f, 0f, -270f);
                         allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
-                        return tileSprites[11];
+                        return tileSprites[2];
                     }
                 }
                 else
                 {
                     if (!tileNearby[8])
                     {
-                        return tileSprites[8];
+                        Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[4];
                     }
                     else
                     {
-                          return tileSprites[9];
-                    
+                        Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[3];
+
                     }
                 }
 
@@ -2811,22 +2821,25 @@ public class Board : MonoBehaviour
                 {
                     if (!tileNearby[8])
                     {
-                        return tileSprites[10];
+                        return tileSprites[3];
                     }
                     else
                     {
-                        return tileSprites[11];
+                        return tileSprites[2];
                     }
                 }
                 else
                 {
                     if (!tileNearby[8])
                     {
-                        return tileSprites[12];
+                        return tileSprites[4];
                     }
                     else
                     {
-                        return tileSprites[13];
+                        allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                        Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[3];
                     }
                 }
 
@@ -2837,27 +2850,31 @@ public class Board : MonoBehaviour
                 {
                     if (!tileNearby[0])
                     {
-                        return tileSprites[14];
+                        allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                        Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[3];
                     }
                     else
                     {
-                        // return tileSprites[15];
                         Vector3 newRotation = new Vector3(0f, 0f, -90f);
                         allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
-                        return tileSprites[11];
+                        return tileSprites[2];
                     }
                 }
                 else
                 {
                     if (!tileNearby[0])
                     {
-                        return tileSprites[16];
+                        Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[4];
                     }
                     else
                     {
-                    //    Vector3 newRotation = new Vector3(0f, 0f, -90f);
-                    //    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
-                        return tileSprites[17];
+                        Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[3];
                     }
                 }
 
@@ -2874,76 +2891,95 @@ public class Board : MonoBehaviour
                 {
                     if (!tileNearby[0])
                     {
-                        return tileSprites[18];
+                        return tileSprites[14];
                     }
                     else
                     {
-                        return tileSprites[19];
+                        return tileSprites[13];
                     }
                 }
                 else
                 {
                     if (!tileNearby[0])
                     {
-                        return tileSprites[20];
+                        return tileSprites[15];
                     }
                     else
                     {
-                        return tileSprites[21];
+                        Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                        return tileSprites[14];
                     }
                 }
 
 
             }
-            else if (tileNearby[7])
+            else if (!tileNearby[7])
             {
 
                 if (!tileNearby[6])
                 {
                     if (!tileNearby[8])
                     {
-                        return tileSprites[22];
+                        Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[15];
                     }
                     else
                     {
-                        return tileSprites[23];
+                        Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[14];
                     }
                 }
                 else
                 {
                     if (!tileNearby[8])
                     {
-                        return tileSprites[24];
+                        Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                        return tileSprites[14];
                     }
                     else
                     {
-                        return tileSprites[25];
+                        Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[13];
                     }
                 }
 
             }
-            else if (tileNearby[5])
+            else if (!tileNearby[5])
             {
                 if (!tileNearby[2])
                 {
                     if (!tileNearby[8])
                     {
-                        return tileSprites[26];
+                        Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[15];
                     }
                     else
                     {
-                        return tileSprites[27];
+                        allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                        return tileSprites[14];
                     }
                 }
                 else
                 {
                     if (!tileNearby[8])
                     {
-                        return tileSprites[28];
+                        Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[14];
                     }
                     else
                     {
-                        return tileSprites[29];
+                        Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[13];
                     }
                 }
 
@@ -2954,22 +2990,31 @@ public class Board : MonoBehaviour
                 {
                     if (!tileNearby[0])
                     {
-                        return tileSprites[30];
+                        Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[15];
                     }
                     else
                     {
-                        return tileSprites[31];
+                        Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[14];
                     }
                 }
                 else
                 {
                     if (!tileNearby[0])
                     {
-                        return tileSprites[32];
+                        Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                        return tileSprites[14];
                     }
                     else
                     {
-                        return tileSprites[33];
+                        Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[13];
                     }
                 }
 
@@ -2987,26 +3032,30 @@ public class Board : MonoBehaviour
                 {
                     if (!tileNearby[0])
                     {
-                        return tileSprites[34];
+                        allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                        return tileSprites[11];
                     }
                     else
                     {
-                        // return tileSprites[35];
                         Vector3 newRotation = new Vector3(0f, 0f, -270f);
                         allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
-                        return tileSprites[43];
+                        return tileSprites[10];
                     }
                 }
                 else
                 {
                     if (!tileNearby[0])
                     {
-                        return tileSprites[36];
+                        Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[12];
                     }
                     else
                     {
-                          return tileSprites[37];
-                        
+                        Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[11];
+
                     }
                 }
             }
@@ -3017,26 +3066,32 @@ public class Board : MonoBehaviour
                 {
                     if (!tileNearby[2])
                     {
-                        return tileSprites[38];
+                        allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                        Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[11];
                     }
                     else
                     {
-                        //return tileSprites[39];
                         Vector3 newRotation = new Vector3(0f, 0f, -180f);
                         allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
-                        return tileSprites[43];
+                        return tileSprites[10];
                     }
                 }
                 else
                 {
                     if (!tileNearby[2])
                     {
-                        return tileSprites[40];
+                        Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[12];
                     }
                     else
                     {
-                         return tileSprites[41];
-                       
+                        Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[11];
+
                     }
                 }
             }
@@ -3047,22 +3102,25 @@ public class Board : MonoBehaviour
                 {
                     if (!tileNearby[2])
                     {
-                        return tileSprites[42];
+                        return tileSprites[11];
                     }
                     else
                     {
-                        return tileSprites[43];
+                        return tileSprites[10];
                     }
                 }
                 else
                 {
                     if (!tileNearby[2])
                     {
-                        return tileSprites[44];
+                        return tileSprites[12];
                     }
                     else
                     {
-                        return tileSprites[45];
+                        allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                        Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[11];
                     }
                 }
             }
@@ -3073,26 +3131,32 @@ public class Board : MonoBehaviour
                 {
                     if (!tileNearby[8])
                     {
-                        return tileSprites[46];
+                        allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                        Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[11];
                     }
                     else
                     {
-                        // return tileSprites[47];
                         Vector3 newRotation = new Vector3(0f, 0f, -90f);
                         allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
-                        return tileSprites[43];
+                        return tileSprites[10];
                     }
                 }
                 else
                 {
                     if (!tileNearby[8])
                     {
-                        return tileSprites[48];
+                        Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[12];
                     }
                     else
                     {
-                          return tileSprites[49];
-                       
+                        Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                        allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                        return tileSprites[11];
+
                     }
                 }
             }
@@ -3103,90 +3167,107 @@ public class Board : MonoBehaviour
             {
                 if (tileNearby[0] && tileNearby[6] && tileNearby[2] && tileNearby[8])
                 {
-                    return tileSprites[50];
+                    return tileSprites[5];
                 }
 
                 // one missing tile
 
                 if (!tileNearby[0] && tileNearby[6] && tileNearby[2] && tileNearby[8])
                 {
-                    return tileSprites[51];
+                    Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    return tileSprites[6];
                 }
 
                 if (tileNearby[0] && !tileNearby[6] && tileNearby[2] && tileNearby[8])
-                {
-                    return tileSprites[52];
+                {                  
+                    allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                    return tileSprites[6];
                 }
 
                 if (tileNearby[0] && tileNearby[6] && !tileNearby[2] && tileNearby[8])
                 {
-                    return tileSprites[53];
+                    Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                    return tileSprites[6];
                 }
 
                 if (tileNearby[0] && tileNearby[6] && tileNearby[2] && !tileNearby[8])
                 {
-                    return tileSprites[54];
+                    return tileSprites[6];
                 }
 
                 // two missing tile
 
                 if (!tileNearby[0] && !tileNearby[6] && tileNearby[2] && tileNearby[8])
                 {
-                    return tileSprites[55];
+                    Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    return tileSprites[7];
                 }
 
                 if (tileNearby[0] && !tileNearby[6] && !tileNearby[2] && tileNearby[8])
                 {
-                    return tileSprites[56];
+                    return tileSprites[17];
                 }
 
                 if (tileNearby[0] && tileNearby[6] && !tileNearby[2] && !tileNearby[8])
                 {
-                    return tileSprites[57];
+                    return tileSprites[7];
                 }
 
                 if (!tileNearby[0] && tileNearby[6] && tileNearby[2] && !tileNearby[8])
                 {
-                    return tileSprites[58];
+                    allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                    return tileSprites[17];
                 }
 
                 if (!tileNearby[0] && tileNearby[6] && !tileNearby[2] && tileNearby[8])
                 {
-                    return tileSprites[59];
+                    Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    return tileSprites[16];
                 }
 
                 if (tileNearby[0] && !tileNearby[6] && tileNearby[2] && !tileNearby[8])
                 {
-                    return tileSprites[60];
+                    return tileSprites[16];
                 }
 
                 // three missing tile
 
                 if (!tileNearby[0] && !tileNearby[6] && !tileNearby[2] && tileNearby[8])
                 {
-                    return tileSprites[61];
+                    Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    return tileSprites[8];
                 }
 
                 if (tileNearby[0] && !tileNearby[6] && !tileNearby[2] && !tileNearby[8])
                 {
-                    return tileSprites[62];
+                    return tileSprites[8];
                 }
 
                 if (!tileNearby[0] && tileNearby[6] && !tileNearby[2] && !tileNearby[8])
                 {
-                    return tileSprites[63];
+                    Vector3 newRotation = new Vector3(0f, 0f, -180f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                    return tileSprites[8];
                 }
 
                 if (!tileNearby[0] && !tileNearby[6] && tileNearby[2] && !tileNearby[8])
-                {
-                    return tileSprites[64];
+                {                 
+                    allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                    return tileSprites[8];
                 }
 
                 // four missing tile
 
                 if (!tileNearby[0] && !tileNearby[6] && !tileNearby[2] && !tileNearby[8])
                 {
-                    return tileSprites[65];
+                    return tileSprites[9];
                 }
 
             }
@@ -3195,90 +3276,127 @@ public class Board : MonoBehaviour
             {
                 if (tileNearby[0] && tileNearby[6] && tileNearby[2] && tileNearby[8])
                 {
-                    return tileSprites[66];
+                    Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    return tileSprites[5];
                 }
 
                 // one missing tile
 
                 if (!tileNearby[0] && tileNearby[6] && tileNearby[2] && tileNearby[8])
                 {
-                    return tileSprites[67];
+                    Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                    return tileSprites[6];
                 }
 
                 if (tileNearby[0] && !tileNearby[6] && tileNearby[2] && tileNearby[8])
                 {
-                    return tileSprites[68];
+                    Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    return tileSprites[6];
                 }
 
                 if (tileNearby[0] && tileNearby[6] && !tileNearby[2] && tileNearby[8])
                 {
-                    return tileSprites[69];
+                    Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    return tileSprites[6];
                 }
 
                 if (tileNearby[0] && tileNearby[6] && tileNearby[2] && !tileNearby[8])
                 {
-                    return tileSprites[70];
+                    Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                    return tileSprites[6];
                 }
 
                 // two missing tile
 
                 if (!tileNearby[0] && !tileNearby[6] && tileNearby[2] && tileNearby[8])
                 {
-                    return tileSprites[71];
+                    Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    return tileSprites[16];
                 }
 
                 if (tileNearby[0] && !tileNearby[6] && !tileNearby[2] && tileNearby[8])
                 {
-                    return tileSprites[72];
+                    Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                    return tileSprites[17];
                 }
 
                 if (tileNearby[0] && tileNearby[6] && !tileNearby[2] && !tileNearby[8])
                 {
-                    return tileSprites[73];
+                    Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    return tileSprites[16];
                 }
 
                 if (!tileNearby[0] && tileNearby[6] && tileNearby[2] && !tileNearby[8])
                 {
-                    return tileSprites[74];
+                    Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    return tileSprites[17];
                 }
 
                 if (!tileNearby[0] && tileNearby[6] && !tileNearby[2] && tileNearby[8])
                 {
-                    return tileSprites[75];
+                    Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    return tileSprites[7];
                 }
 
                 if (tileNearby[0] && !tileNearby[6] && tileNearby[2] && !tileNearby[8])
                 {
-                    return tileSprites[76];
+                    Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    return tileSprites[7];
                 }
 
                 // three missing tile
 
                 if (!tileNearby[0] && !tileNearby[6] && !tileNearby[2] && tileNearby[8])
                 {
-                    return tileSprites[77];
+                    Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                    return tileSprites[8];
                 }
 
                 if (tileNearby[0] && !tileNearby[6] && !tileNearby[2] && !tileNearby[8])
                 {
-                    return tileSprites[78];
+                    Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    allTiles[column, row].GetComponent<SpriteRenderer>().flipX = true;
+                    return tileSprites[8];
                 }
 
                 if (!tileNearby[0] && tileNearby[6] && !tileNearby[2] && !tileNearby[8])
                 {
-                    return tileSprites[79];
+                    Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    return tileSprites[8];
                 }
 
                 if (!tileNearby[0] && !tileNearby[6] && tileNearby[2] && !tileNearby[8])
                 {
-                    return tileSprites[80];
+                    Vector3 newRotation = new Vector3(0f, 0f, -270f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    return tileSprites[8];
                 }
 
                 // four missing tile
 
                 if (!tileNearby[0] && !tileNearby[6] && !tileNearby[2] && !tileNearby[8])
                 {
-                    return tileSprites[81];
+                    Vector3 newRotation = new Vector3(0f, 0f, -90f);
+                    allTiles[column, row].transform.rotation = Quaternion.Euler(newRotation);
+                    return tileSprites[9];
                 }
 
             }

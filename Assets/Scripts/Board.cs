@@ -569,7 +569,6 @@ public class Board : MonoBehaviour
                             fruitsCheckSquare = SquareCheck(i, j);
                             if (fruitsCheckSquare.Count == 4)
                             {
-                                Debug.Log("square");
                                 List<GameObject> tempFruitsCheckRow = new List<GameObject>();
                                 for (int e = 0; e < fruitsCheckSquare.Count; e++)
                                 {
@@ -590,7 +589,6 @@ public class Board : MonoBehaviour
                                     tempFruitsCheckColumn = ColumnCheck(fruitsCheckSquare[e].GetComponent<Fruit>().column, j);
                                     if (tempFruitsCheckColumn.Count >= 3)
                                     {
-                                        Debug.Log("column");
                                         fruitsCheckColumn = tempFruitsCheckColumn;
                                         columnPopped = true;
                                         break;
@@ -1347,42 +1345,6 @@ public class Board : MonoBehaviour
                     // Putting empty place index to variable
                     emptyPlaces.Enqueue(j);
 
-                    // THESE CODES CAN BE IMPROVE PLEASE CHECK THE ALGO
-                    /*
-                    if(j + 1 < height)
-                    {
-
-                        bool crossFall = true;
-                        bool checkForEmptyPlaces = true;
-                        int k = 1;
-
-                        // If all the way to obstacle or missing tile is emty then fruit will call crossfall but if in this way there is a fruit then no crossfall. 
-
-                        while (checkForEmptyPlaces)
-                        {                   
-
-                            if(allFruits[i, j + k] || k + j + 1 == height)
-                            {
-                                crossFall = false;
-                                checkForEmptyPlaces = false;
-                            }
-
-
-                            if (allTiles[i, j + k] && allTiles[i, j + k].GetComponent<BackgroundTile>().isCurrentObstacleBox) {
-                                checkForEmptyPlaces = false;
-                            }
-
-                            k++;
-                        }
-
-                        if (crossFall)
-                        {
-                            CrossFall(i, j + 1);
-
-                        }
-     
-                    }
-                    */
                 }
                 else if (emptyPlaces.Count > 0)
                 {
@@ -1410,22 +1372,23 @@ public class Board : MonoBehaviour
 
                 bool crossFall = true;
                 bool checkForEmptyPlaces = true;
-                int k = 1;
+                int k = 0;
 
                 // If all the way to obstacle or missing tile is emty then fruit will call crossfall but if in this way there is a fruit then no crossfall. 
 
                 while (checkForEmptyPlaces)
                 {
 
-                    if (allFruits[i, j + k] || k + j + 1 == height)
+                    if (allTiles[i, j + k] && allTiles[i, j + k].GetComponent<BackgroundTile>().isCurrentObstacleBox)
                     {
-                        crossFall = false;
                         checkForEmptyPlaces = false;
+                        break;
                     }
 
 
-                    if (allTiles[i, j + k] && allTiles[i, j + k].GetComponent<BackgroundTile>().isCurrentObstacleBox)
+                    if (k + j >= columnsFallIndexY[i] || allFruits[i, j + k])
                     {
+                        crossFall = false;
                         checkForEmptyPlaces = false;
                     }
 
@@ -1434,7 +1397,7 @@ public class Board : MonoBehaviour
 
                 if (crossFall)
                 {
-                    if(CrossFall(i, j + 1))
+                    if(CrossFall(i, j + k))
                     {
                         break;
                     }

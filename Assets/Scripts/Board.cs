@@ -160,39 +160,7 @@ public class Board : MonoBehaviour
     /// </summary>
     private void RearrangeScaleNumber()
     {
-        int max;
-
-        if (width >= height)
-        {
-            max = width;
-        }
-        else
-        {
-            max = height;
-        }
-
-        switch (max)
-        {
-            case 4:
-            case 5:
-                scaleNumber = 1.5f;
-                break;
-            case 6:
-                scaleNumber = 1.3f;
-                break;
-            case 7:
-            case 8:
-                scaleNumber = 1.2f;
-                break;
-            case 9:
-            case 10:
-                scaleNumber = 1f;
-                break;
-            case 11:
-                scaleNumber = 0.9f;
-                break;
-        }
-
+        scaleNumber = 1.19f;
         scaleFactorFruit = scaleNumber / 1.2f;
     }
 

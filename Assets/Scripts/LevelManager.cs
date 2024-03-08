@@ -600,7 +600,7 @@ public class LevelManager : MonoBehaviour
 
     private void RearrangeScaleNumber()
     {
-        int max;
+        /*int max;
 
         if (width >= height)
         {
@@ -631,8 +631,9 @@ public class LevelManager : MonoBehaviour
             case 11:
                 scaleNumber = 0.9f;
                 break;
-        }
+        }*/
 
+        scaleNumber = 1.19f;
         scaleFactorFruit = scaleNumber / 1.2f;
     }
 

@@ -82,6 +82,13 @@ public class Board : MonoBehaviour
 
     private bool shuffling = false;
 
+    [HideInInspector]
+    public int isBoomerangCreated = Animator.StringToHash("isBoomerangCreated");
+    [HideInInspector]
+    public int isHarvesterCreated = Animator.StringToHash("isHarvesterCreated");
+    [HideInInspector]
+    public int isTNTCreated = Animator.StringToHash("isTNTCreated");
+
     private void Awake()
     {
         saveData.LoadFromJson();
@@ -1530,6 +1537,21 @@ public class Board : MonoBehaviour
         newPowerUpScript.targetV = allTiles[column, row].transform.position;
         newPowerUpScript.damageID = Guid.NewGuid().ToString();
 
+        switch (type)
+        {
+            case -1:
+                newPowerUp.GetComponentInChildren<Animator>().SetBool(isHarvesterCreated, true);
+                break;
+            case -2:
+                newPowerUp.GetComponentInChildren<Animator>().SetBool(isHarvesterCreated, true);
+                break;
+            case -3:
+                newPowerUp.GetComponentInChildren<Animator>().SetBool(isTNTCreated, true);
+                break;
+            case -4:
+                newPowerUp.GetComponentInChildren<Animator>().SetBool(isBoomerangCreated, true);
+                break;
+        }
 
 
         // Add the new powerup to the allFruits array

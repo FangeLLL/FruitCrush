@@ -1859,7 +1859,7 @@ public class Board : MonoBehaviour
             // Horizontal Harvester power up
             case -1:
 
-                StartCoroutine(StopAndStartAllFillings(0.07f * width));
+                StartCoroutine(StopAndStartAllFillings(0.09f * width));
 
                 GameObject cloneHorizontal = Instantiate(powerUps[0], allTiles[column, row].transform.position, powerUps[0].transform.rotation);
                 Fruit cloneHorizontalScript = cloneHorizontal.GetComponent<Fruit>();
@@ -1875,8 +1875,8 @@ public class Board : MonoBehaviour
                 cloneHorizontalScript.damageID = fruitScript.damageID;
                 cloneHorizontalScript.fruitType = type;
 
-                fruitScript.speedMultiplier = 2.5f;
-                cloneHorizontalScript.speedMultiplier = 2.5f;
+                fruitScript.speedMultiplier = 1.5f;
+                cloneHorizontalScript.speedMultiplier = 1.5f;
 
                 fruitScript.targetV.x = allTiles[0, row].transform.position.x - 8;
                 cloneHorizontalScript.targetV.x = allTiles[width - 1, row].transform.position.x + 8;
@@ -1904,7 +1904,7 @@ public class Board : MonoBehaviour
             // Vertical Harvester power up
             case -2:
 
-                StartCoroutine(StopAndStartSingleColumn(0.07f * width, column));
+                StartCoroutine(StopAndStartSingleColumn(0.09f * width, column));
 
                 GameObject cloneVertical = Instantiate(powerUps[1], allTiles[column, row].transform.position, powerUps[1].transform.rotation);
                 Fruit cloneVerticalScript = cloneVertical.GetComponent<Fruit>();
@@ -1921,8 +1921,8 @@ public class Board : MonoBehaviour
                 cloneVerticalScript.damageID=fruitScript.damageID;
                 cloneVerticalScript.fruitType = type;
 
-                fruitScript.speedMultiplier = 2.5f;
-                cloneVerticalScript.speedMultiplier = 2.5f;
+                fruitScript.speedMultiplier = 1.5f;
+                cloneVerticalScript.speedMultiplier = 1.5f;
 
                 fruitScript.targetV.y = allTiles[column, 0].transform.position.y - 8;
                 cloneVerticalScript.targetV.y = allTiles[column, height - 1].transform.position.y + 8;

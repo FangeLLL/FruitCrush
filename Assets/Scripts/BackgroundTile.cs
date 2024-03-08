@@ -111,7 +111,7 @@ public class BackgroundTile : MonoBehaviour
         {
             if (board.allFruits[column, row])
             {
-                if (!board.blockUserMove && board.allFruits[column, row].GetComponent<Fruit>().isClicked&&!board.specialSwipe && board.allFruits[column, row].GetComponent<Fruit>().fruitType < 0 && board.taskController.moveCount > 0 && !board.allFruits[column, row].GetComponent<Fruit>().isSwiped && board.taskController.isBoardActive)
+                if (!board.blockUserMove && !board.allFruits[column, row].GetComponent<Fruit>().fadeout && board.allFruits[column, row].GetComponent<Fruit>().isClicked&&!board.specialSwipe && board.allFruits[column, row].GetComponent<Fruit>().fruitType < 0 && board.taskController.moveCount > 0 && !board.allFruits[column, row].GetComponent<Fruit>().isSwiped && board.taskController.isBoardActive)
                 {
                     if (Vector2.Distance(transform.position, firstTouchPosition) < 0.6f)
                     {

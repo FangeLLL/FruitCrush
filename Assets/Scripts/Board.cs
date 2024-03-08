@@ -584,11 +584,13 @@ public class Board : MonoBehaviour
                                 }
 
                                 List<GameObject> tempFruitsCheckColumn = new List<GameObject>();
+
                                 for (int e = 0; e < fruitsCheckSquare.Count; e++)
                                 {
                                     tempFruitsCheckColumn = ColumnCheck(fruitsCheckSquare[e].GetComponent<Fruit>().column, j);
                                     if (tempFruitsCheckColumn.Count >= 3)
                                     {
+                                        Debug.Log("column");
                                         fruitsCheckColumn = tempFruitsCheckColumn;
                                         columnPopped = true;
                                         break;
@@ -601,7 +603,10 @@ public class Board : MonoBehaviour
                                     squarePopped = true;
                                 }
                             }
-                            fruitsCheckColumn.Clear();
+                            else
+                            {
+                                fruitsCheckColumn.Clear();
+                            }
                         }
                     }
 

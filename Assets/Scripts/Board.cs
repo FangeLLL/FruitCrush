@@ -70,6 +70,8 @@ public class Board : MonoBehaviour
 
     private int indexOfCreatableObstacle=-1;
 
+    private Vector3[,] tilePositions;
+
     // When fruits swiped these gameobjects fills and used for creation powerup positions 
     private GameObject currentFruit, currentOtherFruit;
 
@@ -135,6 +137,7 @@ public class Board : MonoBehaviour
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         allFruits = new GameObject[width, height];
         allTiles = new GameObject[width, height];
+        tilePositions = new Vector3[width, height];
 
         int[] savedTiles = gridData.allTilesTotal;
         int[] savedFruits = gridData.allFruitsTotal;
@@ -229,7 +232,7 @@ public class Board : MonoBehaviour
                     backgroundTile.GetComponent<BackgroundTile>().column = i;
                     backgroundTile.GetComponent<BackgroundTile>().row = j;             
                     allTiles[i, j] = backgroundTile;
-                 
+                    tilePositions[i, j] = backgroundTile.transform.position;
                 }
             }
             // Inserting fallPoint to array
@@ -1382,6 +1385,10 @@ public class Board : MonoBehaviour
                     if (allTiles[i, j + k] && allTiles[i, j + k].GetComponent<BackgroundTile>().isCurrentObstacleBox)
                     {
                         checkForEmptyPlaces = false;
+                        while(!allTiles[i, j + k-1])
+                        {
+                            k--;
+                        }
                         break;
                     }
 
@@ -1556,7 +1563,7 @@ public class Board : MonoBehaviour
             allFruits[column + 1, row] = null;
         }
 
-        if (fruit)
+        if (fruit && allTiles[column, row - 1])
         {
             audioManager.FruitFall();
             fruitScript = fruit.GetComponent<Fruit>();
@@ -1846,8 +1853,8 @@ public class Board : MonoBehaviour
                 fruitScript.speedMultiplier = 1.5f;
                 cloneHorizontalScript.speedMultiplier = 1.5f;
 
-                fruitScript.targetV.x = allTiles[0, row].transform.position.x - 8;
-                cloneHorizontalScript.targetV.x = allTiles[width - 1, row].transform.position.x + 8;
+                fruitScript.targetV.x = tilePositions[0, row].x - 8;
+                cloneHorizontalScript.targetV.x = tilePositions[width - 1, row].x + 8;
 
 
                 fruitScript.outsideOfBoard = true;
@@ -1892,8 +1899,8 @@ public class Board : MonoBehaviour
                 fruitScript.speedMultiplier = 1.5f;
                 cloneVerticalScript.speedMultiplier = 1.5f;
 
-                fruitScript.targetV.y = allTiles[column, 0].transform.position.y - 8;
-                cloneVerticalScript.targetV.y = allTiles[column, height - 1].transform.position.y + 8;
+                fruitScript.targetV.y = tilePositions[column, 0].y - 8;
+                cloneVerticalScript.targetV.y = tilePositions[column, height - 1].y + 8;
 
                 fruitScript.outsideOfBoard = true;
                 cloneVerticalScript.outsideOfBoard = true;

@@ -569,6 +569,7 @@ public class Board : MonoBehaviour
                             fruitsCheckSquare = SquareCheck(i, j);
                             if (fruitsCheckSquare.Count == 4)
                             {
+                                Debug.Log("square");
                                 List<GameObject> tempFruitsCheckRow = new List<GameObject>();
                                 for (int e = 0; e < fruitsCheckSquare.Count; e++)
                                 {

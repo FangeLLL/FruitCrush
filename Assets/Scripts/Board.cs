@@ -89,6 +89,11 @@ public class Board : MonoBehaviour
     [HideInInspector]
     public int isTNTCreated = Animator.StringToHash("isTNTCreated");
 
+    [HideInInspector]
+    public int boomerangRotating = Animator.StringToHash("isRotating");
+    [HideInInspector]
+    public int isHarvesterRunning = Animator.StringToHash("isHarvesterRunning");
+
     private void Awake()
     {
         saveData.LoadFromJson();
@@ -1540,16 +1545,16 @@ public class Board : MonoBehaviour
         switch (type)
         {
             case -1:
-                newPowerUp.GetComponentInChildren<Animator>().SetBool(isHarvesterCreated, true);
+                newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isHarvesterCreated);
                 break;
             case -2:
-                newPowerUp.GetComponentInChildren<Animator>().SetBool(isHarvesterCreated, true);
+                newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isHarvesterCreated);
                 break;
             case -3:
-                newPowerUp.GetComponentInChildren<Animator>().SetBool(isTNTCreated, true);
+                newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isTNTCreated);
                 break;
             case -4:
-                newPowerUp.GetComponentInChildren<Animator>().SetBool(isBoomerangCreated, true);
+                newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isBoomerangCreated);
                 break;
         }
 
@@ -1859,7 +1864,9 @@ public class Board : MonoBehaviour
                 Fruit cloneHorizontalScript = cloneHorizontal.GetComponent<Fruit>();
 
                 cloneHorizontalScript.GetComponentInChildren<SpriteRenderer>().sprite = harvesterUpSprite;
-                fruitScript.GetComponentInChildren<SpriteRenderer>().sprite = harvesterDownSprite;
+                fruitScript.GetComponentInChildren<SpriteRenderer>().sprite = harvesterUpSprite;
+                Vector3 newRotationH = new Vector3(0f, 0f, -90);
+                cloneHorizontal.transform.rotation = Quaternion.Euler(newRotationH);
 
                 cloneHorizontalScript.row = row;
                 cloneHorizontalScript.column = column;
@@ -1881,6 +1888,8 @@ public class Board : MonoBehaviour
                 fruitScript.activePowerUp = true;
                 cloneHorizontalScript.activePowerUp = true;
 
+                fruit.GetComponentInChildren<Animator>().SetBool(isHarvesterRunning, true);
+                cloneHorizontal.GetComponentInChildren<Animator>().SetBool(isHarvesterRunning, true);
 
                 StartCoroutine(WaitAndDestroyObj(0.2f * width, fruit));
                 StartCoroutine(WaitAndDestroyObj(0.2f * width, cloneHorizontal));
@@ -1899,8 +1908,11 @@ public class Board : MonoBehaviour
                 GameObject cloneVertical = Instantiate(powerUps[1], allTiles[column, row].transform.position, powerUps[1].transform.rotation);
                 Fruit cloneVerticalScript = cloneVertical.GetComponent<Fruit>();
 
-                cloneVertical.GetComponentInChildren<SpriteRenderer>().sprite = harvesterDownSprite;
+                cloneVertical.GetComponentInChildren<SpriteRenderer>().sprite = harvesterUpSprite;
+              
                 fruitScript.GetComponentInChildren<SpriteRenderer>().sprite = harvesterUpSprite;
+                Vector3 newRotationV = new Vector3(0f, 0f, -180);
+                fruit.transform.rotation = Quaternion.Euler(newRotationV);
 
                 cloneVerticalScript.row = row;
                 cloneVerticalScript.column = column;
@@ -1920,6 +1932,9 @@ public class Board : MonoBehaviour
                 allFruits[column, row] = null;
                 fruitScript.activePowerUp = true;
                 cloneVerticalScript.activePowerUp = true;
+
+                fruit.GetComponentInChildren<Animator>().SetBool(isHarvesterRunning, true);
+                cloneVertical.GetComponentInChildren<Animator>().SetBool(isHarvesterRunning, true);
 
                 StartCoroutine(WaitAndDestroyObj(0.2f * width, fruit));
                 StartCoroutine(WaitAndDestroyObj(0.2f * width, cloneVertical));
@@ -1949,7 +1964,7 @@ public class Board : MonoBehaviour
 
                 allFruits[fruitScript.column, fruitScript.row] = null;
 
-                fruit.GetComponentInChildren<Animator>().SetBool(fruitScript.boomerangRotating, true);
+                fruit.GetComponentInChildren<Animator>().SetBool(boomerangRotating, true);
 
                 if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
                 {

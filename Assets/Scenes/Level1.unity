@@ -2002,6 +2002,11 @@ MonoBehaviour:
   specialPowerID: 0
   specialSwipe: 0
   specialPowerUsing: 0
+  isBoomerangCreated: -436575307
+  isHarvesterCreated: -927227812
+  isTNTCreated: 1052899013
+  boomerangRotating: -759622409
+  isHarvesterRunning: 1437048459
 --- !u!114 &160705529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17465,25 +17470,25 @@ MonoBehaviour:
   starShopText: {fileID: 2047801436}
   board: {fileID: 160705528}
   specialPowerUps:
-  - amount: 10
+  - amount: 999
     powerUp: {fileID: 1653192039}
     buySpecialPowerUps: {fileID: 913321544}
     countSpecialPowerUpBoxDeactive: {fileID: 441860759}
     count: {fileID: 678377778}
     isActivated: 0
-  - amount: 10
+  - amount: 999
     powerUp: {fileID: 1418417578}
     buySpecialPowerUps: {fileID: 1818123112}
     countSpecialPowerUpBoxDeactive: {fileID: 1452836143}
     count: {fileID: 1570526490}
     isActivated: 0
-  - amount: 10
+  - amount: 999
     powerUp: {fileID: 1638749264}
     buySpecialPowerUps: {fileID: 1729666449}
     countSpecialPowerUpBoxDeactive: {fileID: 1334420253}
     count: {fileID: 213366942}
     isActivated: 0
-  - amount: 10
+  - amount: 999
     powerUp: {fileID: 1061304585}
     buySpecialPowerUps: {fileID: 1617011399}
     countSpecialPowerUpBoxDeactive: {fileID: 766041492}

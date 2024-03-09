@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e69ef51f8d14f9344af2e8f42cead964, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fruitType: 0
+  fruitType: -1
   column: 0
   row: 0
   firstTouchPosition: {x: 0, y: 0}
@@ -192,12 +192,12 @@ MonoBehaviour:
   hitBorder: 0
   moveToward: 0
   attachedPowerUp: {fileID: 0}
+  activePowerUp: 1
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799
   swipeDown: 1769856547
   swipeFlash: -577822589
-  boomerangRotating: -759622409
 --- !u!1 &7488656699095915589
 GameObject:
   m_ObjectHideFlags: 0

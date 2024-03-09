@@ -67,8 +67,11 @@ public class Board : MonoBehaviour
     private float scaleFactorFruit;
 
     private int[] columnsFallIndexY;
+    private string[] columnStopperId; 
 
     private int indexOfCreatableObstacle=-1;
+
+    private Vector3[,] tilePositions;
 
     // When fruits swiped these gameobjects fills and used for creation powerup positions 
     private GameObject currentFruit, currentOtherFruit;
@@ -81,6 +84,18 @@ public class Board : MonoBehaviour
     public bool specialPowerUsing = false;
 
     private bool shuffling = false;
+
+    [HideInInspector]
+    public int isBoomerangCreated = Animator.StringToHash("isBoomerangCreated");
+    [HideInInspector]
+    public int isHarvesterCreated = Animator.StringToHash("isHarvesterCreated");
+    [HideInInspector]
+    public int isTNTCreated = Animator.StringToHash("isTNTCreated");
+
+    [HideInInspector]
+    public int boomerangRotating = Animator.StringToHash("isRotating");
+    [HideInInspector]
+    public int isHarvesterRunning = Animator.StringToHash("isHarvesterRunning");
 
     private void Awake()
     {
@@ -103,6 +118,7 @@ public class Board : MonoBehaviour
 
         // Some of columns falling point can be diffirent because of missing tiles in that column. 
         columnsFallIndexY = new int[width];
+        columnStopperId = new string[width];
 
         RearrangeScaleNumber();
 
@@ -123,6 +139,7 @@ public class Board : MonoBehaviour
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         allFruits = new GameObject[width, height];
         allTiles = new GameObject[width, height];
+        tilePositions = new Vector3[width, height];
 
         int[] savedTiles = gridData.allTilesTotal;
         int[] savedFruits = gridData.allFruitsTotal;
@@ -217,7 +234,7 @@ public class Board : MonoBehaviour
                     backgroundTile.GetComponent<BackgroundTile>().column = i;
                     backgroundTile.GetComponent<BackgroundTile>().row = j;             
                     allTiles[i, j] = backgroundTile;
-                 
+                    tilePositions[i, j] = backgroundTile.transform.position;
                 }
             }
             // Inserting fallPoint to array
@@ -571,6 +588,7 @@ public class Board : MonoBehaviour
                                 }
 
                                 List<GameObject> tempFruitsCheckColumn = new List<GameObject>();
+
                                 for (int e = 0; e < fruitsCheckSquare.Count; e++)
                                 {
                                     tempFruitsCheckColumn = ColumnCheck(fruitsCheckSquare[e].GetComponent<Fruit>().column, j);
@@ -587,8 +605,15 @@ public class Board : MonoBehaviour
                                 {
                                     squarePopped = true;
                                 }
+                                else
+                                {
+                                    fruitsCheckSquare.Clear();
+                                }
                             }
-                            fruitsCheckColumn.Clear();
+                            else
+                            {
+                                fruitsCheckColumn.Clear();
+                            }
                         }
                     }
 
@@ -963,7 +988,7 @@ public class Board : MonoBehaviour
             fruitScript.column = otherFruitScript.column;
             fruitScript.targetV = otherFruitScript.targetV;
             yield return new WaitForSeconds(0.1f);
-            ActivateMergePowerUp(fruit, otherFruit);
+            StartCoroutine(ActivateMergePowerUp(fruit, otherFruit));
             succesfulMove = true;
         }
         else
@@ -1036,13 +1061,7 @@ public class Board : MonoBehaviour
             otherFruitScript.isSwiped = false;
 
         }
-        /*
-        if(!fruit || !otherFruit || succesfulMove)
-        {
-            currentOtherFruit = null;
-            currentFruit = null;
-        }
-       */
+       
     }
 
     /// <summary>
@@ -1213,7 +1232,7 @@ public class Board : MonoBehaviour
             obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
             obj.GetComponent<ParticleSystem>().Play();
         }
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.3f);
         if (obj)
         {
             obj.GetComponent<Fruit>().outsideOfBoard = true;
@@ -1257,22 +1276,27 @@ public class Board : MonoBehaviour
         if (!blockUserMove)
         {
             Array.Fill(fillingColumn, true);
-
+            string stopperId = Guid.NewGuid().ToString();
             for (int i = 0; i < width; i++)
             {
                 StopCoroutine(FillTheColumn(i));
+                columnStopperId[i] = stopperId;
             }
             yield return new WaitForSeconds(waitTime);
 
             if (!blockUserMove)
             {
+                
                 Array.Fill(fillingColumn, true);
                 for (int i = 0; i < width; i++)
                 {
-                    StopCoroutine(FillTheColumn(i));
+                   if(columnStopperId[i] == stopperId)
+                    {
+                        fillingColumn[i] = false;
+                    }
                 }
-
-                Array.Clear(fillingColumn, 0, fillingColumn.Length);
+                
+               // Array.Clear(fillingColumn, 0, fillingColumn.Length);
             }
         }
     }
@@ -1281,6 +1305,8 @@ public class Board : MonoBehaviour
     {
         if (!blockUserMove)
         {
+            string stopperId = Guid.NewGuid().ToString();
+            columnStopperId[column] = stopperId;
             fillingColumn[column] = true;
             StopCoroutine(FillTheColumn(column));
 
@@ -1288,10 +1314,12 @@ public class Board : MonoBehaviour
 
             if (!blockUserMove)
             {
-                fillingColumn[column] = true;
-                StopCoroutine(FillTheColumn(column));
-
-                fillingColumn[column] = false;
+                  fillingColumn[column] = true;
+                  StopCoroutine(FillTheColumn(column));
+                if (columnStopperId[column] == stopperId)
+                {
+                    fillingColumn[column] = false;
+                }
             }
         }
 
@@ -1329,42 +1357,6 @@ public class Board : MonoBehaviour
                     // Putting empty place index to variable
                     emptyPlaces.Enqueue(j);
 
-                    // THESE CODES CAN BE IMPROVE PLEASE CHECK THE ALGO
-                    /*
-                    if(j + 1 < height)
-                    {
-
-                        bool crossFall = true;
-                        bool checkForEmptyPlaces = true;
-                        int k = 1;
-
-                        // If all the way to obstacle or missing tile is emty then fruit will call crossfall but if in this way there is a fruit then no crossfall. 
-
-                        while (checkForEmptyPlaces)
-                        {                   
-
-                            if(allFruits[i, j + k] || k + j + 1 == height)
-                            {
-                                crossFall = false;
-                                checkForEmptyPlaces = false;
-                            }
-
-
-                            if (allTiles[i, j + k] && allTiles[i, j + k].GetComponent<BackgroundTile>().isCurrentObstacleBox) {
-                                checkForEmptyPlaces = false;
-                            }
-
-                            k++;
-                        }
-
-                        if (crossFall)
-                        {
-                            CrossFall(i, j + 1);
-
-                        }
-     
-                    }
-                    */
                 }
                 else if (emptyPlaces.Count > 0)
                 {
@@ -1392,22 +1384,27 @@ public class Board : MonoBehaviour
 
                 bool crossFall = true;
                 bool checkForEmptyPlaces = true;
-                int k = 1;
+                int k = 0;
 
                 // If all the way to obstacle or missing tile is emty then fruit will call crossfall but if in this way there is a fruit then no crossfall. 
 
                 while (checkForEmptyPlaces)
                 {
 
-                    if (allFruits[i, j + k] || k + j + 1 == height)
+                    if (allTiles[i, j + k] && allTiles[i, j + k].GetComponent<BackgroundTile>().isCurrentObstacleBox)
                     {
-                        crossFall = false;
                         checkForEmptyPlaces = false;
+                        while(!allTiles[i, j + k-1])
+                        {
+                            k--;
+                        }
+                        break;
                     }
 
 
-                    if (allTiles[i, j + k] && allTiles[i, j + k].GetComponent<BackgroundTile>().isCurrentObstacleBox)
+                    if (k + j >= columnsFallIndexY[i] || allFruits[i, j + k])
                     {
+                        crossFall = false;
                         checkForEmptyPlaces = false;
                     }
 
@@ -1416,7 +1413,7 @@ public class Board : MonoBehaviour
 
                 if (crossFall)
                 {
-                    if(CrossFall(i, j + 1))
+                    if(CrossFall(i, j + k))
                     {
                         break;
                     }
@@ -1530,6 +1527,21 @@ public class Board : MonoBehaviour
         newPowerUpScript.targetV = allTiles[column, row].transform.position;
         newPowerUpScript.damageID = Guid.NewGuid().ToString();
 
+        switch (type)
+        {
+            case -1:
+                newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isHarvesterCreated);
+                break;
+            case -2:
+                newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isHarvesterCreated);
+                break;
+            case -3:
+                newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isTNTCreated);
+                break;
+            case -4:
+                newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isBoomerangCreated);
+                break;
+        }
 
 
         // Add the new powerup to the allFruits array
@@ -1560,7 +1572,7 @@ public class Board : MonoBehaviour
             allFruits[column + 1, row] = null;
         }
 
-        if (fruit)
+        if (fruit && allTiles[column, row - 1])
         {
             audioManager.FruitFall();
             fruitScript = fruit.GetComponent<Fruit>();
@@ -1578,7 +1590,7 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="fruit"></param>
     /// <param name="otherFruit"></param>
-    public void ActivateMergePowerUp(GameObject fruit, GameObject otherFruit)
+    public IEnumerator ActivateMergePowerUp(GameObject fruit, GameObject otherFruit)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>(), otherFruitScript = otherFruit.GetComponent<Fruit>();
         fruitScript.damageID = otherFruitScript.damageID;
@@ -1592,7 +1604,7 @@ public class Board : MonoBehaviour
             {
                 case -1:
                     fruitScript.fruitType = -2;
-                    fruitScript.transform.rotation = Quaternion.Euler(0f, 0f, 90f);
+                    fruitScript.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
                     audioManager.Harvester();
                     ActivatePowerUp(fruit);
                     ActivatePowerUp(otherFruit);
@@ -1600,7 +1612,7 @@ public class Board : MonoBehaviour
 
                 case -2:
                     fruitScript.fruitType = -1;
-                    fruitScript.transform.rotation = Quaternion.Euler(0f, 0f, 0);
+                    fruitScript.transform.rotation = Quaternion.Euler(0f, 0f, 90f);
                     audioManager.Harvester();
                     ActivatePowerUp(fruit);
                     ActivatePowerUp(otherFruit);
@@ -1653,20 +1665,36 @@ public class Board : MonoBehaviour
                             ActivatePowerUp(otherFruit);
                             break;
                         case -3:
-                            audioManager.Harvester();
+                            bool up=false, down=false;
                             Destroy(otherFruit);
                             if (fruitScript.row + 1 < height)
                             {
-                                fruitScript.row++;
-                                ActivatePowerUp(fruit);
-                                fruitScript.row--;
+                                DestroyController(allFruits[fruitScript.column, fruitScript.row + 1],false);
+                                CreatePowerUp(fruitScript.column, fruitScript.row + 1, -1);
+                                up = true;
+                             
                             }
-                            ActivatePowerUp(fruit);
+
                             if (fruitScript.row - 1 >= 0)
                             {
-                                fruitScript.row--;
-                                ActivatePowerUp(fruit);
+                                DestroyController(allFruits[fruitScript.column, fruitScript.row - 1], false);
+                                CreatePowerUp(fruitScript.column, fruitScript.row -1, -1);
+                                down = true;
                             }
+
+                            yield return new WaitForSeconds(0.2f);
+
+                            if (up)
+                            {
+                                ActivatePowerUp(allFruits[fruitScript.column, fruitScript.row + 1]);
+                            }
+                            ActivatePowerUp(fruit);
+                            if (down)
+                            {
+                                ActivatePowerUp(allFruits[fruitScript.column, fruitScript.row - 1]);
+                            }
+                            audioManager.Harvester();
+
                             break;
                         case -4:
                             audioManager.Pickaxe();
@@ -1696,20 +1724,35 @@ public class Board : MonoBehaviour
                             ActivatePowerUp(otherFruit);
                             break;
                         case -3:
-                            audioManager.Harvester();
+                            bool left = false, right = false;
                             Destroy(otherFruit);
-                            if (fruitScript.column - 1 >= 0)
-                            {
-                                fruitScript.column--;
-                                ActivatePowerUp(fruit);
-                                fruitScript.column++;
-                            }
-                            ActivatePowerUp(fruit);
                             if (fruitScript.column + 1 < width)
                             {
-                                fruitScript.column++;
-                                ActivatePowerUp(fruit);
+                                DestroyController(allFruits[fruitScript.column + 1, fruitScript.row],false);
+                                CreatePowerUp(fruitScript.column + 1, fruitScript.row, -2);
+                                right = true;
+
                             }
+
+                            if (fruitScript.column - 1 >= 0)
+                            {
+                                DestroyController(allFruits[fruitScript.column - 1, fruitScript.row], false);
+                                CreatePowerUp(fruitScript.column - 1, fruitScript.row, -2);
+                                left = true;
+                            }
+
+                            yield return new WaitForSeconds(0.2f);
+
+                            if (right)
+                            {
+                                ActivatePowerUp(allFruits[fruitScript.column + 1, fruitScript.row]);
+                            }
+                            ActivatePowerUp(otherFruit);
+                            if (left)
+                            {
+                                ActivatePowerUp(allFruits[fruitScript.column - 1, otherFruitScript.row]);
+                            }
+                            audioManager.Harvester();
                             break;
                         case -4:
                             audioManager.Pickaxe();
@@ -1734,36 +1777,67 @@ public class Board : MonoBehaviour
                     switch (otherFruitScript.fruitType)
                     {
                         case -1:
-                            audioManager.Harvester();
+                            bool up = false, down = false;
                             Destroy(fruit);
                             if (otherFruitScript.row + 1 < height)
                             {
-                                otherFruitScript.row++;
-                                ActivatePowerUp(otherFruit);
-                                otherFruitScript.row--;
+                                DestroyController(allFruits[otherFruitScript.column, otherFruitScript.row + 1], false);
+                                CreatePowerUp(otherFruitScript.column, otherFruitScript.row + 1, -1);
+                                up = true;
+
                             }
-                            ActivatePowerUp(otherFruit);
+
                             if (otherFruitScript.row - 1 >= 0)
                             {
-                                otherFruitScript.row--;
-                                ActivatePowerUp(otherFruit);
+                                DestroyController(allFruits[otherFruitScript.column, otherFruitScript.row - 1], false);
+                                CreatePowerUp(otherFruitScript.column, otherFruitScript.row - 1, -1);
+                                down = true;
                             }
-                            break;
-                        case -2:
-                            audioManager.Harvester();
-                            Destroy(fruit);
-                            if (otherFruitScript.column - 1 >= 0)
+
+                            yield return new WaitForSeconds(0.2f);
+
+                            if (up)
                             {
-                                otherFruitScript.column--;
-                                ActivatePowerUp(otherFruit);
-                                otherFruitScript.column++;
+                                ActivatePowerUp(allFruits[otherFruitScript.column, otherFruitScript.row + 1]);
                             }
                             ActivatePowerUp(otherFruit);
+                            if (down)
+                            {
+                                ActivatePowerUp(allFruits[otherFruitScript.column, otherFruitScript.row - 1]);
+                            }
+                            audioManager.Harvester();
+
+                            break;
+                        case -2:
+                            bool left = false, right = false;
+                            Destroy(fruit);
                             if (otherFruitScript.column + 1 < width)
                             {
-                                otherFruitScript.column++;
-                                ActivatePowerUp(otherFruit);
+                                DestroyController(allFruits[otherFruitScript.column + 1, otherFruitScript.row], false);
+                                CreatePowerUp(otherFruitScript.column + 1, otherFruitScript.row, -2);
+                                right = true;
+
                             }
+
+                            if (otherFruitScript.column - 1 >= 0)
+                            {
+                                DestroyController(allFruits[otherFruitScript.column - 1, otherFruitScript.row], false);
+                                CreatePowerUp(otherFruitScript.column - 1, otherFruitScript.row, -2);
+                                left = true;
+                            }
+
+                            yield return new WaitForSeconds(0.2f);
+
+                            if (right)
+                            {
+                                ActivatePowerUp(allFruits[otherFruitScript.column + 1, otherFruitScript.row]);
+                            }
+                            ActivatePowerUp(otherFruit);
+                            if (left)
+                            {
+                                ActivatePowerUp(allFruits[otherFruitScript.column - 1, otherFruitScript.row]);
+                            }
+                            audioManager.Harvester();
                             break;
                         case -4:
                             audioManager.Pickaxe();
@@ -1831,13 +1905,15 @@ public class Board : MonoBehaviour
             // Horizontal Harvester power up
             case -1:
 
-                StartCoroutine(StopAndStartAllFillings(0.07f * width));
+                StartCoroutine(StopAndStartAllFillings(0.09f * width));
 
                 GameObject cloneHorizontal = Instantiate(powerUps[0], allTiles[column, row].transform.position, powerUps[0].transform.rotation);
                 Fruit cloneHorizontalScript = cloneHorizontal.GetComponent<Fruit>();
 
                 cloneHorizontalScript.GetComponentInChildren<SpriteRenderer>().sprite = harvesterUpSprite;
-                fruitScript.GetComponentInChildren<SpriteRenderer>().sprite = harvesterDownSprite;
+                fruitScript.GetComponentInChildren<SpriteRenderer>().sprite = harvesterUpSprite;
+                Vector3 newRotationH = new Vector3(0f, 0f, -90);
+                cloneHorizontal.transform.rotation = Quaternion.Euler(newRotationH);
 
                 cloneHorizontalScript.row = row;
                 cloneHorizontalScript.column = column;
@@ -1845,23 +1921,25 @@ public class Board : MonoBehaviour
                 cloneHorizontalScript.damageID = fruitScript.damageID;
                 cloneHorizontalScript.fruitType = type;
 
-                fruitScript.speedMultiplier = 2.5f;
-                cloneHorizontalScript.speedMultiplier = 2.5f;
-
-                fruitScript.targetV.x = allTiles[0, row].transform.position.x - 8;
-                cloneHorizontalScript.targetV.x = allTiles[width - 1, row].transform.position.x + 8;
+                fruitScript.speedMultiplier = 1.5f;
+                cloneHorizontalScript.speedMultiplier = 1.5f;
 
 
                 fruitScript.outsideOfBoard = true;
                 cloneHorizontalScript.outsideOfBoard = true;
 
+                fruitScript.targetV.x = tilePositions[0, row].x - 8;
+                cloneHorizontalScript.targetV.x = tilePositions[width - 1, row].x + 8;
+
+                fruitScript.destroyOnReach = true;
+                cloneHorizontalScript.destroyOnReach = true;
+
                 allFruits[column, row] = null;
                 fruitScript.activePowerUp = true;
                 cloneHorizontalScript.activePowerUp = true;
 
-
-                StartCoroutine(WaitAndDestroyObj(0.2f * width, fruit));
-                StartCoroutine(WaitAndDestroyObj(0.2f * width, cloneHorizontal));
+                fruit.GetComponentInChildren<Animator>().SetBool(isHarvesterRunning, true);
+                cloneHorizontal.GetComponentInChildren<Animator>().SetBool(isHarvesterRunning, true);
 
                 if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
                 {
@@ -1872,13 +1950,16 @@ public class Board : MonoBehaviour
             // Vertical Harvester power up
             case -2:
 
-                StartCoroutine(StopAndStartSingleColumn(0.07f * width, column));
+                StartCoroutine(StopAndStartSingleColumn(0.09f * width, column));
 
                 GameObject cloneVertical = Instantiate(powerUps[1], allTiles[column, row].transform.position, powerUps[1].transform.rotation);
                 Fruit cloneVerticalScript = cloneVertical.GetComponent<Fruit>();
 
-                cloneVertical.GetComponentInChildren<SpriteRenderer>().sprite = harvesterDownSprite;
+                cloneVertical.GetComponentInChildren<SpriteRenderer>().sprite = harvesterUpSprite;
+              
                 fruitScript.GetComponentInChildren<SpriteRenderer>().sprite = harvesterUpSprite;
+                Vector3 newRotationV = new Vector3(0f, 0f, -180);
+                fruit.transform.rotation = Quaternion.Euler(newRotationV);
 
                 cloneVerticalScript.row = row;
                 cloneVerticalScript.column = column;
@@ -1886,21 +1967,24 @@ public class Board : MonoBehaviour
                 cloneVerticalScript.damageID=fruitScript.damageID;
                 cloneVerticalScript.fruitType = type;
 
-                fruitScript.speedMultiplier = 2.5f;
-                cloneVerticalScript.speedMultiplier = 2.5f;
-
-                fruitScript.targetV.y = allTiles[column, 0].transform.position.y - 8;
-                cloneVerticalScript.targetV.y = allTiles[column, height - 1].transform.position.y + 8;
+                fruitScript.speedMultiplier = 1.5f;
+                cloneVerticalScript.speedMultiplier = 1.5f;
 
                 fruitScript.outsideOfBoard = true;
                 cloneVerticalScript.outsideOfBoard = true;
+
+                fruitScript.targetV.y = tilePositions[column, 0].y - 8;
+                cloneVerticalScript.targetV.y = tilePositions[column, height - 1].y + 8;
+
+                fruitScript.destroyOnReach = true;
+                cloneVerticalScript.destroyOnReach = true;
 
                 allFruits[column, row] = null;
                 fruitScript.activePowerUp = true;
                 cloneVerticalScript.activePowerUp = true;
 
-                StartCoroutine(WaitAndDestroyObj(0.2f * width, fruit));
-                StartCoroutine(WaitAndDestroyObj(0.2f * width, cloneVertical));
+                fruit.GetComponentInChildren<Animator>().SetBool(isHarvesterRunning, true);
+                cloneVertical.GetComponentInChildren<Animator>().SetBool(isHarvesterRunning, true);
 
                 if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
                 {
@@ -1927,7 +2011,7 @@ public class Board : MonoBehaviour
 
                 allFruits[fruitScript.column, fruitScript.row] = null;
 
-                fruit.GetComponentInChildren<Animator>().SetBool(fruitScript.boomerangRotating, true);
+                fruit.GetComponentInChildren<Animator>().SetBool(boomerangRotating, true);
 
                 if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
                 {
@@ -1995,12 +2079,12 @@ public class Board : MonoBehaviour
             {
                 int row = obj.GetComponent<Fruit>().row;
                 int column = obj.GetComponent<Fruit>().column;
+                totalNumberOfFruits[obj.GetComponent<Fruit>().fruitType]--;
+                achievementManager.AchievementProgress(obj.GetComponent<Fruit>().fruitType);
                 if (explosion)
                 {
                     allTiles[column, row].GetComponent<BackgroundTile>().Explosion(column, row, obj.GetComponent<Fruit>().damageID, obj.GetComponent<Fruit>().colorType);
                 }
-                totalNumberOfFruits[obj.GetComponent<Fruit>().fruitType]--;
-                achievementManager.AchievementProgress(obj.GetComponent<Fruit>().fruitType);
                 if (!obj.GetComponent<Fruit>().outsideOfBoard)
                 {
                     StartCoroutine(FruitPop(obj));
@@ -2492,12 +2576,22 @@ public class Board : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
+        while (fruitsToDisappear.Count > 0)
+        {
+            random = UnityEngine.Random.Range(0, fruitsToDisappear.Count);
+            DestroyController(fruitsToDisappear[random], false);
+            fruitsToDisappear.Remove(fruitsToDisappear[random]);
+            yield return new WaitForSeconds(0.01f);
 
+        }
+
+        /*
         for (int i = 0; i < fruitsToDisappear.Count; i++)
         {
             DestroyController(fruitsToDisappear[i], false);
+            yield return new WaitForSeconds(0.02f);
         }
-
+        */
         StartCoroutine(FadeOut(discoBall));
 
         yield return new WaitForSeconds(0.2f);
@@ -2637,12 +2731,6 @@ public class Board : MonoBehaviour
 
         Destroy(newSpecialPowerUp);
 
-    }
-
-    private IEnumerator WaitAndDestroyObj(float waitTime, GameObject obj)
-    {
-        yield return new WaitForSeconds(waitTime);
-        Destroy(obj);
     }
 
     private Sprite TileWithBorder(int column,int row)

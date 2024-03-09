@@ -2002,6 +2002,11 @@ MonoBehaviour:
   specialPowerID: 0
   specialSwipe: 0
   specialPowerUsing: 0
+  isBoomerangCreated: -436575307
+  isHarvesterCreated: -927227812
+  isTNTCreated: 1052899013
+  boomerangRotating: -759622409
+  isHarvesterRunning: 1437048459
 --- !u!114 &160705529
 MonoBehaviour:
   m_ObjectHideFlags: 0

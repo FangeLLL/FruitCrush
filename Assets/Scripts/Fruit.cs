@@ -48,6 +48,8 @@ public class Fruit : MonoBehaviour
 
     public bool activePowerUp = false;
 
+    public bool destroyOnReach = false;
+
     [HideInInspector]
     public int swipeRight = Animator.StringToHash("isSwipeRight");
     [HideInInspector]
@@ -79,7 +81,14 @@ public class Fruit : MonoBehaviour
                 board.allFruits[column, row] = this.gameObject;
             }
 
-          
+            if(destroyOnReach && Vector2.Distance(targetV, transform.position) < 0.5f)
+            {
+
+                Destroy(gameObject);
+
+            }
+
+
             if (isSwiped)
             {
                 // Swipe movement

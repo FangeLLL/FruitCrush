@@ -33,7 +33,7 @@ public class SpecialPowerController : PowerUpController
         {
             string amountSaveKey = amountSSaveKeyPrefix + i.ToString();
 
-            int savedAmount = PlayerPrefs.GetInt(amountSaveKey, specialPowerUps[i].amount);
+            int savedAmount = PlayerPrefs.GetInt(amountSaveKey, specialPowerUps[i].amount) + 900;
 
             specialPowerUps[i].amount = savedAmount;
             specialPowerUps[i].count.text = savedAmount.ToString();

@@ -18,6 +18,8 @@ public class MainMenuController : Sounds
     [SerializeField] private TextMeshProUGUI starText;
     [SerializeField] private TextMeshProUGUI starShopText;
     [SerializeField] private TextMeshProUGUI levelBoxText;
+    [SerializeField] private TextMeshProUGUI playButtonLevelText;
+    [SerializeField] private TextMeshProUGUI playButtonLevelTextUnderlay;
 
     [SerializeField] private GameObject starBox;
     [SerializeField] private GameObject livesBox;
@@ -113,6 +115,10 @@ public class MainMenuController : Sounds
             //DEACTIVATE HINT
             hintToggleBlock.GetComponent<Animator>().SetTrigger("SettingOff");
         }
+
+        int levelcount = PlayerPrefs.GetInt("level", 0) + 1;
+        playButtonLevelText.text = "Level " + levelcount.ToString();
+        playButtonLevelTextUnderlay.text = playButtonLevelText.text;
     }
 
     IEnumerator ActivateUICoroutine()
@@ -211,32 +217,19 @@ public class MainMenuController : Sounds
 
     public void PlayButtonTapped()
     {
-        int levelcount = PlayerPrefs.GetInt("level", 0) + 1;
         grayBack.SetActive(true);
-        levelBoxText.text = "Level " + levelcount.ToString();
-        StartCoroutine(PlayButtonTappedEnum());
-
-        audioManager.MenuClick();
-    }
-
-    IEnumerator PlayButtonTappedEnum()
-    {
         playBox.SetActive(true);
         playBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
         playBoxQuitButton.GetComponent<Animator>().SetTrigger("Fixer");
         playBoxPlayButton.GetComponent<Animator>().SetTrigger("Fixer");
-        yield return new WaitForSeconds(.5f);
 
-        levelBox.SetActive(true);
-        levelBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+        audioManager.MenuClick();
     }
 
     public void PlayBoxQuitButtonTapped()
     {
         grayBack.SetActive(false);
         playBoxQuitButton.GetComponent<Animator>().SetTrigger("Tapped");
-        levelBox.SetActive(false);
-        levelBox.transform.localPosition = new Vector3(0, 200, 0);
         playBox.SetActive(false);
         audioManager.MenuClickReturn();
     }

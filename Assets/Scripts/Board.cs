@@ -96,6 +96,8 @@ public class Board : MonoBehaviour
     public int boomerangRotating = Animator.StringToHash("isRotating");
     [HideInInspector]
     public int isHarvesterRunning = Animator.StringToHash("isHarvesterRunning");
+    [HideInInspector]
+    public int isTNTMerged = Animator.StringToHash("isTNTMerged");
 
     private void Awake()
     {
@@ -1618,10 +1620,12 @@ public class Board : MonoBehaviour
                     ActivatePowerUp(otherFruit);
                     break;
                 case -3:
-                    fruitScript.fadeout = true;
-                    audioManager.Pickaxe();             
-                    StartCoroutine(FadeOut(fruit));
+                    Destroy(fruit);
+                    audioManager.Pickaxe();
+                    otherFruit.GetComponentInChildren<Animator>().SetTrigger(isTNTMerged);
+                    yield return new WaitForSeconds(2.33f);
                     TNTExplosion(otherFruit, 2);
+                    
                     break;
                 case -4:
                     GameObject cloneBoomerang = Instantiate(powerUps[3], otherFruit.transform.position, powerUps[3].transform.rotation);
@@ -1857,6 +1861,7 @@ public class Board : MonoBehaviour
                             break;
                     }
                     break;
+                // Boomerang
                 case -4:
                     audioManager.Pickaxe();
                     if (otherFruitScript.fruitType == -5)
@@ -1877,6 +1882,7 @@ public class Board : MonoBehaviour
                     }              
 
                     break;
+                // Discoball
                 case -5:
 
                     otherFruitScript.fadeout = true;

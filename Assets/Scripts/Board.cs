@@ -1295,6 +1295,7 @@ public class Board : MonoBehaviour
                    if(columnStopperId[i] == stopperId)
                     {
                         fillingColumn[i] = false;
+                        columnStopperId[i] = null;
                     }
                 }
                 
@@ -1321,6 +1322,7 @@ public class Board : MonoBehaviour
                 if (columnStopperId[column] == stopperId)
                 {
                     fillingColumn[column] = false;
+                    columnStopperId[column] = null;
                 }
             }
         }
@@ -1343,45 +1345,48 @@ public class Board : MonoBehaviour
 
         for (int j = 0; j <= columnsFallIndexY[i]; j++)
         {
-            if (!allTiles[i, j] || allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
+            if(columnStopperId[i] == null)
             {
-                if(allTiles[i, j])
+                if (!allTiles[i, j] || allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
                 {
-                    emptyPlaces.Clear();
-                }
-              
-            }
-            else
-            {
-
-                if (!allFruits[i, j])
-                {
-                    // Putting empty place index to variable
-                    emptyPlaces.Enqueue(j);
+                    if (allTiles[i, j])
+                    {
+                        emptyPlaces.Clear();
+                    }
 
                 }
-                else if (emptyPlaces.Count > 0)
+                else
                 {
-                    // if there is a piece then piece new location will be first empty place in queue.
-                    audioManager.FruitFall();
-                    int emptyRowIndex = emptyPlaces.Dequeue();
-                    GameObject fruit = allFruits[i, j];
-                    Fruit fruitScript = fruit.GetComponent<Fruit>();
-                    fruitScript.row = emptyRowIndex;
-                    fruitScript.column = i;
-                    allFruits[i, j] = null;
-                  
-                    fruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
-                    emptyPlaces.Enqueue(j);
+
+                    if (!allFruits[i, j])
+                    {
+                        // Putting empty place index to variable
+                        emptyPlaces.Enqueue(j);
+
+                    }
+                    else if (emptyPlaces.Count > 0)
+                    {
+                        // if there is a piece then piece new location will be first empty place in queue.
+                        audioManager.FruitFall();
+                        int emptyRowIndex = emptyPlaces.Dequeue();
+                        GameObject fruit = allFruits[i, j];
+                        Fruit fruitScript = fruit.GetComponent<Fruit>();
+                        fruitScript.row = emptyRowIndex;
+                        fruitScript.column = i;
+                        allFruits[i, j] = null;
+
+                        fruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
+                        emptyPlaces.Enqueue(j);
+                    }
                 }
-            }
+            }       
         }
 
         yield return new WaitForSeconds(0.05f);
 
         for (int j = columnsFallIndexY[i]; j >= 0; j--)
         {
-            if (j + 1 < height && !allFruits[i, j] && allTiles[i, j] && !allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
+            if (j + 1 < height && !allFruits[i, j] && allTiles[i, j] && !allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox && columnStopperId[i] == null)
             {
 
                 bool crossFall = true;
@@ -1430,7 +1435,7 @@ public class Board : MonoBehaviour
             float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
             int emptyRowIndex = emptyPlaces.Dequeue();
             // If this place did not filled then create object for it.
-            if (!allFruits[i, emptyRowIndex])
+            if (!allFruits[i, emptyRowIndex] && columnStopperId[i] == null)
             {
 
                 Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, (columnsFallIndexY[i] + 1) * scaleNumber - yOffset);

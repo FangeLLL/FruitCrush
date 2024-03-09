@@ -1723,20 +1723,40 @@ public class Board : MonoBehaviour
                             ActivatePowerUp(otherFruit);
                             break;
                         case -3:
-                            audioManager.Harvester();
+                            bool left = false, right = false;
+                            GameObject fruitLeft, fruitRight;
                             Destroy(otherFruit);
-                            if (fruitScript.column - 1 >= 0)
-                            {
-                                fruitScript.column--;
-                                ActivatePowerUp(fruit);
-                                fruitScript.column++;
-                            }
-                            ActivatePowerUp(fruit);
                             if (fruitScript.column + 1 < width)
                             {
-                                fruitScript.column++;
-                                ActivatePowerUp(fruit);
+                                fruitRight = allFruits[fruitScript.column + 1, fruitScript.row];
+                                fruitRight.GetComponent<Fruit>().outsideOfBoard = true;
+                                CreatePowerUp(fruitScript.column + 1, fruitScript.row, -2);
+                                StartCoroutine(FruitPop(fruitRight));
+                                right = true;
+
                             }
+
+                            if (fruitScript.column - 1 >= 0)
+                            {
+                                fruitLeft = allFruits[fruitScript.column - 1, fruitScript.row];
+                                fruitLeft.GetComponent<Fruit>().outsideOfBoard = true;
+                                CreatePowerUp(fruitScript.column - 1, fruitScript.row, -2);
+                                StartCoroutine(FruitPop(fruitLeft));
+                                left = true;
+                            }
+
+                            yield return new WaitForSeconds(0.1f);
+
+                            if (right)
+                            {
+                                ActivatePowerUp(allFruits[fruitScript.column + 1, fruitScript.row]);
+                            }
+                            ActivatePowerUp(otherFruit);
+                            if (left)
+                            {
+                                ActivatePowerUp(allFruits[fruitScript.column - 1, fruitScript.row]);
+                            }
+                            audioManager.Harvester();
                             break;
                         case -4:
                             audioManager.Pickaxe();
@@ -1798,20 +1818,40 @@ public class Board : MonoBehaviour
 
                             break;
                         case -2:
-                            audioManager.Harvester();
+                            bool left = false, right = false;
+                            GameObject fruitLeft, fruitRight;
                             Destroy(fruit);
-                            if (otherFruitScript.column - 1 >= 0)
-                            {
-                                otherFruitScript.column--;
-                                ActivatePowerUp(otherFruit);
-                                otherFruitScript.column++;
-                            }
-                            ActivatePowerUp(otherFruit);
                             if (otherFruitScript.column + 1 < width)
                             {
-                                otherFruitScript.column++;
-                                ActivatePowerUp(otherFruit);
+                                fruitRight = allFruits[otherFruitScript.column + 1, otherFruitScript.row];
+                                fruitRight.GetComponent<Fruit>().outsideOfBoard = true;
+                                CreatePowerUp(otherFruitScript.column + 1, otherFruitScript.row, -2);
+                                StartCoroutine(FruitPop(fruitRight));
+                                right = true;
+
                             }
+
+                            if (otherFruitScript.column - 1 >= 0)
+                            {
+                                fruitLeft = allFruits[otherFruitScript.column - 1, otherFruitScript.row];
+                                fruitLeft.GetComponent<Fruit>().outsideOfBoard = true;
+                                CreatePowerUp(otherFruitScript.column - 1, otherFruitScript.row, -2);
+                                StartCoroutine(FruitPop(fruitLeft));
+                                left = true;
+                            }
+
+                            yield return new WaitForSeconds(0.1f);
+
+                            if (right)
+                            {
+                                ActivatePowerUp(allFruits[otherFruitScript.column + 1, otherFruitScript.row]);
+                            }
+                            ActivatePowerUp(otherFruit);
+                            if (left)
+                            {
+                                ActivatePowerUp(allFruits[otherFruitScript.column - 1, otherFruitScript.row]);
+                            }
+                            audioManager.Harvester();
                             break;
                         case -4:
                             audioManager.Pickaxe();

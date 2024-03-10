@@ -97,6 +97,7 @@ public class BackgroundTile : MonoBehaviour
         {
             if (board.allFruits[column, row])
             {
+                board.selectedFruit = board.allFruits[column, row];
                 firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 board.allFruits[column, row].GetComponent<Fruit>().firstTouchPosition = firstTouchPosition;
                 board.allFruits[column, row].GetComponent<Fruit>().isClicked = true;
@@ -113,8 +114,9 @@ public class BackgroundTile : MonoBehaviour
             {
                 if (!board.blockUserMove && !board.allFruits[column, row].GetComponent<Fruit>().fadeout && board.allFruits[column, row].GetComponent<Fruit>().isClicked&&!board.specialSwipe && board.allFruits[column, row].GetComponent<Fruit>().fruitType < 0 && board.taskController.moveCount > 0 && !board.allFruits[column, row].GetComponent<Fruit>().isSwiped && board.taskController.isBoardActive)
                 {
-                    if (Vector2.Distance(transform.position, firstTouchPosition) < 0.6f)
+                    if (Vector2.Distance(transform.position, firstTouchPosition) < 0.5f && board.selectedFruit == board.allFruits[column, row])
                     {
+                        Debug.Log("activated");
                         board.taskController.MovePlayed();
                         board.StopHint();
                         board.ActivatePowerUp(board.allFruits[column, row],0,false);

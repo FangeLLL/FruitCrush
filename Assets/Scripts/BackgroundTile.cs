@@ -116,7 +116,6 @@ public class BackgroundTile : MonoBehaviour
                 {
                     if (Vector2.Distance(transform.position, firstTouchPosition) < 0.5f && board.selectedFruit == board.allFruits[column, row])
                     {
-                        Debug.Log("activated");
                         board.taskController.MovePlayed();
                         board.StopHint();
                         board.ActivatePowerUp(board.allFruits[column, row],0,false);

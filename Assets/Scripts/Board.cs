@@ -1633,7 +1633,7 @@ public class Board : MonoBehaviour
                     Destroy(fruit);
                     audioManager.Pickaxe();
                     otherFruitScript.fadeout = true;
-                    otherFruit.GetComponent<SpriteRenderer>().sortingOrder = 10;
+                    otherFruit.GetComponentInChildren<SpriteRenderer>().sortingOrder = 10;
                     otherFruit.GetComponentInChildren<Animator>().SetTrigger(isTNTMerged);
                     if (otherFruitScript.column - 2 >= 0)
                     {
@@ -1699,40 +1699,10 @@ public class Board : MonoBehaviour
                             break;
                         case -3:
 
-                            StartCoroutine(StopAndStartSingleColumn(0.3f, fruitScript.column));
-
-                            bool up =false, down=false;
-                            GameObject upPowerUp = null, downPowerUp = null;
                             Destroy(otherFruit);
-                            if (fruitScript.row + 1 < height)
-                            {
-                                DestroyController(allFruits[fruitScript.column, fruitScript.row + 1],false);
-                                upPowerUp = CreatePowerUp(fruitScript.column, fruitScript.row + 1, -1);
-                                upPowerUp.GetComponent<Fruit>().fadeout = true;
-                                up = true;
-                             
-                            }
 
-                            if (fruitScript.row - 1 >= 0)
-                            {
-                                DestroyController(allFruits[fruitScript.column, fruitScript.row - 1], false);
-                                downPowerUp = CreatePowerUp(fruitScript.column, fruitScript.row -1, -1);
-                                downPowerUp.GetComponent<Fruit>().fadeout = true;
-                                down = true;
-                            }
+                            StartCoroutine(HarvesterTNTMerge(fruit,fruitScript.column,fruitScript.row,false));
 
-                            yield return new WaitForSeconds(0.2f);
-
-                            if (up)
-                            {
-                                ActivatePowerUp(upPowerUp);
-                            }
-                            ActivatePowerUp(fruit);
-                            if (down)
-                            {
-                                ActivatePowerUp(downPowerUp);
-                            }
-                            audioManager.Harvester();
 
                             break;
                         case -4:
@@ -1764,41 +1734,10 @@ public class Board : MonoBehaviour
                             break;
                         case -3:
 
-                            bool left = false, right = false;
-                            GameObject leftPowerUp = null, rightPowerUp = null;
-                            StartCoroutine(StopAndStartSingleColumn(0.3f, fruitScript.column));
                             Destroy(otherFruit);
-                            if (fruitScript.column + 1 < width)
-                            {
-                                StartCoroutine(StopAndStartSingleColumn(0.3f, fruitScript.column+1));
-                                DestroyController(allFruits[fruitScript.column + 1, fruitScript.row],false);
-                                rightPowerUp = CreatePowerUp(fruitScript.column + 1, fruitScript.row, -2);
-                                rightPowerUp.GetComponent<Fruit>().fadeout = true;
-                                right = true;
 
-                            }
+                            StartCoroutine(HarvesterTNTMerge(fruit, fruitScript.column, fruitScript.row, true));
 
-                            if (fruitScript.column - 1 >= 0)
-                            {
-                                StartCoroutine(StopAndStartSingleColumn(0.3f, fruitScript.column - 1));
-                                DestroyController(allFruits[fruitScript.column - 1, fruitScript.row], false);
-                                leftPowerUp = CreatePowerUp(fruitScript.column - 1, fruitScript.row, -2);
-                                leftPowerUp.GetComponent<Fruit>().fadeout = true;
-                                left = true;
-                            }
-
-                            yield return new WaitForSeconds(0.2f);
-
-                            if (right)
-                            {
-                                ActivatePowerUp(rightPowerUp);
-                            }
-                            ActivatePowerUp(fruit);
-                            if (left)
-                            {
-                                ActivatePowerUp(leftPowerUp);
-                            }
-                            audioManager.Harvester();
                             break;
                         case -4:
                             audioManager.Pickaxe();
@@ -1821,77 +1760,17 @@ public class Board : MonoBehaviour
                     switch (otherFruitScript.fruitType)
                     {
                         case -1:
-                            StartCoroutine(StopAndStartSingleColumn(0.3f, otherFruitScript.column));
-                            bool up = false, down = false;
-                            GameObject upPowerUp = null, downPowerUp = null;
+
                             Destroy(fruit);
-                            if (otherFruitScript.row + 1 < height)
-                            {
-                                DestroyController(allFruits[otherFruitScript.column, otherFruitScript.row + 1], false);
-                                upPowerUp = CreatePowerUp(otherFruitScript.column, otherFruitScript.row + 1, -1);
-                                upPowerUp.GetComponent<Fruit>().fadeout = true;
-                                up = true;
 
-                            }
-
-                            if (otherFruitScript.row - 1 >= 0)
-                            {
-                                DestroyController(allFruits[otherFruitScript.column, otherFruitScript.row - 1], false);
-                                downPowerUp = CreatePowerUp(otherFruitScript.column, otherFruitScript.row - 1, -1);
-                                downPowerUp.GetComponent<Fruit>().fadeout = true;
-                                down = true;
-                            }
-
-                            yield return new WaitForSeconds(0.2f);
-
-                            if (up)
-                            {
-                                ActivatePowerUp(upPowerUp);
-                            }
-                            ActivatePowerUp(otherFruit);
-                            if (down)
-                            {
-                                ActivatePowerUp(downPowerUp);
-                            }
-                            audioManager.Harvester();
+                            StartCoroutine(HarvesterTNTMerge(otherFruit, otherFruitScript.column, otherFruitScript.row, false));
 
                             break;
                         case -2:
-                            bool left = false, right = false;
-                            StartCoroutine(StopAndStartSingleColumn(0.3f, otherFruitScript.column));
-                            GameObject leftPowerUp=null, rightPowerUp=null;
                             Destroy(fruit);
-                            if (otherFruitScript.column + 1 < width)
-                            {
-                                StartCoroutine(StopAndStartSingleColumn(0.3f, otherFruitScript.column + 1));
-                                DestroyController(allFruits[otherFruitScript.column + 1, otherFruitScript.row], false);
-                                rightPowerUp = CreatePowerUp(otherFruitScript.column + 1, otherFruitScript.row, -2);
-                                rightPowerUp.GetComponent<Fruit>().fadeout = true;
-                                right = true;
 
-                            }
+                            StartCoroutine(HarvesterTNTMerge(otherFruit, otherFruitScript.column, otherFruitScript.row, true));
 
-                            if (otherFruitScript.column - 1 >= 0)
-                            {
-                                StartCoroutine(StopAndStartSingleColumn(0.3f, otherFruitScript.column - 1));
-                                DestroyController(allFruits[otherFruitScript.column - 1, otherFruitScript.row], false);
-                                leftPowerUp = CreatePowerUp(otherFruitScript.column - 1, otherFruitScript.row, -2);
-                                leftPowerUp.GetComponent<Fruit>().fadeout = true;
-                                left = true;
-                            }
-
-                            yield return new WaitForSeconds(0.2f);
-
-                            if (right)
-                            {
-                                ActivatePowerUp(rightPowerUp);
-                            }
-                            ActivatePowerUp(otherFruit);
-                            if (left)
-                            {
-                                ActivatePowerUp(leftPowerUp);
-                            }
-                            audioManager.Harvester();
                             break;
                         case -4:
                             audioManager.Pickaxe();
@@ -2051,6 +1930,15 @@ public class Board : MonoBehaviour
                 break;
             // TNT power up
             case -3:
+                if (column - 1 >= 0)
+                {
+                    StartCoroutine(StopAndStartSingleColumn(0.3f, column - 1));
+                }
+                StartCoroutine(StopAndStartSingleColumn(0.3f, column));
+                if (column + 1 < width)
+                {
+                    StartCoroutine(StopAndStartSingleColumn(0.3f, column + 1));
+                }
                 TNTExplosion(fruit, 1);
                 if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
                 {
@@ -2079,7 +1967,6 @@ public class Board : MonoBehaviour
 
             // Disco Ball power up
             case -5:
-                Debug.Log("disco ball");
                 for (int i = 0; i < width; i++)
                 {
                     StopCoroutine(FillTheColumn(i));
@@ -3522,6 +3409,80 @@ public class Board : MonoBehaviour
 
         return tileSprites[0];
     }
+
+    private IEnumerator HarvesterTNTMerge(GameObject harvester,int column,int row, bool verticalHarvester)
+    {
+
+        StartCoroutine(StopAndStartSingleColumn(0.3f, column));
+
+        GameObject PowerUp1 = null, PowerUp2 = null;       
+
+        if (verticalHarvester)
+        {
+            if (column + 1 < width && allTiles[column + 1, row])
+            {
+                StartCoroutine(StopAndStartSingleColumn(0.3f, column + 1));
+                if (allFruits[column + 1, row])
+                {
+                    DestroyController(allFruits[column + 1, row], false);
+                }
+                PowerUp1 = CreatePowerUp(column + 1, row, -2);
+                PowerUp1.GetComponent<Fruit>().fadeout = true;
+
+            }
+
+            if (column - 1 >= 0 && allTiles[column - 1, row])
+            {
+                StartCoroutine(StopAndStartSingleColumn(0.3f, column - 1));
+                if (allFruits[column - 1, row])
+                {
+                    DestroyController(allFruits[column - 1, row], false);
+                }
+                PowerUp2 = CreatePowerUp(column - 1, row, -2);
+                PowerUp2.GetComponent<Fruit>().fadeout = true;
+            }
+        }
+        else
+        {
+            if (row + 1 < height && allTiles[column, row + 1])
+            {
+                if (allFruits[column, row + 1])
+                {
+                    DestroyController(allFruits[column, row + 1], false);
+                }
+                PowerUp1 = CreatePowerUp(column, row + 1, -1);
+                PowerUp1.GetComponent<Fruit>().fadeout = true;
+
+            }
+
+            if (row - 1 >= 0 && allTiles[column, row - 1])
+            {
+                if (allFruits[column, row - 1])
+                {
+                    DestroyController(allFruits[column, row - 1], false);
+                }
+                PowerUp2 = CreatePowerUp(column, row - 1, -1);
+                PowerUp2.GetComponent<Fruit>().fadeout = true;
+            }
+        }
+
+      
+
+        yield return new WaitForSeconds(0.2f);
+
+        if (PowerUp1)
+        {
+            ActivatePowerUp(PowerUp1);
+        }
+        ActivatePowerUp(harvester);
+        if (PowerUp2)
+        {
+            ActivatePowerUp(PowerUp2);
+        }
+        audioManager.Harvester();
+
+    }
+
 
 }
 

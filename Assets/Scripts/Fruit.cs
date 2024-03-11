@@ -150,7 +150,7 @@ public class Fruit : MonoBehaviour
         Fruit fruitScript;
         if(fruitScript = other.GetComponent<Fruit>())
         {
-            if (fruitScript.fruitType < 0 && fruitScript.activePowerUp && !activePowerUp)
+            if (fruitScript.fruitType < 0 && fruitScript.activePowerUp && !activePowerUp && !fadeout)
             {
                 audioManager.FruitCrush();
                 board.DestroyController(board.allFruits[column, row], false);

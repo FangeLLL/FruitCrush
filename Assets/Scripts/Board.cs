@@ -908,7 +908,7 @@ public class Board : MonoBehaviour
             fruit.GetComponent<Fruit>().targetV = gatherPosition;
         }
 
-        CreatePowerUp(column, row, powerUpID);
+        CreatePowerUp(column, row, powerUpID,true);
 
         yield return new WaitForSeconds(0.3f);
 
@@ -993,7 +993,7 @@ public class Board : MonoBehaviour
             fruitScript.targetV = otherFruitScript.targetV;
             fruitScript.fadeout = true;
             otherFruitScript.fadeout = true;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.2f);
             StartCoroutine(ActivateMergePowerUp(fruit, otherFruit));
             succesfulMove = true;
         }
@@ -1001,7 +1001,7 @@ public class Board : MonoBehaviour
         {
             // If one of them is power up then they switch and power up activate.
             ChangeTwoFruit(fruit, otherFruit);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.2f);
             if(!specialSwipe)
             {
                 if ((fruitScript.fruitType > -100 && fruitScript.fruitType < 0) || (otherFruitScript.fruitType > -100 && otherFruitScript.fruitType < 0))
@@ -1500,7 +1500,7 @@ public class Board : MonoBehaviour
     /// <param name="column"></param>
     /// <param name="row"></param>
     /// <param name="type"></param>
-    private GameObject CreatePowerUp(int column, int row, int type)
+    private GameObject CreatePowerUp(int column, int row, int type, bool isItInteractable)
     {
         /*
         Power Up Type Number;
@@ -1558,7 +1558,24 @@ public class Board : MonoBehaviour
         // Add the new powerup to the allFruits array
         allFruits[column, row] = null;
         allFruits[column, row] = newPowerUp;
+        // it means this is not for immidate use and normally created not for merge or something for.
+        if (isItInteractable)
+        {
+            StartCoroutine(WaitAndActivatePowerUp(0.3f, newPowerUpScript));
+        }
         return newPowerUp;
+    }
+
+    /// <summary>
+    /// Wait and after make powerUp can interact other things. This wait important because if powerUp created after match but same time powerup activated system must not activate new created powerUp.  
+    /// </summary>
+    /// <param name="waitTime"></param>
+    /// <param name="powerUpScript"></param>
+    /// <returns></returns>
+    private IEnumerator WaitAndActivatePowerUp(float waitTime,Fruit powerUpScript)
+    {
+        yield return new WaitForSeconds(waitTime);
+        powerUpScript.fadeout = false;
     }
 
     /// <summary>
@@ -1977,11 +1994,13 @@ public class Board : MonoBehaviour
 
             // Disco Ball power up
             case -5:
+                /*
                 for (int i = 0; i < width; i++)
                 {
                     StopCoroutine(FillTheColumn(i));
                 }
                 Array.Fill(fillingColumn, true);
+                */
                 int targetFruitType = swipedFruitType;
                 // If discoball just clicked then returns most avaliable fruit type.
                 if (!isSwiped || swipedFruitType < 0)
@@ -2097,8 +2116,6 @@ public class Board : MonoBehaviour
         }
     }
 
-   
-    
     /// <summary>
     /// This function activate selected special power. 
     /// </summary>
@@ -2245,12 +2262,12 @@ public class Board : MonoBehaviour
                 if (i == 0)
                 {
                     // Harvester creation randomly horizontal or vertical
-                    CreatePowerUp(column, row, -UnityEngine.Random.Range(1, 3));
+                    CreatePowerUp(column, row, -UnityEngine.Random.Range(1, 3),true);
                 }
                 else
                 {
                     // Tnt or other powerUps. Tnt = -3 that why -i-2.
-                    CreatePowerUp(column, row, -i - 2);
+                    CreatePowerUp(column, row, -i - 2,true);
                 }
             }
         }
@@ -2390,12 +2407,13 @@ public class Board : MonoBehaviour
     {
         blockUserMove = true;
 
-        StopCoroutine(StopAndStartAllFillings(0.07f * width));
+        string stopID = Guid.NewGuid().ToString();
 
         Array.Fill(fillingColumn, true);
 
         for (int i = 0; i < width; i++)
         {
+            columnStopperId[i] = stopID;
             StopCoroutine(FillTheColumn(i));
         }
 
@@ -2436,11 +2454,11 @@ public class Board : MonoBehaviour
                     // If type is bigger then -3 it means it is either vertical or horizontal harvester so it will randomizely spawn.
                     if (powerUpCreateType > -3)
                     {
-                        CreatePowerUp(fruitScript.column, fruitScript.row, UnityEngine.Random.Range(-2, 0));
+                        CreatePowerUp(fruitScript.column, fruitScript.row, UnityEngine.Random.Range(-2, 0),false);
                     }
                     else
                     {
-                        CreatePowerUp(fruitScript.column, fruitScript.row, powerUpCreateType);
+                        CreatePowerUp(fruitScript.column, fruitScript.row, powerUpCreateType,false);
                     }
                     fruitsToDisappear.Add(allFruits[fruitScript.column, fruitScript.row]);
                     DestroyController(fruit, false);
@@ -2449,21 +2467,37 @@ public class Board : MonoBehaviour
                 {
                     fruit.GetComponentInChildren<SpriteRenderer>().color = new Color(255, 0, 0, 255);
 
-
                 }
             }
           
             yield return new WaitForSeconds(0.1f);
         }
 
-        while (fruitsToDisappear.Count > 0)
-        {
-            random = UnityEngine.Random.Range(0, fruitsToDisappear.Count);
-            DestroyController(fruitsToDisappear[random], false);
-            fruitsToDisappear.Remove(fruitsToDisappear[random]);
-            yield return new WaitForSeconds(0.01f);
 
+
+        if (powerUpCreateType < 0)
+        {
+            while (fruitsToDisappear.Count > 0)
+            {
+                random = UnityEngine.Random.Range(0, fruitsToDisappear.Count);
+                ActivatePowerUp(fruitsToDisappear[random]);
+                fruitsToDisappear.Remove(fruitsToDisappear[random]);
+                yield return new WaitForSeconds(0.01f);
+
+            }
         }
+        else
+        {
+            while (fruitsToDisappear.Count > 0)
+            {
+                random = UnityEngine.Random.Range(0, fruitsToDisappear.Count);
+                DestroyController(fruitsToDisappear[random], false);
+                fruitsToDisappear.Remove(fruitsToDisappear[random]);
+                yield return new WaitForSeconds(0.01f);
+
+            }
+        }
+       
 
         /*
         for (int i = 0; i < fruitsToDisappear.Count; i++)
@@ -3358,9 +3392,7 @@ public class Board : MonoBehaviour
                 {
                     DestroyController(allFruits[column + 1, row], false);
                 }
-                PowerUp1 = CreatePowerUp(column + 1, row, -2);
-                PowerUp1.GetComponent<Fruit>().fadeout = true;
-
+                PowerUp1 = CreatePowerUp(column + 1, row, -2,false);
             }
 
             if (column - 1 >= 0 && allTiles[column - 1, row])
@@ -3370,8 +3402,7 @@ public class Board : MonoBehaviour
                 {
                     DestroyController(allFruits[column - 1, row], false);
                 }
-                PowerUp2 = CreatePowerUp(column - 1, row, -2);
-                PowerUp2.GetComponent<Fruit>().fadeout = true;
+                PowerUp2 = CreatePowerUp(column - 1, row, -2, false);
             }
         }
         else
@@ -3382,9 +3413,7 @@ public class Board : MonoBehaviour
                 {
                     DestroyController(allFruits[column, row + 1], false);
                 }
-                PowerUp1 = CreatePowerUp(column, row + 1, -1);
-                PowerUp1.GetComponent<Fruit>().fadeout = true;
-
+                PowerUp1 = CreatePowerUp(column, row + 1, -1, false);
             }
 
             if (row - 1 >= 0 && allTiles[column, row - 1])
@@ -3393,8 +3422,7 @@ public class Board : MonoBehaviour
                 {
                     DestroyController(allFruits[column, row - 1], false);
                 }
-                PowerUp2 = CreatePowerUp(column, row - 1, -1);
-                PowerUp2.GetComponent<Fruit>().fadeout = true;
+                PowerUp2 = CreatePowerUp(column, row - 1, -1, false);
             }
         }
 

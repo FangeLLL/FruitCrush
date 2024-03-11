@@ -508,6 +508,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7097870310067111858, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8183136484916695726, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
+      propertyPath: fadeout
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8321671598800323219, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_Size.x
       value: 1

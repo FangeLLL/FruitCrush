@@ -1936,6 +1936,7 @@ MonoBehaviour:
   specialPowerController: {fileID: 1772865880}
   isRunning: 0
   exitUpdate: 0
+  selectedFruit: {fileID: 0}
   tileSprites:
   - {fileID: 21300000, guid: 989abe47541023f49826d6d59a50481c, type: 3}
   - {fileID: 21300000, guid: 3ed77dcaa88eb9d4aa83b504c02255ae, type: 3}
@@ -2007,6 +2008,7 @@ MonoBehaviour:
   isTNTCreated: 1052899013
   boomerangRotating: -759622409
   isHarvesterRunning: 1437048459
+  isTNTMerged: -1514388395
 --- !u!114 &160705529
 MonoBehaviour:
   m_ObjectHideFlags: 0

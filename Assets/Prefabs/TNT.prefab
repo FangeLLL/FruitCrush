@@ -542,8 +542,43 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6118191939555662036, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2749628007631065136}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1594701409205146621, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -655544389039656145}
   m_SourcePrefab: {fileID: 100100000, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
+--- !u!1 &3566861933945487612 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1594701409205146621, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
+  m_PrefabInstance: {fileID: 2855720303799292673}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &-655544389039656145
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3566861933945487612}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!4 &8307348400497249237 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6118191939555662036, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}

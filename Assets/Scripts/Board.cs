@@ -1193,7 +1193,7 @@ public class Board : MonoBehaviour
     {
 
         float elapsedTime = 0f;
-        float fadeDuration = 0.5f;
+        float fadeDuration = 0.3f;
         Color color = obj.GetComponentInChildren<SpriteRenderer>().color;
 
         while (elapsedTime < fadeDuration)
@@ -1631,7 +1631,6 @@ public class Board : MonoBehaviour
                     break;
                 case -3:
                     Destroy(fruit);
-                    audioManager.Pickaxe();
                     otherFruitScript.fadeout = true;
                     otherFruit.GetComponentInChildren<SpriteRenderer>().sortingOrder = 10;
                     otherFruit.GetComponentInChildren<Animator>().SetTrigger(isTNTMerged);
@@ -1653,8 +1652,14 @@ public class Board : MonoBehaviour
                         StartCoroutine(StopAndStartSingleColumn(2.5f, otherFruitScript.column + 2));
                     }
                     yield return new WaitForSeconds(2.33f);
-                    TNTExplosion(otherFruit, 2);
-                    
+                  
+                    otherFruitScript.activePowerUp = true;
+                    otherFruit.GetComponent<BoxCollider2D>().size = new Vector2(5, 5);
+
+                    audioManager.Pickaxe();
+
+                    StartCoroutine(FadeOut(otherFruit));
+
                     break;
                 case -4:
                     GameObject cloneBoomerang = Instantiate(powerUps[3], otherFruit.transform.position, powerUps[3].transform.rotation);
@@ -1939,11 +1944,16 @@ public class Board : MonoBehaviour
                 {
                     StartCoroutine(StopAndStartSingleColumn(0.3f, column + 1));
                 }
-                TNTExplosion(fruit, 1);
+                fruitScript.activePowerUp = true;
+                fruit.GetComponent<BoxCollider2D>().size = new Vector2(3, 3);
+
                 if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
                 {
                     audioManager.Pickaxe();
                 }
+
+                StartCoroutine(FadeOut(fruit));
+
                 break;
 
             // Boomerang power up
@@ -2044,39 +2054,6 @@ public class Board : MonoBehaviour
     }
 
     /// <summary>
-    /// Explosing depends on tnt power. It used from normal tnt and merged tnt. 
-    /// </summary>
-    /// <param name="column"></param>
-    /// <param name="row"></param>
-    /// <param name="range"></param>
-    private void TNTExplosion(GameObject tnt, int range)
-    {
-        Fruit tntScript = tnt.GetComponent<Fruit>();
-        int column=tntScript.column, row = tntScript.row;
-       // allFruits[column, row].GetComponent<Fruit>().fadeout = true;
-        for (int i = column - range; i <= column + range; i++)
-        {
-            for (int j = row - range; j <= row + range; j++)
-            {
-                if (j >= 0 && j < height && i >= 0 && i < width)
-                {           
-                    if (allTiles[i, j])
-                    {
-                        allTiles[i, j].GetComponent<BackgroundTile>().PowerUpBoom(tntScript.damageID);
-                        if (FruitAvailable(allFruits[i, j]) && allFruits[i, j].GetComponent<Fruit>().fruitType>-100)
-                        {
-                            DestroyController(allFruits[i, j], false);
-                        }
-                    }
-
-                }
-            }
-        }
-        StartCoroutine(FadeOut(tnt));
-
-    }
-
-    /// <summary>
     /// Destroy one side of vertical from the point. If up boolean true then it destroy up of the point and if not down. This function
     /// currently used by vertical special power and vertical harvester.
     /// </summary>
@@ -2120,52 +2097,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Destroy one side of horizontal from the point. If right boolean true then it destroy right side of the point and if not left side. This function
-    /// currently used by horizontal special power and horizontal harvester.
-    /// </summary>
-    /// <param name="column"></param>
-    /// <param name="row"></param>
-    /// <param name="right"></param>
-    private void HorizontalDestroy(int column, int row, bool right,string damageID)
-    {
-        if (right)
-        {
-            for (int i = column + 1; i < width; i++)
-            {
-
-                if (allTiles[i, row])
-                {
-                    if (FruitAvailable(allFruits[i, row]) && allFruits[i, row].GetComponent<Fruit>().fruitType > -100)
-                    {
-                        DestroyController(allFruits[i, row], false);
-                        audioManager.FruitCrush();
-
-                    }
-                    allTiles[i, row].GetComponent<BackgroundTile>().PowerUpBoom(damageID);
-
-                }
-
-            }
-        }
-        else
-        {
-            for (int i = column - 1; i >= 0; i--)
-            {
-
-                if (allTiles[i, row])
-                {
-                    if (FruitAvailable(allFruits[i, row]) && allFruits[i, row].GetComponent<Fruit>().fruitType > -100)
-                    {
-                        DestroyController(allFruits[i, row], false);
-                        audioManager.FruitCrush();
-                    }
-                    allTiles[i, row].GetComponent<BackgroundTile>().PowerUpBoom(damageID);
-
-                }
-            }
-        }
-    }
+   
     
     /// <summary>
     /// This function activate selected special power. 

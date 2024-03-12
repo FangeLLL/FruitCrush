@@ -100,6 +100,8 @@ public class Board : MonoBehaviour
     public int isHarvesterRunning = Animator.StringToHash("isHarvesterRunning");
     [HideInInspector]
     public int isTNTMerged = Animator.StringToHash("isTNTMerged");
+    [HideInInspector]
+    public int isDiscoBallCreated = Animator.StringToHash("isDiscoBallCreated");
 
     private void Awake()
     {
@@ -1552,6 +1554,9 @@ public class Board : MonoBehaviour
             case -4:
                 newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isBoomerangCreated);
                 break;
+            case -5:
+                newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isDiscoBallCreated);
+                break;
         }
 
 
@@ -1653,22 +1658,22 @@ public class Board : MonoBehaviour
                     otherFruit.GetComponentInChildren<Animator>().SetTrigger(isTNTMerged);
                     if (otherFruitScript.column - 2 >= 0)
                     {
-                        StartCoroutine(StopAndStartSingleColumn(2.5f, otherFruitScript.column - 2));
+                        StartCoroutine(StopAndStartSingleColumn(1.6f, otherFruitScript.column - 2));
                     }
                     if (otherFruitScript.column - 1 >= 0)
                     {
-                        StartCoroutine(StopAndStartSingleColumn(2.5f, otherFruitScript.column - 1));
+                        StartCoroutine(StopAndStartSingleColumn(1.6f, otherFruitScript.column - 1));
                     }
-                    StartCoroutine(StopAndStartSingleColumn(2.5f, otherFruitScript.column));
+                    StartCoroutine(StopAndStartSingleColumn(1.6f, otherFruitScript.column));
                     if (otherFruitScript.column + 1 < width)
                     {
-                        StartCoroutine(StopAndStartSingleColumn(2.5f, otherFruitScript.column + 1));
+                        StartCoroutine(StopAndStartSingleColumn(1.6f, otherFruitScript.column + 1));
                     }
                     if (otherFruitScript.column + 2 < width)
                     {
-                        StartCoroutine(StopAndStartSingleColumn(2.5f, otherFruitScript.column + 2));
+                        StartCoroutine(StopAndStartSingleColumn(1.6f, otherFruitScript.column + 2));
                     }
-                    yield return new WaitForSeconds(2.33f);
+                    yield return new WaitForSeconds(1.44f);
                   
                     otherFruitScript.activePowerUp = true;
                     otherFruit.GetComponent<BoxCollider2D>().size = new Vector2(5, 5);

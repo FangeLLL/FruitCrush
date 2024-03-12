@@ -28,11 +28,6 @@ public class ObstacleScript : MonoBehaviour
         {
             GetComponentInChildren<SpriteRenderer>().sprite = obstacleSpecs.sprites[health-1];
         }
-
-        if(obstacleSpecs.isMovable)
-        {
-            StartCoroutine(LoopForMovableObstacle());
-        }
     }
     public void TakeDamage(string damageID)
     {
@@ -143,7 +138,6 @@ public class ObstacleScript : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         if (obstacleSpecs.isMovable)
         {
-            StopCoroutine(LoopForMovableObstacle());
             GetComponent<Fruit>().outsideOfBoard = true;
             board.allFruits[column, row] = null;
             GetComponent<Fruit>().enabled = false;
@@ -156,40 +150,5 @@ public class ObstacleScript : MonoBehaviour
 
     }
 
-    IEnumerator LoopForMovableObstacle()
-    {
-        yield return new WaitForSeconds(0.2f);
-
-
-        if (obstacleSpecs.isDownward && GetComponent<Fruit>().row == 0 && !GetComponent<Fruit>().isSwiped)
-        {
-            StartCoroutine(board.FadeOut(gameObject));
-            taskController.TaskProgress(obstacleSpecs.taskID);
-
-        }
-
-        if (row != GetComponent<Fruit>().row || column != GetComponent<Fruit>().column)
-        {
-            board.allTiles[column, row].GetComponent<BackgroundTile>().obstacles[obstacleSpecs.indexOfLayer] = null;
-            board.allTiles[column, row].GetComponent<BackgroundTile>().DetectVisibleOne();
-            row = GetComponent<Fruit>().row;
-            column = GetComponent<Fruit>().column;
-            board.allTiles[column, row].GetComponent<BackgroundTile>().obstacles[obstacleSpecs.indexOfLayer] = gameObject;
-            board.allTiles[column, row].GetComponent<BackgroundTile>().DetectVisibleOne();
-
-        }
-
-        StartCoroutine(LoopForMovableObstacle());
-
-
-    }
-    /*
-    private void OnDestroy()
-    {
-        if(obstacleSpecs.isMovable)
-        {
-            board.allTiles[GetComponent<Fruit>().column, GetComponent<Fruit>().row].GetComponent<BackgroundTile>().DetectVisibleOne();
-        }
-    }
-    */
+   
 }

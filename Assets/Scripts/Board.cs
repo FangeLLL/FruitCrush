@@ -311,28 +311,31 @@ public class Board : MonoBehaviour
                             tempObstacle.GetComponent<ObstacleScript>().row = j;
                             tempObstacle.GetComponent<ObstacleScript>().column = i;
 
+                            if (tempObstacle.GetComponent<ObstacleScript>().obstacleSpecs.creatableOnPlay)
+                            {
+                                indexOfCreatableObstacle = arrangedTilesIndex;
+                            }
+
                             if (tempObstacle.GetComponent<ObstacleScript>().obstacleSpecs.isMovable)
                             {
                                 tempObstacle.GetComponent<Fruit>().column = i;
                                 tempObstacle.GetComponent<Fruit>().row = j;
                                 allFruits[i, j] = tempObstacle;
                             }
-
-                            if (tempObstacle.GetComponent<ObstacleScript>().obstacleSpecs.creatableOnPlay)
+                            else
                             {
-                                indexOfCreatableObstacle = arrangedTilesIndex;
-                            }
-
-                            for (int a = 0; a < repeat; a++)
-                            {
-                                for (int b = 0; b < repeat; b++)
+                                for (int a = 0; a < repeat; a++)
                                 {
-                                    // Assigning object to relevant tile/tiles.
-                                    allTiles[i + b, j + a].GetComponent<BackgroundTile>().obstacles[c] = tempObstacle;
-                                    // After creating obstacles tile needs to check which obstacle will be break first.
-                                    allTiles[i + b, j + a].GetComponent<BackgroundTile>().DetectVisibleOne();
+                                    for (int b = 0; b < repeat; b++)
+                                    {
+                                        // Assigning object to relevant tile/tiles.
+                                        allTiles[i + b, j + a].GetComponent<BackgroundTile>().obstacles[c] = tempObstacle;
+                                        // After creating obstacles tile needs to check which obstacle will be break first.
+                                        allTiles[i + b, j + a].GetComponent<BackgroundTile>().DetectVisibleOne();
+                                    }
                                 }
                             }
+                           
                         }
                     }
 

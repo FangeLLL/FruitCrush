@@ -149,6 +149,10 @@ public class BackgroundTile : MonoBehaviour
                 {
                     board.allTiles[column + i, row].GetComponent<BackgroundTile>().Boom(damageID,colorType);
                 }
+                if (board.allFruits[column + i, row] && board.allFruits[column + i, row].GetComponent<Fruit>().fruitType < -100)
+                {
+                    board.allFruits[column + i, row].GetComponent<ObstacleScript>().TakeDamage(damageID);
+                }
             }
             
         }
@@ -160,6 +164,10 @@ public class BackgroundTile : MonoBehaviour
                 if (board.allTiles[column, row + i].GetComponent<BackgroundTile>().indexOfVisibleOne==0)
                 {
                     board.allTiles[column, row + i].GetComponent<BackgroundTile>().Boom(damageID, colorType);
+                }
+                if (board.allFruits[column, row + i] && board.allFruits[column, row + i].GetComponent<Fruit>().fruitType < -100)
+                {
+                    board.allFruits[column, row + i].GetComponent<ObstacleScript>().TakeDamage(damageID);
                 }
             }      
         }

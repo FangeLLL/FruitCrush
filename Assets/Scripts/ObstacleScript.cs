@@ -138,9 +138,9 @@ public class ObstacleScript : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         if (obstacleSpecs.isMovable)
         {
-            GetComponent<Fruit>().outsideOfBoard = true;
-            board.allFruits[column, row] = null;
             GetComponent<Fruit>().enabled = false;
+         //   GetComponent<Fruit>().outsideOfBoard = true;
+            board.allFruits[column, row] = null;
         }
         board.allTiles[column, row].GetComponent<BackgroundTile>().obstacles[obstacleSpecs.indexOfLayer] = null;
         board.allTiles[column, row].GetComponent<BackgroundTile>().DetectVisibleOne();

@@ -60,9 +60,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: Quenda-Default2
   m_EditorClassIdentifier: 
-  hashCode: -603502676
+  hashCode: 1559248158
   material: {fileID: 6015098469454403440}
-  materialHashCode: 214378764
+  materialHashCode: -941867522
   m_Version: 1.1.0
   m_SourceFontFileGUID: a91bb80b8c36f6245b3ca46a9b9937e7
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: a91bb80b8c36f6245b3ca46a9b9937e7, type: 3}
@@ -2812,7 +2812,7 @@ Material:
     - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
     - _GlowColor: {r: 0, g: 1, b: 0, a: 0.5}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
-    - _OutlineColor: {r: 0, g: 0.1559265, b: 0, a: 1}
+    - _OutlineColor: {r: 0.051269468, g: 0, b: 0.1559265, a: 1}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}

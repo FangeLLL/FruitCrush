@@ -87,21 +87,17 @@ public class Board : MonoBehaviour
 
     private bool shuffling = false;
 
-    [HideInInspector]
-    public int isBoomerangCreated = Animator.StringToHash("isBoomerangCreated");
-    [HideInInspector]
-    public int isHarvesterCreated = Animator.StringToHash("isHarvesterCreated");
-    [HideInInspector]
-    public int isTNTCreated = Animator.StringToHash("isTNTCreated");
+    private int isBoomerangCreated = Animator.StringToHash("isBoomerangCreated");
+    private int boomerangRotating = Animator.StringToHash("isRotating");
 
-    [HideInInspector]
-    public int boomerangRotating = Animator.StringToHash("isRotating");
-    [HideInInspector]
-    public int isHarvesterRunning = Animator.StringToHash("isHarvesterRunning");
-    [HideInInspector]
-    public int isTNTMerged = Animator.StringToHash("isTNTMerged");
-    [HideInInspector]
-    public int isDiscoBallCreated = Animator.StringToHash("isDiscoBallCreated");
+    private int isHarvesterCreated = Animator.StringToHash("isHarvesterCreated");
+    private int isHarvesterRunning = Animator.StringToHash("isHarvesterRunning");
+
+    private int isTNTCreated = Animator.StringToHash("isTNTCreated");
+    private int isTNTMerged = Animator.StringToHash("isTNTMerged");
+
+    private int isDiscoBallCreated = Animator.StringToHash("isDiscoBallCreated");
+    private int isDiscoBallUsed = Animator.StringToHash("isDiscoBallUsed");
 
     private void Awake()
     {
@@ -1243,7 +1239,7 @@ public class Board : MonoBehaviour
             obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
             obj.GetComponent<ParticleSystem>().Play();
         }
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
         if (obj)
         {
             obj.GetComponent<Fruit>().outsideOfBoard = true;
@@ -2419,6 +2415,8 @@ public class Board : MonoBehaviour
     {
         blockUserMove = true;
 
+        discoBall.GetComponentInChildren<Animator>().SetTrigger(isDiscoBallUsed);
+
         string stopID = Guid.NewGuid().ToString();
 
         Array.Fill(fillingColumn, true);
@@ -2518,13 +2516,14 @@ public class Board : MonoBehaviour
             yield return new WaitForSeconds(0.02f);
         }
         */
-        StartCoroutine(FadeOut(discoBall));
 
         yield return new WaitForSeconds(0.2f);
         blockUserMove = false;
 
         Array.Clear(fillingColumn, 0, fillingColumn.Length);
         Array.Clear(columnStopperId, 0, columnStopperId.Length);
+
+        Destroy(discoBall);
 
     }
 

@@ -418,6 +418,9 @@ public class LevelManager : MonoBehaviour
             if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[0])
             {
                 // Destroy box
+                // IF THERE IS A OBSTACLE ALREADY EXÝST IN THE CURRENT PLACE THEN DESTROY THE OBSTACLE 
+
+                RemoveTasks(column, row, 0);
                 Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[0]);
             }
             GameObject fruit = Instantiate(fruits[chosenId], tempPosition, Quaternion.identity);

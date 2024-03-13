@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bowtie
       objectReference: {fileID: 0}
+    - target: {fileID: 3315017890399756165, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4269577592316774446, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -96,6 +100,10 @@ PrefabInstance:
       propertyPath: obstacleSpecs
       value: 
       objectReference: {fileID: 11400000, guid: a17125207f819604a9e47707b118923e, type: 2}
+    - target: {fileID: 6922098749696338727, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7691684475836866756, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.x
       value: 0.5

@@ -87,21 +87,17 @@ public class Board : MonoBehaviour
 
     private bool shuffling = false;
 
-    [HideInInspector]
-    public int isBoomerangCreated = Animator.StringToHash("isBoomerangCreated");
-    [HideInInspector]
-    public int isHarvesterCreated = Animator.StringToHash("isHarvesterCreated");
-    [HideInInspector]
-    public int isTNTCreated = Animator.StringToHash("isTNTCreated");
+    private int isBoomerangCreated = Animator.StringToHash("isBoomerangCreated");
+    private int boomerangRotating = Animator.StringToHash("isRotating");
 
-    [HideInInspector]
-    public int boomerangRotating = Animator.StringToHash("isRotating");
-    [HideInInspector]
-    public int isHarvesterRunning = Animator.StringToHash("isHarvesterRunning");
-    [HideInInspector]
-    public int isTNTMerged = Animator.StringToHash("isTNTMerged");
-    [HideInInspector]
-    public int isDiscoBallCreated = Animator.StringToHash("isDiscoBallCreated");
+    private int isHarvesterCreated = Animator.StringToHash("isHarvesterCreated");
+    private int isHarvesterRunning = Animator.StringToHash("isHarvesterRunning");
+
+    private int isTNTCreated = Animator.StringToHash("isTNTCreated");
+    private int isTNTMerged = Animator.StringToHash("isTNTMerged");
+
+    private int isDiscoBallCreated = Animator.StringToHash("isDiscoBallCreated");
+    private int isDiscoBallUsed = Animator.StringToHash("isDiscoBallUsed");
 
     private void Awake()
     {
@@ -1243,7 +1239,7 @@ public class Board : MonoBehaviour
             obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
             obj.GetComponent<ParticleSystem>().Play();
         }
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
         if (obj)
         {
             obj.GetComponent<Fruit>().outsideOfBoard = true;
@@ -1277,7 +1273,7 @@ public class Board : MonoBehaviour
 
             }
         }
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
        
         StartCoroutine(FillTheGaps());
     }
@@ -1465,8 +1461,7 @@ public class Board : MonoBehaviour
                     newFruit = Instantiate(obstaclePrefabs[indexOfCreatableObstacle], tempPosition, Quaternion.identity);
                     newFruit.GetComponent<ObstacleScript>().row = emptyRowIndex;
                     newFruit.GetComponent<ObstacleScript>().column = i;
-                    allTiles[i, emptyRowIndex].GetComponent<BackgroundTile>().obstacles[0] = newFruit;
-                    allTiles[i, emptyRowIndex].GetComponent<BackgroundTile>().DetectVisibleOne();
+
                 }
                 else
                 {
@@ -1488,7 +1483,9 @@ public class Board : MonoBehaviour
                     totalNumberOfFruits[fruitToUse]++;
                     newFruitScript.fruitType = fruitToUse;
 
-                }             
+                }
+
+                allFruits[i,emptyRowIndex] = newFruit;
 
                 audioManager.FruitFall();
                 // Add the new fruit to the allFruits array
@@ -1598,12 +1595,12 @@ public class Board : MonoBehaviour
         GameObject fruit = null;
         Fruit fruitScript;
         //  yield return new WaitForSeconds(0.1f);
-        if (column - 1 >= 0 && FruitAvailable(allFruits[column - 1, row]) && !allFruits[column, row - 1])
+        if (column - 1 >= 0 && FruitAvailableWithoutTypeCheck(allFruits[column - 1, row]) && !allFruits[column, row - 1])
         {
             fruit = allFruits[column - 1, row];
             allFruits[column - 1, row] = null;
         }
-        else if (column + 1 < width && FruitAvailable(allFruits[column + 1, row]) && !allFruits[column, row - 1])
+        else if (column + 1 < width && FruitAvailableWithoutTypeCheck(allFruits[column + 1, row]) && !allFruits[column, row - 1])
         {
             fruit = allFruits[column + 1, row];
             allFruits[column + 1, row] = null;
@@ -1633,6 +1630,7 @@ public class Board : MonoBehaviour
         fruitScript.damageID = otherFruitScript.damageID;
         fruitScript.isPowerUpSoundPlayed = true;
         otherFruitScript.isPowerUpSoundPlayed = true;
+        StopHint();
         if (otherFruitScript.fruitType == fruitScript.fruitType)
         {
             // If two power up same it goes here
@@ -1677,7 +1675,7 @@ public class Board : MonoBehaviour
                         StartCoroutine(StopAndStartSingleColumn(1.6f, otherFruitScript.column + 2));
                     }
                     yield return new WaitForSeconds(1.44f);
-                  
+                    
                     otherFruitScript.activePowerUp = true;
                     otherFruit.GetComponent<BoxCollider2D>().size = new Vector2(5, 5);
 
@@ -1850,7 +1848,7 @@ public class Board : MonoBehaviour
                     break;
             }
         }
-
+        StopHint();
     }
 
     /// <summary>
@@ -1863,6 +1861,7 @@ public class Board : MonoBehaviour
         Fruit fruitScript = fruit.GetComponent<Fruit>();
         fruitScript.fadeout = true;
         int column = fruitScript.column, row = fruitScript.row, type = fruitScript.fruitType;
+        StopHint();
         switch (type)
         {
             // Horizontal Harvester power up
@@ -2034,6 +2033,7 @@ public class Board : MonoBehaviour
                 break;
 
         }
+        StopHint();
     }
 
     /// <summary>
@@ -2415,6 +2415,8 @@ public class Board : MonoBehaviour
     {
         blockUserMove = true;
 
+        discoBall.GetComponentInChildren<Animator>().SetTrigger(isDiscoBallUsed);
+
         string stopID = Guid.NewGuid().ToString();
 
         Array.Fill(fillingColumn, true);
@@ -2514,13 +2516,14 @@ public class Board : MonoBehaviour
             yield return new WaitForSeconds(0.02f);
         }
         */
-        StartCoroutine(FadeOut(discoBall));
 
         yield return new WaitForSeconds(0.2f);
         blockUserMove = false;
 
         Array.Clear(fillingColumn, 0, fillingColumn.Length);
         Array.Clear(columnStopperId, 0, columnStopperId.Length);
+
+        Destroy(discoBall);
 
     }
 

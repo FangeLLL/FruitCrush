@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bird
       objectReference: {fileID: 0}
+    - target: {fileID: 3315017890399756165, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3808654082424183633, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: UVModule.sprites.Array.data[0].sprite
       value: 
@@ -100,6 +104,10 @@ PrefabInstance:
       propertyPath: obstacleSpecs
       value: 
       objectReference: {fileID: 11400000, guid: df2f135f6e4f01549863895a3c7e2466, type: 2}
+    - target: {fileID: 6922098749696338727, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7691684475836866756, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.x
       value: 0.5
@@ -172,6 +180,7 @@ MonoBehaviour:
   moveToward: 0
   attachedPowerUp: {fileID: 0}
   activePowerUp: 0
+  destroyOnReach: 0
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799

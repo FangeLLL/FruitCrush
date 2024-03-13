@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vase
       objectReference: {fileID: 0}
+    - target: {fileID: 3315017890399756165, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3808654082424183633, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: UVModule.sprites.Array.data[0].sprite
       value: 
@@ -100,6 +104,10 @@ PrefabInstance:
       propertyPath: obstacleSpecs
       value: 
       objectReference: {fileID: 11400000, guid: 2ef1979540754a4458d7153bde16b209, type: 2}
+    - target: {fileID: 6922098749696338727, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7691684475836866756, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.x
       value: 0.5

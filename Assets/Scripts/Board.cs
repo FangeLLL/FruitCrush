@@ -79,7 +79,7 @@ public class Board : MonoBehaviour
     private GameObject currentFruit, currentOtherFruit;
 
     // Each index represents related id of an fruit. 
-    private int[] totalNumberOfFruits;
+    public int[] totalNumberOfFruits;
 
     public int specialPowerID = 0;
     public bool specialSwipe = false;
@@ -1654,7 +1654,6 @@ public class Board : MonoBehaviour
                     break;
                 case -3:
                     Destroy(fruit);
-                    otherFruitScript.fadeout = true;
                     otherFruit.GetComponentInChildren<SpriteRenderer>().sortingOrder = 10;
                     otherFruit.GetComponentInChildren<Animator>().SetTrigger(isTNTMerged);
                     if (otherFruitScript.column - 2 >= 0)
@@ -1699,8 +1698,6 @@ public class Board : MonoBehaviour
                     ActivatePowerUp(cloneBoomerang);
                     break;
                 case -5:
-                    fruitScript.fadeout = true;
-                    otherFruitScript.fadeout = true;
                     audioManager.Pickaxe();
                     StartCoroutine(FadeOut(fruit));
                     StartCoroutine(FadeOut(otherFruit));
@@ -1735,7 +1732,6 @@ public class Board : MonoBehaviour
                             break;
                         case -4:
                             audioManager.Pickaxe();
-                            fruitScript.fadeout = true;
                             fruitScript.outsideOfBoard = true;
                             fruitScript.moveToward = true;
                             allFruits[fruitScript.column, fruitScript.row] = null;
@@ -1744,10 +1740,9 @@ public class Board : MonoBehaviour
                             ActivatePowerUp(otherFruit);
                             break;
                         case -5:
-                            Debug.Log("merge");
                             audioManager.Pickaxe();
+                            ActivatePowerUp(otherFruit, -1);
                             Destroy(fruit);
-                            ActivatePowerUp(otherFruit,-1);
                             break;
                     }
                     break;
@@ -1769,7 +1764,6 @@ public class Board : MonoBehaviour
                             break;
                         case -4:
                             audioManager.Pickaxe();
-                            fruitScript.fadeout = true;
                             fruitScript.outsideOfBoard = true;
                             fruitScript.moveToward = true;
                             allFruits[fruitScript.column, fruitScript.row] = null;
@@ -1778,8 +1772,9 @@ public class Board : MonoBehaviour
                             ActivatePowerUp(otherFruit);
                             break;
                         case -5:
+                            audioManager.Pickaxe();
+                            ActivatePowerUp(otherFruit, -2);
                             Destroy(fruit);
-                            ActivatePowerUp(otherFruit,-2);
                             break;
                     }
                     break;
@@ -1802,7 +1797,6 @@ public class Board : MonoBehaviour
                             break;
                         case -4:
                             audioManager.Pickaxe();
-                            fruitScript.fadeout = true;
                             fruitScript.outsideOfBoard = true;
                             fruitScript.moveToward = true;
                             allFruits[fruitScript.column, fruitScript.row] = null;
@@ -1812,9 +1806,8 @@ public class Board : MonoBehaviour
                             break;
                         case -5:
                             audioManager.Pickaxe();
-                            // StartCoroutine(FadeOut(fruit));
+                            ActivatePowerUp(otherFruit, -3);
                             Destroy(fruit);
-                            ActivatePowerUp(otherFruit,-3);
                             break;
                     }
                     break;
@@ -1823,13 +1816,11 @@ public class Board : MonoBehaviour
                     audioManager.Pickaxe();
                     if (otherFruitScript.fruitType == -5)
                     {
-                        fruitScript.fadeout = true;
-                        StartCoroutine(FadeOut(fruit));
-                        ActivatePowerUp(otherFruit, fruitScript.fruitType);
+                        ActivatePowerUp(otherFruit, -4);
+                        Destroy(fruit);
                     }
                     else
                     {
-                        otherFruitScript.fadeout = true;
                         otherFruitScript.outsideOfBoard = true;
                         otherFruitScript.moveToward = true;
                         allFruits[otherFruitScript.column, otherFruitScript.row] = null;
@@ -1843,7 +1834,7 @@ public class Board : MonoBehaviour
                 case -5:
 
                     ActivatePowerUp(fruit, otherFruitScript.fruitType);
-                    Destroy(otherFruit);
+                    Destroy(fruit);
 
                     break;
             }
@@ -2001,19 +1992,14 @@ public class Board : MonoBehaviour
 
             // Disco Ball power up
             case -5:
-                /*
-                for (int i = 0; i < width; i++)
-                {
-                    StopCoroutine(FillTheColumn(i));
-                }
-                Array.Fill(fillingColumn, true);
-                */
+              
                 int targetFruitType = swipedFruitType;
                 // If discoball just clicked then returns most avaliable fruit type.
                 if (!isSwiped || swipedFruitType < 0)
                 {
                     int totalNumber = totalNumberOfFruits[0];
-                    for(int i = 1; i < fruits.Length; i++)
+                    targetFruitType = 0;
+                    for (int i = 1; i < fruits.Length; i++)
                     {
                         if (totalNumber < totalNumberOfFruits[i])
                         {
@@ -2021,7 +2007,7 @@ public class Board : MonoBehaviour
                             totalNumber = totalNumberOfFruits[i];
                         }
                     }
-                }
+                }         
 
                 StartCoroutine(DiscoBallSelectAndDestroy(fruit,targetFruitType, swipedFruitType));
 
@@ -2413,6 +2399,7 @@ public class Board : MonoBehaviour
 
     private IEnumerator DiscoBallSelectAndDestroy(GameObject discoBall,int targetFruitType,int powerUpCreateType)
     {
+
         blockUserMove = true;
 
         discoBall.GetComponentInChildren<Animator>().SetTrigger(isDiscoBallUsed);

@@ -92,7 +92,7 @@ public class Fruit : MonoBehaviour
             if (isSwiped)
             {
                 // Swipe movement
-                transform.position = Vector2.Lerp(transform.position, targetV, 15f * Time.deltaTime);
+                transform.position = Vector2.Lerp(transform.position, targetV, 20f * Time.deltaTime);
 
             }
             else

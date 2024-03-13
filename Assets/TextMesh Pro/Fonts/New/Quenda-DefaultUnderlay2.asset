@@ -58,11 +58,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: Quenda-Default
+  m_Name: Quenda-DefaultUnderlay2
   m_EditorClassIdentifier: 
-  hashCode: -603502676
+  hashCode: -678987358
   material: {fileID: 6015098469454403440}
-  materialHashCode: 214378764
+  materialHashCode: -505036222
   m_Version: 1.1.0
   m_SourceFontFileGUID: a91bb80b8c36f6245b3ca46a9b9937e7
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: a91bb80b8c36f6245b3ca46a9b9937e7, type: 3}
@@ -2777,13 +2777,13 @@ Material:
     - _LightAngle: 3.1416
     - _MaskSoftnessX: 0
     - _MaskSoftnessY: 0
-    - _OutlineSoftness: 1
+    - _OutlineSoftness: 0.41
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
     - _OutlineWidth: 1
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
-    - _ScaleRatioA: 0.22857143
+    - _ScaleRatioA: 0.27124774
     - _ScaleRatioB: 0
     - _ScaleRatioC: 0
     - _ScaleX: 1
@@ -2809,10 +2809,10 @@ Material:
     m_Colors:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
-    - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FaceColor: {r: 0.050980393, g: 0, b: 0.15686275, a: 1}
     - _GlowColor: {r: 0, g: 1, b: 0, a: 0.5}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
-    - _OutlineColor: {r: 0.052860655, g: 0, b: 0.1559265, a: 1}
+    - _OutlineColor: {r: 0.050980393, g: 0, b: 0.15686275, a: 1}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}

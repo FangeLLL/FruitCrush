@@ -59,6 +59,7 @@ public class UIManager : Sounds
     [SerializeField] private TextMeshProUGUI movePriceTextUnderlay;
     [SerializeField] private TextMeshProUGUI refillPriceText;
     [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private TextMeshProUGUI moveCount2;
 
     public bool isSoundOn;
     public bool isMusicOn;
@@ -71,6 +72,7 @@ public class UIManager : Sounds
     int settingsButtonCounter = 1;
     int plusMovePrice = 500;
     int refillPrice = 1000;
+    int plusMoveCount = 5;
 
     void Update()
     {
@@ -124,8 +126,31 @@ public class UIManager : Sounds
 
     public void GameFinished(bool status)
     {
-        int levelCount = PlayerPrefs.GetInt("level") + 1;
+        int levelCount;
+        if(!status)
+        {
+            levelCount = PlayerPrefs.GetInt("level") + 1;
+        }
+        else
+        {
+            levelCount = PlayerPrefs.GetInt("level");
+        }
+        
         levelText.text = "Level " + levelCount.ToString();
+
+        
+        int deathCount = PlayerPrefs.GetInt("DeathCount_Level_" + levelCount, 0);
+        deathCount++;
+        PlayerPrefs.SetInt("DeathCount_Level_" + levelCount, deathCount);
+        PlayerPrefs.Save(); // Save the death count immediately
+        
+
+        while (deathCount > 3)
+        {
+            plusMoveCount += 5;
+            deathCount -= 3;
+        }
+
         StartCoroutine(GameFinishUI(status));
     }
 
@@ -193,11 +218,14 @@ public class UIManager : Sounds
         else
         {
             gameFinishBoxFalse.SetActive(true);
+
             gameFinishBoxFalse.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
             continueWithButton.GetComponent<Animator>().SetTrigger("Fixer");
 
             gameFinishBoxMoveCount1.GetComponent<Animator>().SetTrigger("GameFinishTrigger1");
             gameFinishBoxMoveCount2.GetComponent<Animator>().SetTrigger("GameFinishTrigger2");
+
+            moveCount2.text = plusMoveCount.ToString();
 
             if (gameFinishBoxTarget2 != null)
             {
@@ -400,7 +428,7 @@ public class UIManager : Sounds
 
         //yield return new WaitForSeconds(0.1f);
 
-        taskController.moveCount = 5;
+        taskController.moveCount = plusMoveCount;
         taskController.moveText.text = taskController.moveCount.ToString();
         taskController.isBoardActive = true;
 
@@ -658,6 +686,8 @@ public class UIManager : Sounds
         gameFinishBoxFalse.SetActive(true);
         gameFinishBoxFalse.GetComponent<Animator>().SetTrigger(gameFinishTrigger);
         continueWithButton.GetComponent<Animator>().SetTrigger("Fixer");
+
+        moveCount2.text = plusMoveCount.ToString();
 
         gameFinishBoxMoveCount1.GetComponent<Animator>().SetTrigger("GameFinishTrigger1");
         gameFinishBoxMoveCount2.GetComponent<Animator>().SetTrigger("GameFinishTrigger2");

@@ -2099,6 +2099,7 @@ MonoBehaviour:
   userLevel: 0
   blockUserMove: 0
   scaleNumber: 0
+  totalNumberOfFruits: 
   specialPowerID: 0
   specialSwipe: 0
   specialPowerUsing: 0
@@ -18494,6 +18495,7 @@ MonoBehaviour:
   movePriceTextUnderlay: {fileID: 79482382}
   refillPriceText: {fileID: 1992254395}
   levelText: {fileID: 66906608}
+  moveCount2: {fileID: 1677821620}
   isSoundOn: 0
   isMusicOn: 0
   isHapticSupported: 0

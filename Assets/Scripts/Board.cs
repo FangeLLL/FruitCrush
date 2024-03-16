@@ -88,6 +88,7 @@ public class Board : MonoBehaviour
     private bool shuffling = false;
 
     private int isBoomerangCreated = Animator.StringToHash("isBoomerangCreated");
+    private int is2BoomerangMerged = Animator.StringToHash("is2BoomerangMerged");
     private int boomerangRotating = Animator.StringToHash("isRotating");
 
     private int isHarvesterCreated = Animator.StringToHash("isHarvesterCreated");
@@ -1502,7 +1503,7 @@ public class Board : MonoBehaviour
     /// <param name="column"></param>
     /// <param name="row"></param>
     /// <param name="type"></param>
-    private GameObject CreatePowerUp(int column, int row, int type, bool isItInteractable)
+    private GameObject CreatePowerUp(int column, int row, int type, bool isItInteractable, bool playCreationAnim = true)
     {
         /*
         Power Up Type Number;
@@ -1539,25 +1540,28 @@ public class Board : MonoBehaviour
         newPowerUp.gameObject.transform.position = allTiles[column, row].transform.position;
         newPowerUpScript.targetV = allTiles[column, row].transform.position;
         newPowerUpScript.damageID = Guid.NewGuid().ToString();
-
-        switch (type)
+        if (playCreationAnim)
         {
-            case -1:
-                newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isHarvesterCreated);
-                break;
-            case -2:
-                newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isHarvesterCreated);
-                break;
-            case -3:
-                newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isTNTCreated);
-                break;
-            case -4:
-                newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isBoomerangCreated);
-                break;
-            case -5:
-                newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isDiscoBallCreated);
-                break;
+            switch (type)
+            {
+                case -1:
+                    newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isHarvesterCreated);
+                    break;
+                case -2:
+                    newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isHarvesterCreated);
+                    break;
+                case -3:
+                    newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isTNTCreated);
+                    break;
+                case -4:
+                    newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isBoomerangCreated);
+                    break;
+                case -5:
+                    newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isDiscoBallCreated);
+                    break;
+            }
         }
+       
 
 
         // Add the new powerup to the allFruits array
@@ -1684,13 +1688,28 @@ public class Board : MonoBehaviour
 
                     break;
                 case -4:
+
+                    fruit.GetComponentInChildren<SpriteRenderer>().enabled = false;
+                    otherFruit.GetComponentInChildren<Animator>().SetTrigger(is2BoomerangMerged);
+
+                    StartCoroutine(StopAndStartSingleColumn(1.34f,otherFruitScript.column));
+
+                    yield return new WaitForSeconds(1.34f);
+
+                    /*
                     GameObject cloneBoomerang = Instantiate(powerUps[3], otherFruit.transform.position, powerUps[3].transform.rotation);
                     Fruit cloneBoomerangScript = cloneBoomerang.GetComponent<Fruit>();
 
                     cloneBoomerangScript.row = otherFruitScript.row;
                     cloneBoomerangScript.column = otherFruitScript.column;
-                    //  cloneBoomerang.gameObject.transform.position = otherFruit.transform.position;
                     cloneBoomerangScript.fruitType = -4;
+                    */
+
+                    GameObject cloneBoomerang = CreatePowerUp(otherFruitScript.column, otherFruitScript.row,-4,false,false);
+                    yield return new WaitForSeconds(0.3f);
+                    fruit.GetComponentInChildren<SpriteRenderer>().enabled = true;
+
+
 
                     audioManager.Pickaxe();
                     ActivatePowerUp(fruit);

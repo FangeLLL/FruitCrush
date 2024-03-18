@@ -72,7 +72,7 @@ public class BackgroundTile : MonoBehaviour
                             powerUpScript.moveToward = false;
                             board.ActivatePowerUp(fruitScript.attachedPowerUp);
                         }
-                        StartCoroutine(board.FadeOut(other.gameObject));
+                        StartCoroutine(DestroyBoomerangSlowly(other.gameObject));
                     }
                     else
                     {
@@ -81,6 +81,18 @@ public class BackgroundTile : MonoBehaviour
                 }          
             }         
         }    
+    }
+
+    private IEnumerator DestroyBoomerangSlowly(GameObject boomerang)
+    {
+        yield return new WaitForSeconds(0.1f);
+        boomerang.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        boomerang.transform.GetChild(1).GetChild(0).GetComponent<ParticleSystem>().Play();
+        boomerang.transform.GetChild(1).GetChild(1).GetComponent<ParticleSystem>().Play();
+        boomerang.transform.GetChild(1).GetChild(2).GetComponent<ParticleSystem>().Play();
+        boomerang.GetComponent<BoxCollider2D>().enabled = false;
+        yield return new WaitForSeconds(2.9f);
+        Destroy(boomerang.gameObject);
     }
 
     private IEnumerator ChangeDirectionOfBoomerangWithDelay(Fruit boomerangScript)

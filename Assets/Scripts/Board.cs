@@ -1707,17 +1707,19 @@ public class Board : MonoBehaviour
                     break;
                 case -5:
                     audioManager.Pickaxe();
+                    StartCoroutine(StopAndStartAllFillings(4.8f));
                     Destroy(fruit);
                     blockUserMove = true;
-
+                    otherFruitScript.activePowerUp = true;
                     otherFruit.transform.GetChild(0).gameObject.SetActive(false);
                     otherFruit.transform.GetChild(1).gameObject.SetActive(true);
-                    StartCoroutine(StopAndStartAllFillings(3.2f));
-                    
                     yield return new WaitForSeconds(3.08f);
-                    otherFruitScript.outsideOfBoard = true;
                     allFruits[otherFruitScript.column, otherFruitScript.row] = null;
-                    DamageToAllBoard();
+                    otherFruit.transform.GetChild(2).gameObject.SetActive(true);
+                    otherFruit.GetComponent<ExplosionAreaScript>().enabled = true;
+                    yield return new WaitForSeconds(1.5f);
+                    otherFruitScript.outsideOfBoard = true;
+                    blockUserMove = false;
                     break;
             }
 
@@ -2430,6 +2432,8 @@ public class Board : MonoBehaviour
             StopCoroutine(FillTheColumn(i));
         }
 
+        discoBall.GetComponent<Fruit>().outsideOfBoard = true;
+        allFruits[discoBall.GetComponent<Fruit>().column, discoBall.GetComponent<Fruit>().row] = null;
 
         List<GameObject> fruitsToDisappear = new List<GameObject>();
         for(int i = 0;i < height; i++)
@@ -2524,34 +2528,7 @@ public class Board : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// It damages all obstacles and destroys all fruits on board.
-    /// </summary>
-    private void DamageToAllBoard()
-    {
-        string damageID = Guid.NewGuid().ToString();
-
-        for (int i = 0;i<height;i++)
-        {
-            for(int j = 0;j<width;j++)
-            {
-                if (allTiles[j, i])
-                {
-                    if (allFruits[j, i])
-                    {
-                        DestroyController(allFruits[i, j], false);
-                    }
-
-                    if (allTiles[j, i].GetComponent<BackgroundTile>().indexOfVisibleOne >= 0)
-                    {
-                        allTiles[j, i].GetComponent<BackgroundTile>().PowerUpBoom(damageID);
-                    }
-                }
-            }
-        }
-
-        blockUserMove = false;
-    }
+   
 
     public Vector2 GetBoomerangTargetLoc(int column,int row)
     {

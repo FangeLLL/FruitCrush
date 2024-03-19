@@ -149,7 +149,7 @@ public class ObstacleScript : MonoBehaviour
             board.allTiles[column, row].GetComponent<BackgroundTile>().obstacles[obstacleSpecs.indexOfLayer] = null;
             board.allTiles[column, row].GetComponent<BackgroundTile>().DetectVisibleOne();
         }     
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(3.8f);
 
         Destroy(gameObject);
 

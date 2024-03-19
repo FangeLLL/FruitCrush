@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class FruitBombMerge : MonoBehaviour
 {
-    public SpriteRenderer object1;
-    public SpriteRenderer object2;
+    private SpriteRenderer object1, object2;
+
+    void Start()
+    {
+        object1 = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        object2 = transform.GetChild(1).GetComponent<SpriteRenderer>();
+    }
 
     public void Object1InFront()
     {

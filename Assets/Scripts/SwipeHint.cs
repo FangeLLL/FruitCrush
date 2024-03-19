@@ -2925,7 +2925,7 @@ public class SwipeHint : MonoBehaviour
                 }
             }
         }
-        if(continueIteration)
+        if(continueIteration && !board.blockUserMove)
         {
             StartCoroutine(board.Shuffle());
         }

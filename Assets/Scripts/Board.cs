@@ -1743,8 +1743,6 @@ public class Board : MonoBehaviour
                         case -3:
                             yield return new WaitForSeconds(0.1f);
 
-                            Destroy(otherFruit);
-
                             StartCoroutine(HarvesterTNTMerge(fruit,otherFruit,fruitScript.column,fruitScript.row,false));
 
 
@@ -1776,8 +1774,6 @@ public class Board : MonoBehaviour
                             break;
                         case -3:
 
-                            Destroy(otherFruit);
-
                             StartCoroutine(HarvesterTNTMerge(fruit,otherFruit, fruitScript.column, fruitScript.row, true));
 
                             break;
@@ -1803,13 +1799,10 @@ public class Board : MonoBehaviour
                     {
                         case -1:
 
-                            Destroy(fruit);
-
                             StartCoroutine(HarvesterTNTMerge(otherFruit,fruit, otherFruitScript.column, otherFruitScript.row, false));
 
                             break;
                         case -2:
-                            Destroy(fruit);
 
                             StartCoroutine(HarvesterTNTMerge(otherFruit,fruit, otherFruitScript.column, otherFruitScript.row, true));
 
@@ -3368,6 +3361,11 @@ public class Board : MonoBehaviour
         harvester.GetComponentInChildren<SpriteRenderer>().enabled = false;
         TNT.transform.GetChild(0).gameObject.SetActive(false);
         TNT.transform.GetChild(1).gameObject.SetActive(true);
+        if(!verticalHarvester)
+        {
+            Vector3 newRotation = new Vector3(0f, 0f, 90f);
+            TNT.transform.GetChild(1).GetChild(1).transform.rotation = Quaternion.Euler(newRotation);
+        }
         yield return new WaitForSeconds(0.56f);
         harvester.GetComponentInChildren<SpriteRenderer>().enabled = true;
         Destroy(TNT);
@@ -3421,7 +3419,7 @@ public class Board : MonoBehaviour
 
       
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
 
         if (PowerUp1)
         {

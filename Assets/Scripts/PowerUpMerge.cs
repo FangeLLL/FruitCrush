@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FruitBombMerge : MonoBehaviour
+public class PowerUpMerge : MonoBehaviour
 {
     private SpriteRenderer object1, object2;
 

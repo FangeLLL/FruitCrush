@@ -150,6 +150,10 @@ public class UIManager : Sounds
             plusMoveCount += 5;
             deathCount -= 3;
         }
+        if (plusMoveCount >= 35)
+        {
+            plusMoveCount = 35;
+        }
 
         StartCoroutine(GameFinishUI(status));
     }

@@ -1741,10 +1741,11 @@ public class Board : MonoBehaviour
                             ActivatePowerUp(otherFruit);
                             break;
                         case -3:
+                            yield return new WaitForSeconds(0.1f);
 
                             Destroy(otherFruit);
 
-                            StartCoroutine(HarvesterTNTMerge(fruit,fruitScript.column,fruitScript.row,false));
+                            StartCoroutine(HarvesterTNTMerge(fruit,otherFruit,fruitScript.column,fruitScript.row,false));
 
 
                             break;
@@ -1777,7 +1778,7 @@ public class Board : MonoBehaviour
 
                             Destroy(otherFruit);
 
-                            StartCoroutine(HarvesterTNTMerge(fruit, fruitScript.column, fruitScript.row, true));
+                            StartCoroutine(HarvesterTNTMerge(fruit,otherFruit, fruitScript.column, fruitScript.row, true));
 
                             break;
                         case -4:
@@ -1804,13 +1805,13 @@ public class Board : MonoBehaviour
 
                             Destroy(fruit);
 
-                            StartCoroutine(HarvesterTNTMerge(otherFruit, otherFruitScript.column, otherFruitScript.row, false));
+                            StartCoroutine(HarvesterTNTMerge(otherFruit,fruit, otherFruitScript.column, otherFruitScript.row, false));
 
                             break;
                         case -2:
                             Destroy(fruit);
 
-                            StartCoroutine(HarvesterTNTMerge(otherFruit, otherFruitScript.column, otherFruitScript.row, true));
+                            StartCoroutine(HarvesterTNTMerge(otherFruit,fruit, otherFruitScript.column, otherFruitScript.row, true));
 
                             break;
                         case -4:
@@ -2527,8 +2528,6 @@ public class Board : MonoBehaviour
         Destroy(discoBall);
 
     }
-
-   
 
     public Vector2 GetBoomerangTargetLoc(int column,int row)
     {
@@ -3364,8 +3363,14 @@ public class Board : MonoBehaviour
         return tileSprites[0];
     }
 
-    private IEnumerator HarvesterTNTMerge(GameObject harvester,int column,int row, bool verticalHarvester)
+    private IEnumerator HarvesterTNTMerge(GameObject harvester,GameObject TNT,int column,int row, bool verticalHarvester)
     {
+        harvester.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        TNT.transform.GetChild(0).gameObject.SetActive(false);
+        TNT.transform.GetChild(1).gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.56f);
+        harvester.GetComponentInChildren<SpriteRenderer>().enabled = true;
+        Destroy(TNT);
 
         StartCoroutine(StopAndStartSingleColumn(0.3f, column));
 
@@ -3430,7 +3435,6 @@ public class Board : MonoBehaviour
         audioManager.Harvester();
 
     }
-
 
 }
 

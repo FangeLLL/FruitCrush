@@ -179,7 +179,7 @@ Animator:
   m_GameObject: {fileID: 515170638068300661}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5a6a4425098c27442aa5b59c68842a17, type: 2}
+  m_Controller: {fileID: 9100000, guid: 450fd49dcd498f442bef728343544a30, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -5349,7 +5349,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2938926380771008206}
   - component: {fileID: 3616298946531353745}
-  - component: {fileID: 4357655074554953308}
   m_Layer: 0
   m_Name: 2
   m_TagString: Untagged
@@ -5424,27 +5423,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &4357655074554953308
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3845150874336589935}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5a6a4425098c27442aa5b59c68842a17, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5096293584409110877
 GameObject:
   m_ObjectHideFlags: 0
@@ -15819,10 +15797,10 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6775481451483027233, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6426083875150476311}
+      addedObject: {fileID: 886931561155357191}
     - targetCorrespondingSourceObject: {fileID: 6775481451483027233, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 886931561155357191}
+      addedObject: {fileID: 6426083875150476311}
     - targetCorrespondingSourceObject: {fileID: 6118191939555662036, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 962639571434477156}

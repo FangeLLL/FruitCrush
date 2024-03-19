@@ -1246,7 +1246,7 @@ public class Board : MonoBehaviour
             obj.GetComponent<Fruit>().outsideOfBoard = true;
             allFruits[obj.GetComponent<Fruit>().column, obj.GetComponent<Fruit>().row] = null;
         }
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
         if (obj)
         {
             Destroy(obj);
@@ -1694,22 +1694,11 @@ public class Board : MonoBehaviour
 
                     StartCoroutine(StopAndStartSingleColumn(1.34f,otherFruitScript.column));
 
-                    yield return new WaitForSeconds(1.34f);
-
-                    /*
-                    GameObject cloneBoomerang = Instantiate(powerUps[3], otherFruit.transform.position, powerUps[3].transform.rotation);
-                    Fruit cloneBoomerangScript = cloneBoomerang.GetComponent<Fruit>();
-
-                    cloneBoomerangScript.row = otherFruitScript.row;
-                    cloneBoomerangScript.column = otherFruitScript.column;
-                    cloneBoomerangScript.fruitType = -4;
-                    */
+                    yield return new WaitForSeconds(1.34f);                 
 
                     GameObject cloneBoomerang = CreatePowerUp(otherFruitScript.column, otherFruitScript.row,-4,false,false);
                     yield return new WaitForSeconds(0.3f);
                     fruit.GetComponentInChildren<SpriteRenderer>().enabled = true;
-
-
 
                     audioManager.Pickaxe();
                     ActivatePowerUp(fruit);
@@ -1718,8 +1707,16 @@ public class Board : MonoBehaviour
                     break;
                 case -5:
                     audioManager.Pickaxe();
-                    StartCoroutine(FadeOut(fruit));
-                    StartCoroutine(FadeOut(otherFruit));
+                    Destroy(fruit);
+                    blockUserMove = true;
+
+                    otherFruit.transform.GetChild(0).gameObject.SetActive(false);
+                    otherFruit.transform.GetChild(1).gameObject.SetActive(true);
+                    StartCoroutine(StopAndStartAllFillings(3.2f));
+                    
+                    yield return new WaitForSeconds(3.08f);
+                    otherFruitScript.outsideOfBoard = true;
+                    allFruits[otherFruitScript.column, otherFruitScript.row] = null;
                     DamageToAllBoard();
                     break;
             }
@@ -2420,9 +2417,9 @@ public class Board : MonoBehaviour
     {
 
         blockUserMove = true;
-
+    
         discoBall.GetComponentInChildren<Animator>().SetTrigger(isDiscoBallUsed);
-
+        
         string stopID = Guid.NewGuid().ToString();
 
         Array.Fill(fillingColumn, true);
@@ -2514,21 +2511,15 @@ public class Board : MonoBehaviour
             }
         }
        
-
-        /*
-        for (int i = 0; i < fruitsToDisappear.Count; i++)
-        {
-            DestroyController(fruitsToDisappear[i], false);
-            yield return new WaitForSeconds(0.02f);
-        }
-        */
-
         yield return new WaitForSeconds(0.2f);
         blockUserMove = false;
 
         Array.Clear(fillingColumn, 0, fillingColumn.Length);
         Array.Clear(columnStopperId, 0, columnStopperId.Length);
 
+        discoBall.transform.GetChild(0).gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(1.5f);
         Destroy(discoBall);
 
     }
@@ -2538,7 +2529,6 @@ public class Board : MonoBehaviour
     /// </summary>
     private void DamageToAllBoard()
     {
-        blockUserMove = true;
         string damageID = Guid.NewGuid().ToString();
 
         for (int i = 0;i<height;i++)
@@ -2559,6 +2549,7 @@ public class Board : MonoBehaviour
                 }
             }
         }
+
         blockUserMove = false;
     }
 

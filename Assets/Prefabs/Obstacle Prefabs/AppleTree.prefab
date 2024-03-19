@@ -96,6 +96,22 @@ PrefabInstance:
       propertyPath: obstacleSpecs
       value: 
       objectReference: {fileID: 11400000, guid: f1c7496599c6ded4c8b8d6410f9ab7c5, type: 2}
+    - target: {fileID: 7206786765615767700, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
+      propertyPath: m_UseCustomVertexStreams
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7206786765615767700, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7206786765615767700, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
+      propertyPath: m_VertexStreams.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7206786765615767700, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
+      propertyPath: m_VertexStreams.Array.data[2]
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7691684475836866756, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.x
       value: 0.5

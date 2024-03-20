@@ -100,6 +100,10 @@ public class Board : MonoBehaviour
     private int isDiscoBallCreated = Animator.StringToHash("isDiscoBallCreated");
     private int isDiscoBallUsed = Animator.StringToHash("isDiscoBallUsed");
 
+    private int isFruitDestroyed = Animator.StringToHash("isFruitDestroyed");
+
+    private int isFruitFalling = Animator.StringToHash("isFruitFalling");
+
     private void Awake()
     {
         saveData.LoadFromJson();
@@ -704,6 +708,10 @@ public class Board : MonoBehaviour
                             {
                                 fruitsCheckTotal[e].GetComponent<Fruit>().outsideOfBoard = true;
                             }
+                            else
+                            {
+                                fruitsCheckTotal[e].GetComponentInChildren<Animator>().SetTrigger(isFruitDestroyed);
+                            }
                             DestroyController(fruitsCheckTotal[e], true);
                         }
 
@@ -1235,7 +1243,7 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     public IEnumerator FruitPop(GameObject obj)
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.2f);
         if (obj)
         {
             obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
@@ -1484,7 +1492,8 @@ public class Board : MonoBehaviour
                 {
                     totalNumberOfFruits[fruitToUse]++;
                     newFruitScript.fruitType = fruitToUse;
-
+                    newFruit.GetComponentInChildren<Animator>().SetTrigger(isFruitFalling);
+                    newFruitScript.falling = true;
                 }
 
                 allFruits[i,emptyRowIndex] = newFruit;

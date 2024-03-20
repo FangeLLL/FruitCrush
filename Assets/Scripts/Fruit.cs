@@ -32,7 +32,9 @@ public class Fruit : MonoBehaviour
 
     public string damageID;
 
-    public float speedMultiplier=9f;
+    public float speedMultiplier=20f;
+
+    public bool falling = false;
 
     private AudioManager audioManager;
 
@@ -60,7 +62,8 @@ public class Fruit : MonoBehaviour
     public int swipeDown = Animator.StringToHash("isSwipeDown");
     [HideInInspector]
     public int swipeFlash = Animator.StringToHash("isSwipeHintIdle");
-   
+    [HideInInspector]
+    private int isFruitLanded = Animator.StringToHash("isFruitLanded");
 
 
     void Awake()
@@ -88,6 +91,12 @@ public class Fruit : MonoBehaviour
 
             }
 
+            if(falling && Vector2.Distance(targetV, transform.position) < 0.2f)
+            {
+                falling = false;
+                GetComponentInChildren<Animator>().SetTrigger(isFruitLanded);
+            }
+
 
             if (isSwiped)
             {
@@ -108,8 +117,14 @@ public class Fruit : MonoBehaviour
                 }
                 else
                 {
-                    transform.position = Vector2.Lerp(transform.position, targetV, speedMultiplier * Time.deltaTime);
-
+                    if (activePowerUp)
+                    {
+                        transform.position = Vector2.Lerp(transform.position, targetV, speedMultiplier * Time.deltaTime);
+                    }
+                    else
+                    {
+                        transform.position = Vector2.MoveTowards(transform.position, targetV, speedMultiplier * Time.deltaTime);
+                    }
                 }
 
             }

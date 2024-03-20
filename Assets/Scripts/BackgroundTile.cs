@@ -91,6 +91,7 @@ public class BackgroundTile : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         boomerang.GetComponent<BoxCollider2D>().enabled = false;
+        boomerang.transform.GetChild(0).gameObject.SetActive(false);
         boomerang.transform.GetChild(2).gameObject.SetActive(false);
         boomerang.transform.GetChild(1).GetChild(0).GetComponent<ParticleSystem>().Play();
         boomerang.transform.GetChild(1).GetChild(1).GetComponent<ParticleSystem>().Play();

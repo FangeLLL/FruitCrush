@@ -2014,7 +2014,6 @@ public class Board : MonoBehaviour
                     switch(swipedFruitType)
                     {
                         case -1:
-                            Debug.Log("hori");
                             // Horizontal
                             fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.SetActive(true);
                             Vector3 newRotation = new Vector3(0f, 0f, 90f);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -27,6 +28,8 @@ public class TaskController : MonoBehaviour
 
     public int moveCount;
     public int currentObjectiveIndex = 0;
+    public int[] taskArray_;
+    int[] taskIndexArray = new int[31];
 
     float timer;
     float timer2;
@@ -109,21 +112,8 @@ public class TaskController : MonoBehaviour
     {
         if (currentObjectiveIndex < taskDisplays.Length && taskArray != null)
         {
-            bool containsFour = false;
-            bool containsOne = false;
-
             for (int i = 0; i < taskArray.Length; i++)
             {
-                if (taskArray[i] == 4)
-                {
-                    containsFour = true;
-                }
-
-                else if (taskArray[i] == 1)
-                {
-                    containsOne = true;
-                }
-
                 if (taskArray[i] != 0)
                 {
                     TaskDisplay taskDisplay = taskDisplays[currentObjectiveIndex];
@@ -131,20 +121,26 @@ public class TaskController : MonoBehaviour
                     taskDisplay.taskImage.sprite = taskSprites[i];
                     taskDisplay.taskText.text = taskArray[i].ToString();
                     taskDisplay.taskTypeIndex = i;
+                    //Debug.Log(currentObjectiveIndex);
+                    //taskIndexArray[currentObjectiveIndex] = i;
                     taskDisplay.taskImage.gameObject.SetActive(true);
-
+                    //Debug.Log(currentObjectiveIndex);
                     currentObjectiveIndex++;
+                    //Debug.Log(currentObjectiveIndex);
                 }
             }
 
-            if (containsFour && !containsOne)
+            if (taskArray[4] != 0 && taskArray[1] == 0)
             {
                 TaskDisplay taskDisplay = taskDisplays[currentObjectiveIndex];
-
+                
                 taskDisplay.taskImage.sprite = taskSprites[1];
                 taskDisplay.taskText.text = taskArray[1].ToString();
                 taskDisplay.taskTypeIndex = 1;
+                taskIndexArray[currentObjectiveIndex] = 1;
                 taskDisplay.taskImage.gameObject.SetActive(true);
+
+                currentObjectiveIndex++;
             }
 
             ObjectiveLocationSetter();
@@ -167,7 +163,7 @@ public class TaskController : MonoBehaviour
                     taskDisplay.checkMark.GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
                     taskDisplay.isCompleted = true;
                 }
-                else if (currentTaskNumber <= 0 && taskTypeIndex == 1 && !taskDisplays[4].isCompleted)
+                else if (currentTaskNumber <= 0 && taskTypeIndex == 1 && !taskDisplays[Array.IndexOf(taskIndexArray, 1)].isCompleted)
                 {
                     taskDisplay.taskText.gameObject.SetActive(false);
                     taskDisplay.checkMark.GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
@@ -211,7 +207,7 @@ public class TaskController : MonoBehaviour
             }
         }
 
-        if (taskDisplays[1].isCompleted && !taskDisplays[4].isCompleted)
+        if (taskDisplays[1].isCompleted && !taskDisplays[Array.IndexOf(taskIndexArray, 1)].isCompleted)
         {
             return false;
         }

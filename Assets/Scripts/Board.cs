@@ -1741,7 +1741,6 @@ public class Board : MonoBehaviour
                             ActivatePowerUp(otherFruit);
                             break;
                         case -3:
-                            yield return new WaitForSeconds(0.1f);
 
                             StartCoroutine(HarvesterTNTMerge(fruit,otherFruit,fruitScript.column,fruitScript.row,false));
 

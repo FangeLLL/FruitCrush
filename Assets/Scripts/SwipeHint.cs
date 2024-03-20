@@ -191,13 +191,13 @@ public class SwipeHint : MonoBehaviour
                 continueIteration = false;
                 if (isMergeHorizontal)
                 {
-                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, true);
-                    fruit2.GetComponentInChildren<Animator>().SetBool(fruit2.swipeRight, true);
+                    fruit.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit.swipeLeft, true);
+                    fruit2.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit2.swipeRight, true);
                 }
                 else
                 {
-                    fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, true);
-                    fruit2.GetComponentInChildren<Animator>().SetBool(fruit2.swipeUp, true);
+                    fruit.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit.swipeDown, true);
+                    fruit2.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit2.swipeUp, true);
                 }
             }
         }
@@ -2946,47 +2946,47 @@ public class SwipeHint : MonoBehaviour
 
         if (fruit)
         {
-            fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeDown, false);
-            fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeUp, false);
-            fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeLeft, false);
-            fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeRight, false);
-            fruit.GetComponentInChildren<Animator>().SetBool(fruit.swipeFlash, false);
+            fruit.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit.swipeDown, false);
+            fruit.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit.swipeUp, false);
+            fruit.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit.swipeLeft, false);
+            fruit.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit.swipeRight, false);
+            fruit.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit.swipeFlash, false);
         }
 
         if(fruit2)
         {
-            fruit2.GetComponentInChildren<Animator>().SetBool(fruit2.swipeDown, false);
-            fruit2.GetComponentInChildren<Animator>().SetBool(fruit2.swipeUp, false);
-            fruit2.GetComponentInChildren<Animator>().SetBool(fruit2.swipeLeft, false);
-            fruit2.GetComponentInChildren<Animator>().SetBool(fruit2.swipeRight, false);
-            fruit2.GetComponentInChildren<Animator>().SetBool(fruit2.swipeFlash, false);
+            fruit2.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit2.swipeDown, false);
+            fruit2.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit2.swipeUp, false);
+            fruit2.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit2.swipeLeft, false);
+            fruit2.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit2.swipeRight, false);
+            fruit2.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit2.swipeFlash, false);
         }
 
         if (fruit3)
         {
-            fruit3.GetComponentInChildren<Animator>().SetBool(fruit3.swipeDown, false);
-            fruit3.GetComponentInChildren<Animator>().SetBool(fruit3.swipeUp, false);
-            fruit3.GetComponentInChildren<Animator>().SetBool(fruit3.swipeLeft, false);
-            fruit3.GetComponentInChildren<Animator>().SetBool(fruit3.swipeRight, false);
-            fruit3.GetComponentInChildren<Animator>().SetBool(fruit3.swipeFlash, false);
+            fruit3.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit3.swipeDown, false);
+            fruit3.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit3.swipeUp, false);
+            fruit3.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit3.swipeLeft, false);
+            fruit3.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit3.swipeRight, false);
+            fruit3.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit3.swipeFlash, false);
         }
 
         if (fruit4)
         {
-            fruit4.GetComponentInChildren<Animator>().SetBool(fruit4.swipeDown, false);
-            fruit4.GetComponentInChildren<Animator>().SetBool(fruit4.swipeUp, false);
-            fruit4.GetComponentInChildren<Animator>().SetBool(fruit4.swipeLeft, false);
-            fruit4.GetComponentInChildren<Animator>().SetBool(fruit4.swipeRight, false);
-            fruit4.GetComponentInChildren<Animator>().SetBool(fruit4.swipeFlash, false);
+            fruit4.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit4.swipeDown, false);
+            fruit4.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit4.swipeUp, false);
+            fruit4.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit4.swipeLeft, false);
+            fruit4.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit4.swipeRight, false);
+            fruit4.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit4.swipeFlash, false);
         }
 
         if (fruit5)
         {
-            fruit5.GetComponentInChildren<Animator>().SetBool(fruit5.swipeDown, false);
-            fruit5.GetComponentInChildren<Animator>().SetBool(fruit5.swipeUp, false);
-            fruit5.GetComponentInChildren<Animator>().SetBool(fruit5.swipeLeft, false);
-            fruit5.GetComponentInChildren<Animator>().SetBool(fruit5.swipeRight, false);
-            fruit5.GetComponentInChildren<Animator>().SetBool(fruit5.swipeFlash, false);
+            fruit5.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit5.swipeDown, false);
+            fruit5.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit5.swipeUp, false);
+            fruit5.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit5.swipeLeft, false);
+            fruit5.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit5.swipeRight, false);
+            fruit5.transform.GetChild(0).GetComponent<Animator>().SetBool(fruit5.swipeFlash, false);
         }
       
 

@@ -5231,7 +5231,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 188f67f6c63a699489045a2f4a42d944, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c9a7fb3b718e9f34cbb6dfe185f76822, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6970,6 +6970,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a7b5c6e4ae16f2f47961b75e0c33b731, type: 3}
   moveCount: 0
   currentObjectiveIndex: 0
+  taskArray_: 
   onetime: 1
   isBoardActive: 1
   moveCountText: {fileID: 0}
@@ -7038,6 +7039,7 @@ MonoBehaviour:
   movePriceTextUnderlay: {fileID: 0}
   refillPriceText: {fileID: 0}
   levelText: {fileID: 0}
+  moveCount2: {fileID: 0}
   isSoundOn: 0
   isMusicOn: 0
   isHapticSupported: 0

@@ -27,7 +27,7 @@ public class MainMenuController : Sounds
     [SerializeField] private GameObject settingsIcon;
     [SerializeField] private GameObject tasksIcon;
     [SerializeField] private GameObject battlePassIcon;
-    [SerializeField] private GameObject farmIcon;
+    [SerializeField] private GameObject mainPlayButton;
 
     [SerializeField] private GameObject grayBack;
     [SerializeField] private GameObject shopBackground;
@@ -50,8 +50,6 @@ public class MainMenuController : Sounds
     [SerializeField] private GameObject tasksCloseButton;
     [SerializeField] private GameObject battlePassMenu;
     [SerializeField] private GameObject battlePassCloseButton;
-    [SerializeField] private GameObject farmMenu;
-    [SerializeField] private GameObject farmCloseButton;
 
     [SerializeField] private GameObject musicToggleBlock;
     [SerializeField] private GameObject soundToggleBlock;
@@ -128,9 +126,9 @@ public class MainMenuController : Sounds
         starBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
         livesBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
         settingsIcon.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
-        farmIcon.GetComponent<Animator>().SetTrigger("GameFinishTriggerReverse");
+        //farmIcon.GetComponent<Animator>().SetTrigger("GameFinishTriggerReverse");
 
-        yield return new WaitForSeconds(0.25f);
+        //yield return new WaitForSeconds(0.25f);
 
         tasksIcon.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
         battlePassIcon.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
@@ -378,6 +376,21 @@ public class MainMenuController : Sounds
 
     public void FarmButtonTapped()
     {
-        Debug.Log("Farm");
+        starBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
+        livesBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
+        settingsIcon.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
+        tasksIcon.GetComponent<Animator>().SetTrigger("GameFinishTriggerReverse");
+        battlePassIcon.GetComponent<Animator>().SetTrigger("GameFinishTriggerReverse");
+        mainPlayButton.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
+    }
+
+    public void FarmExitButtonTapped()
+    {
+        starBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+        livesBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+        settingsIcon.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+        tasksIcon.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+        battlePassIcon.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+        mainPlayButton.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
     }
 }

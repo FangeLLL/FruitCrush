@@ -46,7 +46,7 @@ public class ObstacleScript : MonoBehaviour
             if(obstacleSpecs.isCollectible)
             {
                 audioManager.SoundController(obstacleSpecs.obstacleHitSound);
-                taskController.TaskProgress(obstacleSpecs.taskID);
+                taskController.TaskProgress(obstacleSpecs.taskID, 31);
             }         
         }
         else
@@ -70,7 +70,7 @@ public class ObstacleScript : MonoBehaviour
                     }
                     else
                     {
-                        taskController.TaskProgress(obstacleSpecs.taskID);
+                        taskController.TaskProgress(obstacleSpecs.taskID, 31);
 
                     }
 
@@ -116,12 +116,12 @@ public class ObstacleScript : MonoBehaviour
         board.AllTilesDetectVisibleOne();
 
     }
-
+    
     private void AdvanceTaskProgress()
     {
         for (int i = 0; i < obstacleSpecs.amountOfCollect[health]; i++)
         {
-            taskController.TaskProgress(obstacleSpecs.taskID);
+            taskController.TaskProgress(obstacleSpecs.taskID, 31);
         }
     }
 

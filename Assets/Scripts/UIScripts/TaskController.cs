@@ -162,13 +162,13 @@ public class TaskController : MonoBehaviour
                     taskDisplay.checkMark.GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
                     taskDisplay.isCompleted = true;
                 }
-                else if (currentTaskNumber <= 0 && taskTypeIndex == 1 && taskDisplays[Array.IndexOf(taskIndexArray, 4)].isCompleted)
+                else if (currentTaskNumber <= 0 && taskTypeIndex == 1 && CheckForTask())
                 {
                     taskDisplay.taskText.gameObject.SetActive(false);
                     taskDisplay.checkMark.GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
                     taskDisplay.isCompleted = true;
                 }
-                
+
                 else
                 {
                     taskDisplay.taskText.text = currentTaskNumber.ToString();
@@ -180,6 +180,18 @@ public class TaskController : MonoBehaviour
         {
             FinishGame();
         }
+    }
+
+    bool CheckForTask()
+    {
+        for (int i = 1; i < taskDisplays.Length; i++)
+        {
+            if (taskDisplays[i].taskTypeIndex == 4)
+            {
+                return false;
+            }
+        }
+        return true;
     }
     
     public void TaskIncrese(int taskTypeIndex, int taskIncreaseAmount)
@@ -205,19 +217,8 @@ public class TaskController : MonoBehaviour
                 return false;
             }
         }
-
-        if (taskDisplays[1].isCompleted && !taskDisplays[Array.IndexOf(taskIndexArray, 1)].isCompleted)
-        {
-            return false;
-        }
-
-       else
-        {
-            // All objectives are complete.
-            return true;
-        }
-    
         
+        return true;
     }
 
 

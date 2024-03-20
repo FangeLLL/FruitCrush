@@ -102,7 +102,6 @@ public class Board : MonoBehaviour
 
     private int isFruitDestroyed = Animator.StringToHash("isFruitDestroyed");
 
-    private int isFruitFalling = Animator.StringToHash("isFruitFalling");
 
     private void Awake()
     {
@@ -712,7 +711,7 @@ public class Board : MonoBehaviour
                             {
                                 fruitsCheckTotal[e].GetComponentInChildren<Animator>().SetTrigger(isFruitDestroyed);
                             }
-                            DestroyController(fruitsCheckTotal[e], true);
+                            DestroyController(fruitsCheckTotal[e], true,true);
                         }
 
                      //   typeFruits[type] += fruitsCheckTotal.Count;
@@ -1241,9 +1240,16 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public IEnumerator FruitPop(GameObject obj)
+    public IEnumerator FruitPop(GameObject obj,bool playFruitDestroyAnim)
     {
-        yield return new WaitForSeconds(0.2f);
+        if (!playFruitDestroyAnim)
+        {
+            yield return new WaitForSeconds(0.05f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.2f);
+        }
         if (obj)
         {
             obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
@@ -1492,8 +1498,6 @@ public class Board : MonoBehaviour
                 {
                     totalNumberOfFruits[fruitToUse]++;
                     newFruitScript.fruitType = fruitToUse;
-                    newFruit.GetComponentInChildren<Animator>().SetTrigger(isFruitFalling);
-                    newFruitScript.falling = true;
                 }
 
                 allFruits[i,emptyRowIndex] = newFruit;
@@ -2049,7 +2053,7 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="explosion"></param>
-    public void DestroyController(GameObject obj, bool explosion)
+    public void DestroyController(GameObject obj, bool explosion,bool playFruitDestroyAnim=false)
     {
         if (!obj)
         {
@@ -2077,7 +2081,7 @@ public class Board : MonoBehaviour
                 }
                 if (!obj.GetComponent<Fruit>().outsideOfBoard)
                 {
-                    StartCoroutine(FruitPop(obj));
+                    StartCoroutine(FruitPop(obj, playFruitDestroyAnim));
                 }
             }
             else

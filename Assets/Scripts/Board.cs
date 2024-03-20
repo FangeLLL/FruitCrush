@@ -2160,21 +2160,23 @@ public class Board : MonoBehaviour
 
                 // If tile has no obstacle it destroy fruit but if tile has obstacle then it checks if it is just break with powerup if it is then
                 // it gives log. Also, if tile does exist but there is no obstacle or fruit then gives log.
-                
+
+                failed = true;
+
+
                 if (FruitAvailable(allFruits[column, row]) && allFruits[column, row].GetComponent<Fruit>().fruitType > -100)
                 {
+                    failed = false;
                     specialPowerController.SpecialPowerUpUsed(2);
                     DestroyController(allFruits[column, row], false);
                     audioManager.FruitCrush();
                 }
-                else if(allTiles[column, row].GetComponent<BackgroundTile>().indexOfVisibleOne >= 0)
+
+                if(allTiles[column, row].GetComponent<BackgroundTile>().indexOfVisibleOne >= 0)
                 {
+                    failed = false;
                     specialPowerController.SpecialPowerUpUsed(2);
                     allTiles[column, row].GetComponent<BackgroundTile>().PowerUpBoom(damageID);
-                }
-                else
-                {
-                    failed = true;
                 }
                 
 

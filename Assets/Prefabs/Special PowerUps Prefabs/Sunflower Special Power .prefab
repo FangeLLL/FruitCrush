@@ -128,7 +128,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.031526566, y: 0.008144379}
+  m_Offset: {x: 0.01680994, y: -0.0023670197}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -139,7 +139,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.48345566, y: 0.5155792}
+  m_Size: {x: 0.90812206, y: 0.9234276}
   m_EdgeRadius: 0
 --- !u!95 &2022504042155613076
 Animator:
@@ -187,12 +187,14 @@ MonoBehaviour:
   animator: {fileID: 0}
   damageID: 
   speedMultiplier: 6
+  falling: 0
   isPowerUpSoundPlayed: 0
   outsideOfBoard: 0
   hitBorder: 0
   moveToward: 0
   attachedPowerUp: {fileID: 0}
   activePowerUp: 1
+  destroyOnReach: 0
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799

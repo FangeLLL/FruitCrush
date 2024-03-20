@@ -121,12 +121,11 @@ public class TaskController : MonoBehaviour
                     taskDisplay.taskImage.sprite = taskSprites[i];
                     taskDisplay.taskText.text = taskArray[i].ToString();
                     taskDisplay.taskTypeIndex = i;
-                    //Debug.Log(currentObjectiveIndex);
-                    //taskIndexArray[currentObjectiveIndex] = i;
+                    
+                    taskIndexArray[currentObjectiveIndex] = i;
                     taskDisplay.taskImage.gameObject.SetActive(true);
-                    //Debug.Log(currentObjectiveIndex);
+                    
                     currentObjectiveIndex++;
-                    //Debug.Log(currentObjectiveIndex);
                 }
             }
 
@@ -163,13 +162,13 @@ public class TaskController : MonoBehaviour
                     taskDisplay.checkMark.GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
                     taskDisplay.isCompleted = true;
                 }
-                else if (currentTaskNumber <= 0 && taskTypeIndex == 1 && !taskDisplays[Array.IndexOf(taskIndexArray, 1)].isCompleted)
+                else if (currentTaskNumber <= 0 && taskTypeIndex == 1 && taskDisplays[Array.IndexOf(taskIndexArray, 4)].isCompleted)
                 {
                     taskDisplay.taskText.gameObject.SetActive(false);
                     taskDisplay.checkMark.GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
                     taskDisplay.isCompleted = true;
                 }
-
+                
                 else
                 {
                     taskDisplay.taskText.text = currentTaskNumber.ToString();

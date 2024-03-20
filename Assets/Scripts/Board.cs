@@ -1554,7 +1554,7 @@ public class Board : MonoBehaviour
                     newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isTNTCreated);
                     break;
                 case -4:
-                    newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isBoomerangCreated);
+                    newPowerUp.transform.GetChild(0).GetComponent<Animator>().SetTrigger(isBoomerangCreated);
                     break;
                 case -5:
                     newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isDiscoBallCreated);
@@ -1993,7 +1993,7 @@ public class Board : MonoBehaviour
 
                 allFruits[fruitScript.column, fruitScript.row] = null;
 
-                fruit.GetComponentInChildren<Animator>().SetBool(boomerangRotating, true);
+                fruit.transform.GetChild(0).GetComponent<Animator>().SetBool(boomerangRotating, true);
 
                 if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
                 {

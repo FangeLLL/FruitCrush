@@ -86,7 +86,7 @@ public class BackgroundTile : MonoBehaviour
     private IEnumerator DestroyBoomerangSlowly(GameObject boomerang)
     {
         yield return new WaitForSeconds(0.1f);
-        boomerang.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        boomerang.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
         boomerang.transform.GetChild(1).GetChild(0).GetComponent<ParticleSystem>().Play();
         boomerang.transform.GetChild(1).GetChild(1).GetComponent<ParticleSystem>().Play();
         boomerang.transform.GetChild(1).GetChild(2).GetComponent<ParticleSystem>().Play();

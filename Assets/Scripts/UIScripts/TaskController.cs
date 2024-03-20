@@ -205,19 +205,8 @@ public class TaskController : MonoBehaviour
                 return false;
             }
         }
-
-        if (taskDisplays[1].isCompleted && !taskDisplays[Array.IndexOf(taskIndexArray, 1)].isCompleted)
-        {
-            return false;
-        }
-
-       else
-        {
-            // All objectives are complete.
-            return true;
-        }
-    
         
+        return true;
     }
 
 

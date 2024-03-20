@@ -2265,16 +2265,22 @@ public class Board : MonoBehaviour
 
                 Destroy(allFruits[column, row]);
 
-                if (i == 0)
+                switch (i)
                 {
-                    // Harvester creation randomly horizontal or vertical
-                    CreatePowerUp(column, row, -UnityEngine.Random.Range(1, 3),true);
+                    case 0:
+                        // Harvester creation randomly horizontal or vertical
+                        CreatePowerUp(column, row, -UnityEngine.Random.Range(1, 3), true);
+                        break;
+                    case 1:
+                        // Tnt or other powerUps. Tnt = -3 that why -i-2.
+                        CreatePowerUp(column, row, -i - 2, true);
+                        break;
+                    case 2:
+                        // Discoball or other powerUps. Discoball = -5 that why -i-3.
+                        CreatePowerUp(column, row, -i - 3, true);
+                        break;
                 }
-                else
-                {
-                    // Tnt or other powerUps. Tnt = -3 that why -i-2.
-                    CreatePowerUp(column, row, -i - 2,true);
-                }
+
             }
         }
     }

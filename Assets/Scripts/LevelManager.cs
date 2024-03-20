@@ -450,6 +450,7 @@ public class LevelManager : MonoBehaviour
 
             int currentObstacleTaskID;
 
+
             // If obstacle is4TimesBigger then repeat cehck and destroy method 4 times.
             int repeat = isObstacle4TimesBigger ? 2 : 1;
 
@@ -475,12 +476,12 @@ public class LevelManager : MonoBehaviour
                 {
                     taskElements[obstacle.GetComponent<ObstacleScript>().obstacleSpecs.taskID]++;
                 }
-
+                /*
                 if (obstacle.GetComponent<ObstacleScript>().obstacleSpecs.spreadWheatfarm)
                 {
                     taskElements[1]+=16;
                 }
-
+                */
             }
             else
             {
@@ -488,26 +489,28 @@ public class LevelManager : MonoBehaviour
                 repeat = 1;
             }
 
-            // IF THERE IS A OBSTACLE ALREADY EXÝST IN THE CURRENT PLACE THEN DESTROY THE OBSTACLE 
-
-            if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle])
-            {
-                currentObstacleId = allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.id;
-                RemoveTasks(column,row,placeOfObstacle);
-            }
+           
 
             for (int i = 0; i < repeat; i++)
             {
                 for (int j = 0; j < repeat; j++)
-                {     
+                {
+
+                    // IF THERE IS A OBSTACLE ALREADY EXÝST IN THE CURRENT PLACE THEN DESTROY THE OBSTACLE 
+
+                    if (allTiles[column + j, row + i].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle])
+                    {
+                        currentObstacleId = allTiles[column + j, row + i].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle].GetComponent<ObstacleScript>().obstacleSpecs.id;
+                        RemoveTasks(column + j, row + i, placeOfObstacle);
+                    }
 
                     // MAKE THE ASSIGMENTS
                     if (obstacleIndex != currentObstacleId)
                     {
-
                         allTiles[column + j, row + i].GetComponent<LevelEditorBackgroundTile>().obstacles[placeOfObstacle] = obstacle;
-
                     }
+
+                    
 
                     // IF OBSTACLE INDEX OF PLACE IS 0 THEN IT MEANS IT IS A BOX TYPE OBSTACLE SO SYSTEM MUST DESTROY FRUIT IF FRUIT EXIST.
 

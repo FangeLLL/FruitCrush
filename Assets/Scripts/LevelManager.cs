@@ -476,12 +476,7 @@ public class LevelManager : MonoBehaviour
                 {
                     taskElements[obstacle.GetComponent<ObstacleScript>().obstacleSpecs.taskID]++;
                 }
-                /*
-                if (obstacle.GetComponent<ObstacleScript>().obstacleSpecs.spreadWheatfarm)
-                {
-                    taskElements[1]+=16;
-                }
-                */
+              
             }
             else
             {
@@ -673,11 +668,7 @@ public class LevelManager : MonoBehaviour
         {
             taskElements[currentObstacleTaskID]--;
         }
-
-        if (allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[layer].GetComponent<ObstacleScript>().obstacleSpecs.spreadWheatfarm)
-        {
-            taskElements[1] -= 16;
-        }
+       
         Destroy(allTiles[column, row].GetComponent<LevelEditorBackgroundTile>().obstacles[layer]);
     }
 

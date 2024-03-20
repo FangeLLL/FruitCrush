@@ -109,9 +109,21 @@ public class TaskController : MonoBehaviour
     {
         if (currentObjectiveIndex < taskDisplays.Length && taskArray != null)
         {
+            bool containsFour = false;
+            bool containsOne = false;
 
             for (int i = 0; i < taskArray.Length; i++)
             {
+                if (taskArray[i] == 4)
+                {
+                    containsFour = true;
+                }
+
+                else if (taskArray[i] == 1)
+                {
+                    containsOne = true;
+                }
+
                 if (taskArray[i] != 0)
                 {
                     TaskDisplay taskDisplay = taskDisplays[currentObjectiveIndex];
@@ -123,6 +135,16 @@ public class TaskController : MonoBehaviour
 
                     currentObjectiveIndex++;
                 }
+            }
+
+            if (containsFour && !containsOne)
+            {
+                TaskDisplay taskDisplay = taskDisplays[currentObjectiveIndex];
+
+                taskDisplay.taskImage.sprite = taskSprites[1];
+                taskDisplay.taskText.text = taskArray[1].ToString();
+                taskDisplay.taskTypeIndex = 1;
+                taskDisplay.taskImage.gameObject.SetActive(true);
             }
 
             ObjectiveLocationSetter();

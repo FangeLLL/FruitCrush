@@ -39,11 +39,13 @@ public class BackgroundTile : MonoBehaviour
             PowerUpBoom(fruitScript.damageID);
             if (fruitScript.fruitType==-4 && fruitScript.attachedPowerUp)
             {
-                Fruit powerUpScript = fruitScript.attachedPowerUp.GetComponent<Fruit>();
-                powerUpScript.targetV = transform.position;
-                powerUpScript.row = row;
-                powerUpScript.column = column;
-                powerUpScript.moveToward = false;
+                GameObject powerUp = fruitScript.attachedPowerUp;
+                Fruit powerUpFruitScript = powerUp.GetComponent<Fruit>();
+                powerUpFruitScript.targetV = transform.position;
+                powerUp.transform.position = transform.position;
+                powerUp.transform.GetChild(0).gameObject.SetActive(true);
+                powerUpFruitScript.row = row;
+                powerUpFruitScript.column = column;
                 board.ActivatePowerUp(fruitScript.attachedPowerUp);
 
                 Destroy(other.gameObject);
@@ -65,11 +67,13 @@ public class BackgroundTile : MonoBehaviour
                     {
                         if (fruitScript.attachedPowerUp)
                         {
-                            Fruit powerUpScript = fruitScript.attachedPowerUp.GetComponent<Fruit>();
-                            powerUpScript.targetV = transform.position;
-                            powerUpScript.row = row;
-                            powerUpScript.column = column;
-                            powerUpScript.moveToward = false;
+                            GameObject powerUp = fruitScript.attachedPowerUp;
+                            Fruit powerUpFruitScript = powerUp.GetComponent<Fruit>();
+                            powerUpFruitScript.targetV = transform.position;
+                            powerUp.transform.position = transform.position;
+                            powerUp.transform.GetChild(0).gameObject.SetActive(true);
+                            powerUpFruitScript.row = row;
+                            powerUpFruitScript.column = column;
                             board.ActivatePowerUp(fruitScript.attachedPowerUp);
                         }
                         StartCoroutine(DestroyBoomerangSlowly(other.gameObject));
@@ -86,11 +90,11 @@ public class BackgroundTile : MonoBehaviour
     private IEnumerator DestroyBoomerangSlowly(GameObject boomerang)
     {
         yield return new WaitForSeconds(0.1f);
-        boomerang.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
+        boomerang.GetComponent<BoxCollider2D>().enabled = false;
+        boomerang.transform.GetChild(2).gameObject.SetActive(false);
         boomerang.transform.GetChild(1).GetChild(0).GetComponent<ParticleSystem>().Play();
         boomerang.transform.GetChild(1).GetChild(1).GetComponent<ParticleSystem>().Play();
         boomerang.transform.GetChild(1).GetChild(2).GetComponent<ParticleSystem>().Play();
-        boomerang.GetComponent<BoxCollider2D>().enabled = false;
         yield return new WaitForSeconds(2.9f);
         Destroy(boomerang.gameObject);
     }

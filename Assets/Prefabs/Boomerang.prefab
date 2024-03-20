@@ -4903,7 +4903,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &532589872987172987
 Transform:
   m_ObjectHideFlags: 0
@@ -5274,10 +5274,10 @@ MonoBehaviour:
   isPowerUpSoundPlayed: 0
   outsideOfBoard: 0
   hitBorder: 0
-  moveToward: 0
   attachedPowerUp: {fileID: 0}
   activePowerUp: 0
   destroyOnReach: 0
+  moveToward: 0
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799

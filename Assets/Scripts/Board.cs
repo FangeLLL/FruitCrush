@@ -1763,11 +1763,10 @@ public class Board : MonoBehaviour
                         case -4:
                             audioManager.Pickaxe();
                             fruitScript.outsideOfBoard = true;
-                            fruitScript.moveToward = true;
+                            fruit.transform.GetChild(0).gameObject.SetActive(false);
                             allFruits[fruitScript.column, fruitScript.row] = null;
-                            fruitScript.speedMultiplier = 11f;
                             otherFruitScript.attachedPowerUp = fruit;
-                            ActivatePowerUp(otherFruit);
+                            ActivatePowerUp(otherFruit,-1);
                             break;
                         case -5:
                             audioManager.Pickaxe();
@@ -1793,11 +1792,10 @@ public class Board : MonoBehaviour
                         case -4:
                             audioManager.Pickaxe();
                             fruitScript.outsideOfBoard = true;
-                            fruitScript.moveToward = true;
+                            fruit.transform.GetChild(0).gameObject.SetActive(false);
                             allFruits[fruitScript.column, fruitScript.row] = null;
-                            fruitScript.speedMultiplier = 11f;
                             otherFruitScript.attachedPowerUp = fruit;
-                            ActivatePowerUp(otherFruit);
+                            ActivatePowerUp(otherFruit,-2);
                             break;
                         case -5:
                             audioManager.Pickaxe();
@@ -1823,11 +1821,10 @@ public class Board : MonoBehaviour
                         case -4:
                             audioManager.Pickaxe();
                             fruitScript.outsideOfBoard = true;
-                            fruitScript.moveToward = true;
+                            fruit.transform.GetChild(0).gameObject.SetActive(false);
                             allFruits[fruitScript.column, fruitScript.row] = null;
-                            fruitScript.speedMultiplier = 11f;
                             otherFruitScript.attachedPowerUp = fruit;
-                            ActivatePowerUp(otherFruit);
+                            ActivatePowerUp(otherFruit,-3);
                             break;
                         case -5:
                             audioManager.Pickaxe();
@@ -1847,11 +1844,10 @@ public class Board : MonoBehaviour
                     else
                     {
                         otherFruitScript.outsideOfBoard = true;
-                        otherFruitScript.moveToward = true;
                         allFruits[otherFruitScript.column, otherFruitScript.row] = null;
-                        otherFruitScript.speedMultiplier = 10f;
                         fruitScript.attachedPowerUp = otherFruit;
-                        ActivatePowerUp(fruit);
+                        otherFruit.transform.GetChild(0).gameObject.SetActive(false);
+                        ActivatePowerUp(fruit,otherFruitScript.fruitType);
                     }              
 
                     break;
@@ -2000,14 +1996,40 @@ public class Board : MonoBehaviour
             case -4:
 
                 fruitScript.outsideOfBoard = true;
-                fruitScript.moveToward = true;
                 fruitScript.speedMultiplier = 11f;
+                fruitScript.moveToward = true;
                 fruitScript.targetV = GetBoomerangTargetLoc(fruitScript.column, fruitScript.row);
                 fruitScript.activePowerUp = true;
 
                 allFruits[fruitScript.column, fruitScript.row] = null;
 
-                fruit.transform.GetChild(0).GetComponent<Animator>().SetBool(boomerangRotating, true);
+                if(swipedFruitType == 0)
+                {
+                    fruit.transform.GetChild(0).GetComponent<Animator>().SetBool(boomerangRotating, true);
+                }
+                else
+                {
+                    fruit.transform.GetChild(0).gameObject.SetActive(false);
+                    fruit.transform.GetChild(2).gameObject.SetActive(true);
+                    switch(swipedFruitType)
+                    {
+                        case -1:
+                            Debug.Log("hori");
+                            // Horizontal
+                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.SetActive(true);
+                            Vector3 newRotation = new Vector3(0f, 0f, 90f);
+                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).rotation = Quaternion.Euler(newRotation);
+                            break;
+                        case -2:
+                            // Vertical
+                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.SetActive(true);
+                            break;
+                        case -3:
+                            // TNT
+                            fruit.transform.GetChild(2).gameObject.transform.GetChild(1).gameObject.SetActive(true);
+                            break;
+                    }
+                }
 
                 if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
                 {

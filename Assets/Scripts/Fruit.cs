@@ -44,13 +44,13 @@ public class Fruit : MonoBehaviour
 
     public int hitBorder=0;
 
-    public bool moveToward = false;
-
     public GameObject attachedPowerUp=null;
 
     public bool activePowerUp = false;
 
     public bool destroyOnReach = false;
+
+    public bool moveToward = false;
 
     [HideInInspector]
     public int swipeRight = Animator.StringToHash("isSwipeRight");
@@ -117,24 +117,25 @@ public class Fruit : MonoBehaviour
                 }
 
 
+
                 // Other movements
+                
                 if (moveToward)
                 {
                     if(attachedPowerUp)
                     {
                         attachedPowerUp.GetComponent<Fruit>().targetV = transform.position;
                     }
-                    transform.position = Vector2.MoveTowards(transform.position, targetV, speedMultiplier * Time.deltaTime);
+                    transform.position = Vector2.MoveTowards(transform.position, targetV, speedMultiplier * Time.deltaTime / 2);
                 }
                 else
                 {
                     transform.position = Vector2.Lerp(transform.position, targetV, speedMultiplier * Time.deltaTime);
-
                 }
 
             }
 
-            if(Vector2.Distance(targetV, transform.position) > 0.1f)
+            if (Vector2.Distance(targetV, transform.position) > 0.1f)
             {
                 isMoving = true;
             }

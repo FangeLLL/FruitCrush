@@ -14,12 +14,20 @@ public class PowerUpMerge : MonoBehaviour
 
     public void Object1InFront()
     {
-        object1.sortingOrder = 4;
-        object2.sortingOrder = 3;
+        if (object1 != null && object2 != null)
+        {
+            object1.sortingOrder = 4;
+            object2.sortingOrder = 3;
+        }
+        
     }
     public void Object2InFront()
     {
-        object1.sortingOrder = 3;
-        object2.sortingOrder = 4;
+        if (object1 != null && object2 != null)
+        {
+            object1.sortingOrder = 3;
+            object2.sortingOrder = 4;
+        }
+        
     }
 }

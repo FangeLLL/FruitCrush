@@ -995,7 +995,7 @@ public class Board : MonoBehaviour
             fruitScript.targetV = otherFruitScript.targetV;
             fruitScript.fadeout = true;
             otherFruitScript.fadeout = true;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
             StartCoroutine(ActivateMergePowerUp(fruit, otherFruit));
             succesfulMove = true;
         }
@@ -1657,6 +1657,7 @@ public class Board : MonoBehaviour
                     ActivatePowerUp(otherFruit);
                     break;
                 case -3:
+                    yield return new WaitForSeconds(0.1f);
                     Destroy(fruit);
                     otherFruit.GetComponentInChildren<SpriteRenderer>().sortingOrder = 10;
                     otherFruit.GetComponentInChildren<Animator>().SetTrigger(isTNTMerged);
@@ -1741,10 +1742,8 @@ public class Board : MonoBehaviour
                             ActivatePowerUp(otherFruit);
                             break;
                         case -3:
-                            yield return new WaitForSeconds(0.1f);
 
                             StartCoroutine(HarvesterTNTMerge(fruit,otherFruit,fruitScript.column,fruitScript.row,false));
-
 
                             break;
                         case -4:
@@ -2265,16 +2264,22 @@ public class Board : MonoBehaviour
 
                 Destroy(allFruits[column, row]);
 
-                if (i == 0)
+                switch (i)
                 {
-                    // Harvester creation randomly horizontal or vertical
-                    CreatePowerUp(column, row, -UnityEngine.Random.Range(1, 3),true);
+                    case 0:
+                        // Harvester creation randomly horizontal or vertical
+                        CreatePowerUp(column, row, -UnityEngine.Random.Range(1, 3), true);
+                        break;
+                    case 1:
+                        // Tnt or other powerUps. Tnt = -3 that why -i-2.
+                        CreatePowerUp(column, row, -i - 2, true);
+                        break;
+                    case 2:
+                        // Discoball or other powerUps. Discoball = -5 that why -i-3.
+                        CreatePowerUp(column, row, -i - 3, true);
+                        break;
                 }
-                else
-                {
-                    // Tnt or other powerUps. Tnt = -3 that why -i-2.
-                    CreatePowerUp(column, row, -i - 2,true);
-                }
+
             }
         }
     }
@@ -3419,7 +3424,7 @@ public class Board : MonoBehaviour
 
       
 
-        yield return new WaitForSeconds(0.1f);
+    //    yield return new WaitForSeconds(0.1f);
 
         if (PowerUp1)
         {

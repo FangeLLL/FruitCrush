@@ -130,21 +130,28 @@ public class TaskController : MonoBehaviour
     }
 
 
-    public void TaskProgress(int taskTypeIndex)
+    public void TaskProgress(int taskTypeIndex, int taskDecereaseAmount)
     {
         foreach (TaskDisplay taskDisplay in taskDisplays)
         {
             if (taskDisplay.taskTypeIndex == taskTypeIndex && taskDisplay.taskImage.gameObject.activeSelf)
             {
                 int currentTaskNumber = int.Parse(taskDisplay.taskText.text);
-                currentTaskNumber--;
+                currentTaskNumber -= taskDecereaseAmount;
 
-                if (currentTaskNumber <= 0)
+                if (currentTaskNumber <= 0 && taskTypeIndex != 1)
                 {
                     taskDisplay.taskText.gameObject.SetActive(false);
                     taskDisplay.checkMark.GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
                     taskDisplay.isCompleted = true;
                 }
+                else if (currentTaskNumber <= 0 && taskTypeIndex == 1 && !taskDisplays[4].isCompleted)
+                {
+                    taskDisplay.taskText.gameObject.SetActive(false);
+                    taskDisplay.checkMark.GetComponent<Animator>().SetTrigger("TaskCompleteTrigger");
+                    taskDisplay.isCompleted = true;
+                }
+
                 else
                 {
                     taskDisplay.taskText.text = currentTaskNumber.ToString();
@@ -155,6 +162,20 @@ public class TaskController : MonoBehaviour
         if (AreAllObjectivesComplete() && !isLevelCompleted)
         {
             FinishGame();
+        }
+    }
+    
+    public void TaskIncrese(int taskTypeIndex, int taskIncreaseAmount)
+    {
+        foreach (TaskDisplay taskDisplay in taskDisplays)
+        {
+            if (taskDisplay.taskTypeIndex == taskTypeIndex && taskDisplay.taskImage.gameObject.activeSelf)
+            {
+                int currentTaskNumber = int.Parse(taskDisplay.taskText.text);
+                currentTaskNumber += taskIncreaseAmount;
+                taskDisplay.taskText.text = currentTaskNumber.ToString();
+                
+            }
         }
     }
 
@@ -168,8 +189,18 @@ public class TaskController : MonoBehaviour
             }
         }
 
-        // All objectives are complete.
-        return true;
+        if (taskDisplays[1].isCompleted && !taskDisplays[4].isCompleted)
+        {
+            return false;
+        }
+
+       else
+        {
+            // All objectives are complete.
+            return true;
+        }
+    
+        
     }
 
 
@@ -201,7 +232,7 @@ public class TaskController : MonoBehaviour
             taskDisplays[3].taskImage.transform.localPosition = new Vector2(16, -17.7f);
         }
     }
-
+    
     void OutofMoves()
     {
         if (!isLevelCompleted)

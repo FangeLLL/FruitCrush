@@ -62,8 +62,12 @@ public class Fruit : MonoBehaviour
     public int swipeDown = Animator.StringToHash("isSwipeDown");
     [HideInInspector]
     public int swipeFlash = Animator.StringToHash("isSwipeHintIdle");
+    /*
     [HideInInspector]
     private int isFruitLanded = Animator.StringToHash("isFruitLanded");
+    */
+    [HideInInspector]
+    private int isFruitFalling = Animator.StringToHash("isFruitFalling");
 
 
     void Awake()
@@ -91,13 +95,7 @@ public class Fruit : MonoBehaviour
 
             }
 
-            if(falling && Vector2.Distance(targetV, transform.position) < 0.2f)
-            {
-                falling = false;
-                GetComponentInChildren<Animator>().SetTrigger(isFruitLanded);
-            }
-
-
+         
             if (isSwiped)
             {
                 // Swipe movement
@@ -106,6 +104,19 @@ public class Fruit : MonoBehaviour
             }
             else
             {
+                if (!falling && transform.position.y - targetV.y > 0.2)
+                {
+                    falling = true;
+                    transform.GetChild(0).GetComponent<Animator>().SetBool(isFruitFalling, true);
+                }
+
+                if (falling && transform.position.y - targetV.y < 0.2)
+                {
+                    falling = false;
+                    transform.GetChild(0).GetComponent<Animator>().SetBool(isFruitFalling, false);
+                }
+
+
                 // Other movements
                 if (moveToward)
                 {

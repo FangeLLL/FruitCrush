@@ -908,11 +908,12 @@ public class Board : MonoBehaviour
         foreach(GameObject fruit in DestroyFruits)
         {
             fruit.GetComponent<Fruit>().targetV = gatherPosition;
+            fruit.GetComponent<Fruit>().speedMultiplier = 13f;
         }
 
         CreatePowerUp(column, row, powerUpID,true);
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.25f);
 
         foreach (GameObject obj in DestroyFruits)
         {

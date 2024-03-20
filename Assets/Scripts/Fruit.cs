@@ -32,7 +32,7 @@ public class Fruit : MonoBehaviour
 
     public string damageID;
 
-    public float speedMultiplier=6f;
+    public float speedMultiplier=9f;
 
     private AudioManager audioManager;
 
@@ -111,7 +111,6 @@ public class Fruit : MonoBehaviour
                     transform.position = Vector2.Lerp(transform.position, targetV, speedMultiplier * Time.deltaTime);
 
                 }
-
 
             }
 

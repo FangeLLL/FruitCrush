@@ -23,7 +23,7 @@ PrefabInstance:
     - target: {fileID: 4269577592316774446, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 188f67f6c63a699489045a2f4a42d944, type: 3}
+      objectReference: {fileID: 21300000, guid: c9a7fb3b718e9f34cbb6dfe185f76822, type: 3}
     - target: {fileID: 4269577592316774446, guid: 2e55129764f14aa44aa553545a991b6d, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -177,6 +177,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   damageID: 
   speedMultiplier: 6
+  falling: 0
   isPowerUpSoundPlayed: 0
   outsideOfBoard: 0
   hitBorder: 0

@@ -126,7 +126,7 @@ public class Fruit : MonoBehaviour
                     {
                         attachedPowerUp.GetComponent<Fruit>().targetV = transform.position;
                     }
-                    transform.position = Vector2.MoveTowards(transform.position, targetV, speedMultiplier * Time.deltaTime / 2);
+                    transform.position = Vector2.MoveTowards(transform.position, targetV, speedMultiplier * Time.deltaTime);
                 }
                 else
                 {

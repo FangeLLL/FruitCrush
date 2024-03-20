@@ -1712,7 +1712,7 @@ public class Board : MonoBehaviour
                     yield return new WaitForSeconds(1.34f);                 
 
                     GameObject cloneBoomerang = CreatePowerUp(otherFruitScript.column, otherFruitScript.row,-4,false,false);
-                    yield return new WaitForSeconds(0.3f);
+                    yield return new WaitForSeconds(0.1f);
                     fruit.GetComponentInChildren<SpriteRenderer>().enabled = true;
 
                     audioManager.Pickaxe();

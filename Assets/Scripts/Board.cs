@@ -995,7 +995,7 @@ public class Board : MonoBehaviour
             fruitScript.targetV = otherFruitScript.targetV;
             fruitScript.fadeout = true;
             otherFruitScript.fadeout = true;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
             StartCoroutine(ActivateMergePowerUp(fruit, otherFruit));
             succesfulMove = true;
         }
@@ -1657,6 +1657,7 @@ public class Board : MonoBehaviour
                     ActivatePowerUp(otherFruit);
                     break;
                 case -3:
+                    yield return new WaitForSeconds(0.1f);
                     Destroy(fruit);
                     otherFruit.GetComponentInChildren<SpriteRenderer>().sortingOrder = 10;
                     otherFruit.GetComponentInChildren<Animator>().SetTrigger(isTNTMerged);
@@ -1743,7 +1744,6 @@ public class Board : MonoBehaviour
                         case -3:
 
                             StartCoroutine(HarvesterTNTMerge(fruit,otherFruit,fruitScript.column,fruitScript.row,false));
-
 
                             break;
                         case -4:

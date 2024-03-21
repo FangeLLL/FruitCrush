@@ -28,13 +28,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 887866426203944954}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6276677846140392880}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!212 &7013075366470047572
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4990,14 +4990,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3598918568480110320}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.9916667, y: 0.9916667, z: 0.9916667}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8440308677410405623}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5973618546247406897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5027,10 +5027,10 @@ MonoBehaviour:
   isPowerUpSoundPlayed: 0
   outsideOfBoard: 0
   hitBorder: 0
-  moveToward: 0
   attachedPowerUp: {fileID: 0}
   activePowerUp: 0
   destroyOnReach: 0
+  moveToward: 0
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799

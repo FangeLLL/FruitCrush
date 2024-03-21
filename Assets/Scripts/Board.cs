@@ -1769,8 +1769,8 @@ public class Board : MonoBehaviour
                             break;
                         case -5:
                             audioManager.Pickaxe();
-                            ActivatePowerUp(otherFruit, -1);
                             Destroy(fruit);
+                            ActivatePowerUp(otherFruit, -1);
                             break;
                     }
                     break;
@@ -1798,8 +1798,8 @@ public class Board : MonoBehaviour
                             break;
                         case -5:
                             audioManager.Pickaxe();
-                            ActivatePowerUp(otherFruit, -2);
                             Destroy(fruit);
+                            ActivatePowerUp(otherFruit, -2);
                             break;
                     }
                     break;
@@ -1827,8 +1827,8 @@ public class Board : MonoBehaviour
                             break;
                         case -5:
                             audioManager.Pickaxe();
-                            ActivatePowerUp(otherFruit, -3);
                             Destroy(fruit);
+                            ActivatePowerUp(otherFruit, -3);
                             break;
                     }
                     break;
@@ -1854,7 +1854,7 @@ public class Board : MonoBehaviour
                 case -5:
 
                     ActivatePowerUp(fruit, otherFruitScript.fruitType);
-                    Destroy(fruit);
+                    Destroy(otherFruit);
 
                     break;
             }

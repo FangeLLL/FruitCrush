@@ -915,12 +915,12 @@ public class Board : MonoBehaviour
         foreach(GameObject fruit in DestroyFruits)
         {
             fruit.GetComponent<Fruit>().targetV = gatherPosition;
-            fruit.GetComponent<Fruit>().speedMultiplier = 13f;
+            fruit.GetComponent<Fruit>().speedMultiplier = 10f;
         }
 
         CreatePowerUp(column, row, powerUpID,true);
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.15f);
 
         foreach (GameObject obj in DestroyFruits)
         {
@@ -1878,7 +1878,7 @@ public class Board : MonoBehaviour
             // Horizontal Harvester power up
             case -1:
 
-                StartCoroutine(StopAndStartAllFillings(0.07f * width));
+                StartCoroutine(StopAndStartAllFillings(0.06f * width));
 
                 GameObject cloneHorizontal = Instantiate(powerUps[0], allTiles[column, row].transform.position, powerUps[0].transform.rotation);
                 Fruit cloneHorizontalScript = cloneHorizontal.GetComponent<Fruit>();

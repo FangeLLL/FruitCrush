@@ -1996,7 +1996,6 @@ public class Board : MonoBehaviour
 
                 fruitScript.outsideOfBoard = true;
                 fruitScript.speedMultiplier = 11f;
-                fruitScript.moveToward = true;
                 fruitScript.targetV = GetBoomerangTargetLoc(fruitScript.column, fruitScript.row);
                 fruitScript.activePowerUp = true;
 

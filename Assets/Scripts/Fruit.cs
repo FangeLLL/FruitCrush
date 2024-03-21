@@ -50,8 +50,6 @@ public class Fruit : MonoBehaviour
 
     public bool destroyOnReach = false;
 
-    public bool moveToward = false;
-
     [HideInInspector]
     public int swipeRight = Animator.StringToHash("isSwipeRight");
     [HideInInspector]
@@ -119,19 +117,9 @@ public class Fruit : MonoBehaviour
 
 
                 // Other movements
-                
-                if (moveToward)
-                {
-                    if(attachedPowerUp)
-                    {
-                        attachedPowerUp.GetComponent<Fruit>().targetV = transform.position;
-                    }
-                    transform.position = Vector2.MoveTowards(transform.position, targetV, speedMultiplier * Time.deltaTime);
-                }
-                else
-                {
-                    transform.position = Vector2.MoveTowards(transform.position, targetV, Vector2.Distance(targetV, transform.position) * Time.deltaTime * speedMultiplier);
-                }
+
+                transform.position = Vector2.MoveTowards(transform.position, targetV, Vector2.Distance(targetV, transform.position) * Time.deltaTime * speedMultiplier);
+
 
             }
 

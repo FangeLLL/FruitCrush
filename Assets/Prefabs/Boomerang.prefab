@@ -5273,11 +5273,11 @@ MonoBehaviour:
   falling: 0
   isPowerUpSoundPlayed: 0
   outsideOfBoard: 0
+  moveToward: 0
   hitBorder: 0
   attachedPowerUp: {fileID: 0}
   activePowerUp: 0
   destroyOnReach: 0
-  moveToward: 0
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799
@@ -5450,7 +5450,7 @@ Animator:
   m_GameObject: {fileID: 4737116812557288600}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d6741a9a9d831ec48a934c7862d29f91, type: 2}
+  m_Controller: {fileID: 9100000, guid: 387e4e11c6f3f324d9b7703b365de993, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

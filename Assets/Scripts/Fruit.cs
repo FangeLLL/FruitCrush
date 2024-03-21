@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -41,6 +42,8 @@ public class Fruit : MonoBehaviour
     public bool isPowerUpSoundPlayed = false;
 
     public bool outsideOfBoard = false;
+
+    public bool moveToward = false;
 
     public int hitBorder=0;
 
@@ -116,9 +119,14 @@ public class Fruit : MonoBehaviour
 
 
 
-                // Other movements
-
-                transform.position = Vector2.MoveTowards(transform.position, targetV, Vector2.Distance(targetV, transform.position) * Time.deltaTime * speedMultiplier);
+                if (moveToward)
+                {
+                    transform.position = Vector2.MoveTowards(transform.position, targetV, speedMultiplier * Time.deltaTime);
+                }
+                else
+                {
+                    transform.position = Vector2.MoveTowards(transform.position, targetV, Vector2.Distance(targetV, transform.position) * Time.deltaTime * speedMultiplier);
+                }
 
 
             }

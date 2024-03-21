@@ -1993,7 +1993,7 @@ public class Board : MonoBehaviour
 
             // Boomerang power up
             case -4:
-
+                fruitScript.moveToward = true;
                 fruitScript.outsideOfBoard = true;
                 fruitScript.speedMultiplier = 11f;
                 fruitScript.targetV = GetBoomerangTargetLoc(fruitScript.column, fruitScript.row);

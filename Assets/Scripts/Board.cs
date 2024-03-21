@@ -920,7 +920,7 @@ public class Board : MonoBehaviour
 
         CreatePowerUp(column, row, powerUpID,true);
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.1f);
 
         foreach (GameObject obj in DestroyFruits)
         {
@@ -1885,7 +1885,7 @@ public class Board : MonoBehaviour
 
                 cloneHorizontalScript.GetComponentInChildren<SpriteRenderer>().sprite = harvesterUpSprite;
                 fruitScript.GetComponentInChildren<SpriteRenderer>().sprite = harvesterUpSprite;
-                Vector3 newRotationH = new Vector3(0f, 0f, -90);
+                Vector3 newRotationH = new Vector3(0f, 0f, -180);
                 cloneHorizontal.transform.rotation = Quaternion.Euler(newRotationH);
 
                 fruit.transform.position = allTiles[column, row].transform.position;
@@ -2550,7 +2550,7 @@ public class Board : MonoBehaviour
             }
         }
        
-        yield return new WaitForSeconds(0.2f);
+       // yield return new WaitForSeconds(0.05f);
         blockUserMove = false;
 
         Array.Clear(fillingColumn, 0, fillingColumn.Length);

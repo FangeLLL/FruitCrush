@@ -110,7 +110,7 @@ public class Fruit : MonoBehaviour
                     transform.GetChild(0).GetComponent<Animator>().SetBool(isFruitFalling, true);
                 }
 
-                if (falling && transform.position.y - targetV.y < 0.1)
+                if (falling && transform.position.y - targetV.y < 0.08f)
                 {
                     falling = false;
                     transform.GetChild(0).GetComponent<Animator>().SetBool(isFruitFalling, false);

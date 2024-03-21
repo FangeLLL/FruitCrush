@@ -1248,7 +1248,7 @@ public class Board : MonoBehaviour
         }
         else
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.15f);
         }
         if (obj)
         {

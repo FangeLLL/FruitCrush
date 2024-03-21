@@ -312,15 +312,15 @@ MonoBehaviour:
   isMoving: 0
   animator: {fileID: 4633664314048729591}
   damageID: 
-  speedMultiplier: 13
+  speedMultiplier: 10
   falling: 0
   isPowerUpSoundPlayed: 0
   outsideOfBoard: 0
   hitBorder: 0
-  moveToward: 0
   attachedPowerUp: {fileID: 0}
   activePowerUp: 0
   destroyOnReach: 0
+  moveToward: 0
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799

@@ -32,7 +32,7 @@ public class Fruit : MonoBehaviour
 
     public string damageID;
 
-    public float speedMultiplier=13f;
+    public float speedMultiplier=10f;
 
     public bool falling = false;
 
@@ -130,7 +130,7 @@ public class Fruit : MonoBehaviour
                 }
                 else
                 {
-                    transform.position = Vector2.Lerp(transform.position, targetV, speedMultiplier * Time.deltaTime);
+                    transform.position = Vector2.MoveTowards(transform.position, targetV, Vector2.Distance(targetV, transform.position) * Time.deltaTime * speedMultiplier);
                 }
 
             }

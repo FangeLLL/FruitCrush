@@ -386,8 +386,12 @@ public class Board : MonoBehaviour
 
         StopHintAnimations();
 
-        GameObject otherFruit;
+        currentFruit = null;
+        currentOtherFruit = null;
+
+        GameObject otherFruit=null;
         GameObject fruit = allFruits[column, row];
+        GameObject targetTile=null;
         if (fruit.GetComponent<Fruit>().isSwiped)
         {
             Debug.Log("This fruit already swiping");
@@ -395,6 +399,7 @@ public class Board : MonoBehaviour
         }
         if (swipeAngle > -45 && swipeAngle <= 45 && column + 1 < width)
         {
+
             // RIGHT SWIPE
             if (FruitAvailableWithoutTypeCheck(allFruits[column + 1, row]))
             {
@@ -402,8 +407,15 @@ public class Board : MonoBehaviour
             }
             else
             {
-                Debug.Log("You cant swipe right!!!");
-                return;
+                if(allTiles[column + 1, row] && !allFruits[column + 1, row])
+                {
+                    targetTile = allTiles[column + 1, row];
+                }
+                else
+                {
+                    Debug.Log("You cant swipe right!!!");
+                    return;
+                }        
             }
 
         }
@@ -416,8 +428,15 @@ public class Board : MonoBehaviour
             }
             else
             {
-                Debug.Log("You cant swipe up!!!");
-                return;
+                if (allTiles[column, row + 1] && !allFruits[column, row + 1])
+                {
+                    targetTile = allTiles[column, row + 1];
+                }
+                else
+                {
+                    Debug.Log("You cant swipe up!!!");
+                    return;
+                }
             }
 
         }
@@ -430,8 +449,15 @@ public class Board : MonoBehaviour
             }
             else
             {
-                Debug.Log("You cant swipe left!!!");
-                return;
+                if (allTiles[column - 1, row] && !allFruits[column - 1, row])
+                {
+                    targetTile = allTiles[column - 1, row];
+                }
+                else
+                {
+                    Debug.Log("You cant swipe left!!!");
+                    return;
+                }
             }
 
         }
@@ -444,8 +470,15 @@ public class Board : MonoBehaviour
             }
             else
             {
-                Debug.Log("You cant swipe down!!!");
-                return;
+                if (allTiles[column, row - 1] && !allFruits[column, row - 1])
+                {
+                    targetTile = allTiles[column, row - 1];
+                }
+                else
+                {
+                    Debug.Log("You cant swipe down!!!");
+                    return;
+                }
             }
         }
         else
@@ -454,26 +487,44 @@ public class Board : MonoBehaviour
             return;
         }
 
-        if (otherFruit.GetComponent<Fruit>().isSwiped)
+        if (otherFruit)
         {
+            if (otherFruit.GetComponent<Fruit>().isSwiped)
+            {
+                return;
+            }
+
+            if (otherFruit.GetComponent<Fruit>().fruitType == fruit.GetComponent<Fruit>().fruitType && specialSwipe)
+            {
+                Debug.Log("You cant swipe same type of fruits with specialSwipe");
+                return;
+            }
+            otherFruit.GetComponent<Fruit>().isSwiped = true;
+            currentOtherFruit = otherFruit;
+        }
+        else if (targetTile.GetComponent<BackgroundTile>().obstacles[0])
+        {
+            Debug.Log("There is a obstacle on the way");
             return;
         }
 
-        if(otherFruit.GetComponent<Fruit>().fruitType == fruit.GetComponent<Fruit>().fruitType && specialSwipe)
-        {
-            Debug.Log("You cant swipe same type of fruits with specialSwipe");
-            return;
-        }
         fruit.GetComponent<Fruit>().isSwiped = true;
-        otherFruit.GetComponent<Fruit>().isSwiped = true;
 
         StopHintAnimations();
 
         currentFruit = fruit;
-        currentOtherFruit = otherFruit;
 
         audioManager.Swipe();
-        StartCoroutine(CheckMove(fruit, otherFruit));
+        if (otherFruit)
+        {
+            StartCoroutine(CheckMove(fruit, otherFruit));
+
+        }
+        else
+        {
+            StartCoroutine(CheckMoveForOneFruit(fruit, targetTile));
+
+        }
     }
 
     /// <summary>
@@ -937,7 +988,7 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     public bool FruitAvailable(GameObject obj)
     {
-        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.4f && !obj.GetComponent<Fruit>().fadeout && obj.GetComponent<Fruit>().fruitType >= -100)
+        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.2f && !obj.GetComponent<Fruit>().fadeout && obj.GetComponent<Fruit>().fruitType >= -100)
         {
             return true;
         }
@@ -971,7 +1022,7 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     public bool FruitAvailableWithoutTypeCheck(GameObject obj)
     {
-        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.4f && !obj.GetComponent<Fruit>().fadeout)
+        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.2f && !obj.GetComponent<Fruit>().fadeout)
         {
             return true;
         }
@@ -979,6 +1030,109 @@ public class Board : MonoBehaviour
         {
             return false;
         }
+    }
+
+    private IEnumerator CheckMoveForOneFruit(GameObject fruit, GameObject targetTile)
+    {
+        Fruit fruitScript = fruit.GetComponent<Fruit>();
+        BackgroundTile backgroundTileScript = targetTile.GetComponent<BackgroundTile>();
+        bool succesfulMove = false;
+
+        int tempRow = fruitScript.row, tempCol = fruitScript.column;
+
+        fruitScript.row = backgroundTileScript.row;
+        fruitScript.column = backgroundTileScript.column;
+        allTiles[tempCol, tempRow].GetComponent<BackgroundTile>().isTempEmptyTile = true;
+        allFruits[tempCol, tempRow] = null;
+        fruitScript.targetV = allTiles[backgroundTileScript.column, backgroundTileScript.row].transform.position;
+
+
+        yield return new WaitForSeconds(0.1f);
+        if (!specialSwipe)
+        {
+            if ((fruitScript.fruitType > -100 && fruitScript.fruitType < 0))
+            {
+                // If one of the fruits is power up 
+                if (fruitScript.fruitType < 0)
+                {
+                    ActivatePowerUp(fruit);
+
+                }
+               
+                succesfulMove = true;
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.1f);
+
+                if (!fruit)
+                {
+                    succesfulMove = true;
+                }
+                else
+                {
+                    if (CheckMatchSides(fruitScript.row, fruitScript.column))
+                    {
+                        // Checked if this is right move
+                        succesfulMove = true;
+                    }
+                    else
+                    {
+                        if (!fruit || fruitScript.fadeout)
+                        {
+                            succesfulMove = true;
+
+                        }
+
+                    }
+                }
+               
+            }
+        }
+        else
+        {
+            succesfulMove = true;
+        }
+
+
+        if (succesfulMove)
+        {
+           
+            // If special swipe happen then its not count as move.
+            if (!specialSwipe)
+            {
+                taskController.MovePlayed();
+            }
+            else
+            {
+                ActivateSpecialPower(fruitScript.column, fruitScript.row);
+                specialSwipe = false;
+            }
+
+        }
+        else
+        {
+            allFruits[backgroundTileScript.column, backgroundTileScript.row] = null;
+            //swipeHint.oneHintActive = false;
+            audioManager.SwipeResist();
+
+            fruitScript.row =tempRow;
+            fruitScript.column = tempCol;
+
+            fruitScript.targetV = allTiles[tempCol, tempRow].transform.position;
+
+            yield return new WaitForSeconds(0.3f);
+            swipeHint.oneHintActive = false;
+        }
+
+        if (fruit)
+        {
+            fruitScript.isSwiped = false;
+
+        }
+
+        allTiles[tempCol, tempRow].GetComponent<BackgroundTile>().isTempEmptyTile = false;
+
     }
 
     /// <summary>
@@ -1134,6 +1288,7 @@ public class Board : MonoBehaviour
 
         otherFruitScript.row = tempRow;
         otherFruitScript.column = tempCol;
+
 
     }
 
@@ -1367,7 +1522,7 @@ public class Board : MonoBehaviour
         {
             if(columnStopperId[i] == null)
             {
-                if (!allTiles[i, j] || allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
+                if (!allTiles[i, j] || allTiles[i, j].GetComponent<BackgroundTile>().isTempEmptyTile || allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
                 {
                     if (allTiles[i, j])
                     {
@@ -1383,6 +1538,9 @@ public class Board : MonoBehaviour
                         // Putting empty place index to variable
                         emptyPlaces.Enqueue(j);
 
+                    }else if (allFruits[i, j].GetComponent<Fruit>().isSwiped)
+                    {
+                        emptyPlaces.Clear();
                     }
                     else if (emptyPlaces.Count > 0)
                     {
@@ -1404,6 +1562,7 @@ public class Board : MonoBehaviour
 
         yield return new WaitForSeconds(0.05f);
 
+
         for (int j = columnsFallIndexY[i]; j >= 0; j--)
         {
             if (j + 1 < height && !allFruits[i, j] && allTiles[i, j] && !allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox && columnStopperId[i] == null)
@@ -1414,30 +1573,32 @@ public class Board : MonoBehaviour
                 int k = 0;
 
                 // If all the way to obstacle or missing tile is emty then fruit will call crossfall but if in this way there is a fruit then no crossfall. 
-
+                
                 while (checkForEmptyPlaces)
                 {
 
                     if (allTiles[i, j + k] && allTiles[i, j + k].GetComponent<BackgroundTile>().isCurrentObstacleBox)
                     {
                         checkForEmptyPlaces = false;
-                        while(!allTiles[i, j + k-1])
+                        while (!allTiles[i, j + k - 1])
                         {
                             k--;
                         }
                         break;
                     }
-
-
-                    if (k + j >= columnsFallIndexY[i] || allFruits[i, j + k])
+                    else
                     {
-                        crossFall = false;
-                        checkForEmptyPlaces = false;
+                        if (k + j >= columnsFallIndexY[i] || allFruits[i, j + k])
+                        {
+                            crossFall = false;
+                            checkForEmptyPlaces = false;
+                        }
                     }
 
                     k++;
                 }
-
+                
+                
                 if (crossFall)
                 {
                     if(CrossFall(i, j + k))
@@ -1445,7 +1606,7 @@ public class Board : MonoBehaviour
                         break;
                     }
                 }
-
+                
             }
         }
 
@@ -1611,6 +1772,17 @@ public class Board : MonoBehaviour
     {
         GameObject fruit = null;
         Fruit fruitScript;
+
+        if(row-1 < 0)
+        {
+            return false;
+        }
+
+        if (allFruits[column, row - 1])
+        {
+            return false;
+        }
+
         //  yield return new WaitForSeconds(0.1f);
         if (column - 1 >= 0 && FruitAvailableWithoutTypeCheck(allFruits[column - 1, row]) && !allFruits[column, row - 1])
         {
@@ -1623,7 +1795,7 @@ public class Board : MonoBehaviour
             allFruits[column + 1, row] = null;
         }
 
-        if (fruit && allTiles[column, row - 1])
+        if (fruit && allTiles[column, row - 1] && !allTiles[column, row - 1].GetComponent<BackgroundTile>().isCurrentObstacleBox )
         {
             audioManager.FruitFall();
             fruitScript = fruit.GetComponent<Fruit>();

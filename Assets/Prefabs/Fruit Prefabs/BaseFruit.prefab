@@ -316,11 +316,11 @@ MonoBehaviour:
   falling: 0
   isPowerUpSoundPlayed: 0
   outsideOfBoard: 0
+  moveToward: 0
   hitBorder: 0
   attachedPowerUp: {fileID: 0}
   activePowerUp: 0
   destroyOnReach: 0
-  moveToward: 0
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799
@@ -1044,7 +1044,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.5
+      value: 0.0001
       mode: 0
       spread: 0
       speed:

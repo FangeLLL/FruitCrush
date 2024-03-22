@@ -14,6 +14,8 @@ public class BackgroundTile : MonoBehaviour
     public int indexOfVisibleOne=-1;
     public bool isCurrentObstacleBox=false;
 
+    public bool isTempEmptyTile = false;
+
     private Vector2 firstTouchPosition;
     private AudioManager audioManager;
 

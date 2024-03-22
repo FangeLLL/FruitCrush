@@ -169,7 +169,6 @@ public class SwipeHint : MonoBehaviour
                                     }
                                     else
                                     {
-                                        Debug.Log("TEST");
                                         isMergeHorizontal = false;
                                         point = type + board.allFruits[i, j + 1].GetComponent<Fruit>().fruitType;
                                         fruit = board.allFruits[i, j + 1].GetComponent<Fruit>();
@@ -2925,10 +2924,13 @@ public class SwipeHint : MonoBehaviour
                 }
             }
         }
-        if(continueIteration && !board.blockUserMove)
+        yield return new WaitForSeconds(1f);
+        if (continueIteration && !board.blockUserMove)
         {
             StartCoroutine(board.Shuffle());
         }
+        continueIteration = false;
+        isIterating = false;
     }
 
 

@@ -1562,7 +1562,7 @@ public class Board : MonoBehaviour
 
         yield return new WaitForSeconds(0.05f);
 
-
+        // Checking for crossfalls  
         for (int j = columnsFallIndexY[i]; j >= 0; j--)
         {
             if (j-1>=0 && !allFruits[i, j-1] && allTiles[i, j] && allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox && columnStopperId[i] == null)

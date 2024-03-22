@@ -1565,48 +1565,15 @@ public class Board : MonoBehaviour
 
         for (int j = columnsFallIndexY[i]; j >= 0; j--)
         {
-            if (j + 1 < height && !allFruits[i, j] && allTiles[i, j] && !allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox && columnStopperId[i] == null)
+            if (j-1>=0 && !allFruits[i, j-1] && allTiles[i, j] && allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox && columnStopperId[i] == null)
             {
 
-                bool crossFall = true;
-                bool checkForEmptyPlaces = true;
                 int k = 0;
 
-                // If all the way to obstacle or missing tile is emty then fruit will call crossfall but if in this way there is a fruit then no crossfall. 
-                
-                while (checkForEmptyPlaces)
+                while (j + k - 1 >= 0 && allTiles[i, j + k - 1] && !allTiles[i, j + k - 1].GetComponent<BackgroundTile>().isTempEmptyTile && !allFruits[i, j + k] && !CrossFall(i, j + k))
                 {
-
-                    if (allTiles[i, j + k] && allTiles[i, j + k].GetComponent<BackgroundTile>().isCurrentObstacleBox)
-                    {
-                        checkForEmptyPlaces = false;
-                        while (!allTiles[i, j + k - 1])
-                        {
-                            k--;
-                        }
-                        break;
-                    }
-                    else
-                    {
-                        if (k + j >= columnsFallIndexY[i] || allFruits[i, j + k])
-                        {
-                            crossFall = false;
-                            checkForEmptyPlaces = false;
-                        }
-                    }
-
-                    k++;
+                    k--;
                 }
-                
-                
-                if (crossFall)
-                {
-                    if(CrossFall(i, j + k))
-                    {
-                        break;
-                    }
-                }
-                
             }
         }
 
@@ -1783,19 +1750,35 @@ public class Board : MonoBehaviour
             return false;
         }
 
+        if(allTiles[column, row - 1].GetComponent<BackgroundTile>().isCurrentObstacleBox)
+        {
+            return false;
+        }
+
         //  yield return new WaitForSeconds(0.1f);
-        if (column - 1 >= 0 && FruitAvailableWithoutTypeCheck(allFruits[column - 1, row]) && !allFruits[column, row - 1])
+        if (column - 1 >= 0 && FruitAvailableWithoutTypeCheck(allFruits[column - 1, row]))
         {
             fruit = allFruits[column - 1, row];
             allFruits[column - 1, row] = null;
         }
-        else if (column + 1 < width && FruitAvailableWithoutTypeCheck(allFruits[column + 1, row]) && !allFruits[column, row - 1])
+        else if (column + 1 < width && FruitAvailableWithoutTypeCheck(allFruits[column + 1, row]))
         {
             fruit = allFruits[column + 1, row];
             allFruits[column + 1, row] = null;
         }
+        else
+        {
+            if (((column - 1 >= 0 && allFruits[column - 1, row]) || (column + 1 < width && allFruits[column + 1, row])))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-        if (fruit && allTiles[column, row - 1] && !allTiles[column, row - 1].GetComponent<BackgroundTile>().isCurrentObstacleBox )
+        if (fruit)
         {
             audioManager.FruitFall();
             fruitScript = fruit.GetComponent<Fruit>();

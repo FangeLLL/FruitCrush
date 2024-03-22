@@ -111,7 +111,7 @@ public class Board : MonoBehaviour
 
     void Start()
     {
-        //Time.timeScale = 0.5f;
+       // Time.timeScale = 0.5f;
 
         userLevel = PlayerPrefs.GetInt("level", 0);
 
@@ -748,8 +748,6 @@ public class Board : MonoBehaviour
                        
                         string damageID = Guid.NewGuid().ToString();
 
-                        int type = allFruits[i, j].GetComponent<Fruit>().fruitType;
-
                         for (int e = 0; e < fruitsCheckTotal.Count; e++)
                         {
                             fruitsCheckTotal[e].GetComponent<Fruit>().damageID = damageID;
@@ -758,14 +756,9 @@ public class Board : MonoBehaviour
                             {
                                 fruitsCheckTotal[e].GetComponent<Fruit>().outsideOfBoard = true;
                             }
-                            else
-                            {
-                                fruitsCheckTotal[e].GetComponentInChildren<Animator>().SetTrigger(isFruitDestroyed);
-                            }
+
                             DestroyController(fruitsCheckTotal[e], true,true);
                         }
-
-                     //   typeFruits[type] += fruitsCheckTotal.Count;
 
                         if (powerUpID!=0)
                         {
@@ -799,7 +792,7 @@ public class Board : MonoBehaviour
 
                         // SWIPE HINT ANIMATION STOP
 
-                        StopHintAnimations();
+                      //  StopHintAnimations();
                       //  achievementManager.AchievementProgress(typeFruits);
                     }
                 }
@@ -988,7 +981,7 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     public bool FruitAvailable(GameObject obj)
     {
-        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.2f && !obj.GetComponent<Fruit>().fadeout && obj.GetComponent<Fruit>().fruitType >= -100)
+        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.5f && !obj.GetComponent<Fruit>().fadeout && obj.GetComponent<Fruit>().fruitType >= -100)
         {
             return true;
         }
@@ -1403,15 +1396,15 @@ public class Board : MonoBehaviour
         }
         else
         {
+          //  obj.transform.position = obj.GetComponent<Fruit>().targetV;
+            obj.transform.GetChild(0).GetComponent<Animator>().SetTrigger(isFruitDestroyed);
             yield return new WaitForSeconds(0.15f);
         }
         if (obj)
         {
             obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
             obj.GetComponent<ParticleSystem>().Play();
-        }
-        if (obj)
-        {
+
             obj.GetComponent<Fruit>().outsideOfBoard = true;
             allFruits[obj.GetComponent<Fruit>().column, obj.GetComponent<Fruit>().row] = null;
         }
@@ -1538,7 +1531,7 @@ public class Board : MonoBehaviour
                         // Putting empty place index to variable
                         emptyPlaces.Enqueue(j);
 
-                    }else if (allFruits[i, j].GetComponent<Fruit>().isSwiped)
+                    }else if (allFruits[i, j].GetComponent<Fruit>().isSwiped || allFruits[i, j].GetComponent<Fruit>().fadeout)
                     {
                         emptyPlaces.Clear();
                     }
@@ -1631,7 +1624,7 @@ public class Board : MonoBehaviour
 
                 audioManager.FruitFall();
                 // Add the new fruit to the allFruits array
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.05f);
             }
         }
         fillingColumn[i] = false;

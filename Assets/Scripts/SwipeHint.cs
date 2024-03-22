@@ -370,7 +370,6 @@ public class SwipeHint : MonoBehaviour
                                 board.allFruits[i - 1, j + 2] &&
                                 type == board.allFruits[i - 1, j + 2].GetComponent<Fruit>().fruitType)
                             {
-                                Debug.Log("NO SHUFFLE");
                                 if (!showHint)
                                 {
                                     showHint = true;

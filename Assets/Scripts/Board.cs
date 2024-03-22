@@ -1121,7 +1121,7 @@ public class Board : MonoBehaviour
 
             fruitScript.targetV = allTiles[tempCol, tempRow].transform.position;
 
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
             swipeHint.oneHintActive = false;
         }
 
@@ -1217,7 +1217,7 @@ public class Board : MonoBehaviour
             //swipeHint.oneHintActive = false;
             audioManager.SwipeResist();
             ChangeTwoFruit(fruit, otherFruit);
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
             swipeHint.oneHintActive = false;
         }
 

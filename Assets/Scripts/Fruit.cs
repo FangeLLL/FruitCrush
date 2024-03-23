@@ -33,7 +33,7 @@ public class Fruit : MonoBehaviour
 
     public string damageID;
 
-    public float speedMultiplier=6.8f;
+    public float speedMultiplier=20f;
 
     public bool falling = false;
 
@@ -52,6 +52,10 @@ public class Fruit : MonoBehaviour
     public bool activePowerUp = false;
 
     public bool destroyOnReach = false;
+
+    float timer = 0;
+
+    private Vector2 tempStartPos;
 
     [HideInInspector]
     public int swipeRight = Animator.StringToHash("isSwipeRight");
@@ -80,10 +84,14 @@ public class Fruit : MonoBehaviour
 
     }
 
-    void FixedUpdate()
+    void Update()
     {
+
+
         if(SceneManager.GetActiveScene().name != "LevelEditor")
         {
+            
+
             if (!outsideOfBoard)
             {
                 board.allFruits[column, row] = this.gameObject;
@@ -125,8 +133,39 @@ public class Fruit : MonoBehaviour
                 }
                 else
                 {
-                    transform.position = Vector2.MoveTowards(transform.position, targetV, Vector2.Distance(targetV, transform.position) * Time.deltaTime * speedMultiplier);
-                }
+                    /*Vector2 currentPosition = transform.position;
+                    float distanceMoved = Vector2.Distance(currentPosition, previousPosition);
+
+                    // Calculate speed based on distance moved and time elapsed since last frame
+                    speed = distanceMoved / Time.deltaTime;
+                    // Update previousPosition with the current position for the next frame
+                    previousPosition = currentPosition;*/
+
+                    //timer += Time.deltaTime;
+
+                    if(speedMultiplier <= 25 && Vector2.Distance(targetV, tempStartPos) > 1f)
+                    {
+                        speedMultiplier += Time.deltaTime * 25;
+                    }
+                    else if(speedMultiplier <= 25 && Vector2.Distance(targetV, tempStartPos) <= 1f)
+                    {
+                        speedMultiplier = 0.1f;
+                    }
+
+                    transform.position = Vector2.MoveTowards(transform.position, targetV, Time.deltaTime * speedMultiplier);
+
+                    /*if (timer>0.5f)
+                    {
+                        Debug.Log("I AM CONSTANT");
+                        transform.position = Vector2.MoveTowards(transform.position, targetV, Time.deltaTime * 10);
+                    }
+                    else
+                    {
+                        Debug.Log("I AM SPEED");
+                        transform.position = Vector2.Lerp(transform.position, targetV, Time.deltaTime * speedMultiplier);
+                    }*/
+                    //transform.position = Vector2.MoveTowards(transform.position, targetV, Time.deltaTime * speedMultiplier);
+                }            
 
 
             }
@@ -134,10 +173,12 @@ public class Fruit : MonoBehaviour
             if (Vector2.Distance(targetV, transform.position) > 0.1f)
             {
                 isMoving = true;
+                tempStartPos = transform.position;
             }
             else
             {
                 isMoving = false;
+                speedMultiplier = 20f;
             }
 
             if (isClicked)

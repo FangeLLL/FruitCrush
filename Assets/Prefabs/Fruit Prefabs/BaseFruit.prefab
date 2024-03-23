@@ -312,7 +312,7 @@ MonoBehaviour:
   isMoving: 0
   animator: {fileID: 4633664314048729591}
   damageID: 
-  speedMultiplier: 6.8
+  speedMultiplier: 20
   falling: 0
   isPowerUpSoundPlayed: 0
   outsideOfBoard: 0

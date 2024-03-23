@@ -112,7 +112,7 @@ public class Board : MonoBehaviour
 
     void Start()
     {
-       // Time.timeScale = 0.5f;
+       //Time.timeScale = 0.5f;
 
         userLevel = PlayerPrefs.GetInt("level", 0);
 
@@ -1628,7 +1628,7 @@ public class Board : MonoBehaviour
 
                 audioManager.FruitFall();
                 // Add the new fruit to the allFruits array
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.15f);
             }
         }
         fillingColumn[i] = false;

@@ -53,6 +53,8 @@ public class Fruit : MonoBehaviour
 
     public bool destroyOnReach = false;
 
+    bool checkTempPos=false;
+
     float timer = 0;
 
     private Vector2 tempStartPos;
@@ -168,18 +170,25 @@ public class Fruit : MonoBehaviour
                 }            
 
 
-            }
+            }        
 
             if (Vector2.Distance(targetV, transform.position) > 0.1f)
             {
                 isMoving = true;
-                tempStartPos = transform.position;
+                if (!checkTempPos)
+                {
+                    checkTempPos = true;
+                    tempStartPos = transform.position;
+                }
             }
             else
             {
-                tempStartPos = transform.position;
                 isMoving = false;
                 speedMultiplier = 20f;
+                if (checkTempPos)
+                {
+                    checkTempPos = false;
+                }
             }
 
             if (isClicked)

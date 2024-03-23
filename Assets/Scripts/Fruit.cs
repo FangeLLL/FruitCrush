@@ -177,6 +177,7 @@ public class Fruit : MonoBehaviour
             }
             else
             {
+                tempStartPos = transform.position;
                 isMoving = false;
                 speedMultiplier = 20f;
             }

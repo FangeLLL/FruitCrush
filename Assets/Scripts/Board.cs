@@ -1146,6 +1146,8 @@ public class Board : MonoBehaviour
         if (fruitScript.fruitType > -100 && otherFruitScript.fruitType > -100 && fruitScript.fruitType < 0 && otherFruitScript.fruitType < 0 && !specialSwipe)
         {
             // Selected power up moves towards to other power up
+            fruitScript.outsideOfBoard = true;
+            allFruits[fruitScript.column, fruitScript.row]=null;
             fruitScript.row = otherFruitScript.row;
             fruitScript.column = otherFruitScript.column;
             fruitScript.targetV = otherFruitScript.targetV;

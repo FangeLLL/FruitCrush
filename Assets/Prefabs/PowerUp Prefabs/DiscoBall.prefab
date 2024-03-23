@@ -64,12 +64,12 @@ MonoBehaviour:
   isMoving: 0
   animator: {fileID: 5767386526623284557}
   damageID: 
-  speedMultiplier: 20
+  speedMultiplier: 6.8
   falling: 0
   isPowerUpSoundPlayed: 0
   outsideOfBoard: 0
-  hitBorder: 0
   moveToward: 0
+  hitBorder: 0
   attachedPowerUp: {fileID: 0}
   activePowerUp: 0
   destroyOnReach: 0

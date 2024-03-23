@@ -5269,7 +5269,7 @@ MonoBehaviour:
   isMoving: 0
   animator: {fileID: 9080097486433314119}
   damageID: 
-  speedMultiplier: 20
+  speedMultiplier: 6.8
   falling: 0
   isPowerUpSoundPlayed: 0
   outsideOfBoard: 0

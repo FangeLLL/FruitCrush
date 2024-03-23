@@ -33,7 +33,7 @@ public class Fruit : MonoBehaviour
 
     public string damageID;
 
-    public float speedMultiplier=8f;
+    public float speedMultiplier=6.8f;
 
     public bool falling = false;
 

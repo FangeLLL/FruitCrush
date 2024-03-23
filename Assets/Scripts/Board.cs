@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using System;
 using Unity.VisualScripting;
+using UnityEditor.SearchService;
 
 public class Board : MonoBehaviour
 {
@@ -961,15 +962,15 @@ public class Board : MonoBehaviour
             fruit.GetComponent<Fruit>().targetV = gatherPosition;
             fruit.GetComponent<Fruit>().speedMultiplier = 10f;
         }
-
-        CreatePowerUp(column, row, powerUpID,true);
-
-        yield return new WaitForSeconds(0.15f);
+        
+        yield return new WaitForSeconds(0.19f);
 
         foreach (GameObject obj in DestroyFruits)
         {
             Destroy(obj);
         }
+
+        CreatePowerUp(column, row, powerUpID, true);
 
         audioManager.PowerUpGain();
     }
@@ -1407,6 +1408,7 @@ public class Board : MonoBehaviour
 
             obj.GetComponent<Fruit>().outsideOfBoard = true;
             allFruits[obj.GetComponent<Fruit>().column, obj.GetComponent<Fruit>().row] = null;
+            
         }
         yield return new WaitForSeconds(2f);
         if (obj)

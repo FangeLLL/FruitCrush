@@ -1626,7 +1626,7 @@ public class Board : MonoBehaviour
 
                 audioManager.FruitFall();
                 // Add the new fruit to the allFruits array
-                yield return new WaitForSeconds(0.05f);
+                yield return new WaitForSeconds(0.1f);
             }
         }
         fillingColumn[i] = false;

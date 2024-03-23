@@ -53,6 +53,8 @@ public class Fruit : MonoBehaviour
 
     public bool destroyOnReach = false;
 
+    public bool discoballDestroyer = false;
+
     float timer = 0;
 
     private Vector2 tempStartPos;
@@ -108,7 +110,7 @@ public class Fruit : MonoBehaviour
             if (isSwiped)
             {
                 // Swipe movement
-                transform.position = Vector2.Lerp(transform.position, targetV, 25f * Time.deltaTime);
+                transform.position = Vector2.Lerp(transform.position, targetV, 30f * Time.deltaTime);
 
             }
             else
@@ -217,14 +219,27 @@ public class Fruit : MonoBehaviour
                 }
                 else
                 {
-                    audioManager.FruitCrush();
-                    board.DestroyController(board.allFruits[column, row], false);
+                    if(fruitType < 0)
+                    {
+
+                        if (fruitScript.discoballDestroyer)
+                        {
+                            Destroy(gameObject);
+                        }
+                        else
+                        {
+                            board.DestroyController(board.allFruits[column, row], false);
+                        }
+                    }
+                    else
+                    {
+                        audioManager.FruitCrush();
+                        board.DestroyController(board.allFruits[column, row], false);
+                    }               
                 }
                
             }
-        }
-
-        
+        }        
   
     }
 

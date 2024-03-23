@@ -1146,8 +1146,6 @@ public class Board : MonoBehaviour
         if (fruitScript.fruitType > -100 && otherFruitScript.fruitType > -100 && fruitScript.fruitType < 0 && otherFruitScript.fruitType < 0 && !specialSwipe)
         {
             // Selected power up moves towards to other power up
-            fruitScript.outsideOfBoard = true;
-            allFruits[fruitScript.column, fruitScript.row]=null;
             fruitScript.row = otherFruitScript.row;
             fruitScript.column = otherFruitScript.column;
             fruitScript.targetV = otherFruitScript.targetV;
@@ -1535,7 +1533,7 @@ public class Board : MonoBehaviour
                         // Putting empty place index to variable
                         emptyPlaces.Enqueue(j);
 
-                    }else if (allFruits[i, j].GetComponent<Fruit>().isSwiped || allFruits[i, j].GetComponent<Fruit>().fadeout)
+                    }else if (allFruits[i, j].GetComponent<Fruit>().isSwiped)
                     {
                         emptyPlaces.Clear();
                     }
@@ -1574,64 +1572,67 @@ public class Board : MonoBehaviour
             }
         }
 
-        while (emptyPlaces.Count > 0)
+        if (columnStopperId[i] == null)
         {
-            float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
-            float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
-            int emptyRowIndex = emptyPlaces.Dequeue();
-            // If this place did not filled then create object for it.
-            if (!allFruits[i, emptyRowIndex] && columnStopperId[i] == null)
+            while (emptyPlaces.Count > 0)
             {
-
-                Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, (columnsFallIndexY[i] + 1) * scaleNumber - yOffset);
-
-                // Instantiate a new fruit at the position of the destroyed fruit. Fruit that going to be created must be from existFruits variable. existFruits
-                // list contains indexes of avaliable fruits.
-                int fruitToUse = existFruits[UnityEngine.Random.Range(0, existFruits.Count)];
-                GameObject newFruit;
-                int random=1;
-                if (indexOfCreatableObstacle != -1)
+                float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
+                float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
+                int emptyRowIndex = emptyPlaces.Dequeue();
+                // If this place did not filled then create object for it.
+                if (!allFruits[i, emptyRowIndex])
                 {
-                    random = UnityEngine.Random.Range(0,4);
+
+                    Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, (columnsFallIndexY[i] + 1) * scaleNumber - yOffset);
+
+                    // Instantiate a new fruit at the position of the destroyed fruit. Fruit that going to be created must be from existFruits variable. existFruits
+                    // list contains indexes of avaliable fruits.
+                    int fruitToUse = existFruits[UnityEngine.Random.Range(0, existFruits.Count)];
+                    GameObject newFruit;
+                    int random = 1;
+                    if (indexOfCreatableObstacle != -1)
+                    {
+                        random = UnityEngine.Random.Range(0, 4);
+                    }
+
+                    if (random == 0)
+                    {
+                        // generatable type of obstacle creation
+                        newFruit = Instantiate(obstaclePrefabs[indexOfCreatableObstacle], tempPosition, Quaternion.identity);
+                        newFruit.GetComponent<ObstacleScript>().row = emptyRowIndex;
+                        newFruit.GetComponent<ObstacleScript>().column = i;
+
+                    }
+                    else
+                    {
+                        // normal fruit creation
+                        newFruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
+                    }
+                    Fruit newFruitScript = newFruit.GetComponent<Fruit>();
+
+                    // Set the parent and name of the new fruit
+                    newFruit.transform.parent = this.transform;
+                    newFruit.name = "( " + i + ", " + emptyRowIndex + " )";
+
+                    // Set the column and row of the new fruit
+                    newFruitScript.column = i;
+                    newFruitScript.row = emptyRowIndex;
+                    newFruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
+                    if (random != 0)
+                    {
+                        totalNumberOfFruits[fruitToUse]++;
+                        newFruitScript.fruitType = fruitToUse;
+                    }
+
+                    allFruits[i, emptyRowIndex] = newFruit;
+
+                    audioManager.FruitFall();
+                    // Add the new fruit to the allFruits array
+                    yield return new WaitForSeconds(0.1f);
                 }
-
-                if (random==0)
-                {
-                    // generatable type of obstacle creation
-                    newFruit = Instantiate(obstaclePrefabs[indexOfCreatableObstacle], tempPosition, Quaternion.identity);
-                    newFruit.GetComponent<ObstacleScript>().row = emptyRowIndex;
-                    newFruit.GetComponent<ObstacleScript>().column = i;
-
-                }
-                else
-                {
-                    // normal fruit creation
-                    newFruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
-                }
-                Fruit newFruitScript = newFruit.GetComponent<Fruit>();
-
-                // Set the parent and name of the new fruit
-                newFruit.transform.parent = this.transform;
-                newFruit.name = "( " + i + ", " + emptyRowIndex + " )";
-
-                // Set the column and row of the new fruit
-                newFruitScript.column = i;
-                newFruitScript.row = emptyRowIndex;
-                newFruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
-                if (random != 0)
-                {
-                    totalNumberOfFruits[fruitToUse]++;
-                    newFruitScript.fruitType = fruitToUse;
-                }
-
-                allFruits[i,emptyRowIndex] = newFruit;
-
-                audioManager.FruitFall();
-                // Add the new fruit to the allFruits array
-                yield return new WaitForSeconds(0.15f);
             }
-        }
-        fillingColumn[i] = false;
+            fillingColumn[i] = false;
+        }       
 
     }
 
@@ -1666,6 +1667,10 @@ public class Board : MonoBehaviour
 
         GameObject newPowerUp = Instantiate(powerUps[(type * -1) - 1], tempPosition, powerUps[(type * -1) - 1].transform.rotation);
         Fruit newPowerUpScript = newPowerUp.GetComponent<Fruit>();
+
+        // Add the new powerup to the allFruits array
+        allFruits[column, row] = null;
+        allFruits[column, row] = newPowerUp;
 
         // Set the parent and name of the new powerup
         newPowerUp.transform.parent = this.transform;
@@ -1702,9 +1707,7 @@ public class Board : MonoBehaviour
        
 
 
-        // Add the new powerup to the allFruits array
-        allFruits[column, row] = null;
-        allFruits[column, row] = newPowerUp;
+       
         // it means this is not for immidate use and normally created not for merge or something for.
         if (isItInteractable)
         {

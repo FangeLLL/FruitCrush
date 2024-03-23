@@ -55,7 +55,13 @@ public class MainMenuController : Sounds
     [SerializeField] private GameObject soundToggleBlock;
     [SerializeField] private GameObject hintToggleBlock;
 
+    [SerializeField] private GameObject farmOpen;
+    [SerializeField] private GameObject farmClose;
+    [SerializeField] private GameObject seedPanel;
+
     int refillPrice = 1000;
+
+    public bool isFarmAreaOpen;
 
     public bool isSoundOn;
     public bool isMusicOn;
@@ -376,21 +382,29 @@ public class MainMenuController : Sounds
 
     public void FarmButtonTapped()
     {
+        isFarmAreaOpen = true;
+        farmOpen.GetComponent<Button>().interactable = false;
         starBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
         livesBox.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
         settingsIcon.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
         tasksIcon.GetComponent<Animator>().SetTrigger("GameFinishTriggerReverse");
         battlePassIcon.GetComponent<Animator>().SetTrigger("GameFinishTriggerReverse");
         mainPlayButton.GetComponent<Animator>().SetTrigger("GameRestartTrigger");
+
+        seedPanel.GetComponent<Animator>().SetTrigger("FarmOpen");
     }
 
     public void FarmExitButtonTapped()
     {
+        isFarmAreaOpen = false;
+        farmOpen.GetComponent<Button>().interactable = true;
         starBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
         livesBox.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
         settingsIcon.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
         tasksIcon.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
         battlePassIcon.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
         mainPlayButton.GetComponent<Animator>().SetTrigger("GameFinishTrigger");
+
+        seedPanel.GetComponent<Animator>().SetTrigger("FarmClose");
     }
 }

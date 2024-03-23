@@ -143,13 +143,13 @@ public class Fruit : MonoBehaviour
 
                     //timer += Time.deltaTime;
 
-                    if(speedMultiplier <= 25 && Vector2.Distance(targetV, tempStartPos) > 1f)
+                    if(speedMultiplier <= 25 && Vector2.Distance(targetV, tempStartPos) > 1.5f)
                     {
                         speedMultiplier += Time.deltaTime * 25;
                     }
-                    else if(speedMultiplier <= 25 && Vector2.Distance(targetV, tempStartPos) <= 1f)
+                    else if(speedMultiplier <= 25 && Vector2.Distance(targetV, tempStartPos) <= 1.5f)
                     {
-                        speedMultiplier = 0.1f;
+                        speedMultiplier = 7f;
                     }
 
                     transform.position = Vector2.MoveTowards(transform.position, targetV, Time.deltaTime * speedMultiplier);

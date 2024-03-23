@@ -1426,7 +1426,6 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     private IEnumerator FillTheGaps()
     {
-        yield return null;
         if (!shuffling || blockUserMove)
         {
             for (int i = 0; i < width; i++)
@@ -1440,8 +1439,9 @@ public class Board : MonoBehaviour
 
             }
         }
-        yield return new WaitForSeconds(0.1f);
-       
+        //  yield return new WaitForSeconds(0.1f);
+        yield return null;
+
         StartCoroutine(FillTheGaps());
     }
 

@@ -967,6 +967,13 @@ public class Board : MonoBehaviour
         
         yield return new WaitForSeconds(0.19f);
 
+        yield return null;
+        yield return null;
+        yield return null;
+        yield return null;
+        yield return null;
+        yield return null;
+
         foreach (GameObject obj in DestroyFruits)
         {
             Destroy(obj);
@@ -1407,7 +1414,12 @@ public class Board : MonoBehaviour
         {
             obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
             obj.GetComponent<ParticleSystem>().Play();
-
+            yield return null;
+            yield return null;
+            yield return null;
+            yield return null;
+            yield return null;
+            yield return null;
             obj.GetComponent<Fruit>().outsideOfBoard = true;
             allFruits[obj.GetComponent<Fruit>().column, obj.GetComponent<Fruit>().row] = null;
             

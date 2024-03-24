@@ -55,6 +55,8 @@ public class Fruit : MonoBehaviour
 
     public bool discoballDestroyer = false;
 
+    public bool harvester = false;
+
     float timer = 0;
 
     private Vector2 tempStartPos;
@@ -131,7 +133,14 @@ public class Fruit : MonoBehaviour
 
                 if (moveToward)
                 {
-                    transform.position = Vector2.MoveTowards(transform.position, targetV, speedMultiplier * Time.deltaTime);
+                    if (harvester)
+                    {
+                        transform.position = Vector2.MoveTowards(transform.position, targetV, Time.deltaTime * 20);
+                    }
+                    else
+                    {
+                        transform.position = Vector2.MoveTowards(transform.position, targetV, Time.deltaTime * 10);
+                    }
                 }
                 else
                 {

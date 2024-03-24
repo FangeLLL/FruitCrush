@@ -2057,15 +2057,20 @@ public class Board : MonoBehaviour
                 cloneHorizontalScript.damageID = fruitScript.damageID;
                 cloneHorizontalScript.fruitType = type;
 
-                fruitScript.speedMultiplier = 1.5f;
-                cloneHorizontalScript.speedMultiplier = 1.5f;
+                //   fruitScript.speedMultiplier = 1.5f;
+                //  cloneHorizontalScript.speedMultiplier = 1.5f;
 
+                fruitScript.moveToward = true;
+                cloneHorizontalScript.moveToward = true;
+
+                fruitScript.harvester = true;
+                cloneHorizontalScript.harvester = true;
 
                 fruitScript.outsideOfBoard = true;
                 cloneHorizontalScript.outsideOfBoard = true;
 
                 fruitScript.targetV.x = -11;
-                cloneHorizontalScript.targetV.x = 11;
+                cloneHorizontalScript.targetV.x = 11;             
 
                 fruitScript.destroyOnReach = true;
                 cloneHorizontalScript.destroyOnReach = true;
@@ -2105,14 +2110,17 @@ public class Board : MonoBehaviour
                 cloneVerticalScript.damageID=fruitScript.damageID;
                 cloneVerticalScript.fruitType = type;
 
-                fruitScript.speedMultiplier = 1.5f;
-                cloneVerticalScript.speedMultiplier = 1.5f;
+                fruitScript.moveToward = true;
+                cloneVerticalScript.moveToward = true;
+
+                fruitScript.harvester = true;
+                cloneVerticalScript.harvester = true;
 
                 fruitScript.outsideOfBoard = true;
                 cloneVerticalScript.outsideOfBoard = true;
 
                 fruitScript.targetV.y = -14;
-                cloneVerticalScript.targetV.y = 14;
+                cloneVerticalScript.targetV.y = 14;            
 
                 fruitScript.destroyOnReach = true;
                 cloneVerticalScript.destroyOnReach = true;

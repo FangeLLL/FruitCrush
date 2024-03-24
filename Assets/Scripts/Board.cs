@@ -1830,6 +1830,8 @@ public class Board : MonoBehaviour
 
                     audioManager.Pickaxe();
 
+                    otherFruit.GetComponentInChildren<SpriteRenderer>().enabled = false;
+
                     StartCoroutine(WaitAndDestroyObj(otherFruit, speedAndTimeLibrary.waitBeforeDestroyingTNT));
 
                     break;
@@ -2119,7 +2121,7 @@ public class Board : MonoBehaviour
                 {
                     audioManager.Pickaxe();
                 }
-
+                fruit.GetComponentInChildren<SpriteRenderer>().enabled = false;
                 StartCoroutine(WaitAndDestroyObj(fruit,speedAndTimeLibrary.waitBeforeDestroyingTNT));
 
                 break;
@@ -2148,12 +2150,12 @@ public class Board : MonoBehaviour
                             fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.SetActive(true);
                             Vector3 newRotation = new Vector3(0f, 0f, 90f);
                             fruit.transform.GetChild(2).gameObject.transform.GetChild(2).rotation = Quaternion.Euler(newRotation);
-                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).GetComponent<Animator>().SetTrigger(isHarvesterMergedBoomerang);
+                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.GetComponent<Animator>().SetTrigger(isHarvesterMergedBoomerang);
                             break;
                         case -2:
                             // Vertical
                             fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.SetActive(true);
-                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).GetComponent<Animator>().SetTrigger(isHarvesterMergedBoomerang);
+                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.GetComponent<Animator>().SetTrigger(isHarvesterMergedBoomerang);
                             break;
                         case -3:
                             // TNT

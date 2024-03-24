@@ -112,7 +112,7 @@ public class Board : MonoBehaviour
 
     void Start()
     {
-        //Application.targetFrameRate = 60;
+        Application.targetFrameRate = 60;
         //Time.timeScale = 0.5f;
 
         userLevel = PlayerPrefs.GetInt("level", 0);
@@ -537,8 +537,8 @@ public class Board : MonoBehaviour
     {
         // List of fruits going to be popped.
         List<GameObject> fruitsCheckTotal = new List<GameObject>();
-        // yield return null;
-        yield return new WaitForSeconds(0.2f);
+        yield return null;
+        //yield return new WaitForSeconds(0.2f);
         popped = false;
         hintBool = false;
 
@@ -967,12 +967,7 @@ public class Board : MonoBehaviour
         
         yield return new WaitForSeconds(0.19f);
 
-        yield return null;
-        yield return null;
-        yield return null;
-        yield return null;
-        yield return null;
-        yield return null;
+        
 
         foreach (GameObject obj in DestroyFruits)
         {
@@ -980,6 +975,8 @@ public class Board : MonoBehaviour
         }
 
         CreatePowerUp(column, row, powerUpID, true);
+
+        yield return new WaitForSeconds(0.036f);
 
         audioManager.PowerUpGain();
     }
@@ -991,7 +988,7 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     public bool FruitAvailable(GameObject obj)
     {
-        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.5f && !obj.GetComponent<Fruit>().fadeout && obj.GetComponent<Fruit>().fruitType >= -100)
+        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.01f && !obj.GetComponent<Fruit>().fadeout && obj.GetComponent<Fruit>().fruitType >= -100)
         {
             return true;
         }
@@ -1168,7 +1165,7 @@ public class Board : MonoBehaviour
         {
             // If one of them is power up then they switch and power up activate.
             ChangeTwoFruit(fruit, otherFruit);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.18f);
             if(!specialSwipe)
             {
                 if ((fruitScript.fruitType > -100 && fruitScript.fruitType < 0) || (otherFruitScript.fruitType > -100 && otherFruitScript.fruitType < 0))
@@ -1188,7 +1185,7 @@ public class Board : MonoBehaviour
                 }
                 else
                 {
-                    yield return new WaitForSeconds(0.1f);
+                    //yield return new WaitForSeconds(0.1f);
 
                     succesfulMove = IsSuccesfulMove(fruit, otherFruit);
                 }
@@ -1414,12 +1411,7 @@ public class Board : MonoBehaviour
         {
             obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
             obj.GetComponent<ParticleSystem>().Play();
-            yield return null;
-            yield return null;
-            yield return null;
-            yield return null;
-            yield return null;
-            yield return null;
+            yield return new WaitForSeconds(0.036f);
             obj.GetComponent<Fruit>().outsideOfBoard = true;
             allFruits[obj.GetComponent<Fruit>().column, obj.GetComponent<Fruit>().row] = null;
             
@@ -1569,7 +1561,7 @@ public class Board : MonoBehaviour
             }       
         }
 
-        yield return new WaitForSeconds(0.05f);
+        //yield return new WaitForSeconds(0.05f);
 
         // Checking for crossfalls  
         for (int j = columnsFallIndexY[i]; j >= 0; j--)

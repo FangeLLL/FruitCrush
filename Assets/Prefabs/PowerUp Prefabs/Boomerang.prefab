@@ -5278,6 +5278,8 @@ MonoBehaviour:
   attachedPowerUp: {fileID: 0}
   activePowerUp: 0
   destroyOnReach: 0
+  discoballDestroyer: 0
+  harvester: 0
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799

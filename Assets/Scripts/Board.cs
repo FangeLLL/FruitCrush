@@ -103,6 +103,7 @@ public class Board : MonoBehaviour
 
     private int isFruitDestroyed = Animator.StringToHash("isFruitDestroyed");
 
+    ObjectSpeedAndTimeWaitingLibrary speedAndTimeLibrary = new ObjectSpeedAndTimeWaitingLibrary();
 
     private void Awake()
     {
@@ -962,10 +963,10 @@ public class Board : MonoBehaviour
         foreach(GameObject fruit in DestroyFruits)
         {
             fruit.GetComponent<Fruit>().targetV = gatherPosition;
-            fruit.GetComponent<Fruit>().speedMultiplier = 5f;
+            fruit.GetComponent<Fruit>().speedMultiplier = speedAndTimeLibrary.powerUpCreationFruitSpeed;
         }
         
-        yield return new WaitForSeconds(0.19f);
+        yield return new WaitForSeconds(speedAndTimeLibrary.powerUpCreationFruitGatheringDuration);
 
         CreatePowerUp(column, row, powerUpID, true);
 
@@ -1045,7 +1046,7 @@ public class Board : MonoBehaviour
         fruitScript.targetV = allTiles[backgroundTileScript.column, backgroundTileScript.row].transform.position;
 
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(speedAndTimeLibrary.fruitSwipeDuration);
         if (!specialSwipe)
         {
             if ((fruitScript.fruitType > -100 && fruitScript.fruitType < 0))
@@ -1061,7 +1062,7 @@ public class Board : MonoBehaviour
             }
             else
             {
-                yield return new WaitForSeconds(0.1f);
+                //yield return new WaitForSeconds(0.1f);
 
                 if (!fruit)
                 {
@@ -1119,8 +1120,7 @@ public class Board : MonoBehaviour
 
             fruitScript.targetV = allTiles[tempCol, tempRow].transform.position;
 
-            yield return new WaitForSeconds(0.2f);
-            swipeHint.oneHintActive = false;
+            yield return new WaitForSeconds(speedAndTimeLibrary.afterReverseWait);
         }
 
         if (fruit)
@@ -1155,7 +1155,7 @@ public class Board : MonoBehaviour
             fruitScript.targetV = otherFruitScript.targetV;
             fruitScript.fadeout = true;
             otherFruitScript.fadeout = true;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(speedAndTimeLibrary.beforeTwoPowerUpMergeWait);
             StartCoroutine(ActivateMergePowerUp(fruit, otherFruit));
             succesfulMove = true;
         }
@@ -1163,7 +1163,7 @@ public class Board : MonoBehaviour
         {
             // If one of them is power up then they switch and power up activate.
             ChangeTwoFruit(fruit, otherFruit);
-            yield return new WaitForSeconds(0.18f);
+            yield return new WaitForSeconds(speedAndTimeLibrary.fruitSwipeDuration);
             if(!specialSwipe)
             {
                 if ((fruitScript.fruitType > -100 && fruitScript.fruitType < 0) || (otherFruitScript.fruitType > -100 && otherFruitScript.fruitType < 0))
@@ -1215,8 +1215,7 @@ public class Board : MonoBehaviour
             //swipeHint.oneHintActive = false;
             audioManager.SwipeResist();
             ChangeTwoFruit(fruit, otherFruit);
-            yield return new WaitForSeconds(0.1f);
-            swipeHint.oneHintActive = false;
+            yield return new WaitForSeconds(speedAndTimeLibrary.afterReverseWait);
         }
 
         if (fruit)
@@ -1397,25 +1396,25 @@ public class Board : MonoBehaviour
     {
         if (!playFruitDestroyAnim)
         {
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(speedAndTimeLibrary.fruitPopWithoutAnimDuration);
         }
         else
         {
           //  obj.transform.position = obj.GetComponent<Fruit>().targetV;
             obj.transform.GetChild(0).GetComponent<Animator>().SetTrigger(isFruitDestroyed);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(speedAndTimeLibrary.fruitDestroyAnimDuration);
         }
         if (obj)
         {
             obj.GetComponent<ParticleSystem>().Play();            
-            yield return new WaitForSeconds(0.026f);
+            yield return new WaitForSeconds(speedAndTimeLibrary.waitBeforeClosingFruitSprite);
             obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
-            yield return new WaitForSeconds(0.020f);
+            yield return new WaitForSeconds(speedAndTimeLibrary.waitBeforeRemovingFruitFromBoard);
             obj.GetComponent<Fruit>().outsideOfBoard = true;
             allFruits[obj.GetComponent<Fruit>().column, obj.GetComponent<Fruit>().row] = null;
             
         }
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(speedAndTimeLibrary.maxFruitParticleDuration);
         if (obj)
         {
             Destroy(obj);
@@ -1555,7 +1554,7 @@ public class Board : MonoBehaviour
 
                         fruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
                         emptyPlaces.Enqueue(j);
-                        yield return new WaitForSeconds(0.04f);
+                        yield return new WaitForSeconds(speedAndTimeLibrary.waitBeforeFallingOtherFruit);
                     }
                 }
             }
@@ -1634,7 +1633,7 @@ public class Board : MonoBehaviour
 
                     audioManager.FruitFall();
                     // Add the new fruit to the allFruits array
-                    yield return new WaitForSeconds(0.1f);
+                    yield return new WaitForSeconds(speedAndTimeLibrary.waitBeforeCreatingFruitsTopOfBoard);
                 }
             }
             fillingColumn[i] = false;
@@ -1717,7 +1716,7 @@ public class Board : MonoBehaviour
         // it means this is not for immidate use and normally created not for merge or something for.
         if (isItInteractable)
         {
-            StartCoroutine(WaitAndActivatePowerUp(0.3f, newPowerUpScript));
+            StartCoroutine(WaitAndActivatePowerUp(speedAndTimeLibrary.createdPowerupUninteractableDuration, newPowerUpScript));
         }
         return newPowerUp;
     }
@@ -1840,28 +1839,28 @@ public class Board : MonoBehaviour
                     ActivatePowerUp(otherFruit);
                     break;
                 case -3:
-                    yield return new WaitForSeconds(0.1f);
+                //    yield return new WaitForSeconds(0.1f);
                     Destroy(fruit);
                     otherFruit.GetComponentInChildren<SpriteRenderer>().sortingOrder = 10;
                     otherFruit.GetComponentInChildren<Animator>().SetTrigger(isTNTMerged);
                     if (otherFruitScript.column - 2 >= 0)
                     {
-                        StartCoroutine(StopAndStartSingleColumn(1.6f, otherFruitScript.column - 2));
+                        StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.twoTNTMergeColumnStopDuration, otherFruitScript.column - 2));
                     }
                     if (otherFruitScript.column - 1 >= 0)
                     {
-                        StartCoroutine(StopAndStartSingleColumn(1.6f, otherFruitScript.column - 1));
+                        StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.twoTNTMergeColumnStopDuration, otherFruitScript.column - 1));
                     }
-                    StartCoroutine(StopAndStartSingleColumn(1.6f, otherFruitScript.column));
+                    StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.twoTNTMergeColumnStopDuration, otherFruitScript.column));
                     if (otherFruitScript.column + 1 < width)
                     {
-                        StartCoroutine(StopAndStartSingleColumn(1.6f, otherFruitScript.column + 1));
+                        StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.twoTNTMergeColumnStopDuration, otherFruitScript.column + 1));
                     }
                     if (otherFruitScript.column + 2 < width)
                     {
-                        StartCoroutine(StopAndStartSingleColumn(1.6f, otherFruitScript.column + 2));
+                        StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.twoTNTMergeColumnStopDuration, otherFruitScript.column + 2));
                     }
-                    yield return new WaitForSeconds(1.44f);
+                    yield return new WaitForSeconds(speedAndTimeLibrary.twoTNTMergeAnimDuration);
                     
                     otherFruitScript.activePowerUp = true;
                     otherFruit.GetComponent<BoxCollider2D>().size = new Vector2(5, 5);
@@ -1876,12 +1875,12 @@ public class Board : MonoBehaviour
                     fruit.GetComponentInChildren<SpriteRenderer>().enabled = false;
                     otherFruit.GetComponentInChildren<Animator>().SetTrigger(is2BoomerangMerged);
 
-                    StartCoroutine(StopAndStartSingleColumn(1.34f,otherFruitScript.column));
+                    StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.twoBoomerangMergeColumnStopDuration,otherFruitScript.column));
 
-                    yield return new WaitForSeconds(1.34f);                 
+                    yield return new WaitForSeconds(speedAndTimeLibrary.twoBoomerangMergeAnimDuration);                 
 
                     GameObject cloneBoomerang = CreatePowerUp(otherFruitScript.column, otherFruitScript.row,-4,false,false);
-                    yield return new WaitForSeconds(0.1f);
+                //    yield return new WaitForSeconds(0.1f);
                     fruit.GetComponentInChildren<SpriteRenderer>().enabled = true;
 
                     audioManager.Pickaxe();
@@ -1891,17 +1890,17 @@ public class Board : MonoBehaviour
                     break;
                 case -5:
                     audioManager.Pickaxe();
-                    StartCoroutine(StopAndStartAllFillings(4.8f));
+                    StartCoroutine(StopAndStartAllFillings(speedAndTimeLibrary.twoDiscoBallMergeColumnStopDuration));
                     Destroy(fruit);
                     blockUserMove = true;
                     otherFruitScript.activePowerUp = true;
                     otherFruit.transform.GetChild(0).gameObject.SetActive(false);
                     otherFruit.transform.GetChild(1).gameObject.SetActive(true);
-                    yield return new WaitForSeconds(3.08f);
+                    yield return new WaitForSeconds(speedAndTimeLibrary.twoDiscoballMergeAnimDuration);
                     allFruits[otherFruitScript.column, otherFruitScript.row] = null;
                     otherFruit.transform.GetChild(2).gameObject.SetActive(true);
                     otherFruit.GetComponent<ExplosionAreaScript>().enabled = true;
-                    yield return new WaitForSeconds(1.5f);
+                    yield return new WaitForSeconds(speedAndTimeLibrary.twoDiscoBallMergeExplosionDuration);
                     otherFruitScript.outsideOfBoard = true;
                     blockUserMove = false;
                     break;
@@ -2048,7 +2047,7 @@ public class Board : MonoBehaviour
             // Horizontal Harvester power up
             case -1:
 
-                StartCoroutine(StopAndStartAllFillings(0.06f * width));
+                StartCoroutine(StopAndStartAllFillings(speedAndTimeLibrary.harvesterColumnStopDurationMultiplier * width));
 
                 GameObject cloneHorizontal = Instantiate(powerUps[0], allTiles[column, row].transform.position, powerUps[0].transform.rotation);
                 Fruit cloneHorizontalScript = cloneHorizontal.GetComponent<Fruit>();
@@ -2060,14 +2059,9 @@ public class Board : MonoBehaviour
 
                 fruit.transform.position = allTiles[column, row].transform.position;
 
-                //   cloneHorizontalScript.row = row;
-                //  cloneHorizontalScript.column = column;
                 cloneHorizontal.gameObject.transform.position = allTiles[column, row].transform.position;
                 cloneHorizontalScript.damageID = fruitScript.damageID;
                 cloneHorizontalScript.fruitType = type;
-
-                //   fruitScript.speedMultiplier = 1.5f;
-                //  cloneHorizontalScript.speedMultiplier = 1.5f;
 
                 fruitScript.moveToward = true;
                 cloneHorizontalScript.moveToward = true;
@@ -2100,7 +2094,7 @@ public class Board : MonoBehaviour
             // Vertical Harvester power up
             case -2:
 
-                StartCoroutine(StopAndStartSingleColumn(0.07f * width, column));
+                StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.harvesterColumnStopDurationMultiplier * width, column));
 
                 GameObject cloneVertical = Instantiate(powerUps[1], allTiles[column, row].transform.position, powerUps[1].transform.rotation);
                 Fruit cloneVerticalScript = cloneVertical.GetComponent<Fruit>();
@@ -2113,8 +2107,6 @@ public class Board : MonoBehaviour
 
                 fruit.transform.position = allTiles[column, row].transform.position;
 
-             //   cloneVerticalScript.row = row;
-             //    cloneVerticalScript.column = column;
                 cloneVertical.gameObject.transform.position = allTiles[column, row].transform.position;
                 cloneVerticalScript.damageID=fruitScript.damageID;
                 cloneVerticalScript.fruitType = type;
@@ -2150,12 +2142,12 @@ public class Board : MonoBehaviour
             case -3:
                 if (column - 1 >= 0)
                 {
-                    StartCoroutine(StopAndStartSingleColumn(0.3f, column - 1));
+                    StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.singleTNTColumnStopDuration, column - 1));
                 }
-                StartCoroutine(StopAndStartSingleColumn(0.3f, column));
+                StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.singleTNTColumnStopDuration, column));
                 if (column + 1 < width)
                 {
-                    StartCoroutine(StopAndStartSingleColumn(0.3f, column + 1));
+                    StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.singleTNTColumnStopDuration, column + 1));
                 }
                 fruitScript.activePowerUp = true;
                 fruit.GetComponent<BoxCollider2D>().size = new Vector2(3, 3);
@@ -2173,11 +2165,10 @@ public class Board : MonoBehaviour
             case -4:
                 fruitScript.moveToward = true;
                 fruitScript.outsideOfBoard = true;
-                fruitScript.speedMultiplier = 11f;
+                allFruits[fruitScript.column, fruitScript.row] = null;
                 fruitScript.targetV = GetBoomerangTargetLoc(fruitScript.column, fruitScript.row);
                 fruitScript.activePowerUp = true;
 
-                allFruits[fruitScript.column, fruitScript.row] = null;
 
                 if(swipedFruitType == 0)
                 {
@@ -2516,7 +2507,7 @@ public class Board : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(speedAndTimeLibrary.shuffleAfterDestroyBeforeCreationWait);
 
         for (int i = 0; i < width; i++)
         {
@@ -2699,7 +2690,7 @@ public class Board : MonoBehaviour
                 }
             }
           
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(speedAndTimeLibrary.discoballWaitBetweenMarkingFruits);
         }
 
 
@@ -2711,7 +2702,7 @@ public class Board : MonoBehaviour
                 random = UnityEngine.Random.Range(0, fruitsToDisappear.Count);
                 ActivatePowerUp(fruitsToDisappear[random]);
                 fruitsToDisappear.Remove(fruitsToDisappear[random]);
-                yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(speedAndTimeLibrary.discoballWaitBetweenActivatingMarkedPowerUps);
 
             }
         }
@@ -2722,7 +2713,7 @@ public class Board : MonoBehaviour
                 random = UnityEngine.Random.Range(0, fruitsToDisappear.Count);
                 DestroyController(fruitsToDisappear[random], false);
                 fruitsToDisappear.Remove(fruitsToDisappear[random]);
-                yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(speedAndTimeLibrary.discoballWaitBetweenDestroyingMarkedFruits);
 
             }
         }
@@ -2735,7 +2726,7 @@ public class Board : MonoBehaviour
 
         discoBall.transform.GetChild(0).gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(speedAndTimeLibrary.waitForEffectOfSingleUsedDiscoball);
         Destroy(discoBall);
 
     }
@@ -2829,17 +2820,17 @@ public class Board : MonoBehaviour
         newSpecialPowerUp.transform.position = tempPosition;
         newSpecialPowerUpScript.damageID = Guid.NewGuid().ToString();
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(speedAndTimeLibrary.sunflowerCreationAnimDuration);
 
         newSpecialPowerUpScript.targetV.x = allTiles[width-1, row].transform.position.x+5;
 
-        StartCoroutine(StopAndStartAllFillings(0.05f * width));
+        StartCoroutine(StopAndStartAllFillings(speedAndTimeLibrary.sunflowerColumnStopDurationMultiplier * width));
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(speedAndTimeLibrary.waitBeforeDestroyingSunflowerGrassAfterActivated);
 
         Destroy(newSpecialPowerUp.transform.GetChild(1).gameObject);
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(speedAndTimeLibrary.waitBeforeDestroyingSunflower);
 
         Destroy(newSpecialPowerUp);
 
@@ -3584,11 +3575,11 @@ public class Board : MonoBehaviour
             Vector3 newRotation = new Vector3(0f, 0f, 90f);
             TNT.transform.GetChild(1).GetChild(1).transform.rotation = Quaternion.Euler(newRotation);
         }
-        yield return new WaitForSeconds(0.56f);
+        yield return new WaitForSeconds(speedAndTimeLibrary.harvesterTNTMergeAnimDuration);
         harvester.GetComponentInChildren<SpriteRenderer>().enabled = true;
         Destroy(TNT);
 
-        StartCoroutine(StopAndStartSingleColumn(0.3f, column));
+     //   StartCoroutine(StopAndStartSingleColumn(0.3f, column));
 
         GameObject PowerUp1 = null, PowerUp2 = null;       
 
@@ -3596,7 +3587,7 @@ public class Board : MonoBehaviour
         {
             if (column + 1 < width && allTiles[column + 1, row])
             {
-                StartCoroutine(StopAndStartSingleColumn(0.3f, column + 1));
+             //   StartCoroutine(StopAndStartSingleColumn(0.3f, column + 1));
                 if (allFruits[column + 1, row])
                 {
                     DestroyController(allFruits[column + 1, row], false);
@@ -3606,7 +3597,7 @@ public class Board : MonoBehaviour
 
             if (column - 1 >= 0 && allTiles[column - 1, row])
             {
-                StartCoroutine(StopAndStartSingleColumn(0.3f, column - 1));
+             //   StartCoroutine(StopAndStartSingleColumn(0.3f, column - 1));
                 if (allFruits[column - 1, row])
                 {
                     DestroyController(allFruits[column - 1, row], false);

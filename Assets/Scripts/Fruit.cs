@@ -153,7 +153,7 @@ public class Fruit : MonoBehaviour
 
                     if(speedMultiplier <= speedLibrary.fruitMaxSpeed)
                     {
-                        speedMultiplier += Time.deltaTime * speedLibrary.FruitAccelerationMultiplier * Vector2.Distance(targetV, transform.position);
+                        speedMultiplier += Time.deltaTime * speedLibrary.fruitAccelerationMultiplier * Vector2.Distance(targetV, transform.position);
                     }
                     /*
                     else if(speedMultiplier <= 25 && Vector2.Distance(targetV, tempStartPos) <= 1.5f)

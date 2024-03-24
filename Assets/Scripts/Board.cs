@@ -536,7 +536,8 @@ public class Board : MonoBehaviour
     {
         // List of fruits going to be popped.
         List<GameObject> fruitsCheckTotal = new List<GameObject>();
-        yield return null;
+        // yield return null;
+        yield return new WaitForSeconds(0.2f);
         popped = false;
         hintBool = false;
 

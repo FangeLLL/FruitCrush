@@ -103,6 +103,9 @@ public class Board : MonoBehaviour
 
     private int isFruitDestroyed = Animator.StringToHash("isFruitDestroyed");
 
+    private int isHarvesterMergedBoomerang = Animator.StringToHash("isHarvesterMergedBoomerang");
+    private int isTNTMergedBoomerang = Animator.StringToHash("isTNTMergedBoomerang");
+
     ObjectSpeedAndTimeWaitingLibrary speedAndTimeLibrary = new ObjectSpeedAndTimeWaitingLibrary();
 
     private void Awake()
@@ -1346,47 +1349,7 @@ public class Board : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// Object will be fade away slowly before destroye.
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public IEnumerator FadeOut(GameObject obj)
-    {
-
-        float elapsedTime = 0f;
-        float fadeDuration = 0.3f;
-        Color color = obj.GetComponentInChildren<SpriteRenderer>().color;
-
-        while (elapsedTime < fadeDuration)
-        {
-            // Calculate the new alpha value
-            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
-
-            // Update the object's color with the new alpha
-            if (obj)
-            {
-                obj.GetComponentInChildren<SpriteRenderer>().color = new Color(color.r, color.g, color.b, alpha);
-            }
-            else
-            {
-                elapsedTime = fadeDuration;
-            }
-
-            elapsedTime += Time.deltaTime;
-            yield return null; // Wait for the next frame
-        }
-
-        // Ensure the object is completely transparent
-        if (obj)
-        {
-            obj.GetComponentInChildren<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 0f);
-            Destroy(obj);
-        }
-
-
-    }
-
+   
     /// <summary>
     /// Object will be fade away slowly before destroye.
     /// </summary>
@@ -1867,7 +1830,7 @@ public class Board : MonoBehaviour
 
                     audioManager.Pickaxe();
 
-                    StartCoroutine(FadeOut(otherFruit));
+                    Destroy(otherFruit);
 
                     break;
                 case -4:
@@ -2157,7 +2120,7 @@ public class Board : MonoBehaviour
                     audioManager.Pickaxe();
                 }
 
-                StartCoroutine(FadeOut(fruit));
+                Destroy(fruit);
 
                 break;
 
@@ -2185,14 +2148,17 @@ public class Board : MonoBehaviour
                             fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.SetActive(true);
                             Vector3 newRotation = new Vector3(0f, 0f, 90f);
                             fruit.transform.GetChild(2).gameObject.transform.GetChild(2).rotation = Quaternion.Euler(newRotation);
+                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).GetComponent<Animator>().SetTrigger(isHarvesterMergedBoomerang);
                             break;
                         case -2:
                             // Vertical
                             fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.SetActive(true);
+                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).GetComponent<Animator>().SetTrigger(isHarvesterMergedBoomerang);
                             break;
                         case -3:
                             // TNT
                             fruit.transform.GetChild(2).gameObject.transform.GetChild(1).gameObject.SetActive(true);
+                            fruit.transform.GetChild(2).gameObject.transform.GetChild(1).GetComponent<Animator>().SetTrigger(isTNTMergedBoomerang);
                             break;
                     }
                 }

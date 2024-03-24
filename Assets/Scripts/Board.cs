@@ -1571,7 +1571,7 @@ public class Board : MonoBehaviour
 
                 int k = 0;
 
-                while (j + k - 1 >= 0 && allTiles[i, j + k - 1] && !allTiles[i, j + k - 1].GetComponent<BackgroundTile>().isTempEmptyTile && !allFruits[i, j + k] && !CrossFall(i, j + k))
+                while (j + k - 1 >= 0 && !allFruits[i, j + k] && !CrossFall(i, j + k))
                 {
                     k--;
                 }
@@ -1747,6 +1747,15 @@ public class Board : MonoBehaviour
         Fruit fruitScript;
 
         if(row-1 < 0)
+        {
+            return false;
+        }
+
+        if (!allTiles[column, row - 1])
+        {
+            return false;
+        }
+        else if(allTiles[column, row - 1].GetComponent<BackgroundTile>().isTempEmptyTile)
         {
             return false;
         }

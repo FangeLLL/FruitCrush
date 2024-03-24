@@ -1369,9 +1369,17 @@ public class Board : MonoBehaviour
         }
         if (obj)
         {
-            obj.GetComponent<ParticleSystem>().Play();            
-            yield return new WaitForSeconds(speedAndTimeLibrary.waitBeforeClosingFruitSprite);
-            obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
+            if (!playFruitDestroyAnim)
+            {
+                obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
+                obj.GetComponent<ParticleSystem>().Play();
+            }
+            else
+            {
+                obj.GetComponent<ParticleSystem>().Play();
+                yield return new WaitForSeconds(speedAndTimeLibrary.waitBeforeClosingFruitSprite);
+                obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
+            }       
             yield return new WaitForSeconds(speedAndTimeLibrary.waitBeforeRemovingFruitFromBoard);
             obj.GetComponent<Fruit>().outsideOfBoard = true;
             allFruits[obj.GetComponent<Fruit>().column, obj.GetComponent<Fruit>().row] = null;

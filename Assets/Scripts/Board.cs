@@ -112,7 +112,8 @@ public class Board : MonoBehaviour
 
     void Start()
     {
-       //Time.timeScale = 0.5f;
+        //Application.targetFrameRate = 60;
+        //Time.timeScale = 0.5f;
 
         userLevel = PlayerPrefs.GetInt("level", 0);
 

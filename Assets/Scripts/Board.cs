@@ -1409,9 +1409,10 @@ public class Board : MonoBehaviour
         }
         if (obj)
         {
+            obj.GetComponent<ParticleSystem>().Play();            
+            yield return new WaitForSeconds(0.026f);
             obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
-            obj.GetComponent<ParticleSystem>().Play();
-            yield return new WaitForSeconds(0.046f);
+            yield return new WaitForSeconds(0.020f);
             obj.GetComponent<Fruit>().outsideOfBoard = true;
             allFruits[obj.GetComponent<Fruit>().column, obj.GetComponent<Fruit>().row] = null;
             

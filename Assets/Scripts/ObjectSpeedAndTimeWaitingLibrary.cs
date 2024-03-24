@@ -36,7 +36,7 @@ public class ObjectSpeedAndTimeWaitingLibrary
     public float createdPowerupUninteractableDuration=0.3f;
 
     public float twoTNTMergeAnimDuration = 1.44f;
-    public float twoTNTMergeColumnStopDuration = 1.6f;
+    public float twoTNTMergeColumnStopDuration = 1.76f;
 
     public float twoBoomerangMergeAnimDuration = 1.34f;
     public float twoBoomerangMergeColumnStopDuration = 1.34f;
@@ -51,7 +51,7 @@ public class ObjectSpeedAndTimeWaitingLibrary
     // This variable used by vertical and horizontal not seperated.
     public float harvesterColumnStopDurationMultiplier = 0.06f;
 
-    public float singleTNTColumnStopDuration = 0.3f;
+    public float singleTNTColumnStopDuration = 0.29f;
 
     public float shuffleAfterDestroyBeforeCreationWait = 0.5f;
 

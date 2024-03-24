@@ -1411,7 +1411,7 @@ public class Board : MonoBehaviour
         {
             obj.GetComponentInChildren<SpriteRenderer>().enabled = false;
             obj.GetComponent<ParticleSystem>().Play();
-            yield return new WaitForSeconds(0.026f);
+            yield return new WaitForSeconds(0.046f);
             obj.GetComponent<Fruit>().outsideOfBoard = true;
             allFruits[obj.GetComponent<Fruit>().column, obj.GetComponent<Fruit>().row] = null;
             
@@ -1556,7 +1556,7 @@ public class Board : MonoBehaviour
 
                         fruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
                         emptyPlaces.Enqueue(j);
-                        yield return new WaitForSeconds(0.01f);
+                        yield return new WaitForSeconds(0.04f);
                     }
                 }
             }

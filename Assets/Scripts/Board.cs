@@ -962,7 +962,7 @@ public class Board : MonoBehaviour
         foreach(GameObject fruit in DestroyFruits)
         {
             fruit.GetComponent<Fruit>().targetV = gatherPosition;
-            fruit.GetComponent<Fruit>().speedMultiplier = 10f;
+            fruit.GetComponent<Fruit>().speedMultiplier = 5f;
         }
         
         yield return new WaitForSeconds(0.19f);

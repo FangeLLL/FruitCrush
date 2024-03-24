@@ -1357,16 +1357,13 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     public IEnumerator FruitPop(GameObject obj,bool playFruitDestroyAnim)
     {
-        if (!playFruitDestroyAnim)
+        if (playFruitDestroyAnim)
         {
-            yield return new WaitForSeconds(speedAndTimeLibrary.fruitPopWithoutAnimDuration);
-        }
-        else
-        {
-          //  obj.transform.position = obj.GetComponent<Fruit>().targetV;
+            //  obj.transform.position = obj.GetComponent<Fruit>().targetV;
             obj.transform.GetChild(0).GetComponent<Animator>().SetTrigger(isFruitDestroyed);
             yield return new WaitForSeconds(speedAndTimeLibrary.fruitDestroyAnimDuration);
         }
+      
         if (obj)
         {
             if (!playFruitDestroyAnim)
@@ -2113,6 +2110,10 @@ public class Board : MonoBehaviour
                 break;
             // TNT power up
             case -3:
+                fruitScript.activePowerUp = true;
+                fruit.GetComponent<BoxCollider2D>().size = new Vector2(3, 3);
+                fruit.GetComponentInChildren<SpriteRenderer>().enabled = false;
+
                 if (column - 1 >= 0)
                 {
                     StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.singleTNTColumnStopDuration, column - 1));
@@ -2121,15 +2122,12 @@ public class Board : MonoBehaviour
                 if (column + 1 < width)
                 {
                     StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.singleTNTColumnStopDuration, column + 1));
-                }
-                fruitScript.activePowerUp = true;
-                fruit.GetComponent<BoxCollider2D>().size = new Vector2(3, 3);
+                }              
 
                 if (!fruit.GetComponent<Fruit>().isPowerUpSoundPlayed)
                 {
                     audioManager.Pickaxe();
                 }
-                fruit.GetComponentInChildren<SpriteRenderer>().enabled = false;
                 StartCoroutine(WaitAndDestroyObj(fruit,speedAndTimeLibrary.waitBeforeDestroyingTNT));
 
                 break;

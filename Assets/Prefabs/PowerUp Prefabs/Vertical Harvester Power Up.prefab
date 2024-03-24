@@ -70,6 +70,8 @@ MonoBehaviour:
   attachedPowerUp: {fileID: 0}
   activePowerUp: 0
   destroyOnReach: 0
+  discoballDestroyer: 0
+  harvester: 0
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799
@@ -4998,7 +5000,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!1 &4151996298784969314
 GameObject:

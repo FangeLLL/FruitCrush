@@ -23,7 +23,6 @@ public class ObjectSpeedAndTimeWaitingLibrary
     public float beforeTwoPowerUpMergeWait = 0.1f;
     public float fruitSwipeDuration = 0.18f;
     public float afterReverseWait = 0.1f;
-    public float fruitPopWithoutAnimDuration = 0.05f;
 
     public float fruitDestroyAnimDuration = 0.1f;
     public float waitBeforeClosingFruitSprite = 0.026f;

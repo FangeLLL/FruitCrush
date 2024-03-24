@@ -967,14 +967,12 @@ public class Board : MonoBehaviour
         
         yield return new WaitForSeconds(0.19f);
 
-        
+        CreatePowerUp(column, row, powerUpID, true);
 
         foreach (GameObject obj in DestroyFruits)
         {
             Destroy(obj);
         }
-
-        CreatePowerUp(column, row, powerUpID, true);
 
         yield return new WaitForSeconds(0.036f);
 

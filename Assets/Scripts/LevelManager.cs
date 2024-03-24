@@ -29,7 +29,7 @@ public class LevelManager : MonoBehaviour
     public GameObject[,] allFruits;
     public GameObject[,] allTiles;
 
-    public int moveCount = 20;
+    public int moveCount=100;
     public int[] taskElements;
 
     private SaveData saveData;
@@ -50,7 +50,7 @@ public class LevelManager : MonoBehaviour
 
         levelChanger = level;
 
-        moveCount = 20;
+        moveCount = 100;
 
         if (uploadLevel)
         {

@@ -33,7 +33,9 @@ public class Fruit : MonoBehaviour
 
     public string damageID;
 
-    public float speedMultiplier=20f;
+    ObjectSpeedAndTimeWaitingLibrary speedLibrary = new ObjectSpeedAndTimeWaitingLibrary();
+
+    public float speedMultiplier;
 
     public bool falling = false;
 
@@ -85,7 +87,7 @@ public class Fruit : MonoBehaviour
         board = FindObjectOfType<Board>();
         targetV.x = transform.position.x;
         targetV.y = transform.position.y;
-
+        speedMultiplier = speedLibrary.fruitStartSpeed;
     }
 
     void Update()
@@ -112,7 +114,7 @@ public class Fruit : MonoBehaviour
             if (isSwiped)
             {
                 // Swipe movement
-                transform.position = Vector2.Lerp(transform.position, targetV, 24f * Time.deltaTime);
+                transform.position = Vector2.Lerp(transform.position, targetV, speedLibrary.fruitSwipeSpeed * Time.deltaTime);
 
             }
             else
@@ -135,11 +137,11 @@ public class Fruit : MonoBehaviour
                 {
                     if (harvester)
                     {
-                        transform.position = Vector2.MoveTowards(transform.position, targetV, Time.deltaTime * 20);
+                        transform.position = Vector2.MoveTowards(transform.position, targetV, Time.deltaTime * speedLibrary.harvesterSpeed);
                     }
                     else
                     {
-                        transform.position = Vector2.MoveTowards(transform.position, targetV, Time.deltaTime * 10);
+                        transform.position = Vector2.MoveTowards(transform.position, targetV, Time.deltaTime * speedLibrary.boomerangSpeed);
                     }
                 }
                 else
@@ -154,9 +156,9 @@ public class Fruit : MonoBehaviour
 
                     //timer += Time.deltaTime;
 
-                    if(speedMultiplier <= 25)
+                    if(speedMultiplier <= speedLibrary.fruitMaxSpeed)
                     {
-                        speedMultiplier += Time.deltaTime * 15 * Vector2.Distance(targetV, transform.position);
+                        speedMultiplier += Time.deltaTime * speedLibrary.FruitAccelerationMultiplier * Vector2.Distance(targetV, transform.position);
                     }
                     /*
                     else if(speedMultiplier <= 25 && Vector2.Distance(targetV, tempStartPos) <= 1.5f)
@@ -190,7 +192,7 @@ public class Fruit : MonoBehaviour
             {
                 tempStartPos = transform.position;
                 isMoving = false;
-                speedMultiplier = 10f;
+                speedMultiplier = speedLibrary.fruitStartSpeed;
              
             }
 

@@ -66,4 +66,5 @@ public class ObjectSpeedAndTimeWaitingLibrary
     public float waitBeforeDestroyingSunflowerGrassAfterActivated = 0.1f;
     public float waitBeforeDestroyingSunflower = 1f;
 
+    public float waitBeforeDestroyingTNT = 0.1f;
 }

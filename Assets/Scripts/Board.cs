@@ -1830,7 +1830,7 @@ public class Board : MonoBehaviour
 
                     audioManager.Pickaxe();
 
-                    Destroy(otherFruit);
+                    StartCoroutine(WaitAndDestroyObj(otherFruit, speedAndTimeLibrary.waitBeforeDestroyingTNT));
 
                     break;
                 case -4:
@@ -2120,7 +2120,7 @@ public class Board : MonoBehaviour
                     audioManager.Pickaxe();
                 }
 
-                Destroy(fruit);
+                StartCoroutine(WaitAndDestroyObj(fruit,speedAndTimeLibrary.waitBeforeDestroyingTNT));
 
                 break;
 
@@ -3607,6 +3607,12 @@ public class Board : MonoBehaviour
         }
         audioManager.Harvester();
 
+    }
+
+    private IEnumerator WaitAndDestroyObj(GameObject obj,float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        Destroy(obj);
     }
 
 }

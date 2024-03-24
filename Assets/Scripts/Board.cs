@@ -1405,7 +1405,7 @@ public class Board : MonoBehaviour
         {
           //  obj.transform.position = obj.GetComponent<Fruit>().targetV;
             obj.transform.GetChild(0).GetComponent<Animator>().SetTrigger(isFruitDestroyed);
-            yield return new WaitForSeconds(0.15f);
+            yield return new WaitForSeconds(0.1f);
         }
         if (obj)
         {

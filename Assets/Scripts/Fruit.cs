@@ -23,6 +23,8 @@ public class Fruit : MonoBehaviour
 
     public bool fadeout = false;
 
+    private bool newlyCreated = true;
+
     public Vector2 targetV;
 
     private Board board;
@@ -84,6 +86,7 @@ public class Fruit : MonoBehaviour
         targetV.x = transform.position.x;
         targetV.y = transform.position.y;
         speedMultiplier = speedLibrary.fruitStartSpeed;
+        StartCoroutine(WaitAndActivateFruit());
     }
 
     void Update()
@@ -99,7 +102,7 @@ public class Fruit : MonoBehaviour
                 board.allFruits[column, row] = this.gameObject;
             }
 
-            if(destroyOnReach && Vector2.Distance(targetV, transform.position) < 0.5f)
+            if(destroyOnReach && Vector2.Distance(transform.position, targetV) < 0.5f)
             {
 
                 Destroy(gameObject);
@@ -120,7 +123,7 @@ public class Fruit : MonoBehaviour
                     falling = true;
                 }
 
-                if (falling && transform.position.y - targetV.y < 0.01f)
+                if (falling && transform.position.y - targetV.y < 0.01f && !fadeout)
                 {
                     falling = false;
                     transform.GetChild(0).GetComponent<Animator>().SetTrigger(isFruitLanded);
@@ -217,7 +220,7 @@ public class Fruit : MonoBehaviour
         Fruit fruitScript;
         if(fruitScript = other.GetComponent<Fruit>())
         {
-            if (fruitScript.fruitType < 0 && fruitScript.activePowerUp && !activePowerUp && !fadeout)
+            if (fruitScript.fruitType < 0 && fruitScript.activePowerUp && !activePowerUp && !fadeout && !newlyCreated)
             {
 
                 if (fruitType < -100){
@@ -249,4 +252,9 @@ public class Fruit : MonoBehaviour
   
     }
 
+    private IEnumerator WaitAndActivateFruit()
+    {
+        yield return new WaitForSeconds(0.26f);
+        newlyCreated = false;
+    }
 }

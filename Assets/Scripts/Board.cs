@@ -1367,7 +1367,7 @@ public class Board : MonoBehaviour
         if (playFruitDestroyAnim)
         {
             //  obj.transform.position = obj.GetComponent<Fruit>().targetV;
-            obj.transform.GetChild(0).GetComponent<Animator>().SetTrigger(isFruitDestroyed);
+            obj.transform.GetChild(0).GetComponent<Animator>().SetBool(isFruitDestroyed, true);
             yield return new WaitForSeconds(speedAndTimeLibrary.fruitDestroyAnimDuration);
         }
       
@@ -1878,7 +1878,8 @@ public class Board : MonoBehaviour
                     allFruits[otherFruitScript.column, otherFruitScript.row] = null;
                     otherFruit.transform.GetChild(2).gameObject.SetActive(true);
                     otherFruit.GetComponent<ExplosionAreaScript>().enabled = true;
-                    yield return new WaitForSeconds(speedAndTimeLibrary.twoDiscoBallMergeExplosionDuration);
+                    yield return new WaitForSeconds(speedAndTimeLibrary.twoDiscoBallMergeBoardFillAfterExplosionStart);
+                    StopHint();
                     otherFruitScript.outsideOfBoard = true;
                     blockUserMove = false;
                     break;
@@ -2024,8 +2025,16 @@ public class Board : MonoBehaviour
         {
             // Horizontal Harvester power up
             case -1:
-
-                StartCoroutine(StopAndStartAllFillings(speedAndTimeLibrary.horizontalHarvesterColumnStopDurationMultiplier * width));
+                int waitTileAmountHorizontal;
+                if (column > width-column)
+                {
+                    waitTileAmountHorizontal = column;
+                }
+                else
+                {
+                    waitTileAmountHorizontal = width - column;
+                }
+                StartCoroutine(StopAndStartAllFillings(speedAndTimeLibrary.horizontalHarvesterColumnStopDurationMultiplier * waitTileAmountHorizontal));
 
                 GameObject cloneHorizontal = Instantiate(powerUps[0], allTiles[column, row].transform.position, powerUps[0].transform.rotation);
                 Fruit cloneHorizontalScript = cloneHorizontal.GetComponent<Fruit>();
@@ -2071,8 +2080,16 @@ public class Board : MonoBehaviour
                 break;
             // Vertical Harvester power up
             case -2:
-
-                StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.verticalHarvesterColumnStopDurationMultiplier * width, column));
+                int waitTileAmountVertical;
+                if (row > height - row)
+                {
+                    waitTileAmountVertical = row;
+                }
+                else
+                {
+                    waitTileAmountVertical = height - row;
+                }
+                StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.verticalHarvesterColumnStopDurationMultiplier * waitTileAmountVertical, column));
 
                 GameObject cloneVertical = Instantiate(powerUps[1], allTiles[column, row].transform.position, powerUps[1].transform.rotation);
                 Fruit cloneVerticalScript = cloneVertical.GetComponent<Fruit>();
@@ -2702,6 +2719,7 @@ public class Board : MonoBehaviour
        
        // yield return new WaitForSeconds(0.05f);
         blockUserMove = false;
+        StopHint();
 
         Array.Clear(fillingColumn, 0, fillingColumn.Length);
         Array.Clear(columnStopperId, 0, columnStopperId.Length);

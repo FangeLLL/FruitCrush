@@ -46,7 +46,7 @@ public class ObjectSpeedAndTimeWaitingLibrary
     public float twoDiscoBallMergeBoardFillAfterExplosionStart = 0.5f;
 
 
-    public float harvesterTNTMergeAnimDuration = 0.56f;
+    public float harvesterTNTMergeAnimDuration = 0.35f;
 
     // this variable multipys with witdh or height so for every tile on column or row it stopst that column(s).
     // This variable used by vertical and horizontal not seperated.

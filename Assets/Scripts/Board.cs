@@ -2634,7 +2634,9 @@ public class Board : MonoBehaviour
         int random;
         GameObject fruit;
         Fruit fruitScript;
-        if(powerUpCreateType < 0)
+        List<String> powerUpleft = new List<String>();
+        string powerUpLocation;
+        if (powerUpCreateType < 0)
         {
             fruitsToDisappear.Clear();
         }
@@ -2658,7 +2660,10 @@ public class Board : MonoBehaviour
                 lighteningScript.targetV = fruit.transform.position;
                 if (powerUpCreateType < 0)
                 {
-                    fruitsToDisappear.Add(allFruits[fruitScript.column, fruitScript.row]);
+                   
+                    powerUpLocation = fruitScript.column.ToString() + "|" + fruitScript.row.ToString();
+
+                    powerUpleft.Add(powerUpLocation);
                     lighteningScript.attachedPowerUpType = powerUpCreateType;
                    
                 }              
@@ -2671,11 +2676,19 @@ public class Board : MonoBehaviour
 
         if (powerUpCreateType < 0)
         {
-            while (fruitsToDisappear.Count > 0)
+            int tempColumn, tempRow;
+            string[] splitStrings;
+            while (powerUpleft.Count > 0)
             {
-                random = UnityEngine.Random.Range(0, fruitsToDisappear.Count);
-                ActivatePowerUp(fruitsToDisappear[random]);
-                fruitsToDisappear.Remove(fruitsToDisappear[random]);
+                random = UnityEngine.Random.Range(0, powerUpleft.Count);
+
+                splitStrings = powerUpleft[random].Split('|');
+
+                // Convert them back to integers
+                tempColumn = int.Parse(splitStrings[0]);
+                tempRow = int.Parse(splitStrings[1]);
+                ActivatePowerUp(allFruits[tempColumn,tempRow]);
+                powerUpleft.Remove(powerUpleft[random]);
                 yield return new WaitForSeconds(speedAndTimeLibrary.discoballWaitBetweenActivatingMarkedPowerUps);
 
             }

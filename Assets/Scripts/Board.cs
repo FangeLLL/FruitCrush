@@ -2161,19 +2161,19 @@ public class Board : MonoBehaviour
                     {
                         case -1:
                             // Horizontal
-                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.SetActive(true);
+                         //   fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.SetActive(true);
                             Vector3 newRotation = new Vector3(0f, 0f, 90f);
                             fruit.transform.GetChild(2).gameObject.transform.GetChild(2).rotation = Quaternion.Euler(newRotation);
-                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.GetComponent<Animator>().SetTrigger(isHarvesterMergedBoomerang);
+                            fruit.transform.GetChild(2).gameObject.transform.GetChild(1).gameObject.GetComponent<Animator>().SetTrigger(isHarvesterMergedBoomerang);
                             break;
                         case -2:
                             // Vertical
-                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.SetActive(true);
-                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.GetComponent<Animator>().SetTrigger(isHarvesterMergedBoomerang);
+                       //     fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.SetActive(true);
+                            fruit.transform.GetChild(2).gameObject.transform.GetChild(1).gameObject.GetComponent<Animator>().SetTrigger(isHarvesterMergedBoomerang);
                             break;
                         case -3:
                             // TNT
-                            fruit.transform.GetChild(2).gameObject.transform.GetChild(1).gameObject.SetActive(true);
+                         //   fruit.transform.GetChild(2).gameObject.transform.GetChild(1).gameObject.SetActive(true);
                             fruit.transform.GetChild(2).gameObject.transform.GetChild(1).GetComponent<Animator>().SetTrigger(isTNTMergedBoomerang);
                             break;
                     }

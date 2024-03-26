@@ -21,7 +21,9 @@ public class Fruit : MonoBehaviour
 
     public string colorType;
 
-    public bool fadeout = true;
+    public bool fadeout = false;
+
+    private bool newlyCreated = true;
 
     public Vector2 targetV;
 
@@ -218,7 +220,7 @@ public class Fruit : MonoBehaviour
         Fruit fruitScript;
         if(fruitScript = other.GetComponent<Fruit>())
         {
-            if (fruitScript.fruitType < 0 && fruitScript.activePowerUp && !activePowerUp && !fadeout)
+            if (fruitScript.fruitType < 0 && fruitScript.activePowerUp && !activePowerUp && !fadeout && !newlyCreated)
             {
 
                 if (fruitType < -100){
@@ -252,7 +254,7 @@ public class Fruit : MonoBehaviour
 
     private IEnumerator WaitAndActivateFruit()
     {
-        yield return new WaitForSeconds(0.36f);
-        fadeout = false;
+        yield return new WaitForSeconds(0.26f);
+        newlyCreated = false;
     }
 }

@@ -102,7 +102,7 @@ public class Fruit : MonoBehaviour
                 board.allFruits[column, row] = this.gameObject;
             }
 
-            if(destroyOnReach && Vector2.Distance(targetV, transform.position) < 0.5f)
+            if(destroyOnReach && Vector2.Distance(transform.position, targetV) < 0.5f)
             {
 
                 Destroy(gameObject);

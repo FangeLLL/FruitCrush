@@ -2719,6 +2719,7 @@ public class Board : MonoBehaviour
        
        // yield return new WaitForSeconds(0.05f);
         blockUserMove = false;
+        StopHint();
 
         Array.Clear(fillingColumn, 0, fillingColumn.Length);
         Array.Clear(columnStopperId, 0, columnStopperId.Length);

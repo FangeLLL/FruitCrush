@@ -21,7 +21,7 @@ public class Fruit : MonoBehaviour
 
     public string colorType;
 
-    public bool fadeout = false;
+    public bool fadeout = true;
 
     public Vector2 targetV;
 
@@ -84,6 +84,7 @@ public class Fruit : MonoBehaviour
         targetV.x = transform.position.x;
         targetV.y = transform.position.y;
         speedMultiplier = speedLibrary.fruitStartSpeed;
+        StartCoroutine(WaitAndActivateFruit());
     }
 
     void Update()
@@ -249,4 +250,9 @@ public class Fruit : MonoBehaviour
   
     }
 
+    private IEnumerator WaitAndActivateFruit()
+    {
+        yield return new WaitForSeconds(0.36f);
+        fadeout = false;
+    }
 }

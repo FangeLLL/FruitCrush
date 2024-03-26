@@ -29,7 +29,12 @@ public class BackgroundTile : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Fruit fruitScript = other.GetComponent<Fruit>();
+        Fruit fruitScript;
+
+        if (!(fruitScript = other.GetComponent<Fruit>()))
+        {
+            return;
+        }
 
         if (!fruitScript.activePowerUp)
         {

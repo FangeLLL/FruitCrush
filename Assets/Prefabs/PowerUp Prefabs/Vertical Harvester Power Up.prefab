@@ -72,6 +72,7 @@ MonoBehaviour:
   destroyOnReach: 0
   discoballDestroyer: 0
   harvester: 0
+  selectedID: 
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799
@@ -4962,7 +4963,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.005}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}

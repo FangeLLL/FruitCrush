@@ -2094,7 +2094,6 @@ MonoBehaviour:
   - {fileID: 6328190920238408510, guid: e271a3e47621fc346807e7c6c9605f1b, type: 3}
   - {fileID: 6328190920238408510, guid: 0b7da84609c643a45a70c0aa7faa880e, type: 3}
   tilePrefab: {fileID: 7810862353112231653, guid: f1f59efaf5e3c114bb86d0f0788542a0, type: 3}
-  fillingColumn: 
   hintBool: 0
   userLevel: 0
   blockUserMove: 0
@@ -2103,6 +2102,7 @@ MonoBehaviour:
   specialPowerID: 0
   specialSwipe: 0
   specialPowerUsing: 0
+  lighteningPrefab: {fileID: 2301339197102500095, guid: c6e1bda47cfd77944984e60131fc4606, type: 3}
 --- !u!114 &160705529
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -85,6 +85,9 @@ public class Board : MonoBehaviour
 
     private bool shuffling = false;
 
+    [SerializeField]
+    private GameObject lighteningPrefab;
+
     private int isBoomerangCreated = Animator.StringToHash("isBoomerangCreated");
     private int is2BoomerangMerged = Animator.StringToHash("is2BoomerangMerged");
     private int boomerangRotating = Animator.StringToHash("isRotating");
@@ -102,6 +105,9 @@ public class Board : MonoBehaviour
 
     private int isHarvesterMergedBoomerang = Animator.StringToHash("isHarvesterMergedBoomerang");
     private int isTNTMergedBoomerang = Animator.StringToHash("isTNTMergedBoomerang");
+
+    private int TNTHarvesterVerticalMerge = Animator.StringToHash("TNTHarvesterVerticalMerge");
+    private int TNTHarvesterHorizontalMerge = Animator.StringToHash("TNTHarvesterHorizontalMerge");
 
     ObjectSpeedAndTimeWaitingLibrary speedAndTimeLibrary = new ObjectSpeedAndTimeWaitingLibrary();
 
@@ -393,6 +399,8 @@ public class Board : MonoBehaviour
         currentFruit = null;
         currentOtherFruit = null;
 
+        bool horizontalSwipe=true;
+
         GameObject otherFruit=null;
         GameObject fruit = allFruits[column, row];
         GameObject targetTile=null;
@@ -428,6 +436,7 @@ public class Board : MonoBehaviour
             // UP SWIPE
             if (FruitAvailableWithoutTypeCheck(allFruits[column, row + 1]))
             {
+                horizontalSwipe = false;
                 otherFruit = allFruits[column, row + 1];
             }
             else
@@ -470,6 +479,7 @@ public class Board : MonoBehaviour
             // DOWN SWIPE
             if (FruitAvailableWithoutTypeCheck(allFruits[column, row - 1]))
             {
+                horizontalSwipe = false;
                 otherFruit = allFruits[column, row - 1];
             }
             else
@@ -521,7 +531,7 @@ public class Board : MonoBehaviour
         audioManager.Swipe();
         if (otherFruit)
         {
-            StartCoroutine(CheckMove(fruit, otherFruit));
+            StartCoroutine(CheckMove(fruit, otherFruit,horizontalSwipe));
 
         }
         else
@@ -982,7 +992,7 @@ public class Board : MonoBehaviour
         allTiles[column, row].GetComponent<BackgroundTile>().isTempEmptyTile = false;
 
 
-        yield return new WaitForSeconds(0.036f);
+     //   yield return new WaitForSeconds(0.036f);
 
 
         audioManager.PowerUpGain();
@@ -1147,7 +1157,7 @@ public class Board : MonoBehaviour
     /// <param name="fruit"></param>
     /// <param name="otherFruit"></param>
     /// <returns></returns>
-    private IEnumerator CheckMove(GameObject fruit, GameObject otherFruit)
+    private IEnumerator CheckMove(GameObject fruit, GameObject otherFruit,bool horizontalSwipe)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>();
         Fruit otherFruitScript = otherFruit.GetComponent<Fruit>();
@@ -1164,7 +1174,7 @@ public class Board : MonoBehaviour
             fruitScript.fadeout = true;
             otherFruitScript.fadeout = true;
             yield return new WaitForSeconds(speedAndTimeLibrary.beforeTwoPowerUpMergeWait);
-            StartCoroutine(ActivateMergePowerUp(fruit, otherFruit));
+            StartCoroutine(ActivateMergePowerUp(fruit, otherFruit,horizontalSwipe));
             succesfulMove = true;
         }
         else
@@ -1601,7 +1611,7 @@ public class Board : MonoBehaviour
     /// <param name="column"></param>
     /// <param name="row"></param>
     /// <param name="type"></param>
-    private GameObject CreatePowerUp(int column, int row, int type, bool isItInteractable, bool playCreationAnim = true)
+    public GameObject CreatePowerUp(int column, int row, int type, bool isItInteractable, bool playCreationAnim = true)
     {
         /*
         Power Up Type Number;
@@ -1671,7 +1681,7 @@ public class Board : MonoBehaviour
         // it means this is not for immidate use and normally created not for merge or something for.
         if (isItInteractable)
         {
-            StartCoroutine(WaitAndActivatePowerUp(speedAndTimeLibrary.createdPowerupUninteractableDuration, newPowerUpScript));
+            StartCoroutine(WaitAndMakeInteractablePowerUp(speedAndTimeLibrary.createdPowerupUninteractableDuration, newPowerUpScript));
         }
         return newPowerUp;
     }
@@ -1682,7 +1692,7 @@ public class Board : MonoBehaviour
     /// <param name="waitTime"></param>
     /// <param name="powerUpScript"></param>
     /// <returns></returns>
-    private IEnumerator WaitAndActivatePowerUp(float waitTime,Fruit powerUpScript)
+    private IEnumerator WaitAndMakeInteractablePowerUp(float waitTime,Fruit powerUpScript)
     {
         yield return new WaitForSeconds(waitTime);
         powerUpScript.fadeout = false;
@@ -1765,7 +1775,7 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="fruit"></param>
     /// <param name="otherFruit"></param>
-    public IEnumerator ActivateMergePowerUp(GameObject fruit, GameObject otherFruit)
+    public IEnumerator ActivateMergePowerUp(GameObject fruit, GameObject otherFruit,bool horizontalSwipe)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>(), otherFruitScript = otherFruit.GetComponent<Fruit>();
         fruitScript.damageID = otherFruitScript.damageID;
@@ -1883,7 +1893,7 @@ public class Board : MonoBehaviour
                             break;
                         case -3:
 
-                            StartCoroutine(HarvesterTNTMerge(fruit,otherFruit,fruitScript.column,fruitScript.row,false));
+                            StartCoroutine(HarvesterTNTMerge(fruit,otherFruit,fruitScript.column,fruitScript.row,false,horizontalSwipe));
 
                             break;
                         case -4:
@@ -1912,7 +1922,7 @@ public class Board : MonoBehaviour
                             break;
                         case -3:
 
-                            StartCoroutine(HarvesterTNTMerge(fruit,otherFruit, fruitScript.column, fruitScript.row, true));
+                            StartCoroutine(HarvesterTNTMerge(fruit,otherFruit, fruitScript.column, fruitScript.row, true, horizontalSwipe));
 
                             break;
                         case -4:
@@ -1936,12 +1946,12 @@ public class Board : MonoBehaviour
                     {
                         case -1:
 
-                            StartCoroutine(HarvesterTNTMerge(otherFruit,fruit, otherFruitScript.column, otherFruitScript.row, false));
+                            StartCoroutine(HarvesterTNTMerge(otherFruit,fruit, otherFruitScript.column, otherFruitScript.row, false, horizontalSwipe));
 
                             break;
                         case -2:
 
-                            StartCoroutine(HarvesterTNTMerge(otherFruit,fruit, otherFruitScript.column, otherFruitScript.row, true));
+                            StartCoroutine(HarvesterTNTMerge(otherFruit,fruit, otherFruitScript.column, otherFruitScript.row, true, horizontalSwipe));
 
                             break;
                         case -4:
@@ -2631,7 +2641,9 @@ public class Board : MonoBehaviour
         int random;
         GameObject fruit;
         Fruit fruitScript;
-        if(powerUpCreateType < 0)
+        List<String> powerUpleft = new List<String>();
+        string powerUpLocation;
+        if (powerUpCreateType < 0)
         {
             fruitsToDisappear.Clear();
         }
@@ -2640,44 +2652,50 @@ public class Board : MonoBehaviour
         {
            
             random = UnityEngine.Random.Range(0, fruitsLeft.Count);
+
             fruit = fruitsLeft[random];
             fruitsLeft.Remove(fruit);
+
             if (fruit)
             {
+                GameObject lightening = Instantiate(lighteningPrefab, discoBall.transform.position, lighteningPrefab.transform.rotation);
+                LighteningScript lighteningScript = lightening.GetComponent<LighteningScript>();
+                String id = Guid.NewGuid().ToString();
+                lighteningScript.id = id;
+                fruitScript = fruit.GetComponent<Fruit>();
+                fruitScript.selectedID = id;
+                lighteningScript.targetV = fruit.transform.position;
                 if (powerUpCreateType < 0)
                 {
-                    fruitScript = fruit.GetComponent<Fruit>();
-                    // If type is bigger then -3 it means it is either vertical or horizontal harvester so it will randomizely spawn.
-                    if (powerUpCreateType > -3)
-                    {
-                        CreatePowerUp(fruitScript.column, fruitScript.row, UnityEngine.Random.Range(-2, 0),false);
-                    }
-                    else
-                    {
-                        CreatePowerUp(fruitScript.column, fruitScript.row, powerUpCreateType,false);
-                    }
-                    fruitsToDisappear.Add(allFruits[fruitScript.column, fruitScript.row]);
-                    DestroyController(fruit, false);
-                }
-                else
-                {
-                    fruit.GetComponentInChildren<SpriteRenderer>().color = new Color(255, 0, 0, 255);
+                   
+                    powerUpLocation = fruitScript.column.ToString() + "|" + fruitScript.row.ToString();
 
-                }
+                    powerUpleft.Add(powerUpLocation);
+                    lighteningScript.attachedPowerUpType = powerUpCreateType;
+                   
+                }              
             }
           
             yield return new WaitForSeconds(speedAndTimeLibrary.discoballWaitBetweenMarkingFruits);
         }
 
-
+        yield return new WaitForSeconds(speedAndTimeLibrary.afterLastLighteningWaitTimeBeforeDestroyingFruits);
 
         if (powerUpCreateType < 0)
         {
-            while (fruitsToDisappear.Count > 0)
+            int tempColumn, tempRow;
+            string[] splitStrings;
+            while (powerUpleft.Count > 0)
             {
-                random = UnityEngine.Random.Range(0, fruitsToDisappear.Count);
-                ActivatePowerUp(fruitsToDisappear[random]);
-                fruitsToDisappear.Remove(fruitsToDisappear[random]);
+                random = UnityEngine.Random.Range(0, powerUpleft.Count);
+
+                splitStrings = powerUpleft[random].Split('|');
+
+                // Convert them back to integers
+                tempColumn = int.Parse(splitStrings[0]);
+                tempRow = int.Parse(splitStrings[1]);
+                ActivatePowerUp(allFruits[tempColumn,tempRow]);
+                powerUpleft.Remove(powerUpleft[random]);
                 yield return new WaitForSeconds(speedAndTimeLibrary.discoballWaitBetweenActivatingMarkedPowerUps);
 
             }
@@ -3541,7 +3559,7 @@ public class Board : MonoBehaviour
         return tileSprites[0];
     }
 
-    private IEnumerator HarvesterTNTMerge(GameObject harvester,GameObject TNT,int column,int row, bool verticalHarvester)
+    private IEnumerator HarvesterTNTMerge(GameObject harvester,GameObject TNT,int column,int row, bool verticalHarvester,bool horizontalSwipe)
     {
         harvester.GetComponentInChildren<SpriteRenderer>().enabled = false;
         TNT.transform.GetChild(0).gameObject.SetActive(false);
@@ -3550,6 +3568,15 @@ public class Board : MonoBehaviour
         {
             Vector3 newRotation = new Vector3(0f, 0f, 90f);
             TNT.transform.GetChild(1).GetChild(1).transform.rotation = Quaternion.Euler(newRotation);
+        }
+
+        if (horizontalSwipe)
+        {
+            TNT.transform.GetChild(1).GetComponent<Animator>().SetTrigger(TNTHarvesterHorizontalMerge);
+        }
+        else
+        {
+            TNT.transform.GetChild(1).GetComponent<Animator>().SetTrigger(TNTHarvesterVerticalMerge);
         }
         yield return new WaitForSeconds(speedAndTimeLibrary.harvesterTNTMergeAnimDuration);
         harvester.GetComponentInChildren<SpriteRenderer>().enabled = true;

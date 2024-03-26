@@ -61,6 +61,8 @@ public class Fruit : MonoBehaviour
 
     public bool harvester = false;
 
+    public string selectedID = null;
+
     float timer = 0;
 
     private Vector2 tempStartPos;
@@ -256,5 +258,28 @@ public class Fruit : MonoBehaviour
     {
         yield return new WaitForSeconds(0.26f);
         newlyCreated = false;
+    }
+
+    public void ActivatedByLightening(int type)
+    {
+        if (type == 0)
+        {
+            GetComponentInChildren<SpriteRenderer>().color = new Color(255, 0, 0, 255);
+        }
+        else
+        {
+            outsideOfBoard = true;
+            board.DestroyController(gameObject, false);
+            // If type is bigger then -3 it means it is either vertical or horizontal harvester so it will randomizely spawn.
+            if (type > -3)
+            {
+                board.CreatePowerUp(column, row, UnityEngine.Random.Range(-2, 0), false);
+            }
+            else
+            {
+                board.CreatePowerUp(column, row, type, false);
+            }
+            Destroy(gameObject);
+        }
     }
 }

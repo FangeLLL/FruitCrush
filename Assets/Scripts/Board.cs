@@ -85,6 +85,9 @@ public class Board : MonoBehaviour
 
     private bool shuffling = false;
 
+    [SerializeField]
+    private GameObject lighteningPrefab;
+
     private int isBoomerangCreated = Animator.StringToHash("isBoomerangCreated");
     private int is2BoomerangMerged = Animator.StringToHash("is2BoomerangMerged");
     private int boomerangRotating = Animator.StringToHash("isRotating");
@@ -982,7 +985,7 @@ public class Board : MonoBehaviour
         allTiles[column, row].GetComponent<BackgroundTile>().isTempEmptyTile = false;
 
 
-        yield return new WaitForSeconds(0.036f);
+     //   yield return new WaitForSeconds(0.036f);
 
 
         audioManager.PowerUpGain();
@@ -1601,7 +1604,7 @@ public class Board : MonoBehaviour
     /// <param name="column"></param>
     /// <param name="row"></param>
     /// <param name="type"></param>
-    private GameObject CreatePowerUp(int column, int row, int type, bool isItInteractable, bool playCreationAnim = true)
+    public GameObject CreatePowerUp(int column, int row, int type, bool isItInteractable, bool playCreationAnim = true)
     {
         /*
         Power Up Type Number;
@@ -2640,36 +2643,31 @@ public class Board : MonoBehaviour
         {
            
             random = UnityEngine.Random.Range(0, fruitsLeft.Count);
+
             fruit = fruitsLeft[random];
             fruitsLeft.Remove(fruit);
+
             if (fruit)
             {
+                GameObject lightening = Instantiate(lighteningPrefab, discoBall.transform.position, lighteningPrefab.transform.rotation);
+                LighteningScript lighteningScript = lightening.GetComponent<LighteningScript>();
+                String id = Guid.NewGuid().ToString();
+                lighteningScript.id = id;
+                fruitScript = fruit.GetComponent<Fruit>();
+                fruitScript.selectedID = id;
+                lighteningScript.targetV = fruit.transform.position;
                 if (powerUpCreateType < 0)
                 {
-                    fruitScript = fruit.GetComponent<Fruit>();
-                    // If type is bigger then -3 it means it is either vertical or horizontal harvester so it will randomizely spawn.
-                    if (powerUpCreateType > -3)
-                    {
-                        CreatePowerUp(fruitScript.column, fruitScript.row, UnityEngine.Random.Range(-2, 0),false);
-                    }
-                    else
-                    {
-                        CreatePowerUp(fruitScript.column, fruitScript.row, powerUpCreateType,false);
-                    }
                     fruitsToDisappear.Add(allFruits[fruitScript.column, fruitScript.row]);
-                    DestroyController(fruit, false);
-                }
-                else
-                {
-                    fruit.GetComponentInChildren<SpriteRenderer>().color = new Color(255, 0, 0, 255);
-
-                }
+                    lighteningScript.attachedPowerUpType = powerUpCreateType;
+                   
+                }              
             }
           
             yield return new WaitForSeconds(speedAndTimeLibrary.discoballWaitBetweenMarkingFruits);
         }
 
-
+        yield return new WaitForSeconds(speedAndTimeLibrary.afterLastLighteningWaitTimeBeforeDestroyingFruits);
 
         if (powerUpCreateType < 0)
         {

@@ -75,6 +75,7 @@ MonoBehaviour:
   destroyOnReach: 0
   discoballDestroyer: 0
   harvester: 0
+  selectedID: 
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799
@@ -9958,7 +9959,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6169999323648791782
 Transform:
   m_ObjectHideFlags: 0

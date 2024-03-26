@@ -17,6 +17,8 @@ public class ObjectSpeedAndTimeWaitingLibrary
 
     public float powerUpCreationFruitSpeed = 5f;
 
+    public float lighteningSpeed = 20f;
+
     // *** Time durations *** //
 
     public float powerUpCreationFruitGatheringDuration = 0.19f;
@@ -45,6 +47,7 @@ public class ObjectSpeedAndTimeWaitingLibrary
     public float twoDiscoBallMergeExplosionDuration = 1.2f;
     public float twoDiscoBallMergeBoardFillAfterExplosionStart = 0.5f;
 
+    public float afterLastLighteningWaitTimeBeforeDestroyingFruits = 0.1f;
 
     public float harvesterTNTMergeAnimDuration = 0.56f;
 

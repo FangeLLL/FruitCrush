@@ -48,7 +48,8 @@ public class ObjectSpeedAndTimeWaitingLibrary
 
     // this variable multipys with witdh or height so for every tile on column or row it stopst that column(s).
     // This variable used by vertical and horizontal not seperated.
-    public float harvesterColumnStopDurationMultiplier = 0.02f;
+    public float verticalHarvesterColumnStopDurationMultiplier = 0.02f;
+    public float horizontalHarvesterColumnStopDurationMultiplier = 0.02f;
 
     public float singleTNTColumnStopDuration = 0.29f;
 

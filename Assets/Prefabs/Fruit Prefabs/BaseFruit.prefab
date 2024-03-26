@@ -321,6 +321,8 @@ MonoBehaviour:
   attachedPowerUp: {fileID: 0}
   activePowerUp: 0
   destroyOnReach: 0
+  discoballDestroyer: 0
+  harvester: 0
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799
@@ -5314,7 +5316,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 1
   m_SpriteSortPoint: 0
 --- !u!95 &4633664314048729591
 Animator:

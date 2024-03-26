@@ -1681,7 +1681,7 @@ public class Board : MonoBehaviour
         // it means this is not for immidate use and normally created not for merge or something for.
         if (isItInteractable)
         {
-            StartCoroutine(WaitAndActivatePowerUp(speedAndTimeLibrary.createdPowerupUninteractableDuration, newPowerUpScript));
+            StartCoroutine(WaitAndMakeInteractablePowerUp(speedAndTimeLibrary.createdPowerupUninteractableDuration, newPowerUpScript));
         }
         return newPowerUp;
     }
@@ -1692,7 +1692,7 @@ public class Board : MonoBehaviour
     /// <param name="waitTime"></param>
     /// <param name="powerUpScript"></param>
     /// <returns></returns>
-    private IEnumerator WaitAndActivatePowerUp(float waitTime,Fruit powerUpScript)
+    private IEnumerator WaitAndMakeInteractablePowerUp(float waitTime,Fruit powerUpScript)
     {
         yield return new WaitForSeconds(waitTime);
         powerUpScript.fadeout = false;

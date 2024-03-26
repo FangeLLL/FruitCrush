@@ -5280,6 +5280,7 @@ MonoBehaviour:
   destroyOnReach: 0
   discoballDestroyer: 0
   harvester: 0
+  selectedID: 
   swipeRight: -1479315700
   swipeLeft: 266709360
   swipeUp: 381951799
@@ -5328,7 +5329,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.2, y: 0.77}
   m_EdgeRadius: 0
 --- !u!50 &8201724893767530113
 Rigidbody2D:

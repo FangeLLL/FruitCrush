@@ -2025,8 +2025,16 @@ public class Board : MonoBehaviour
         {
             // Horizontal Harvester power up
             case -1:
-
-                StartCoroutine(StopAndStartAllFillings(speedAndTimeLibrary.horizontalHarvesterColumnStopDurationMultiplier * width));
+                int waitTileAmountHorizontal;
+                if (column > width-column)
+                {
+                    waitTileAmountHorizontal = column;
+                }
+                else
+                {
+                    waitTileAmountHorizontal = width - column;
+                }
+                StartCoroutine(StopAndStartAllFillings(speedAndTimeLibrary.horizontalHarvesterColumnStopDurationMultiplier * waitTileAmountHorizontal));
 
                 GameObject cloneHorizontal = Instantiate(powerUps[0], allTiles[column, row].transform.position, powerUps[0].transform.rotation);
                 Fruit cloneHorizontalScript = cloneHorizontal.GetComponent<Fruit>();
@@ -2072,8 +2080,16 @@ public class Board : MonoBehaviour
                 break;
             // Vertical Harvester power up
             case -2:
-
-                StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.verticalHarvesterColumnStopDurationMultiplier * width, column));
+                int waitTileAmountVertical;
+                if (row > height - row)
+                {
+                    waitTileAmountVertical = row;
+                }
+                else
+                {
+                    waitTileAmountVertical = height - row;
+                }
+                StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.verticalHarvesterColumnStopDurationMultiplier * waitTileAmountVertical, column));
 
                 GameObject cloneVertical = Instantiate(powerUps[1], allTiles[column, row].transform.position, powerUps[1].transform.rotation);
                 Fruit cloneVerticalScript = cloneVertical.GetComponent<Fruit>();

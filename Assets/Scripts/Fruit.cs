@@ -123,7 +123,7 @@ public class Fruit : MonoBehaviour
                     falling = true;
                 }
 
-                if (falling && transform.position.y - targetV.y < 0.01f)
+                if (falling && transform.position.y - targetV.y < 0.01f && !fadeout)
                 {
                     falling = false;
                     transform.GetChild(0).GetComponent<Animator>().SetTrigger(isFruitLanded);

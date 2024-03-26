@@ -1367,7 +1367,7 @@ public class Board : MonoBehaviour
         if (playFruitDestroyAnim)
         {
             //  obj.transform.position = obj.GetComponent<Fruit>().targetV;
-            obj.transform.GetChild(0).GetComponent<Animator>().SetTrigger(isFruitDestroyed);
+            obj.transform.GetChild(0).GetComponent<Animator>().SetBool(isFruitDestroyed, true);
             yield return new WaitForSeconds(speedAndTimeLibrary.fruitDestroyAnimDuration);
         }
       

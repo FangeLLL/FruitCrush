@@ -39,10 +39,12 @@ public class ObjectSpeedAndTimeWaitingLibrary
 
     public float twoBoomerangMergeAnimDuration = 1.34f;
     public float twoBoomerangMergeColumnStopDuration = 1.34f;
-
+    
     public float twoDiscoballMergeAnimDuration = 3.8f;
     public float twoDiscoBallMergeColumnStopDuration = 4.8f;
     public float twoDiscoBallMergeExplosionDuration = 1.5f;
+    public float twoDiscoBallMergeBoardFillAfterExplosionStart = 1;
+
 
     public float harvesterTNTMergeAnimDuration = 0.56f;
 

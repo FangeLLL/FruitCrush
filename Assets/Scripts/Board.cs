@@ -1878,7 +1878,7 @@ public class Board : MonoBehaviour
                     allFruits[otherFruitScript.column, otherFruitScript.row] = null;
                     otherFruit.transform.GetChild(2).gameObject.SetActive(true);
                     otherFruit.GetComponent<ExplosionAreaScript>().enabled = true;
-                    yield return new WaitForSeconds(speedAndTimeLibrary.twoDiscoBallMergeExplosionDuration);
+                    yield return new WaitForSeconds(speedAndTimeLibrary.twoDiscoBallMergeBoardFillAfterExplosionStart);
                     otherFruitScript.outsideOfBoard = true;
                     blockUserMove = false;
                     break;

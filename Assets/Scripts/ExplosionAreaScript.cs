@@ -6,6 +6,8 @@ using UnityEngine;
 public class ExplosionAreaScript : MonoBehaviour
 {
 
+    ObjectSpeedAndTimeWaitingLibrary speedLibrary = new ObjectSpeedAndTimeWaitingLibrary();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +17,7 @@ public class ExplosionAreaScript : MonoBehaviour
     private IEnumerator ExplosionAreaGrowing()
     {
         float elapsedTime = 0f;
-        float growDuration = 1f;
+        float growDuration = speedLibrary.twoDiscoBallMergeExplosionDuration;
         float targetColliderSize = 20f; // Change this value as needed
 
         while (elapsedTime < growDuration)

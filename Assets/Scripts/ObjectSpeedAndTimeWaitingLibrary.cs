@@ -42,7 +42,7 @@ public class ObjectSpeedAndTimeWaitingLibrary
     
     public float twoDiscoballMergeAnimDuration = 3.2f;
     public float twoDiscoBallMergeColumnStopDuration = 4.1f;
-    public float twoDiscoBallMergeExplosionDuration = 1.7f;
+    public float twoDiscoBallMergeExplosionDuration = 1.2f;
     public float twoDiscoBallMergeBoardFillAfterExplosionStart = 0.5f;
 
 

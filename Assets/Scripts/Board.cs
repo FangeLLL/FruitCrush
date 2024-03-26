@@ -968,8 +968,11 @@ public class Board : MonoBehaviour
             fruit.GetComponent<Fruit>().targetV = gatherPosition;
             fruit.GetComponent<Fruit>().speedMultiplier = speedAndTimeLibrary.powerUpCreationFruitSpeed;
         }
-        
+        allTiles[column, row].GetComponent<BackgroundTile>().isTempEmptyTile = true;
+
+
         yield return new WaitForSeconds(speedAndTimeLibrary.powerUpCreationFruitGatheringDuration);
+
 
         CreatePowerUp(column, row, powerUpID, true);
 
@@ -978,7 +981,11 @@ public class Board : MonoBehaviour
             Destroy(obj);
         }
 
+        allTiles[column, row].GetComponent<BackgroundTile>().isTempEmptyTile = false;
+
+
         yield return new WaitForSeconds(0.036f);
+
 
         audioManager.PowerUpGain();
     }
@@ -1639,11 +1646,7 @@ public class Board : MonoBehaviour
         Vector2 tempPosition = new Vector2(column - xOffset, height - yOffset);
 
         GameObject newPowerUp = Instantiate(powerUps[(type * -1) - 1], tempPosition, powerUps[(type * -1) - 1].transform.rotation);
-        Fruit newPowerUpScript = newPowerUp.GetComponent<Fruit>();
-
-        // Add the new powerup to the allFruits array
-        allFruits[column, row] = null;
-        allFruits[column, row] = newPowerUp;
+        Fruit newPowerUpScript = newPowerUp.GetComponent<Fruit>(); 
 
         // Set the parent and name of the new powerup
         newPowerUp.transform.parent = this.transform;
@@ -1677,10 +1680,15 @@ public class Board : MonoBehaviour
                     break;
             }
         }
-       
 
 
-       
+        // Add the new powerup to the allFruits array
+        if (allFruits[column, row])
+        {
+            allFruits[column, row].GetComponent<Fruit>().outsideOfBoard = true;
+        }
+        allFruits[column, row] = newPowerUp;
+
         // it means this is not for immidate use and normally created not for merge or something for.
         if (isItInteractable)
         {
@@ -2153,19 +2161,19 @@ public class Board : MonoBehaviour
                     {
                         case -1:
                             // Horizontal
-                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.SetActive(true);
+                         //   fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.SetActive(true);
                             Vector3 newRotation = new Vector3(0f, 0f, 90f);
                             fruit.transform.GetChild(2).gameObject.transform.GetChild(2).rotation = Quaternion.Euler(newRotation);
-                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.GetComponent<Animator>().SetTrigger(isHarvesterMergedBoomerang);
+                            fruit.transform.GetChild(2).gameObject.transform.GetChild(1).gameObject.GetComponent<Animator>().SetTrigger(isHarvesterMergedBoomerang);
                             break;
                         case -2:
                             // Vertical
-                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.SetActive(true);
-                            fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.GetComponent<Animator>().SetTrigger(isHarvesterMergedBoomerang);
+                       //     fruit.transform.GetChild(2).gameObject.transform.GetChild(2).gameObject.SetActive(true);
+                            fruit.transform.GetChild(2).gameObject.transform.GetChild(1).gameObject.GetComponent<Animator>().SetTrigger(isHarvesterMergedBoomerang);
                             break;
                         case -3:
                             // TNT
-                            fruit.transform.GetChild(2).gameObject.transform.GetChild(1).gameObject.SetActive(true);
+                         //   fruit.transform.GetChild(2).gameObject.transform.GetChild(1).gameObject.SetActive(true);
                             fruit.transform.GetChild(2).gameObject.transform.GetChild(1).GetComponent<Animator>().SetTrigger(isTNTMergedBoomerang);
                             break;
                     }

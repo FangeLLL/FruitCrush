@@ -50,9 +50,6 @@ public class Board : MonoBehaviour
     public GameObject[] obstaclePrefabs;
     public GameObject tilePrefab;
 
-    [SerializeField]
-    public bool[] fillingColumn;
-
     public bool hintBool = false;
     bool popped = false;
 
@@ -144,8 +141,6 @@ public class Board : MonoBehaviour
                 existFruits.Add(i);
             }
         }
-
-        fillingColumn = new bool[width];
 
 
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
@@ -364,7 +359,10 @@ public class Board : MonoBehaviour
             }
         }
         CheckForStarterPowerUps();
-        StartCoroutine(FillTheGaps());
+        for (int i = 0; i < width; i++)
+        {
+            StartCoroutine(FillTheColumn(i));
+        }
         StartCoroutine(CheckAndDestroyMatches());
     }
 
@@ -1397,36 +1395,10 @@ public class Board : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// General filling function. Every column has their FillTheColumn function and this function calls them in a for loop.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator FillTheGaps()
-    {
-        if (!shuffling || blockUserMove)
-        {
-            for (int i = 0; i < width; i++)
-            {
-                // Starting from (0,0) location and its checks every column. It starts from botton to up and takes every empty place index and put it to queue
-                // variable (emptyPlaces). 
-                if (!fillingColumn[i])
-                {
-                    StartCoroutine(FillTheColumn(i));
-                }
-
-            }
-        }
-        //  yield return new WaitForSeconds(0.1f);
-        yield return null;
-
-        StartCoroutine(FillTheGaps());
-    }
-
     private IEnumerator StopAndStartAllFillings(float waitTime)
     {
         if (!blockUserMove)
         {
-            Array.Fill(fillingColumn, true);
             string stopperId = Guid.NewGuid().ToString();
             for (int i = 0; i < width; i++)
             {
@@ -1438,12 +1410,10 @@ public class Board : MonoBehaviour
             if (!blockUserMove)
             {
                 
-                Array.Fill(fillingColumn, true);
                 for (int i = 0; i < width; i++)
                 {
                    if(columnStopperId[i] == stopperId)
                     {
-                        fillingColumn[i] = false;
                         columnStopperId[i] = null;
                     }
                 }
@@ -1459,18 +1429,15 @@ public class Board : MonoBehaviour
         {
             string stopperId = Guid.NewGuid().ToString();
             columnStopperId[column] = stopperId;
-            fillingColumn[column] = true;
             StopCoroutine(FillTheColumn(column));
 
             yield return new WaitForSeconds(waitTime);
 
             if (!blockUserMove)
             {
-                  fillingColumn[column] = true;
                   StopCoroutine(FillTheColumn(column));
                 if (columnStopperId[column] == stopperId)
                 {
-                    fillingColumn[column] = false;
                     columnStopperId[column] = null;
                 }
             }
@@ -1487,133 +1454,145 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     public IEnumerator FillTheColumn(int i)
     {
-      
-        fillingColumn[i] = true;
-
-        Queue<int> emptyPlaces = new Queue<int>();
-
-        for (int j = 0; j <= columnsFallIndexY[i]; j++)
+        if (!shuffling || blockUserMove)
         {
-            if(columnStopperId[i] == null)
+
+            Queue<int> emptyPlaces = new Queue<int>();
+
+            if (columnStopperId[i] == null)
             {
-                if (!allTiles[i, j] || allTiles[i, j].GetComponent<BackgroundTile>().isTempEmptyTile || allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
+                for (int j = 0; j <= columnsFallIndexY[i]; j++)
                 {
-                    if (allTiles[i, j])
+                    if (columnStopperId[i] == null)
                     {
-                        emptyPlaces.Clear();
-                    }
+                        if (!allTiles[i, j] || allTiles[i, j].GetComponent<BackgroundTile>().isTempEmptyTile || allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox)
+                        {
+                            if (allTiles[i, j])
+                            {
+                                  emptyPlaces.Clear();
+                            }
 
+                        }
+                        else
+                        {
+
+                            if (!allFruits[i, j])
+                            {
+                                // Putting empty place index to variable
+                                emptyPlaces.Enqueue(j);
+
+                            }
+                            else if (allFruits[i, j].GetComponent<Fruit>().isSwiped || allFruits[i, j].GetComponent<Fruit>().fadeout)
+                            {
+                                 emptyPlaces.Clear();
+                            }
+                            else if (emptyPlaces.Count > 0)
+                            {
+                                // if there is a piece then piece new location will be first empty place in queue.
+                                audioManager.FruitFall();
+                                int emptyRowIndex = emptyPlaces.Dequeue();
+                                GameObject fruit = allFruits[i, j];
+                                Fruit fruitScript = fruit.GetComponent<Fruit>();
+                                fruitScript.row = emptyRowIndex;
+                                fruitScript.column = i;
+                                allFruits[i, j] = null;
+
+                                fruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
+                                emptyPlaces.Enqueue(j);
+                                yield return new WaitForSeconds(speedAndTimeLibrary.waitBeforeFallingOtherFruit);
+                            }
+                        }
+                    }
                 }
-                else
+            }
+
+            //yield return new WaitForSeconds(0.05f);
+
+            // Checking for crossfalls  
+            if (columnStopperId[i] == null)
+            {
+                for (int j = columnsFallIndexY[i]; j >= 0; j--)
                 {
-
-                    if (!allFruits[i, j])
+                    if (j - 1 >= 0 && !allFruits[i, j - 1] && allTiles[i, j] && allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox && columnStopperId[i] == null)
                     {
-                        // Putting empty place index to variable
-                        emptyPlaces.Enqueue(j);
 
-                    }else if (allFruits[i, j].GetComponent<Fruit>().isSwiped)
-                    {
-                        emptyPlaces.Clear();
+                        int k = 0;
+
+                        while (j + k - 1 >= 0 && !allFruits[i, j + k] && !CrossFall(i, j + k))
+                        {
+                            k--;
+                        }
                     }
-                    else if (emptyPlaces.Count > 0)
-                    {
-                        // if there is a piece then piece new location will be first empty place in queue.
-                        audioManager.FruitFall();
-                        int emptyRowIndex = emptyPlaces.Dequeue();
-                        GameObject fruit = allFruits[i, j];
-                        Fruit fruitScript = fruit.GetComponent<Fruit>();
-                        fruitScript.row = emptyRowIndex;
-                        fruitScript.column = i;
-                        allFruits[i, j] = null;
+                }
+            }
 
-                        fruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
-                        emptyPlaces.Enqueue(j);
-                        yield return new WaitForSeconds(speedAndTimeLibrary.waitBeforeFallingOtherFruit);
+            if (columnStopperId[i] == null)
+            {
+                while (emptyPlaces.Count > 0)
+                {
+                    float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
+                    float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
+                    int emptyRowIndex = emptyPlaces.Dequeue();
+                    if (columnStopperId[i] == null)
+                    {
+
+                        // If this place did not filled then create object for it.
+                        if (!allFruits[i, emptyRowIndex])
+                        {
+
+                            Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, (columnsFallIndexY[i] + 1) * scaleNumber - yOffset);
+
+                            // Instantiate a new fruit at the position of the destroyed fruit. Fruit that going to be created must be from existFruits variable. existFruits
+                            // list contains indexes of avaliable fruits.
+                            int fruitToUse = existFruits[UnityEngine.Random.Range(0, existFruits.Count)];
+                            GameObject newFruit;
+                            int random = 1;
+                            if (indexOfCreatableObstacle != -1)
+                            {
+                                random = UnityEngine.Random.Range(0, 4);
+                            }
+
+                            if (random == 0)
+                            {
+                                // generatable type of obstacle creation
+                                newFruit = Instantiate(obstaclePrefabs[indexOfCreatableObstacle], tempPosition, Quaternion.identity);
+                                newFruit.GetComponent<ObstacleScript>().row = emptyRowIndex;
+                                newFruit.GetComponent<ObstacleScript>().column = i;
+
+                            }
+                            else
+                            {
+                                // normal fruit creation
+                                newFruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
+                            }
+                            Fruit newFruitScript = newFruit.GetComponent<Fruit>();
+
+                            // Set the parent and name of the new fruit
+                            newFruit.transform.parent = this.transform;
+                            newFruit.name = "( " + i + ", " + emptyRowIndex + " )";
+
+                            // Set the column and row of the new fruit
+                            newFruitScript.column = i;
+                            newFruitScript.row = emptyRowIndex;
+                            newFruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
+                            if (random != 0)
+                            {
+                                totalNumberOfFruits[fruitToUse]++;
+                                newFruitScript.fruitType = fruitToUse;
+                            }
+
+                            allFruits[i, emptyRowIndex] = newFruit;
+
+                            audioManager.FruitFall();
+                            // Add the new fruit to the allFruits array
+                            yield return new WaitForSeconds(speedAndTimeLibrary.waitBeforeCreatingFruitsTopOfBoard);
+                        }
                     }
                 }
             }
         }
-
-        //yield return new WaitForSeconds(0.05f);
-
-        // Checking for crossfalls  
-        for (int j = columnsFallIndexY[i]; j >= 0; j--)
-        {
-            if (j-1>=0 && !allFruits[i, j-1] && allTiles[i, j] && allTiles[i, j].GetComponent<BackgroundTile>().isCurrentObstacleBox && columnStopperId[i] == null)
-            {
-
-                int k = 0;
-
-                while (j + k - 1 >= 0 && !allFruits[i, j + k] && !CrossFall(i, j + k))
-                {
-                    k--;
-                }
-            }
-        }
-
-        if (columnStopperId[i] == null)
-        {
-            while (emptyPlaces.Count > 0)
-            {
-                float xOffset = width * scaleNumber * 0.5f - scaleNumber * 0.5f;
-                float yOffset = height * scaleNumber * 0.5f - 0.5f + 1.1f;
-                int emptyRowIndex = emptyPlaces.Dequeue();
-                // If this place did not filled then create object for it.
-                if (!allFruits[i, emptyRowIndex])
-                {
-
-                    Vector2 tempPosition = new Vector2(i * scaleNumber - xOffset, (columnsFallIndexY[i] + 1) * scaleNumber - yOffset);
-
-                    // Instantiate a new fruit at the position of the destroyed fruit. Fruit that going to be created must be from existFruits variable. existFruits
-                    // list contains indexes of avaliable fruits.
-                    int fruitToUse = existFruits[UnityEngine.Random.Range(0, existFruits.Count)];
-                    GameObject newFruit;
-                    int random = 1;
-                    if (indexOfCreatableObstacle != -1)
-                    {
-                        random = UnityEngine.Random.Range(0, 4);
-                    }
-
-                    if (random == 0)
-                    {
-                        // generatable type of obstacle creation
-                        newFruit = Instantiate(obstaclePrefabs[indexOfCreatableObstacle], tempPosition, Quaternion.identity);
-                        newFruit.GetComponent<ObstacleScript>().row = emptyRowIndex;
-                        newFruit.GetComponent<ObstacleScript>().column = i;
-
-                    }
-                    else
-                    {
-                        // normal fruit creation
-                        newFruit = Instantiate(fruits[fruitToUse], tempPosition, Quaternion.identity);
-                    }
-                    Fruit newFruitScript = newFruit.GetComponent<Fruit>();
-
-                    // Set the parent and name of the new fruit
-                    newFruit.transform.parent = this.transform;
-                    newFruit.name = "( " + i + ", " + emptyRowIndex + " )";
-
-                    // Set the column and row of the new fruit
-                    newFruitScript.column = i;
-                    newFruitScript.row = emptyRowIndex;
-                    newFruitScript.targetV.y = allTiles[i, emptyRowIndex].transform.position.y;
-                    if (random != 0)
-                    {
-                        totalNumberOfFruits[fruitToUse]++;
-                        newFruitScript.fruitType = fruitToUse;
-                    }
-
-                    allFruits[i, emptyRowIndex] = newFruit;
-
-                    audioManager.FruitFall();
-                    // Add the new fruit to the allFruits array
-                    yield return new WaitForSeconds(speedAndTimeLibrary.waitBeforeCreatingFruitsTopOfBoard);
-                }
-            }
-            fillingColumn[i] = false;
-        }       
-
+        yield return null;
+        StartCoroutine(FillTheColumn(i));
     }
 
     /// <summary>
@@ -2626,8 +2605,6 @@ public class Board : MonoBehaviour
         
         string stopID = Guid.NewGuid().ToString();
 
-        Array.Fill(fillingColumn, true);
-
         for (int i = 0; i < width; i++)
         {
             columnStopperId[i] = stopID;
@@ -2721,7 +2698,6 @@ public class Board : MonoBehaviour
         blockUserMove = false;
         StopHint();
 
-        Array.Clear(fillingColumn, 0, fillingColumn.Length);
         Array.Clear(columnStopperId, 0, columnStopperId.Length);
 
         discoBall.transform.GetChild(0).gameObject.SetActive(false);

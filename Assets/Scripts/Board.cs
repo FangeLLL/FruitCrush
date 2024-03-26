@@ -106,6 +106,9 @@ public class Board : MonoBehaviour
     private int isHarvesterMergedBoomerang = Animator.StringToHash("isHarvesterMergedBoomerang");
     private int isTNTMergedBoomerang = Animator.StringToHash("isTNTMergedBoomerang");
 
+    private int TNTHarvesterVerticalMerge = Animator.StringToHash("TNTHarvesterVerticalMerge");
+    private int TNTHarvesterHorizontalMerge = Animator.StringToHash("TNTHarvesterHorizontalMerge");
+
     ObjectSpeedAndTimeWaitingLibrary speedAndTimeLibrary = new ObjectSpeedAndTimeWaitingLibrary();
 
     private void Awake()
@@ -396,6 +399,8 @@ public class Board : MonoBehaviour
         currentFruit = null;
         currentOtherFruit = null;
 
+        bool horizontalSwipe=true;
+
         GameObject otherFruit=null;
         GameObject fruit = allFruits[column, row];
         GameObject targetTile=null;
@@ -431,6 +436,7 @@ public class Board : MonoBehaviour
             // UP SWIPE
             if (FruitAvailableWithoutTypeCheck(allFruits[column, row + 1]))
             {
+                horizontalSwipe = false;
                 otherFruit = allFruits[column, row + 1];
             }
             else
@@ -473,6 +479,7 @@ public class Board : MonoBehaviour
             // DOWN SWIPE
             if (FruitAvailableWithoutTypeCheck(allFruits[column, row - 1]))
             {
+                horizontalSwipe = false;
                 otherFruit = allFruits[column, row - 1];
             }
             else
@@ -524,7 +531,7 @@ public class Board : MonoBehaviour
         audioManager.Swipe();
         if (otherFruit)
         {
-            StartCoroutine(CheckMove(fruit, otherFruit));
+            StartCoroutine(CheckMove(fruit, otherFruit,horizontalSwipe));
 
         }
         else
@@ -1150,7 +1157,7 @@ public class Board : MonoBehaviour
     /// <param name="fruit"></param>
     /// <param name="otherFruit"></param>
     /// <returns></returns>
-    private IEnumerator CheckMove(GameObject fruit, GameObject otherFruit)
+    private IEnumerator CheckMove(GameObject fruit, GameObject otherFruit,bool horizontalSwipe)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>();
         Fruit otherFruitScript = otherFruit.GetComponent<Fruit>();
@@ -1167,7 +1174,7 @@ public class Board : MonoBehaviour
             fruitScript.fadeout = true;
             otherFruitScript.fadeout = true;
             yield return new WaitForSeconds(speedAndTimeLibrary.beforeTwoPowerUpMergeWait);
-            StartCoroutine(ActivateMergePowerUp(fruit, otherFruit));
+            StartCoroutine(ActivateMergePowerUp(fruit, otherFruit,horizontalSwipe));
             succesfulMove = true;
         }
         else
@@ -1768,7 +1775,7 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="fruit"></param>
     /// <param name="otherFruit"></param>
-    public IEnumerator ActivateMergePowerUp(GameObject fruit, GameObject otherFruit)
+    public IEnumerator ActivateMergePowerUp(GameObject fruit, GameObject otherFruit,bool horizontalSwipe)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>(), otherFruitScript = otherFruit.GetComponent<Fruit>();
         fruitScript.damageID = otherFruitScript.damageID;
@@ -1886,7 +1893,7 @@ public class Board : MonoBehaviour
                             break;
                         case -3:
 
-                            StartCoroutine(HarvesterTNTMerge(fruit,otherFruit,fruitScript.column,fruitScript.row,false));
+                            StartCoroutine(HarvesterTNTMerge(fruit,otherFruit,fruitScript.column,fruitScript.row,false,horizontalSwipe));
 
                             break;
                         case -4:
@@ -1915,7 +1922,7 @@ public class Board : MonoBehaviour
                             break;
                         case -3:
 
-                            StartCoroutine(HarvesterTNTMerge(fruit,otherFruit, fruitScript.column, fruitScript.row, true));
+                            StartCoroutine(HarvesterTNTMerge(fruit,otherFruit, fruitScript.column, fruitScript.row, true, horizontalSwipe));
 
                             break;
                         case -4:
@@ -1939,12 +1946,12 @@ public class Board : MonoBehaviour
                     {
                         case -1:
 
-                            StartCoroutine(HarvesterTNTMerge(otherFruit,fruit, otherFruitScript.column, otherFruitScript.row, false));
+                            StartCoroutine(HarvesterTNTMerge(otherFruit,fruit, otherFruitScript.column, otherFruitScript.row, false, horizontalSwipe));
 
                             break;
                         case -2:
 
-                            StartCoroutine(HarvesterTNTMerge(otherFruit,fruit, otherFruitScript.column, otherFruitScript.row, true));
+                            StartCoroutine(HarvesterTNTMerge(otherFruit,fruit, otherFruitScript.column, otherFruitScript.row, true, horizontalSwipe));
 
                             break;
                         case -4:
@@ -3552,7 +3559,7 @@ public class Board : MonoBehaviour
         return tileSprites[0];
     }
 
-    private IEnumerator HarvesterTNTMerge(GameObject harvester,GameObject TNT,int column,int row, bool verticalHarvester)
+    private IEnumerator HarvesterTNTMerge(GameObject harvester,GameObject TNT,int column,int row, bool verticalHarvester,bool horizontalSwipe)
     {
         harvester.GetComponentInChildren<SpriteRenderer>().enabled = false;
         TNT.transform.GetChild(0).gameObject.SetActive(false);
@@ -3561,6 +3568,15 @@ public class Board : MonoBehaviour
         {
             Vector3 newRotation = new Vector3(0f, 0f, 90f);
             TNT.transform.GetChild(1).GetChild(1).transform.rotation = Quaternion.Euler(newRotation);
+        }
+
+        if (horizontalSwipe)
+        {
+            TNT.transform.GetChild(1).GetComponent<Animator>().SetTrigger(TNTHarvesterHorizontalMerge);
+        }
+        else
+        {
+            TNT.transform.GetChild(1).GetComponent<Animator>().SetTrigger(TNTHarvesterVerticalMerge);
         }
         yield return new WaitForSeconds(speedAndTimeLibrary.harvesterTNTMergeAnimDuration);
         harvester.GetComponentInChildren<SpriteRenderer>().enabled = true;

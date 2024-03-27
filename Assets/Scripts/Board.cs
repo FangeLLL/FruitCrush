@@ -1084,7 +1084,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    private IEnumerator CheckMoveForOneFruit(GameObject fruit, GameObject targetTile,String swipeDirection)
+    private IEnumerator CheckMoveForOneFruit(GameObject fruit, GameObject targetTile)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>();
         BackgroundTile backgroundTileScript = targetTile.GetComponent<BackgroundTile>();

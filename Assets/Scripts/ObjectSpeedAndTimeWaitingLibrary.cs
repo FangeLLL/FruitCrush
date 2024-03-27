@@ -21,7 +21,7 @@ public class ObjectSpeedAndTimeWaitingLibrary
 
     // *** Time durations *** //
 
-    public float powerUpCreationFruitGatheringDuration = 0.19f;
+    public float powerUpCreationFruitGatheringDuration = 0.17f;
     public float beforeTwoPowerUpMergeWait = 0.1f;
     public float fruitSwipeDuration = 0.18f;
     public float afterReverseWait = 0.1f;

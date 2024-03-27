@@ -1679,23 +1679,11 @@ public class Board : MonoBehaviour
         allFruits[column, row] = newPowerUp;
 
         // it means this is not for immidate use and normally created not for merge or something for.
-        if (isItInteractable)
+        if (!isItInteractable)
         {
-            StartCoroutine(WaitAndMakeInteractablePowerUp(speedAndTimeLibrary.createdPowerupUninteractableDuration, newPowerUpScript));
+            newPowerUpScript.fadeout = true;
         }
         return newPowerUp;
-    }
-
-    /// <summary>
-    /// Wait and after make powerUp can interact other things. This wait important because if powerUp created after match but same time powerup activated system must not activate new created powerUp.  
-    /// </summary>
-    /// <param name="waitTime"></param>
-    /// <param name="powerUpScript"></param>
-    /// <returns></returns>
-    private IEnumerator WaitAndMakeInteractablePowerUp(float waitTime,Fruit powerUpScript)
-    {
-        yield return new WaitForSeconds(waitTime);
-        powerUpScript.fadeout = false;
     }
 
     /// <summary>

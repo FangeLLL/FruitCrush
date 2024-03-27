@@ -27,6 +27,16 @@ public class LiveRegen : MonoBehaviour
 
     private void Start()
     {
+        string lastLogoutTimeString = PlayerPrefs.GetString("LastLogoutTime", string.Empty);
+        if (!string.IsNullOrEmpty(lastLogoutTimeString))
+        {
+            System.DateTime lastLogoutTime = System.DateTime.Parse(lastLogoutTimeString);
+            System.TimeSpan offlineDuration = System.DateTime.Now - lastLogoutTime;
+
+            double time = offlineDuration.TotalSeconds;
+            offlineTimeToRegen = (int)time;
+        }
+
         timeToRegen = 1800;
         lives = PlayerPrefs.GetInt("Lives", 5);
         isInfiniteHealthActive = PlayerPrefs.GetInt("InfiniteHealthActive", 1) == 1;
@@ -196,27 +206,10 @@ public class LiveRegen : MonoBehaviour
         CheckLiveStatus();
     }
 
-    private void OnApplicationPause(bool pauseStatus)
+    private void OnApplicationQuit()
     {
-        if (pauseStatus)
-        {
-            PlayerPrefs.SetString("LastLogoutTime", System.DateTime.Now.ToString());
-            PlayerPrefs.Save();
-        }
-
-        else
-        {
-            string lastLogoutTimeString = PlayerPrefs.GetString("LastLogoutTime", string.Empty);
-
-            if (!string.IsNullOrEmpty(lastLogoutTimeString))
-            {
-                System.DateTime lastLogoutTime = System.DateTime.Parse(lastLogoutTimeString);
-                System.TimeSpan offlineDuration = System.DateTime.Now - lastLogoutTime;
-
-                double time = offlineDuration.TotalSeconds;
-                offlineTimeToRegen = (int)time;
-            }
-        }
+        PlayerPrefs.SetString("LastLogoutTime", System.DateTime.Now.ToString());
+        PlayerPrefs.Save();
     }
 
     private void StartInfiniteHealthCountdown()

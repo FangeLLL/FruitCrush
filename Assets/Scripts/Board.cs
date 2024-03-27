@@ -6,6 +6,7 @@ using UnityEngine;
 using System;
 using Unity.VisualScripting;
 using UnityEditor.SearchService;
+using System.IO.Pipes;
 
 public class Board : MonoBehaviour
 {
@@ -108,6 +109,11 @@ public class Board : MonoBehaviour
 
     private int TNTHarvesterVerticalMerge = Animator.StringToHash("TNTHarvesterVerticalMerge");
     private int TNTHarvesterHorizontalMerge = Animator.StringToHash("TNTHarvesterHorizontalMerge");
+
+    private int SwipeResistUp = Animator.StringToHash("SwipeResistUp");
+    private int SwipeResistDown = Animator.StringToHash("SwipeResistDown");
+    private int SwipeResistLeft = Animator.StringToHash("SwipeResistLeft");
+    private int SwipeResistRight = Animator.StringToHash("SwipeResistRight");
 
     ObjectSpeedAndTimeWaitingLibrary speedAndTimeLibrary = new ObjectSpeedAndTimeWaitingLibrary();
 
@@ -401,6 +407,8 @@ public class Board : MonoBehaviour
 
         bool horizontalSwipe=true;
 
+        string swipeDirection = "";
+
         GameObject otherFruit=null;
         GameObject fruit = allFruits[column, row];
         GameObject targetTile=null;
@@ -409,8 +417,14 @@ public class Board : MonoBehaviour
             Debug.Log("This fruit already swiping");
             return;
         }
-        if (swipeAngle > -45 && swipeAngle <= 45 && column + 1 < width)
+        if (swipeAngle > -45 && swipeAngle <= 45)
         {
+            swipeDirection = "Right";
+            if (column + 1 == width)
+            {
+                PlayBorderResistAnim(fruit, swipeDirection);
+                return;
+            }
 
             // RIGHT SWIPE
             if (FruitAvailableWithoutTypeCheck(allFruits[column + 1, row]))
@@ -425,14 +439,21 @@ public class Board : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("You cant swipe right!!!");
+                    PlayBorderResistAnim(fruit, swipeDirection);
                     return;
                 }        
             }
 
         }
-        else if (swipeAngle > 45 && swipeAngle <= 135 && row + 1 < height)
+        else if (swipeAngle > 45 && swipeAngle <= 135)
         {
+            swipeDirection = "Up";
+            if (row + 1 == height)
+            {
+                PlayBorderResistAnim(fruit, swipeDirection);
+                return;
+            }
+
             // UP SWIPE
             if (FruitAvailableWithoutTypeCheck(allFruits[column, row + 1]))
             {
@@ -447,14 +468,21 @@ public class Board : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("You cant swipe up!!!");
+                    PlayBorderResistAnim(fruit, swipeDirection);
                     return;
                 }
             }
 
         }
-        else if ((swipeAngle > 135 || swipeAngle <= -135) && column > 0)
+        else if ((swipeAngle > 135 || swipeAngle <= -135))
         {
+            swipeDirection = "Left";
+            if (column == 0)
+            {
+                PlayBorderResistAnim(fruit, swipeDirection);
+                return;
+            }
+
             // LEFT SWIPE
             if (FruitAvailableWithoutTypeCheck(allFruits[column - 1, row]))
             {
@@ -468,14 +496,21 @@ public class Board : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("You cant swipe left!!!");
+                    PlayBorderResistAnim(fruit, swipeDirection);
                     return;
                 }
             }
 
         }
-        else if (swipeAngle < -45 && swipeAngle >= -135 && row > 0)
+        else if (swipeAngle < -45 && swipeAngle >= -135)
         {
+            swipeDirection = "Down";
+            if (row == 0)
+            {
+                PlayBorderResistAnim(fruit, swipeDirection);
+                return;
+            }
+
             // DOWN SWIPE
             if (FruitAvailableWithoutTypeCheck(allFruits[column, row - 1]))
             {
@@ -490,7 +525,7 @@ public class Board : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("You cant swipe down!!!");
+                    PlayBorderResistAnim(fruit, swipeDirection);
                     return;
                 }
             }
@@ -528,7 +563,6 @@ public class Board : MonoBehaviour
 
         currentFruit = fruit;
 
-        audioManager.Swipe();
         if (otherFruit)
         {
             StartCoroutine(CheckMove(fruit, otherFruit,horizontalSwipe));
@@ -536,6 +570,7 @@ public class Board : MonoBehaviour
         }
         else
         {
+
             StartCoroutine(CheckMoveForOneFruit(fruit, targetTile));
 
         }
@@ -1039,7 +1074,7 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     public bool FruitAvailableWithoutTypeCheck(GameObject obj)
     {
-        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.2f && !obj.GetComponent<Fruit>().fadeout)
+        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.01f && !obj.GetComponent<Fruit>().fadeout)
         {
             return true;
         }
@@ -1063,8 +1098,8 @@ public class Board : MonoBehaviour
         allFruits[tempCol, tempRow] = null;
         fruitScript.targetV = allTiles[backgroundTileScript.column, backgroundTileScript.row].transform.position;
 
-
         yield return new WaitForSeconds(speedAndTimeLibrary.fruitSwipeDuration);
+
         if (!specialSwipe)
         {
             if ((fruitScript.fruitType > -100 && fruitScript.fruitType < 0))
@@ -1679,23 +1714,11 @@ public class Board : MonoBehaviour
         allFruits[column, row] = newPowerUp;
 
         // it means this is not for immidate use and normally created not for merge or something for.
-        if (isItInteractable)
+        if (!isItInteractable)
         {
-            StartCoroutine(WaitAndMakeInteractablePowerUp(speedAndTimeLibrary.createdPowerupUninteractableDuration, newPowerUpScript));
+            newPowerUpScript.fadeout = true;
         }
         return newPowerUp;
-    }
-
-    /// <summary>
-    /// Wait and after make powerUp can interact other things. This wait important because if powerUp created after match but same time powerup activated system must not activate new created powerUp.  
-    /// </summary>
-    /// <param name="waitTime"></param>
-    /// <param name="powerUpScript"></param>
-    /// <returns></returns>
-    private IEnumerator WaitAndMakeInteractablePowerUp(float waitTime,Fruit powerUpScript)
-    {
-        yield return new WaitForSeconds(waitTime);
-        powerUpScript.fadeout = false;
     }
 
     /// <summary>
@@ -3650,6 +3673,29 @@ public class Board : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         Destroy(obj);
+    }
+
+    private void PlayBorderResistAnim(GameObject fruit,String swipeDirection)
+    {
+        switch(swipeDirection)
+        {
+            case "Up":
+                Debug.Log("You cant swipe Up!!!");
+                fruit.transform.GetChild(0).GetComponent<Animator>().SetTrigger(SwipeResistUp);
+                break;
+            case "Down":
+                Debug.Log("You cant swipe Down!!!");
+                fruit.transform.GetChild(0).GetComponent<Animator>().SetTrigger(SwipeResistDown);
+                break;
+            case "Right":
+                Debug.Log("You cant swipe Right!!!");
+                fruit.transform.GetChild(0).GetComponent<Animator>().SetTrigger(SwipeResistRight);
+                break;
+            case "Left":
+                Debug.Log("You cant swipe Left!!!");
+                fruit.transform.GetChild(0).GetComponent<Animator>().SetTrigger(SwipeResistLeft);
+                break;
+        }
     }
 
 }

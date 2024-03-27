@@ -34,7 +34,7 @@ public class ObjectSpeedAndTimeWaitingLibrary
     public float waitBeforeFallingOtherFruit = 0.04f;
     public float waitBeforeCreatingFruitsTopOfBoard = 0.1f;
 
-    public float createdPowerupUninteractableDuration=0.01f;
+  //  public float createdPowerupUninteractableDuration=0.01f;
 
     public float twoTNTMergeAnimDuration = 1.44f;
     public float twoTNTMergeColumnStopDuration = 1.76f;

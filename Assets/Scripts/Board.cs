@@ -6,6 +6,7 @@ using UnityEngine;
 using System;
 using Unity.VisualScripting;
 using UnityEditor.SearchService;
+using System.IO.Pipes;
 
 public class Board : MonoBehaviour
 {
@@ -110,7 +111,7 @@ public class Board : MonoBehaviour
     private int TNTHarvesterHorizontalMerge = Animator.StringToHash("TNTHarvesterHorizontalMerge");
 
     private int SwipeResistUp = Animator.StringToHash("SwipeResistUp");
-    private int SwipeResistDowm = Animator.StringToHash("SwipeResistDowm");
+    private int SwipeResistDown = Animator.StringToHash("SwipeResistDown");
     private int SwipeResistLeft = Animator.StringToHash("SwipeResistLeft");
     private int SwipeResistRight = Animator.StringToHash("SwipeResistRight");
 
@@ -406,6 +407,8 @@ public class Board : MonoBehaviour
 
         bool horizontalSwipe=true;
 
+        string swipeDirection = "";
+
         GameObject otherFruit=null;
         GameObject fruit = allFruits[column, row];
         GameObject targetTile=null;
@@ -416,11 +419,10 @@ public class Board : MonoBehaviour
         }
         if (swipeAngle > -45 && swipeAngle <= 45)
         {
-
-            if(column + 1 == width)
+            swipeDirection = "Right";
+            if (column + 1 == width)
             {
-                Debug.Log("You cant swipe right!!!");
-                fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistRight);
+                PlayBorderResistAnim(fruit, swipeDirection);
                 return;
             }
 
@@ -437,8 +439,7 @@ public class Board : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("You cant swipe right!!!");
-                    fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistRight);
+                    PlayBorderResistAnim(fruit, swipeDirection);
                     return;
                 }        
             }
@@ -446,10 +447,10 @@ public class Board : MonoBehaviour
         }
         else if (swipeAngle > 45 && swipeAngle <= 135)
         {
+            swipeDirection = "Up";
             if (row + 1 == height)
             {
-                Debug.Log("You cant swipe up!!!");
-                fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistUp);
+                PlayBorderResistAnim(fruit, swipeDirection);
                 return;
             }
 
@@ -467,8 +468,7 @@ public class Board : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("You cant swipe up!!!");
-                    fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistUp);
+                    PlayBorderResistAnim(fruit, swipeDirection);
                     return;
                 }
             }
@@ -476,10 +476,10 @@ public class Board : MonoBehaviour
         }
         else if ((swipeAngle > 135 || swipeAngle <= -135))
         {
+            swipeDirection = "Left";
             if (column == 0)
             {
-                fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistLeft);
-                Debug.Log("You cant swipe left!!!");
+                PlayBorderResistAnim(fruit, swipeDirection);
                 return;
             }
 
@@ -496,8 +496,7 @@ public class Board : MonoBehaviour
                 }
                 else
                 {
-                    fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistLeft);
-                    Debug.Log("You cant swipe left!!!");
+                    PlayBorderResistAnim(fruit, swipeDirection);
                     return;
                 }
             }
@@ -505,11 +504,10 @@ public class Board : MonoBehaviour
         }
         else if (swipeAngle < -45 && swipeAngle >= -135)
         {
-
+            swipeDirection = "Down";
             if (row == 0)
             {
-                fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistDowm);
-                Debug.Log("You cant swipe down!!!");
+                PlayBorderResistAnim(fruit, swipeDirection);
                 return;
             }
 
@@ -527,8 +525,7 @@ public class Board : MonoBehaviour
                 }
                 else
                 {
-                    fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistDowm);
-                    Debug.Log("You cant swipe down!!!");
+                    PlayBorderResistAnim(fruit, swipeDirection);
                     return;
                 }
             }
@@ -566,7 +563,6 @@ public class Board : MonoBehaviour
 
         currentFruit = fruit;
 
-        audioManager.Swipe();
         if (otherFruit)
         {
             StartCoroutine(CheckMove(fruit, otherFruit,horizontalSwipe));
@@ -574,6 +570,7 @@ public class Board : MonoBehaviour
         }
         else
         {
+
             StartCoroutine(CheckMoveForOneFruit(fruit, targetTile));
 
         }
@@ -1077,7 +1074,7 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     public bool FruitAvailableWithoutTypeCheck(GameObject obj)
     {
-        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.2f && !obj.GetComponent<Fruit>().fadeout)
+        if (obj && Vector2.Distance(obj.GetComponent<Fruit>().targetV, obj.transform.position) < 0.01f && !obj.GetComponent<Fruit>().fadeout)
         {
             return true;
         }
@@ -1087,7 +1084,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    private IEnumerator CheckMoveForOneFruit(GameObject fruit, GameObject targetTile)
+    private IEnumerator CheckMoveForOneFruit(GameObject fruit, GameObject targetTile,String swipeDirection)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>();
         BackgroundTile backgroundTileScript = targetTile.GetComponent<BackgroundTile>();
@@ -1101,8 +1098,8 @@ public class Board : MonoBehaviour
         allFruits[tempCol, tempRow] = null;
         fruitScript.targetV = allTiles[backgroundTileScript.column, backgroundTileScript.row].transform.position;
 
-
         yield return new WaitForSeconds(speedAndTimeLibrary.fruitSwipeDuration);
+
         if (!specialSwipe)
         {
             if ((fruitScript.fruitType > -100 && fruitScript.fruitType < 0))
@@ -3676,6 +3673,29 @@ public class Board : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         Destroy(obj);
+    }
+
+    private void PlayBorderResistAnim(GameObject fruit,String swipeDirection)
+    {
+        switch(swipeDirection)
+        {
+            case "Up":
+                Debug.Log("You cant swipe Up!!!");
+                fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistUp);
+                break;
+            case "Down":
+                Debug.Log("You cant swipe Down!!!");
+                fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistDown);
+                break;
+            case "Right":
+                Debug.Log("You cant swipe Right!!!");
+                fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistRight);
+                break;
+            case "Left":
+                Debug.Log("You cant swipe Left!!!");
+                fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistLeft);
+                break;
+        }
     }
 
 }

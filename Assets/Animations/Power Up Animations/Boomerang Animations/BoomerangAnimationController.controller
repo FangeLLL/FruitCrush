@@ -538,7 +538,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isBoomerangLanded
+    m_ConditionEvent: isObjectLanded
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6949007483187511274}
@@ -660,31 +660,31 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: isBoomerangLanded
+  - m_Name: isObjectLanded
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: isBoomerangSwipeResistBorderLeft
+  - m_Name: SwipeResistLeft
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: isBoomerangSwipeResistBorderRight
+  - m_Name: SwipeResistRight
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: isBoomerangSwipeResistBorderDown
+  - m_Name: SwipeResistDown
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: isBoomerangSwipeResistBorderUp
+  - m_Name: SwipeResistUp
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -739,7 +739,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isBoomerangSwipeResistBorderLeft
+    m_ConditionEvent: SwipeResistLeft
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6390299518169584994}
@@ -990,7 +990,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isBoomerangSwipeResistBorderRight
+    m_ConditionEvent: SwipeResistRight
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3866526790418984200}
@@ -1015,7 +1015,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isBoomerangSwipeResistBorderDown
+    m_ConditionEvent: SwipeResistDown
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3732203824313000073}
@@ -1040,7 +1040,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isBoomerangSwipeResistBorderUp
+    m_ConditionEvent: SwipeResistUp
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5384983450600094300}

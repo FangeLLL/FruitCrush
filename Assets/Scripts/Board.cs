@@ -3681,19 +3681,19 @@ public class Board : MonoBehaviour
         {
             case "Up":
                 Debug.Log("You cant swipe Up!!!");
-                fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistUp);
+                fruit.transform.GetChild(0).GetComponent<Animator>().SetTrigger(SwipeResistUp);
                 break;
             case "Down":
                 Debug.Log("You cant swipe Down!!!");
-                fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistDown);
+                fruit.transform.GetChild(0).GetComponent<Animator>().SetTrigger(SwipeResistDown);
                 break;
             case "Right":
                 Debug.Log("You cant swipe Right!!!");
-                fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistRight);
+                fruit.transform.GetChild(0).GetComponent<Animator>().SetTrigger(SwipeResistRight);
                 break;
             case "Left":
                 Debug.Log("You cant swipe Left!!!");
-                fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistLeft);
+                fruit.transform.GetChild(0).GetComponent<Animator>().SetTrigger(SwipeResistLeft);
                 break;
         }
     }

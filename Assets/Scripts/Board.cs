@@ -110,7 +110,7 @@ public class Board : MonoBehaviour
     private int TNTHarvesterHorizontalMerge = Animator.StringToHash("TNTHarvesterHorizontalMerge");
 
     private int SwipeResistUp = Animator.StringToHash("SwipeResistUp");
-    private int SwipeResistDowm = Animator.StringToHash("SwipeResistDowm");
+    private int SwipeResistDown = Animator.StringToHash("SwipeResistDown");
     private int SwipeResistLeft = Animator.StringToHash("SwipeResistLeft");
     private int SwipeResistRight = Animator.StringToHash("SwipeResistRight");
 
@@ -508,7 +508,7 @@ public class Board : MonoBehaviour
 
             if (row == 0)
             {
-                fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistDowm);
+                fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistDown);
                 Debug.Log("You cant swipe down!!!");
                 return;
             }
@@ -527,7 +527,7 @@ public class Board : MonoBehaviour
                 }
                 else
                 {
-                    fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistDowm);
+                    fruit.GetComponentInChildren<Animator>().SetTrigger(SwipeResistDown);
                     Debug.Log("You cant swipe down!!!");
                     return;
                 }

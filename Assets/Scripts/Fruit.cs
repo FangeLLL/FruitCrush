@@ -79,6 +79,8 @@ public class Fruit : MonoBehaviour
     public int swipeFlash = Animator.StringToHash("isSwipeHintIdle");
     [HideInInspector]
     private int isObjectLanded = Animator.StringToHash("isObjectLanded");
+    [HideInInspector]
+    private int isPowerUpCreated = Animator.StringToHash("isPowerUpCreated");
 
 
     void Awake()
@@ -128,7 +130,11 @@ public class Fruit : MonoBehaviour
                 if (falling && transform.position.y - targetV.y < 0.01f && !fadeout)
                 {
                     falling = false;
-                    transform.GetChild(0).GetComponent<Animator>().SetTrigger(isObjectLanded);
+                    if ((fruitType < 0 && fruitType > -100) && !transform.GetChild(0).GetComponent<Animator>().GetBool(isPowerUpCreated))
+                    {
+                        transform.GetChild(0).GetComponent<Animator>().SetTrigger(isObjectLanded);
+                    }
+                        
                 }
 
 

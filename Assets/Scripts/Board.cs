@@ -89,17 +89,14 @@ public class Board : MonoBehaviour
     [SerializeField]
     private GameObject lighteningPrefab;
 
-    private int isBoomerangCreated = Animator.StringToHash("isBoomerangCreated");
+    private int isPowerUpCreated = Animator.StringToHash("isPowerUpCreated");
     private int is2BoomerangMerged = Animator.StringToHash("is2BoomerangMerged");
     private int boomerangRotating = Animator.StringToHash("isRotating");
 
-    private int isHarvesterCreated = Animator.StringToHash("isHarvesterCreated");
     private int isHarvesterRunning = Animator.StringToHash("isHarvesterRunning");
 
-    private int isTNTCreated = Animator.StringToHash("isTNTCreated");
     private int isTNTMerged = Animator.StringToHash("isTNTMerged");
 
-    private int isDiscoBallCreated = Animator.StringToHash("isDiscoBallCreated");
     private int isDiscoBallUsed = Animator.StringToHash("isDiscoBallUsed");
 
     private int isFruitDestroyed = Animator.StringToHash("isFruitDestroyed");
@@ -1685,24 +1682,7 @@ public class Board : MonoBehaviour
         newPowerUpScript.damageID = Guid.NewGuid().ToString();
         if (playCreationAnim)
         {
-            switch (type)
-            {
-                case -1:
-                    newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isHarvesterCreated);
-                    break;
-                case -2:
-                    newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isHarvesterCreated);
-                    break;
-                case -3:
-                    newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isTNTCreated);
-                    break;
-                case -4:
-                    newPowerUp.transform.GetChild(0).GetComponent<Animator>().SetTrigger(isBoomerangCreated);
-                    break;
-                case -5:
-                    newPowerUp.GetComponentInChildren<Animator>().SetTrigger(isDiscoBallCreated);
-                    break;
-            }
+            newPowerUp.transform.GetChild(0).GetComponent<Animator>().SetBool(isPowerUpCreated, true);           
         }
 
 

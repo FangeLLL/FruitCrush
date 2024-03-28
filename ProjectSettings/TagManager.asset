@@ -8,6 +8,7 @@ TagManager:
   - AudioManager
   - MusicManager
   - Global Light
+  - Fruit Mask
   layers:
   - Default
   - TransparentFX

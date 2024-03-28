@@ -7,12 +7,12 @@ public class BackgroundTile : MonoBehaviour
 {
 
     private Board board;
- 
-    public int tileType=0;
+
+    public int tileType = 0;
     public int row, column;
     public GameObject[] obstacles = new GameObject[3];
-    public int indexOfVisibleOne=-1;
-    public bool isCurrentObstacleBox=false;
+    public int indexOfVisibleOne = -1;
+    public bool isCurrentObstacleBox = false;
 
     public bool isTempEmptyTile = false;
 
@@ -41,10 +41,10 @@ public class BackgroundTile : MonoBehaviour
             return;
         }
 
-        if (indexOfVisibleOne>=0)
+        if (indexOfVisibleOne >= 0)
         {
             PowerUpBoom(fruitScript.damageID);
-            if (fruitScript.fruitType==-4 && fruitScript.attachedPowerUp)
+            if (fruitScript.fruitType == -4 && fruitScript.attachedPowerUp)
             {
                 GameObject powerUp = fruitScript.attachedPowerUp;
                 Fruit powerUpFruitScript = powerUp.GetComponent<Fruit>();
@@ -89,9 +89,9 @@ public class BackgroundTile : MonoBehaviour
                     {
                         StartCoroutine(ChangeDirectionOfBoomerangWithDelay(fruitScript));
                     }
-                }          
-            }         
-        }    
+                }
+            }
+        }
     }
 
     private IEnumerator DestroyBoomerangSlowly(GameObject boomerang)
@@ -109,7 +109,7 @@ public class BackgroundTile : MonoBehaviour
 
     private IEnumerator ChangeDirectionOfBoomerangWithDelay(Fruit boomerangScript)
     {
-        
+
         yield return new WaitForSeconds(0.15f);
         boomerangScript.targetV = board.GetBoomerangTargetLoc(column, row);
 
@@ -122,6 +122,7 @@ public class BackgroundTile : MonoBehaviour
             if (board.allFruits[column, row])
             {
                 board.selectedFruit = board.allFruits[column, row];
+                ChangeFruitMask(board.selectedFruit,true);
                 firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 board.allFruits[column, row].GetComponent<Fruit>().firstTouchPosition = firstTouchPosition;
                 board.allFruits[column, row].GetComponent<Fruit>().isClicked = true;
@@ -131,6 +132,11 @@ public class BackgroundTile : MonoBehaviour
 
     private void OnMouseUp()
     {
+
+        if (board.selectedFruit)
+        {
+            ChangeFruitMask(board.selectedFruit, false);
+        }
 
         if (board.specialPowerID == 0 || board.specialSwipe)
         {
@@ -158,30 +164,30 @@ public class BackgroundTile : MonoBehaviour
 
     }
 
-    public void Explosion(int column,int row, string damageID,string colorType)
+    public void Explosion(int column, int row, string damageID, string colorType)
     {
 
-        for(int i=-1; i<2; i+=2)
+        for (int i = -1; i < 2; i += 2)
         {
-            if (column + i<board.width && column + i>=0 && board.allTiles[column + i, row])
+            if (column + i < board.width && column + i >= 0 && board.allTiles[column + i, row])
             {
-                if (board.allTiles[column + i, row].GetComponent<BackgroundTile>().indexOfVisibleOne==0)
+                if (board.allTiles[column + i, row].GetComponent<BackgroundTile>().indexOfVisibleOne == 0)
                 {
-                    board.allTiles[column + i, row].GetComponent<BackgroundTile>().Boom(damageID,colorType);
+                    board.allTiles[column + i, row].GetComponent<BackgroundTile>().Boom(damageID, colorType);
                 }
                 if (board.FruitAvailableWithoutTypeCheck(board.allFruits[column + i, row]) && board.allFruits[column + i, row].GetComponent<Fruit>().fruitType < -100)
                 {
                     board.allFruits[column + i, row].GetComponent<ObstacleScript>().TakeDamage(damageID);
                 }
             }
-            
+
         }
 
         for (int i = -1; i < 2; i += 2)
         {
             if (row + i < board.height && row + i >= 0 && board.allTiles[column, row + i])
             {
-                if (board.allTiles[column, row + i].GetComponent<BackgroundTile>().indexOfVisibleOne==0)
+                if (board.allTiles[column, row + i].GetComponent<BackgroundTile>().indexOfVisibleOne == 0)
                 {
                     board.allTiles[column, row + i].GetComponent<BackgroundTile>().Boom(damageID, colorType);
                 }
@@ -189,23 +195,23 @@ public class BackgroundTile : MonoBehaviour
                 {
                     board.allFruits[column, row + i].GetComponent<ObstacleScript>().TakeDamage(damageID);
                 }
-            }      
+            }
         }
 
         Boom(damageID, colorType);
 
     }
- 
-    public void Boom(string damageID,string colorType)
+
+    public void Boom(string damageID, string colorType)
     {
-        if (indexOfVisibleOne>=0 && !obstacles[indexOfVisibleOne].GetComponent<ObstacleScript>().obstacleSpecs.powerUpNeed)
+        if (indexOfVisibleOne >= 0 && !obstacles[indexOfVisibleOne].GetComponent<ObstacleScript>().obstacleSpecs.powerUpNeed)
         {
             string obstacleColorType = obstacles[indexOfVisibleOne].GetComponent<ObstacleScript>().obstacleSpecs.colorType;
-            if (string.IsNullOrEmpty(obstacleColorType) || colorType==obstacleColorType)
+            if (string.IsNullOrEmpty(obstacleColorType) || colorType == obstacleColorType)
             {
                 obstacles[indexOfVisibleOne].GetComponent<ObstacleScript>().TakeDamage(damageID);
                 DetectVisibleOne();
-            }       
+            }
         }
     }
 
@@ -223,19 +229,19 @@ public class BackgroundTile : MonoBehaviour
     /// </summary>
     public void DetectVisibleOne()
     {
-        int tempIndex=-1;
+        int tempIndex = -1;
 
-        for(int i=0;i<obstacles.Length;i++)
+        for (int i = 0; i < obstacles.Length; i++)
         {
             // Checking if obstacle exist and after if its health bigger then zero because when obstacles destroy they will destroy by fadeout function and it
             // takes a little time to disappear so system must check its health.
-            if (obstacles[i] && obstacles[i].GetComponent<ObstacleScript>().health>0)
+            if (obstacles[i] && obstacles[i].GetComponent<ObstacleScript>().health > 0)
             {
                 tempIndex = i;
                 i = obstacles.Length;
             }
         }
-       
+
         indexOfVisibleOne = tempIndex;
         // If there is no obstacle left then isCurrentObstacleBox variable needs to be false.
         if (indexOfVisibleOne >= 0)
@@ -250,6 +256,23 @@ public class BackgroundTile : MonoBehaviour
         }
     }
 
-   
-
+    private void ChangeFruitMask(GameObject fruit,bool showMask)
+    {
+        GameObject fruitImage = fruit.transform.GetChild(0).gameObject;
+        for (int i = 0; i < fruitImage.transform.childCount; i++)
+        {
+            if (fruitImage.transform.GetChild(i).CompareTag("Fruit Mask"))
+            {
+                if (showMask)
+                {
+                    fruitImage.transform.GetChild(i).GetComponent<SpriteRenderer>().color = new Color(255, 255, 255,255);
+                }
+                else
+                {
+                    fruitImage.transform.GetChild(i).GetComponent<SpriteRenderer>().color = new Color(255, 255, 255, 0);
+                }
+                return;
+            }
+        }
+    }
 }

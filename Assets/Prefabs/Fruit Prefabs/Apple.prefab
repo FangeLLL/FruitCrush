@@ -136,6 +136,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6803838374407050577, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
+      propertyPath: m_TagString
+      value: Fruit Mask
+      objectReference: {fileID: 0}
     - target: {fileID: 7097870310067111858, guid: 5e8368d292c03784d88c65ab6a1bc9e4, type: 3}
       propertyPath: m_Size.x
       value: 1.05

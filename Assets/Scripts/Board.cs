@@ -2634,8 +2634,8 @@ public class Board : MonoBehaviour
     {
 
         blockUserMove = true;
-    
-        discoBall.GetComponentInChildren<Animator>().SetTrigger(isDiscoBallUsed);
+
+        discoBall.GetComponentInChildren<Animator>().SetBool(isDiscoBallUsed, true);
         
         string stopID = Guid.NewGuid().ToString();
 

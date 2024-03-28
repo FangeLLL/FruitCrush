@@ -86,6 +86,7 @@ public class Board : MonoBehaviour
 
     private bool shuffling = false;
 
+
     [SerializeField]
     private GameObject lighteningPrefab;
 
@@ -1524,7 +1525,7 @@ public class Board : MonoBehaviour
                                 emptyPlaces.Enqueue(j);
 
                             }
-                            else if (allFruits[i, j].GetComponent<Fruit>().isSwiped || allFruits[i, j].GetComponent<Fruit>().fadeout)
+                            else if (allFruits[i, j].GetComponent<Fruit>().isSwiped || allFruits[i, j].GetComponent<Fruit>().fadeout || allFruits[i, j].GetComponent<Fruit>().doingCrossFall)
                             {
                                  emptyPlaces.Clear();
                             }
@@ -1767,6 +1768,7 @@ public class Board : MonoBehaviour
             fruitScript.row = row - 1;
             fruitScript.column = column;
             fruitScript.targetV = allTiles[column, row - 1].transform.position;
+            fruitScript.doingCrossFall = true;
             return true;
         }
         return false;

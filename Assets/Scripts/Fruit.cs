@@ -65,6 +65,8 @@ public class Fruit : MonoBehaviour
 
     float timer = 0;
 
+    public bool doingCrossFall = false;
+
     private Vector2 tempStartPos;
 
     [HideInInspector]
@@ -199,7 +201,7 @@ public class Fruit : MonoBehaviour
                 tempStartPos = transform.position;
                 isMoving = false;
                 speedMultiplier = speedLibrary.fruitStartSpeed;
-             
+                doingCrossFall = false;
             }
 
             if (isClicked)

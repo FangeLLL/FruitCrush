@@ -96,7 +96,7 @@ public class Board : MonoBehaviour
 
     private int isPowerUpCreated = Animator.StringToHash("isPowerUpCreated");
     private int is2BoomerangMerged = Animator.StringToHash("is2BoomerangMerged");
-    private int boomerangRotating = Animator.StringToHash("isRotating");
+    private int isRotating = Animator.StringToHash("isRotating");
 
     private int isHarvesterRunning = Animator.StringToHash("isHarvesterRunning");
 
@@ -2181,7 +2181,7 @@ public class Board : MonoBehaviour
 
                 if(swipedFruitType >= 0)
                 {
-                    fruit.transform.GetChild(0).GetComponent<Animator>().SetBool(boomerangRotating, true);
+                    fruit.transform.GetChild(0).GetComponent<Animator>().SetBool(isRotating, true);
                 }
                 else
                 {

@@ -73,6 +73,11 @@ namespace ObjectSpeedAndTimeWaitingNameSpace {
         public static float waitBeforeDestroyingSunflower = 1f;
 
         public static float waitBeforeDestroyingTNT = 0.1f;
+
+        // *** Light Configurations *** //
+
+        public static float dimLightIntensity = 0.3f;
+
     }
 }
 

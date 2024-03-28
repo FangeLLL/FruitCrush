@@ -8,6 +8,7 @@ using Unity.VisualScripting;
 using UnityEditor.SearchService;
 using System.IO.Pipes;
 using ObjectSpeedAndTimeWaitingNameSpace;
+using UnityEngine.Rendering.Universal;
 
 
 
@@ -1874,6 +1875,7 @@ public class Board : MonoBehaviour
                     otherFruit.transform.GetChild(0).gameObject.SetActive(false);
                     otherFruit.transform.GetChild(1).gameObject.SetActive(true);
                     yield return new WaitForSeconds(ObjectSpeedAndTimeWaitingLibrary.twoDiscoballMergeAnimDuration);
+                    otherFruit.GetComponent<Light2D>().enabled = true;
                     allFruits[otherFruitScript.column, otherFruitScript.row] = null;
                     otherFruit.transform.GetChild(2).gameObject.SetActive(true);
                     otherFruit.GetComponent<ExplosionAreaScript>().enabled = true;

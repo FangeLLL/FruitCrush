@@ -7,6 +7,7 @@ TagManager:
   - Obstacle
   - AudioManager
   - MusicManager
+  - Global Light
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - 
   - Boomerang
   - 
-  - 
+  - Global Light
   - 
   - 
   - 

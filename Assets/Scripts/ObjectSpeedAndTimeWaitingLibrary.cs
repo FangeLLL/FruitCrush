@@ -72,7 +72,8 @@ namespace ObjectSpeedAndTimeWaitingNameSpace {
         public static float waitBeforeDestroyingSunflowerGrassAfterActivated = 0.1f;
         public static float waitBeforeDestroyingSunflower = 1f;
 
-        public static float waitBeforeDestroyingTNT = 0.1f;
+        public static float waitBeforeDestroyingTNT = 0.024f;
+        public static float waitOneFrame = 0.024f;
 
         // *** Light Configurations *** //
 

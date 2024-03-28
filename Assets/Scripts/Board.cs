@@ -1817,8 +1817,8 @@ public class Board : MonoBehaviour
                 case -3:
                 //    yield return new WaitForSeconds(0.1f);
                     Destroy(fruit);
-                    otherFruit.GetComponentInChildren<SpriteRenderer>().sortingOrder = 10;
-                    otherFruit.GetComponentInChildren<Animator>().SetTrigger(isTNTMerged);
+                 //   otherFruit.GetComponentInChildren<SpriteRenderer>().sortingOrder = 10;
+                    otherFruit.transform.GetChild(0).GetComponent<Animator>().SetTrigger(isTNTMerged);
                     if (otherFruitScript.column - 2 >= 0)
                     {
                         StartCoroutine(StopAndStartSingleColumn(ObjectSpeedAndTimeWaitingLibrary.twoTNTMergeColumnStopDuration, otherFruitScript.column - 2));
@@ -1839,13 +1839,12 @@ public class Board : MonoBehaviour
                     yield return new WaitForSeconds(ObjectSpeedAndTimeWaitingLibrary.twoTNTMergeAnimDuration);
                     
                     otherFruitScript.activePowerUp = true;
+                    otherFruit.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
+                    otherFruit.GetComponent<BoxCollider2D>().size = new Vector2(3, 3);
+                    yield return new WaitForSeconds(ObjectSpeedAndTimeWaitingLibrary.waitOneFrame);
                     otherFruit.GetComponent<BoxCollider2D>().size = new Vector2(5, 5);
 
-                    audioManager.Pickaxe();
-
-                    otherFruit.GetComponentInChildren<SpriteRenderer>().enabled = false;
-
-                    StartCoroutine(WaitAndDestroyObj(otherFruit, ObjectSpeedAndTimeWaitingLibrary.waitBeforeDestroyingTNT));
+                    StartCoroutine(WaitAndDestroyObj(otherFruit, ObjectSpeedAndTimeWaitingLibrary.waitOneFrame));
 
                     break;
                 case -4:

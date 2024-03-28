@@ -1201,9 +1201,11 @@ public class Board : MonoBehaviour
         if (fruitScript.fruitType > -100 && otherFruitScript.fruitType > -100 && fruitScript.fruitType < 0 && otherFruitScript.fruitType < 0 && !specialSwipe)
         {
             // Selected power up moves towards to other power up
+
             fruitScript.row = otherFruitScript.row;
             fruitScript.column = otherFruitScript.column;
             fruitScript.targetV = otherFruitScript.targetV;
+
             fruitScript.fadeout = true;
             otherFruitScript.fadeout = true;
             yield return new WaitForSeconds(speedAndTimeLibrary.beforeTwoPowerUpMergeWait);
@@ -2030,6 +2032,9 @@ public class Board : MonoBehaviour
                 }
                 StartCoroutine(StopAndStartAllFillings(speedAndTimeLibrary.horizontalHarvesterColumnStopDurationMultiplier * waitTileAmountHorizontal));
 
+                fruitScript.outsideOfBoard = true;
+                allFruits[column, row] = null;
+
                 GameObject cloneHorizontal = Instantiate(powerUps[0], allTiles[column, row].transform.position, powerUps[0].transform.rotation);
                 Fruit cloneHorizontalScript = cloneHorizontal.GetComponent<Fruit>();
 
@@ -2050,7 +2055,6 @@ public class Board : MonoBehaviour
                 fruitScript.harvester = true;
                 cloneHorizontalScript.harvester = true;
 
-                fruitScript.outsideOfBoard = true;
                 cloneHorizontalScript.outsideOfBoard = true;
 
                 fruitScript.targetV.x = -11;
@@ -2059,7 +2063,6 @@ public class Board : MonoBehaviour
                 fruitScript.destroyOnReach = true;
                 cloneHorizontalScript.destroyOnReach = true;
 
-                allFruits[column, row] = null;
                 fruitScript.activePowerUp = true;
                 cloneHorizontalScript.activePowerUp = true;
 
@@ -2085,6 +2088,9 @@ public class Board : MonoBehaviour
                 }
                 StartCoroutine(StopAndStartSingleColumn(speedAndTimeLibrary.verticalHarvesterColumnStopDurationMultiplier * waitTileAmountVertical, column));
 
+                fruitScript.outsideOfBoard = true;
+                allFruits[column, row] = null;
+
                 GameObject cloneVertical = Instantiate(powerUps[1], allTiles[column, row].transform.position, powerUps[1].transform.rotation);
                 Fruit cloneVerticalScript = cloneVertical.GetComponent<Fruit>();
 
@@ -2106,7 +2112,6 @@ public class Board : MonoBehaviour
                 fruitScript.harvester = true;
                 cloneVerticalScript.harvester = true;
 
-                fruitScript.outsideOfBoard = true;
                 cloneVerticalScript.outsideOfBoard = true;
 
                 fruitScript.targetV.y = -14;
@@ -2115,7 +2120,6 @@ public class Board : MonoBehaviour
                 fruitScript.destroyOnReach = true;
                 cloneVerticalScript.destroyOnReach = true;
 
-                allFruits[column, row] = null;
                 fruitScript.activePowerUp = true;
                 cloneVerticalScript.activePowerUp = true;
 

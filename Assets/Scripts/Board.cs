@@ -1206,11 +1206,14 @@ public class Board : MonoBehaviour
         {
             // Selected power up moves towards to other power up
 
-            if(fruitScript.fruitType == -4 || otherFruitScript.fruitType == -4)
+            /*
+            if(fruitScript.fruitType == -4 || otherFruitScript.fruitType == -4 || fruitScript.fruitType == -2 || otherFruitScript.fruitType == -2)
             {
                 fruitScript.outsideOfBoard = true;
                 allFruits[fruitScript.column,fruitScript.row] = null;
-            }
+            }*/
+
+            GameObject previousTile = allTiles[fruitScript.column, fruitScript.row];
 
             fruitScript.row = otherFruitScript.row;
             fruitScript.column = otherFruitScript.column;
@@ -1219,7 +1222,7 @@ public class Board : MonoBehaviour
             fruitScript.fadeout = true;
             otherFruitScript.fadeout = true;
             yield return new WaitForSeconds(ObjectSpeedAndTimeWaitingLibrary.beforeTwoPowerUpMergeWait);
-            StartCoroutine(ActivateMergePowerUp(fruit, otherFruit,horizontalSwipe));
+            StartCoroutine(ActivateMergePowerUp(fruit, otherFruit,horizontalSwipe, previousTile));
             succesfulMove = true;
         }
         else
@@ -1792,7 +1795,7 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="fruit"></param>
     /// <param name="otherFruit"></param>
-    public IEnumerator ActivateMergePowerUp(GameObject fruit, GameObject otherFruit,bool horizontalSwipe)
+    public IEnumerator ActivateMergePowerUp(GameObject fruit, GameObject otherFruit,bool horizontalSwipe,GameObject previousTile)
     {
         Fruit fruitScript = fruit.GetComponent<Fruit>(), otherFruitScript = otherFruit.GetComponent<Fruit>();
         fruitScript.damageID = otherFruitScript.damageID;
@@ -1860,6 +1863,8 @@ public class Board : MonoBehaviour
 
                     StartCoroutine(StopAndStartSingleColumn(ObjectSpeedAndTimeWaitingLibrary.twoBoomerangMergeColumnStopDuration,otherFruitScript.column));
 
+                    allFruits[previousTile.GetComponent<BackgroundTile>().column, previousTile.GetComponent<BackgroundTile>().row] = null;
+
                     yield return new WaitForSeconds(ObjectSpeedAndTimeWaitingLibrary.twoBoomerangMergeAnimDuration);
 
                     GameObject cloneBoomerang = CreatePowerUp(otherFruitScript.column, otherFruitScript.row,-4,false,false);
@@ -1910,7 +1915,7 @@ public class Board : MonoBehaviour
                             break;
                         case -3:
 
-                            StartCoroutine(HarvesterTNTMerge(fruit,otherFruit,fruitScript.column,fruitScript.row,false,horizontalSwipe));
+                            StartCoroutine(HarvesterTNTMerge(fruit,otherFruit,fruitScript.column,fruitScript.row,false,horizontalSwipe,previousTile));
 
                             break;
                         case -4:
@@ -1939,7 +1944,7 @@ public class Board : MonoBehaviour
                             break;
                         case -3:
 
-                            StartCoroutine(HarvesterTNTMerge(fruit,otherFruit, fruitScript.column, fruitScript.row, true, horizontalSwipe));
+                            StartCoroutine(HarvesterTNTMerge(fruit,otherFruit, fruitScript.column, fruitScript.row, true, horizontalSwipe, previousTile));
 
                             break;
                         case -4:
@@ -1963,12 +1968,12 @@ public class Board : MonoBehaviour
                     {
                         case -1:
 
-                            StartCoroutine(HarvesterTNTMerge(otherFruit,fruit, otherFruitScript.column, otherFruitScript.row, false, horizontalSwipe));
+                            StartCoroutine(HarvesterTNTMerge(otherFruit,fruit, otherFruitScript.column, otherFruitScript.row, false, horizontalSwipe, previousTile));
 
                             break;
                         case -2:
 
-                            StartCoroutine(HarvesterTNTMerge(otherFruit,fruit, otherFruitScript.column, otherFruitScript.row, true, horizontalSwipe));
+                            StartCoroutine(HarvesterTNTMerge(otherFruit,fruit, otherFruitScript.column, otherFruitScript.row, true, horizontalSwipe, previousTile));
 
                             break;
                         case -4:
@@ -3578,7 +3583,7 @@ public class Board : MonoBehaviour
         return tileSprites[0];
     }
 
-    private IEnumerator HarvesterTNTMerge(GameObject harvester,GameObject TNT,int column,int row, bool verticalHarvester,bool horizontalSwipe)
+    private IEnumerator HarvesterTNTMerge(GameObject harvester,GameObject TNT,int column,int row, bool verticalHarvester,bool horizontalSwipe,GameObject previousTile)
     {
         harvester.GetComponentInChildren<SpriteRenderer>().enabled = false;
         TNT.transform.GetChild(0).gameObject.SetActive(false);
@@ -3599,6 +3604,7 @@ public class Board : MonoBehaviour
         }
         yield return new WaitForSeconds(ObjectSpeedAndTimeWaitingLibrary.harvesterTNTMergeAnimDuration);
         harvester.GetComponentInChildren<SpriteRenderer>().enabled = true;
+        allFruits[previousTile.GetComponent<BackgroundTile>().column, previousTile.GetComponent<BackgroundTile>().row] = null;
         Destroy(TNT);
 
      //   StartCoroutine(StopAndStartSingleColumn(0.3f, column));

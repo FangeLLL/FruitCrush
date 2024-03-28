@@ -1,3 +1,4 @@
+using ObjectSpeedAndTimeWaitingNameSpace;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -6,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class LighteningScript : MonoBehaviour
 {
-    private ObjectSpeedAndTimeWaitingLibrary speedLibrary = new ObjectSpeedAndTimeWaitingLibrary();
 
     [HideInInspector]
     public Vector2 targetV;
@@ -20,7 +20,7 @@ public class LighteningScript : MonoBehaviour
 
     void Awake()
     {
-        speedMultiplier = speedLibrary.lighteningSpeed;
+        speedMultiplier = ObjectSpeedAndTimeWaitingLibrary.lighteningSpeed;
         targetV.x = transform.position.x;
         targetV.y = transform.position.y;
 

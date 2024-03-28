@@ -2168,7 +2168,7 @@ public class Board : MonoBehaviour
                 fruitScript.activePowerUp = true;
 
 
-                if(swipedFruitType == 0)
+                if(swipedFruitType >= 0)
                 {
                     fruit.transform.GetChild(0).GetComponent<Animator>().SetBool(boomerangRotating, true);
                 }

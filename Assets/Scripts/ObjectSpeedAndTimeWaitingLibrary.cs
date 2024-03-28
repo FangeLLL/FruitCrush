@@ -37,7 +37,7 @@ namespace ObjectSpeedAndTimeWaitingNameSpace {
 
         //  public float createdPowerupUninteractableDuration=0.01f;
 
-        public static float twoTNTMergeAnimDuration = 1.44f;
+        public static float twoTNTMergeAnimDuration = 1.63f;
         public static float twoTNTMergeColumnStopDuration = 1.76f;
 
         public static float twoBoomerangMergeAnimDuration = 1.34f;

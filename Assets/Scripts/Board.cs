@@ -1206,6 +1206,12 @@ public class Board : MonoBehaviour
         {
             // Selected power up moves towards to other power up
 
+            if(fruitScript.fruitType == -4 || otherFruitScript.fruitType == -4)
+            {
+                fruitScript.outsideOfBoard = true;
+                allFruits[fruitScript.column,fruitScript.row] = null;
+            }
+
             fruitScript.row = otherFruitScript.row;
             fruitScript.column = otherFruitScript.column;
             fruitScript.targetV = otherFruitScript.targetV;
@@ -1854,7 +1860,7 @@ public class Board : MonoBehaviour
 
                     StartCoroutine(StopAndStartSingleColumn(ObjectSpeedAndTimeWaitingLibrary.twoBoomerangMergeColumnStopDuration,otherFruitScript.column));
 
-                    yield return new WaitForSeconds(ObjectSpeedAndTimeWaitingLibrary.twoBoomerangMergeAnimDuration);                 
+                    yield return new WaitForSeconds(ObjectSpeedAndTimeWaitingLibrary.twoBoomerangMergeAnimDuration);
 
                     GameObject cloneBoomerang = CreatePowerUp(otherFruitScript.column, otherFruitScript.row,-4,false,false);
                 //    yield return new WaitForSeconds(0.1f);
@@ -2168,7 +2174,7 @@ public class Board : MonoBehaviour
                 fruitScript.activePowerUp = true;
 
 
-                if(swipedFruitType == 0)
+                if(swipedFruitType >= 0)
                 {
                     fruit.transform.GetChild(0).GetComponent<Animator>().SetBool(boomerangRotating, true);
                 }

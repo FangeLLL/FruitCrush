@@ -1,3 +1,4 @@
+using ObjectSpeedAndTimeWaitingNameSpace;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -34,8 +35,6 @@ public class Fruit : MonoBehaviour
     public Animator animator;
 
     public string damageID;
-
-    ObjectSpeedAndTimeWaitingLibrary speedLibrary = new ObjectSpeedAndTimeWaitingLibrary();
 
     public float speedMultiplier;
 
@@ -91,7 +90,7 @@ public class Fruit : MonoBehaviour
         board = FindObjectOfType<Board>();
         targetV.x = transform.position.x;
         targetV.y = transform.position.y;
-        speedMultiplier = speedLibrary.fruitStartSpeed;
+        speedMultiplier = ObjectSpeedAndTimeWaitingLibrary.fruitStartSpeed;
         StartCoroutine(WaitAndActivateFruit());
     }
 
@@ -119,7 +118,7 @@ public class Fruit : MonoBehaviour
             if (isSwiped)
             {
                 // Swipe movement
-                transform.position = Vector2.Lerp(transform.position, targetV, speedLibrary.fruitSwipeSpeed * Time.deltaTime);
+                transform.position = Vector2.Lerp(transform.position, targetV, ObjectSpeedAndTimeWaitingLibrary.fruitSwipeSpeed * Time.deltaTime);
 
             }
             else
@@ -152,11 +151,11 @@ public class Fruit : MonoBehaviour
                 {
                     if (harvester)
                     {
-                        transform.position = Vector2.MoveTowards(transform.position, targetV, Time.deltaTime * speedLibrary.harvesterSpeed);
+                        transform.position = Vector2.MoveTowards(transform.position, targetV, Time.deltaTime * ObjectSpeedAndTimeWaitingLibrary.harvesterSpeed);
                     }
                     else
                     {
-                        transform.position = Vector2.MoveTowards(transform.position, targetV, Time.deltaTime * speedLibrary.boomerangSpeed);
+                        transform.position = Vector2.MoveTowards(transform.position, targetV, Time.deltaTime * ObjectSpeedAndTimeWaitingLibrary.boomerangSpeed);
                     }
                 }
                 else
@@ -171,9 +170,9 @@ public class Fruit : MonoBehaviour
 
                     //timer += Time.deltaTime;
 
-                    if(speedMultiplier <= speedLibrary.fruitMaxSpeed)
+                    if(speedMultiplier <= ObjectSpeedAndTimeWaitingLibrary.fruitMaxSpeed)
                     {
-                        speedMultiplier += Time.deltaTime * speedLibrary.fruitAccelerationMultiplier * Vector2.Distance(targetV, transform.position);
+                        speedMultiplier += Time.deltaTime * ObjectSpeedAndTimeWaitingLibrary.fruitAccelerationMultiplier * Vector2.Distance(targetV, transform.position);
                     }
                     /*
                     else if(speedMultiplier <= 25 && Vector2.Distance(targetV, tempStartPos) <= 1.5f)
@@ -207,7 +206,7 @@ public class Fruit : MonoBehaviour
             {
                 tempStartPos = transform.position;
                 isMoving = false;
-                speedMultiplier = speedLibrary.fruitStartSpeed;
+                speedMultiplier = ObjectSpeedAndTimeWaitingLibrary.fruitStartSpeed;
                 doingCrossFall = false;
             }
 
